@@ -3,9 +3,12 @@
   "compileOnSave": false,
   "compilerOptions": {
     "paths": {
-      "@bizy/core": [
-        "dist/bizy/core"
-      ]
+      "@bizy/components": [
+        "dist/bizy/components"
+      ],
+      "@bizy/services": [
+        "dist/bizy/services"
+      ],
     },
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
