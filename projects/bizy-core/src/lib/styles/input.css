@@ -1,0 +1,331 @@
+.mat-ripple {
+    overflow: hidden;
+    position: relative
+}
+
+.mat-ripple:not(:empty) {
+    transform: translateZ(0)
+}
+
+.mat-ripple.mat-ripple-unbounded {
+    overflow: visible
+}
+
+.mat-ripple-element {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    transition: opacity, transform 0ms cubic-bezier(0, 0, 0.2, 1);
+    transform: scale3d(0, 0, 0)
+}
+
+.cdk-high-contrast-active .mat-ripple-element {
+    display: none
+}
+
+.cdk-visually-hidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    white-space: nowrap;
+    outline: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    left: 0
+}
+
+[dir=rtl] .cdk-visually-hidden {
+    left: auto;
+    right: 0
+}
+
+.cdk-overlay-container,
+.cdk-global-overlay-wrapper {
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%
+}
+
+.cdk-overlay-container {
+    position: fixed;
+    z-index: 1000
+}
+
+.cdk-overlay-container:empty {
+    display: none
+}
+
+.cdk-global-overlay-wrapper {
+    display: flex;
+    position: absolute;
+    z-index: 1000
+}
+
+.cdk-overlay-pane {
+    position: absolute;
+    pointer-events: auto;
+    box-sizing: border-box;
+    z-index: 1000;
+    display: flex;
+    max-width: 100%;
+    max-height: 100%
+}
+
+.cdk-overlay-backdrop {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    pointer-events: auto;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    transition: opacity 400ms cubic-bezier(0.25, 0.8, 0.25, 1);
+    opacity: 0
+}
+
+.cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
+    opacity: 1
+}
+
+.cdk-high-contrast-active .cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
+    opacity: .6
+}
+
+.cdk-overlay-dark-backdrop {
+    background: rgba(0, 0, 0, .32)
+}
+
+.cdk-overlay-transparent-backdrop {
+    transition: visibility 1ms linear, opacity 1ms linear;
+    visibility: hidden;
+    opacity: 1
+}
+
+.cdk-overlay-transparent-backdrop.cdk-overlay-backdrop-showing {
+    opacity: 0;
+    visibility: visible
+}
+
+.cdk-overlay-backdrop-noop-animation {
+    transition: none
+}
+
+.cdk-overlay-connected-position-bounding-box {
+    position: absolute;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    min-width: 1px;
+    min-height: 1px
+}
+
+.cdk-global-scrollblock {
+    position: fixed;
+    width: 100%;
+    overflow-y: scroll
+}
+
+@keyframes cdk-text-field-autofill-start {
+    /*!*/
+}
+
+@keyframes cdk-text-field-autofill-end {
+    /*!*/
+}
+
+.cdk-text-field-autofill-monitored:-webkit-autofill {
+    animation: cdk-text-field-autofill-start 0s 1ms
+}
+
+.cdk-text-field-autofill-monitored:not(:-webkit-autofill) {
+    animation: cdk-text-field-autofill-end 0s 1ms
+}
+
+.mat-focus-indicator {
+    position: relative
+}
+
+.mat-focus-indicator::before {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    box-sizing: border-box;
+    pointer-events: none;
+    display: var(--mat-focus-indicator-display, none);
+    border: var(--mat-focus-indicator-border-width, 3px) var(--mat-focus-indicator-border-style, solid) var(--mat-focus-indicator-border-color, transparent);
+    border-radius: var(--mat-focus-indicator-border-radius, 4px)
+}
+
+.mat-focus-indicator:focus::before {
+    content: ""
+}
+
+.cdk-high-contrast-active {
+    --mat-focus-indicator-display: block
+}
+
+.mat-mdc-focus-indicator {
+    position: relative
+}
+
+.mat-mdc-focus-indicator::before {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    box-sizing: border-box;
+    pointer-events: none;
+    display: var(--mat-mdc-focus-indicator-display, none);
+    border: var(--mat-mdc-focus-indicator-border-width, 3px) var(--mat-mdc-focus-indicator-border-style, solid) var(--mat-mdc-focus-indicator-border-color, transparent);
+    border-radius: var(--mat-mdc-focus-indicator-border-radius, 4px)
+}
+
+.mat-mdc-focus-indicator:focus::before {
+    content: ""
+}
+
+html {
+    --mdc-filled-text-field-caret-color: #3f51b5;
+    --mdc-filled-text-field-focus-active-indicator-color: #3f51b5;
+    --mdc-filled-text-field-focus-label-text-color: rgba(63, 81, 181, 0.87);
+    --mdc-filled-text-field-container-color: whitesmoke;
+    --mdc-filled-text-field-disabled-container-color: #fafafa;
+    --mdc-filled-text-field-label-text-color: rgba(0, 0, 0, 0.6);
+    --mdc-filled-text-field-disabled-label-text-color: rgba(0, 0, 0, 0.38);
+    --mdc-filled-text-field-input-text-color: rgba(0, 0, 0, 0.87);
+    --mdc-filled-text-field-disabled-input-text-color: rgba(0, 0, 0, 0.38);
+    --mdc-filled-text-field-input-text-placeholder-color: rgba(0, 0, 0, 0.6);
+    --mdc-filled-text-field-error-focus-label-text-color: #f44336;
+    --mdc-filled-text-field-error-label-text-color: #f44336;
+    --mdc-filled-text-field-error-caret-color: #f44336;
+    --mdc-filled-text-field-active-indicator-color: rgba(0, 0, 0, 0.42);
+    --mdc-filled-text-field-disabled-active-indicator-color: rgba(0, 0, 0, 0.06);
+    --mdc-filled-text-field-hover-active-indicator-color: rgba(0, 0, 0, 0.87);
+    --mdc-filled-text-field-error-active-indicator-color: #f44336;
+    --mdc-filled-text-field-error-focus-active-indicator-color: #f44336;
+    --mdc-filled-text-field-error-hover-active-indicator-color: #f44336;
+    --mdc-outlined-text-field-caret-color: #3f51b5;
+    --mdc-outlined-text-field-focus-outline-color: #3f51b5;
+    --mdc-outlined-text-field-focus-label-text-color: rgba(63, 81, 181, 0.87);
+    --mdc-outlined-text-field-label-text-color: rgba(0, 0, 0, 0.6);
+    --mdc-outlined-text-field-disabled-label-text-color: rgba(0, 0, 0, 0.38);
+    --mdc-outlined-text-field-input-text-color: rgba(0, 0, 0, 0.87);
+    --mdc-outlined-text-field-disabled-input-text-color: rgba(0, 0, 0, 0.38);
+    --mdc-outlined-text-field-input-text-placeholder-color: rgba(0, 0, 0, 0.6);
+    --mdc-outlined-text-field-error-caret-color: #f44336;
+    --mdc-outlined-text-field-error-focus-label-text-color: #f44336;
+    --mdc-outlined-text-field-error-label-text-color: #f44336;
+    --mdc-outlined-text-field-outline-color: rgba(0, 0, 0, 0.38);
+    --mdc-outlined-text-field-disabled-outline-color: rgba(0, 0, 0, 0.06);
+    --mdc-outlined-text-field-hover-outline-color: rgba(0, 0, 0, 0.87);
+    --mdc-outlined-text-field-error-focus-outline-color: #f44336;
+    --mdc-outlined-text-field-error-hover-outline-color: #f44336;
+    --mdc-outlined-text-field-error-outline-color: #f44336;
+    --mat-form-field-disabled-input-text-placeholder-color: rgba(0, 0, 0, 0.38)
+}
+
+.mat-mdc-form-field-error {
+    color: var(--mdc-theme-error, #f44336)
+}
+
+html {
+    --mat-datepicker-calendar-date-selected-state-text-color: white;
+    --mat-datepicker-calendar-date-selected-state-background-color: #3f51b5;
+    --mat-datepicker-calendar-date-selected-disabled-state-background-color: rgba(63, 81, 181, 0.4);
+    --mat-datepicker-calendar-date-today-selected-state-outline-color: white;
+    --mat-datepicker-calendar-date-focus-state-background-color: rgba(63, 81, 181, 0.3);
+    --mat-datepicker-calendar-date-hover-state-background-color: rgba(63, 81, 181, 0.3);
+    --mat-datepicker-toggle-active-state-icon-color: #3f51b5;
+    --mat-datepicker-calendar-date-in-range-state-background-color: rgba(63, 81, 181, 0.2);
+    --mat-datepicker-calendar-date-in-comparison-range-state-background-color: rgba(249, 171, 0, 0.2);
+    --mat-datepicker-calendar-date-in-overlap-range-state-background-color: #a8dab5;
+    --mat-datepicker-calendar-date-in-overlap-range-selected-state-background-color: #46a35e;
+    --mat-datepicker-toggle-icon-color: rgba(0, 0, 0, 0.54);
+    --mat-datepicker-calendar-body-label-text-color: rgba(0, 0, 0, 0.54);
+    --mat-datepicker-calendar-period-button-icon-color: rgba(0, 0, 0, 0.54);
+    --mat-datepicker-calendar-navigation-button-icon-color: rgba(0, 0, 0, 0.54);
+    --mat-datepicker-calendar-header-divider-color: rgba(0, 0, 0, 0.12);
+    --mat-datepicker-calendar-header-text-color: rgba(0, 0, 0, 0.54);
+    --mat-datepicker-calendar-date-today-outline-color: rgba(0, 0, 0, 0.38);
+    --mat-datepicker-calendar-date-today-disabled-state-outline-color: rgba(0, 0, 0, 0.18);
+    --mat-datepicker-calendar-date-text-color: rgba(0, 0, 0, 0.87);
+    --mat-datepicker-calendar-date-outline-color: transparent;
+    --mat-datepicker-calendar-date-disabled-state-text-color: rgba(0, 0, 0, 0.38);
+    --mat-datepicker-calendar-date-preview-state-outline-color: rgba(0, 0, 0, 0.24);
+    --mat-datepicker-range-input-separator-color: rgba(0, 0, 0, 0.87);
+    --mat-datepicker-range-input-disabled-state-separator-color: rgba(0, 0, 0, 0.38);
+    --mat-datepicker-range-input-disabled-state-text-color: rgba(0, 0, 0, 0.38);
+    --mat-datepicker-calendar-container-background-color: white;
+    --mat-datepicker-calendar-container-text-color: rgba(0, 0, 0, 0.87)
+}
+
+.mat-datepicker-content.mat-accent {
+    --mat-datepicker-calendar-date-selected-state-text-color: white;
+    --mat-datepicker-calendar-date-selected-state-background-color: #ff4081;
+    --mat-datepicker-calendar-date-selected-disabled-state-background-color: rgba(255, 64, 129, 0.4);
+    --mat-datepicker-calendar-date-today-selected-state-outline-color: white;
+    --mat-datepicker-calendar-date-focus-state-background-color: rgba(255, 64, 129, 0.3);
+    --mat-datepicker-calendar-date-hover-state-background-color: rgba(255, 64, 129, 0.3);
+    --mat-datepicker-calendar-date-in-range-state-background-color: rgba(255, 64, 129, 0.2);
+    --mat-datepicker-calendar-date-in-comparison-range-state-background-color: rgba(249, 171, 0, 0.2);
+    --mat-datepicker-calendar-date-in-overlap-range-state-background-color: #a8dab5;
+    --mat-datepicker-calendar-date-in-overlap-range-selected-state-background-color: #46a35e
+}
+
+.mat-datepicker-content.mat-warn {
+    --mat-datepicker-calendar-date-selected-state-text-color: white;
+    --mat-datepicker-calendar-date-selected-state-background-color: #f44336;
+    --mat-datepicker-calendar-date-selected-disabled-state-background-color: rgba(244, 67, 54, 0.4);
+    --mat-datepicker-calendar-date-today-selected-state-outline-color: white;
+    --mat-datepicker-calendar-date-focus-state-background-color: rgba(244, 67, 54, 0.3);
+    --mat-datepicker-calendar-date-hover-state-background-color: rgba(244, 67, 54, 0.3);
+    --mat-datepicker-calendar-date-in-range-state-background-color: rgba(244, 67, 54, 0.2);
+    --mat-datepicker-calendar-date-in-comparison-range-state-background-color: rgba(249, 171, 0, 0.2);
+    --mat-datepicker-calendar-date-in-overlap-range-state-background-color: #a8dab5;
+    --mat-datepicker-calendar-date-in-overlap-range-selected-state-background-color: #46a35e
+}
+
+.mat-datepicker-toggle-active.mat-accent {
+    --mat-datepicker-toggle-active-state-icon-color: #ff4081
+}
+
+.mat-datepicker-toggle-active.mat-warn {
+    --mat-datepicker-toggle-active-state-icon-color: #f44336
+}
+
+.mat-calendar-controls .mat-mdc-icon-button.mat-mdc-button-base {
+    --mdc-icon-button-state-layer-size: 40px;
+    width: var(--mdc-icon-button-state-layer-size);
+    height: var(--mdc-icon-button-state-layer-size);
+    padding: 8px
+}
+
+.mat-calendar-controls .mat-mdc-icon-button.mat-mdc-button-base .mat-mdc-button-touch-target {
+    display: none
+}
+
+html {
+    --mat-datepicker-calendar-text-font: Roboto, sans-serif;
+    --mat-datepicker-calendar-text-size: 13px;
+    --mat-datepicker-calendar-body-label-text-size: 14px;
+    --mat-datepicker-calendar-body-label-text-weight: 500;
+    --mat-datepicker-calendar-period-button-text-size: 14px;
+    --mat-datepicker-calendar-period-button-text-weight: 500;
+    --mat-datepicker-calendar-header-text-size: 11px;
+    --mat-datepicker-calendar-header-text-weight: 400
+}
+
+html {
+    --mat-divider-color: rgba(0, 0, 0, 0.12)
+}

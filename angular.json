@@ -1,0 +1,30 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "bizy-core": {
+      "projectType": "library",
+      "root": "projects/bizy-core",
+      "sourceRoot": "projects/bizy-core/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/bizy-core/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/bizy-core/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/bizy-core/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        }
+      }
+    }
+  }
+}
