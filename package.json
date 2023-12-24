@@ -1,6 +1,6 @@
 {
   "name": "@bizy/core",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -15,10 +15,8 @@
     "@angular/platform-browser": "16.2.11",
     "@angular/platform-browser-dynamic": "16.2.11",
     "@angular/router": "16.2.11",
-    "@auth0/angular-jwt": "5.2.0",
     "@ngx-translate/core": "15.0.0",
     "fuse.js": "7.0.0",
-    "keycloak-js": "9.0.3",
     "rxjs": "7.8.1",
     "tslib": "2.3.0",
     "zone.js": "0.13.0"
