@@ -8,10 +8,6 @@
   height: var(--bizy-virtual-scroll-height);
 }
 
-.bizy-virtual-scroll--hidden {
-  height: 0 !important;
-}
-
 .bizy-virtual-scroll--empty {
   min-height: 6rem;
   font-size: 1.4rem;

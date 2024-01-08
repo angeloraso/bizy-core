@@ -1,11 +1,9 @@
 <div>
 
   <cdk-virtual-scroll-viewport 
-    #bizyVirtualScroll 
+    *ngIf="virtualScrollItems.length !== 0"
     class="bizy-virtual-scroll"
-    [hidden]="virtualScrollItems && virtualScrollItems.length === 0"
     [itemSize]="_itemMinHeight"
-    [ngClass]="{'bizy-virtual-scroll--hidden': virtualScrollItems && virtualScrollItems.length === 0}"
     [ngStyle]="{'height': viewportHeight}"
     [minBufferPx]="_itemMinHeight + (_itemMinHeight * 8)"
     [maxBufferPx]="_itemMinHeight + (_itemMinHeight * 12)">
@@ -15,6 +13,6 @@
     </div>
   </cdk-virtual-scroll-viewport>
   
-  <span *ngIf="virtualScrollItems && virtualScrollItems.length === 0" class="bizy-virtual-scroll--empty">{{emptyText}}</span>
+  <span *ngIf="virtualScrollItems.length === 0" class="bizy-virtual-scroll--empty">{{emptyText}}</span>
 
 </div>

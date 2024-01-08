@@ -5,7 +5,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build-components": "ng build components",
-    "build-services": "ng build services"
+    "build-services": "ng build services",
+    "build-directives": "ng build directives"
   },
   "dependencies": {
     "@angular/animations": "16.2.11",

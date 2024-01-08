@@ -1,6 +1,6 @@
 {
-  "name": "@bizy/services",
-  "version": "0.0.2",
+  "name": "@bizy/directives",
+  "version": "0.0.10",
   "peerDependencies": {
     "@angular/forms": "16.2.11",
     "@angular/core": "16.2.11",

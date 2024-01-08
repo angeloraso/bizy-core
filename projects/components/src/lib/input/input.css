@@ -1,0 +1,46 @@
+.anura-input {
+    width: 100%;
+}
+
+.anura-input__title {
+    color: var(--anura-input-title-color);
+    font-weight: bold;
+}
+
+::ng-deep .anura-input .mat-mdc-input-element {
+    min-height: 2rem;
+}
+
+::ng-deep .anura-input .mat-mdc-text-field-wrapper {
+    background-color: var(--anura-input-background-color) !important;
+    padding: 0.25rem 0.5rem 0 0.5rem !important;
+}
+
+::ng-deep .anura-input .mat-mdc-form-field-subscript-wrapper {
+    height: 0 !important;
+}
+
+.anura-input__prefix {
+    position: absolute;
+    top: 50%;
+    left: 0;
+}
+
+.anura-input__prefix + .anura-input__input {
+    padding-left: 0.7rem !important;
+}
+
+.anura-input__suffix {
+    position: absolute;
+    top: 50%;
+    right: 0.2rem;
+}
+
+.anura-input__suffix + .anura-input__input {
+    padding-right: 0.7rem !important;
+}
+
+.anura-input__date-input {
+    pointer-events: none;
+    cursor: default;
+}

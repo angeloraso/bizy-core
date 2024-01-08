@@ -237,6 +237,93 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.11", ngImpo
             type: Injectable
         }] });
 
+class ValidatorService {
+    isEmail(email) {
+        const regex = /^(([^ñ<>()[\]\\.,;:\s@"]+(\.[^ñ<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return regex.test(String(email).toLowerCase());
+    }
+    isPassFormat(pass) {
+        const formatRegex = /(?!.*012)(?!.*123)(?!.*234)(?!.*345)(?!.*456)(?!.*567)(?!.*678)(?!.*789)(?!.*987)(?!.*876)(?!.*765)(?!.*654)(?!.*543)(?!.*432)(?!.*321)(?!.*210)(?!.*(.)\1{2,})(?!(^\D+$))(?!(^\d+$))(^.{6,}$)/;
+        const excludeRegex = /[^'"]$/;
+        const _pass = String(pass).toLowerCase();
+        return formatRegex.test(_pass) && excludeRegex.test(_pass);
+    }
+    isNoSpecialCharacter(name) {
+        const regex = /^[a-zA-Z0-9][a-zA-Z0-9_-]*$/;
+        return regex.test(String(name).toLowerCase());
+    }
+    isNumber(number) {
+        const regex = /^[0-9]*$/;
+        return regex.test(String(number).toLowerCase());
+    }
+    isPhoneNumber(number) {
+        const regex = /^\+{0,1}[0-9#*]+$/;
+        return regex.test(String(number).toLowerCase());
+    }
+    isString(string) {
+        return typeof string === 'string' || string instanceof String;
+    }
+    isJSON(text) {
+        if (/^[\],:{}\s]*$/.test(text.replace(/\\["\\/bfnrtu]/g, '@')
+            .replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?/g, ']')
+            .replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
+            return true;
+        }
+        return false;
+    }
+    emailValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isEmail(control.value)) ? null : { bizyEmail: true };
+        };
+    }
+    phoneNumberValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isPhoneNumber(control.value)) ? null : { bizyPhoneNumber: true };
+        };
+    }
+    numberValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isNumber(control.value)) ? null : { bizyNumber: true };
+        };
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: ValidatorService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: ValidatorService });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: ValidatorService, decorators: [{
+            type: Injectable
+        }] });
+
+class StorageService {
+    get(key) {
+        const item = localStorage.getItem(key);
+        try {
+            return JSON.parse(item);
+        }
+        catch (e) {
+            return item;
+        }
+    }
+    set(key, value) {
+        if (typeof value === 'object') {
+            localStorage.setItem(key, JSON.stringify(value));
+        }
+        else if (typeof value === 'string') {
+            localStorage.setItem(key, value);
+        }
+    }
+    remove(key) {
+        localStorage.removeItem(key);
+    }
+    clear() {
+        localStorage.clear();
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: StorageService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: StorageService });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: StorageService, decorators: [{
+            type: Injectable
+        }] });
+
 var COLOR;
 (function (COLOR) {
     COLOR["DEFAULT"] = "#666666";
@@ -411,93 +498,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.11", ngImpo
                     type: Inject,
                     args: [Router]
                 }] }]; } });
-
-class StorageService {
-    get(key) {
-        const item = localStorage.getItem(key);
-        try {
-            return JSON.parse(item);
-        }
-        catch (e) {
-            return item;
-        }
-    }
-    set(key, value) {
-        if (typeof value === 'object') {
-            localStorage.setItem(key, JSON.stringify(value));
-        }
-        else if (typeof value === 'string') {
-            localStorage.setItem(key, value);
-        }
-    }
-    remove(key) {
-        localStorage.removeItem(key);
-    }
-    clear() {
-        localStorage.clear();
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: StorageService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: StorageService });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: StorageService, decorators: [{
-            type: Injectable
-        }] });
-
-class ValidatorService {
-    isEmail(email) {
-        const regex = /^(([^ñ<>()[\]\\.,;:\s@"]+(\.[^ñ<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return regex.test(String(email).toLowerCase());
-    }
-    isPassFormat(pass) {
-        const formatRegex = /(?!.*012)(?!.*123)(?!.*234)(?!.*345)(?!.*456)(?!.*567)(?!.*678)(?!.*789)(?!.*987)(?!.*876)(?!.*765)(?!.*654)(?!.*543)(?!.*432)(?!.*321)(?!.*210)(?!.*(.)\1{2,})(?!(^\D+$))(?!(^\d+$))(^.{6,}$)/;
-        const excludeRegex = /[^'"]$/;
-        const _pass = String(pass).toLowerCase();
-        return formatRegex.test(_pass) && excludeRegex.test(_pass);
-    }
-    isNoSpecialCharacter(name) {
-        const regex = /^[a-zA-Z0-9][a-zA-Z0-9_-]*$/;
-        return regex.test(String(name).toLowerCase());
-    }
-    isNumber(number) {
-        const regex = /^[0-9]*$/;
-        return regex.test(String(number).toLowerCase());
-    }
-    isPhoneNumber(number) {
-        const regex = /^\+{0,1}[0-9#*]+$/;
-        return regex.test(String(number).toLowerCase());
-    }
-    isString(string) {
-        return typeof string === 'string' || string instanceof String;
-    }
-    isJSON(text) {
-        if (/^[\],:{}\s]*$/.test(text.replace(/\\["\\/bfnrtu]/g, '@')
-            .replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?/g, ']')
-            .replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
-            return true;
-        }
-        return false;
-    }
-    emailValidator() {
-        return (control) => {
-            return !control.value || (control.value && this.isEmail(control.value)) ? null : { bizyEmail: true };
-        };
-    }
-    phoneNumberValidator() {
-        return (control) => {
-            return !control.value || (control.value && this.isPhoneNumber(control.value)) ? null : { bizyPhoneNumber: true };
-        };
-    }
-    numberValidator() {
-        return (control) => {
-            return !control.value || (control.value && this.isNumber(control.value)) ? null : { bizyNumber: true };
-        };
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: ValidatorService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: ValidatorService });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: ValidatorService, decorators: [{
-            type: Injectable
-        }] });
 
 /**
  * Generated bundle index. Do not edit.

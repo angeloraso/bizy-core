@@ -1,7 +1,6 @@
 import { debounceTime, skip, takeUntil } from 'rxjs/operators';
 import { Subscription, Subject, interval } from 'rxjs';
-import { Component, ContentChild, Input, AfterViewInit, Inject, ViewChild, ChangeDetectorRef, OnInit } from '@angular/core';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { Component, ContentChild, Input, AfterViewInit, Inject, ChangeDetectorRef, OnInit, ElementRef } from '@angular/core';
 import { VirtualScrollNgForDirective } from './virtual-scroll-ng-for.directive';
 
 const MIN_VIRTUAL_SCROLL_WIDTH = 300;
@@ -12,13 +11,12 @@ const MIN_VIRTUAL_SCROLL_WIDTH = 300;
 })
 export class VirtualScrollComponent implements OnInit, AfterViewInit {
   @ContentChild(VirtualScrollNgForDirective) virtualFor: VirtualScrollNgForDirective;
-  @ViewChild('bizyVirtualScroll') virtualScroll: CdkVirtualScrollViewport;
   @Input() itemMinHeight: number | string;
   @Input() itemMinWidth: number | string;
   @Input() emptyText: string = 'Sin elementos para mostrar';
   @Input() viewportHeight: string; // css height value  
 
-  virtualScrollItems: Array<any>;
+  virtualScrollItems: Array<any> = [];
   itemsByRow: number;
   items: Array<any>;
   _itemMinHeight: number;
@@ -28,7 +26,9 @@ export class VirtualScrollComponent implements OnInit, AfterViewInit {
   private _resizeObserver: ResizeObserver;
   private _subscription = new Subscription();
 
-  constructor(@Inject(ChangeDetectorRef) private ref: ChangeDetectorRef) {}
+  constructor(
+    @Inject(ElementRef) private elementRef: ElementRef,
+    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef) {}
 
   ngOnInit() {
     if (this.#isString(this.itemMinHeight) && this.itemMinHeight.includes('rem')) {
@@ -42,7 +42,7 @@ export class VirtualScrollComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       const finishInterval$ = new Subject<void>();
       interval(50).pipe(takeUntil(finishInterval$)).subscribe(() => {
-        const virtualScrollWidth = this.virtualScroll?.elementRef.nativeElement.offsetWidth;
+        const virtualScrollWidth = this.elementRef.nativeElement.offsetWidth;
         if (virtualScrollWidth) {
           finishInterval$.next();
           finishInterval$.complete();
@@ -55,10 +55,10 @@ export class VirtualScrollComponent implements OnInit, AfterViewInit {
 
                 if (!this._resizeObserver) {
                   this._resizeObserver = new ResizeObserver(() => this.notifier$.next());
-                  this._resizeObserver.observe(this.virtualScroll?.elementRef?.nativeElement?.parentElement?.parentElement as HTMLElement);
+                  this._resizeObserver.observe(this.elementRef.nativeElement.parentElement?.parentElement as HTMLElement);
                   this._subscription.add(this.notifier$.pipe(skip(1), debounceTime(100)).subscribe(() => {
-                    if (this.virtualScroll?.elementRef.nativeElement.offsetWidth) {
-                      this.bizyVirtualScrollWidth = this.virtualScroll?.elementRef.nativeElement.offsetWidth;
+                    if (this.elementRef.nativeElement.offsetWidth) {
+                      this.bizyVirtualScrollWidth = this.elementRef.nativeElement.offsetWidth;
                       this.fillVirtualScroll();
                     }
                   }));
@@ -77,7 +77,7 @@ export class VirtualScrollComponent implements OnInit, AfterViewInit {
     if (this.bizyVirtualScrollWidth < MIN_VIRTUAL_SCROLL_WIDTH) {
       this.itemsByRow = 1;
     } else {
-      const fontSize = window.getComputedStyle(this.virtualScroll?.elementRef.nativeElement).getPropertyValue('font-size');
+      const fontSize = window.getComputedStyle(this.elementRef.nativeElement).getPropertyValue('font-size');
       const gridGap = Number(fontSize.split('px')[0]) || 14;
       let itemMinWidth: number = 1;
       if (this.#isString(this.itemMinWidth)) {
@@ -110,7 +110,8 @@ export class VirtualScrollComponent implements OnInit, AfterViewInit {
       i += this.itemsByRow - 1;
     }
 
-    this.virtualScrollItems = [...array];
+    this.virtualScrollItems.length = 0;
+    this.virtualScrollItems = array;
     this.ref.detectChanges();
   }
 

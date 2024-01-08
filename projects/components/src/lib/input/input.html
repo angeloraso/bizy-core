@@ -1,0 +1,36 @@
+<input >
+
+<mat-form-field appearance="fill" class="anura-input" [hideRequiredMarker]="true" *ngIf="type !== 'date'">
+    <span class="anura-input__title">
+        <mat-label>{{title}}</mat-label>
+        <anura-help *ngIf="helpText || helpHtml" helpText="{{helpText}}" [helpHtml]="helpHtml"></anura-help>
+    </span>
+    <span *ngIf="prefix" class="anura-input__prefix">{{prefix}}</span>
+    <input 
+        [type]="type"
+        matInput
+        class="anura-input__input"
+        [anuraAutoFocus]="autoFocus"
+        [anuraOnlyNumbers]="type === 'number'"
+        [anuraOnlyPhoneDigits]="type === 'phone'"
+        [formControl]="control">
+
+    <span *ngIf="suffix" class="anura-input__suffix">{{suffix}}</span>
+</mat-form-field>
+
+<mat-form-field appearance="fill" class="anura-input" [hideRequiredMarker]="true" *ngIf="type === 'date'">
+    <span class="anura-input__title">
+        <mat-label>{{title}}</mat-label>
+        <anura-help *ngIf="helpText || helpHtml" helpText="{{helpText}}" [helpHtml]="helpHtml"></anura-help>
+    </span>
+
+    <input 
+        matInput 
+        class="anura-input__input anura-input__date-input"
+        readonly="readonly"
+        (dateChange)="updateDate($event.value)"
+        [matDatepicker]="anuraDateInput"
+        [formControl]="control">
+    <mat-datepicker-toggle [disabled]="control.disabled" matIconSuffix [for]="anuraDateInput"></mat-datepicker-toggle>
+    <mat-datepicker #anuraDateInput></mat-datepicker>
+</mat-form-field>
