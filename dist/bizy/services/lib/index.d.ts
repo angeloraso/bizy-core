@@ -1,3 +1,4 @@
+export { PopupService, PopupModule } from './popup';
 export { UserAgentService } from "./user-agent/user-agent.service";
 export { ValidatorService } from "./validator.service";
 export { StorageService } from "./storage.service";

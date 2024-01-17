@@ -9,28 +9,30 @@
     "build-directives": "ng build directives"
   },
   "dependencies": {
-    "@angular/animations": "16.2.11",
-    "@angular/cdk": "16.2.11",
-    "@angular/common": "16.2.11",
-    "@angular/core": "16.2.11",
-    "@angular/forms": "16.2.11",
-    "@angular/platform-browser": "16.2.11",
-    "@angular/platform-browser-dynamic": "16.2.11",
-    "@angular/router": "16.2.11",
+    "@angular/animations": "17.0.9",
+    "@angular/cdk": "17.0.5",
+    "@angular/common": "17.0.9",
+    "@angular/core": "17.0.9",
+    "@angular/forms": "17.0.9",
+    "@angular/platform-browser": "17.0.9",
+    "@angular/platform-browser-dynamic": "17.0.9",
+    "@angular/router": "17.0.9",
+    "@ionic/angular": "7.6.4",
     "@ngx-translate/core": "15.0.0",
     "fuse.js": "7.0.0",
     "rxjs": "7.8.1",
     "tslib": "2.3.0",
-    "zone.js": "0.13.0"
+    "zone.js": "0.14.3"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "16.2.8",
-    "@angular/cli": "16.2.7",
-    "@angular/compiler": "16.2.11",
-    "@angular/compiler-cli": "16.2.11",
-    "@types/node": "20.8.7",
-    "ng-packagr": "16.2.3",
-    "ts-node": "10.9.1",
-    "typescript": "5.1.6"
+    "@angular-devkit/build-angular": "17.0.10",
+    "@angular/cli": "17.0.10",
+    "@angular/compiler": "17.0.9",
+    "@angular/compiler-cli": "17.0.9",
+    "@ionic/angular-toolkit": "11.0.0",
+    "@types/node": "20.11.4",
+    "ng-packagr": "17.0.3",
+    "ts-node": "10.9.2",
+    "typescript": "5.2.2"
   }
 }

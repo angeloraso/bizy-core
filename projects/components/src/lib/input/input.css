@@ -1,46 +1,45 @@
-.anura-input {
-    width: 100%;
+::ng-deep .bizy-input {
+    --color: var(--bizy-input-color) !important;
+    --background: var(--bizy-input-background-color) !important;
+    --placeholder-color: var(--bizy-input-placeholder-color) !important;
+    --placeholder-opacity: 0.8 !important;
+    --padding-start: 0.3rem !important;
+    --padding-end: 0.3rem !important;
+    --inner-padding-end: 0 !important;
+    --border-radius: 0.3rem 0.3rem 0 0 !important;
+    border-bottom: 0.1rem solid var(--bizy-input-color);
 }
 
-.anura-input__title {
-    color: var(--anura-input-title-color);
-    font-weight: bold;
+::ng-deep .bizy-input__errors {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.3rem;
 }
 
-::ng-deep .anura-input .mat-mdc-input-element {
-    min-height: 2rem;
+::ng-deep .bizy-input--error {
+    border-bottom-color: var(--bizy-input-error-color) !important;
 }
 
-::ng-deep .anura-input .mat-mdc-text-field-wrapper {
-    background-color: var(--anura-input-background-color) !important;
-    padding: 0.25rem 0.5rem 0 0.5rem !important;
+::ng-deep .bizy-input--error [slot=label] {
+    color: var(--bizy-input-error-color) !important;
 }
 
-::ng-deep .anura-input .mat-mdc-form-field-subscript-wrapper {
-    height: 0 !important;
+::ng-deep .bizy-input [slot=label] {
+    color: var(--bizy-input-label-color);
 }
 
-.anura-input__prefix {
-    position: absolute;
-    top: 50%;
-    left: 0;
+::ng-deep .bizy-input [slot=start] {
+    margin-inline-start: 0 !important;
+    margin-inline-end: 0 !important;
 }
 
-.anura-input__prefix + .anura-input__input {
-    padding-left: 0.7rem !important;
+::ng-deep .bizy-input [slot=end] {
+    margin-inline-start: 0 !important;
+    margin-inline-end: 0 !important;
 }
 
-.anura-input__suffix {
-    position: absolute;
-    top: 50%;
-    right: 0.2rem;
-}
-
-.anura-input__suffix + .anura-input__input {
-    padding-right: 0.7rem !important;
-}
-
-.anura-input__date-input {
-    pointer-events: none;
-    cursor: default;
+::ng-deep .input-clear-icon.sc-ion-input-ios {
+    width: auto !important;
+    height: auto !important;
 }

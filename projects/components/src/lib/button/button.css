@@ -1,0 +1,118 @@
+.bizy-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    column-gap: 0.5rem;
+    width: max-content;
+    padding: 0.6rem 0.8rem;
+    border-radius: 0.3rem;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.bizy-button:hover {
+    filter: brightness(95%);
+}
+
+.bizy-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: inherit;
+}
+
+.bizy-button__content {
+    width: 100%;
+    display: flex;
+    column-gap: 0.3rem;
+    pointer-events: none;
+}
+
+.bizy-button--opened {
+    transition: transform 0.2s;
+    transform: rotate(180deg);
+}
+
+.bizy-button--closed {
+    transition: transform 0.2s;
+}
+
+.bizy-button__option {
+    border: none;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 0.5rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    color: var(--bizy-button-option-color) !important;
+    background-color: var(--bizy-button-option-background-color) !important;
+}
+
+.bizy-button__option__content {
+    pointer-events: none;
+}
+
+.bizy-button__svg {
+    height: 1rem;
+}
+
+.bizy-button__option__label {
+    color: var(--bizy-button-option-color) !important;
+}
+
+.bizy-button__option:hover:not(.bizy-button__option--selected)  {
+    color: var(--bizy-button-option-hover-color) !important;
+    background-color: var(--bizy-button-option-hover-background-color) !important;
+}
+
+.bizy-button__option:hover:not(.bizy-button__option--selected)  .bizy-button__option__label {
+    color: var(--bizy-button-option-hover-color) !important;
+}
+
+.bizy-button__option--opened:not(.bizy-button__option--selected) {
+    color: var(--bizy-button-option-hover-color) !important;
+    background-color: var(--bizy-button-option-hover-background-color) !important;
+}
+
+.bizy-button__option--opened:not(.bizy-button__option--selected)  .bizy-button__option__label {
+    color: var(--bizy-button-option-hover-color) !important;
+}
+
+.bizy-button__option--selected {
+    color: var(--bizy-button-option-selected-color) !important;
+    background-color: var(--bizy-button-option-selected-background-color) !important;
+}
+
+.bizy-button__option--selected .bizy-button__option__label {
+    color: var(--bizy-button-option-selected-color) !important;
+}
+
+.bizy-button__option-menu {
+    background-color: var(--bizy-button-option-hover-background-color) !important;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.3rem;
+    align-items: flex-start;
+    width: 100%;
+    min-width: fit-content;
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    margin-top: 0.2rem;
+}
+
+.bizy-button__option-menu .bizy-button__option {
+    width: 100% !important;
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+
+.bizy-button__option-menu .bizy-button__option:not(.bizy-button__option--selected) {
+    color: var(--bizy-button-option-hover-color) !important;
+    background-color: transparent !important;
+}
+
+.bizy-button__option-menu .bizy-button__option:not(.bizy-button__option--selected) .bizy-button__option__label {
+    color: var(--bizy-button-option-hover-color) !important;
+}

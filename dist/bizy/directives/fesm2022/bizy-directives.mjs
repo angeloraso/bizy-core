@@ -1,6 +1,6 @@
 import * as i0 from '@angular/core';
 import { Directive, Input, HostListener, ElementRef, Renderer2, Inject, Host, EventEmitter, Output, NgModule } from '@angular/core';
-import { interval, Subject, takeUntil, take, fromEvent, merge, timer, of } from 'rxjs';
+import { interval, Subject, takeUntil, take, fromEvent, timer, of, merge } from 'rxjs';
 import * as i1 from '@angular/common';
 import { filter, map, switchMap } from 'rxjs/operators';
 
@@ -32,10 +32,10 @@ class OnlyNumbersDirective {
             e.preventDefault();
         }
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: OnlyNumbersDirective, deps: [], target: i0.ɵɵFactoryTarget.Directive });
-    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "16.2.11", type: OnlyNumbersDirective, selector: "[bizyOnlyNumbers]", inputs: { onlyNumbers: ["bizyOnlyNumbers", "onlyNumbers"] }, host: { listeners: { "keydown": "onKeyDown($event)" } }, ngImport: i0 });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: OnlyNumbersDirective, deps: [], target: i0.ɵɵFactoryTarget.Directive });
+    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "17.0.9", type: OnlyNumbersDirective, selector: "[bizyOnlyNumbers]", inputs: { onlyNumbers: ["bizyOnlyNumbers", "onlyNumbers"] }, host: { listeners: { "keydown": "onKeyDown($event)" } }, ngImport: i0 });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: OnlyNumbersDirective, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: OnlyNumbersDirective, decorators: [{
             type: Directive,
             args: [{
                     selector: '[bizyOnlyNumbers]'
@@ -100,21 +100,21 @@ class LoadingDirective {
             }
         });
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: LoadingDirective, deps: [{ token: ElementRef }, { token: Renderer2 }], target: i0.ɵɵFactoryTarget.Directive });
-    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "16.2.11", type: LoadingDirective, selector: "[bizyLoading]", inputs: { bizyLoading: "bizyLoading", type: "type" }, ngImport: i0 });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: LoadingDirective, deps: [{ token: ElementRef }, { token: Renderer2 }], target: i0.ɵɵFactoryTarget.Directive });
+    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "17.0.9", type: LoadingDirective, selector: "[bizyLoading]", inputs: { bizyLoading: "bizyLoading", type: "type" }, ngImport: i0 });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: LoadingDirective, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: LoadingDirective, decorators: [{
             type: Directive,
             args: [{
                     selector: '[bizyLoading]',
                 }]
-        }], ctorParameters: function () { return [{ type: i0.ElementRef, decorators: [{
+        }], ctorParameters: () => [{ type: i0.ElementRef, decorators: [{
                     type: Inject,
                     args: [ElementRef]
                 }] }, { type: i0.Renderer2, decorators: [{
                     type: Inject,
                     args: [Renderer2]
-                }] }]; }, propDecorators: { bizyLoading: [{
+                }] }], propDecorators: { bizyLoading: [{
                 type: Input
             }], type: [{
                 type: Input
@@ -141,10 +141,10 @@ class OnlyPhoneDigitsDirective {
             e.preventDefault();
         }
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: OnlyPhoneDigitsDirective, deps: [], target: i0.ɵɵFactoryTarget.Directive });
-    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "16.2.11", type: OnlyPhoneDigitsDirective, selector: "[bizyOnlyPhoneDigits]", inputs: { onlyPhoneNumbers: ["bizyOnlyPhoneDigits", "onlyPhoneNumbers"] }, host: { listeners: { "keydown": "onKeyDown($event)" } }, ngImport: i0 });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: OnlyPhoneDigitsDirective, deps: [], target: i0.ɵɵFactoryTarget.Directive });
+    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "17.0.9", type: OnlyPhoneDigitsDirective, selector: "[bizyOnlyPhoneDigits]", inputs: { onlyPhoneNumbers: ["bizyOnlyPhoneDigits", "onlyPhoneNumbers"] }, host: { listeners: { "keydown": "onKeyDown($event)" } }, ngImport: i0 });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: OnlyPhoneDigitsDirective, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: OnlyPhoneDigitsDirective, decorators: [{
             type: Directive,
             args: [{
                     selector: '[bizyOnlyPhoneDigits]'
@@ -163,17 +163,17 @@ class NgForTrackByIdDirective {
         this.ngFor = ngFor;
         this.ngFor.ngForTrackBy = (_index, item) => item.id;
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: NgForTrackByIdDirective, deps: [{ token: i1.NgForOf, host: true }], target: i0.ɵɵFactoryTarget.Directive });
-    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "16.2.11", type: NgForTrackByIdDirective, selector: "[ngForBizyTrackById]", ngImport: i0 });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: NgForTrackByIdDirective, deps: [{ token: i1.NgForOf, host: true }], target: i0.ɵɵFactoryTarget.Directive });
+    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "17.0.9", type: NgForTrackByIdDirective, selector: "[ngForBizyTrackById]", ngImport: i0 });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: NgForTrackByIdDirective, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: NgForTrackByIdDirective, decorators: [{
             type: Directive,
             args: [{
                     selector: '[ngForBizyTrackById]'
                 }]
-        }], ctorParameters: function () { return [{ type: i1.NgForOf, decorators: [{
+        }], ctorParameters: () => [{ type: i1.NgForOf, decorators: [{
                     type: Host
-                }] }]; } });
+                }] }] });
 
 class LongPressDirective {
     elementRef;
@@ -199,18 +199,18 @@ class LongPressDirective {
             this.#event.unsubscribe();
         }
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: LongPressDirective, deps: [{ token: ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
-    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "16.2.11", type: LongPressDirective, selector: "[bizyLongPress]", inputs: { threshold: "threshold" }, outputs: { press: "press" }, ngImport: i0 });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: LongPressDirective, deps: [{ token: ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
+    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "17.0.9", type: LongPressDirective, selector: "[bizyLongPress]", inputs: { threshold: "threshold" }, outputs: { press: "press" }, ngImport: i0 });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: LongPressDirective, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: LongPressDirective, decorators: [{
             type: Directive,
             args: [{
                     selector: '[bizyLongPress]',
                 }]
-        }], ctorParameters: function () { return [{ type: i0.ElementRef, decorators: [{
+        }], ctorParameters: () => [{ type: i0.ElementRef, decorators: [{
                     type: Inject,
                     args: [ElementRef]
-                }] }]; }, propDecorators: { threshold: [{
+                }] }], propDecorators: { threshold: [{
                 type: Input
             }], press: [{
                 type: Output
@@ -224,8 +224,8 @@ const DIRECTIVES = [
     NgForTrackByIdDirective,
 ];
 class DirectivesModule {
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: DirectivesModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.11", ngImport: i0, type: DirectivesModule, declarations: [LoadingDirective,
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: DirectivesModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "17.0.9", ngImport: i0, type: DirectivesModule, declarations: [LoadingDirective,
             LongPressDirective,
             OnlyNumbersDirective,
             OnlyPhoneDigitsDirective,
@@ -234,9 +234,9 @@ class DirectivesModule {
             OnlyNumbersDirective,
             OnlyPhoneDigitsDirective,
             NgForTrackByIdDirective] });
-    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: DirectivesModule });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: DirectivesModule });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: DirectivesModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: DirectivesModule, decorators: [{
             type: NgModule,
             args: [{
                     declarations: DIRECTIVES,

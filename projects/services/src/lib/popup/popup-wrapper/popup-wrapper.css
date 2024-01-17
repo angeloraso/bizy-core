@@ -1,0 +1,33 @@
+.bizy-popup-wrapper {
+    position: relative;
+    background-color: var(--bizy-popup-background-color);
+    padding: 1rem ;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+    width: min(80vw, 26rem);
+    min-height: 16rem;
+    height: fit-content;
+}
+
+.bizy-popup-wrapper__close-button {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    transition: color 0.3s;
+}
+
+.bizy-popup-wrapper__close-button #bizy-popup-wrapper-close-svg {
+    height: 1rem;
+}
+
+.bizy-popup-wrapper__close-button #bizy-popup-wrapper-close-svg-content {
+    fill: var(--bizy-popup-close-button-color);
+}
+
+.bizy-popup-wrapper__close-button:hover #bizy-popup-wrapper-close-svg-content {
+    fill: var(--bizy-popup-close-button-hover-color);
+}

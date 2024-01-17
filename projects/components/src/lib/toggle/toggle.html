@@ -1,0 +1,19 @@
+<div class="bizy-toggle">
+
+    <label class="bizy-toggle__label" for="{{id}}" *ngIf="labelPosition === 'before'">{{label}}</label>
+
+    <div class="bizy-toggle__slide">
+        <input 
+            #bizyToggleInput
+            id="{{id}}"
+            type="checkbox"
+            (change)="onSelect.emit(!_checked)"
+            class="bizy-toggle__slide__checkbox"
+            [ngClass]="{'bizy-toggle__slide__checkbox--disabled': disabled}">
+        <div class="bizy-toggle__slide__knobs"></div>
+        <div class="bizy-toggle__slide__layer"></div>
+    </div>
+
+    <label class="bizy-toggle__label" for="{{id}}" *ngIf="labelPosition === 'after'">{{label}}</label>
+    
+</div>

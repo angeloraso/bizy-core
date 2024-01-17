@@ -1,13 +1,12 @@
 import { Subject } from 'rxjs';
-import { AfterViewInit, ChangeDetectorRef, OnInit } from '@angular/core';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { AfterViewInit, ChangeDetectorRef, OnInit, ElementRef } from '@angular/core';
 import { VirtualScrollNgForDirective } from './virtual-scroll-ng-for.directive';
 import * as i0 from "@angular/core";
 export declare class VirtualScrollComponent implements OnInit, AfterViewInit {
     #private;
+    private elementRef;
     private ref;
     virtualFor: VirtualScrollNgForDirective;
-    virtualScroll: CdkVirtualScrollViewport;
     itemMinHeight: number | string;
     itemMinWidth: number | string;
     emptyText: string;
@@ -20,7 +19,7 @@ export declare class VirtualScrollComponent implements OnInit, AfterViewInit {
     notifier$: Subject<void>;
     private _resizeObserver;
     private _subscription;
-    constructor(ref: ChangeDetectorRef);
+    constructor(elementRef: ElementRef, ref: ChangeDetectorRef);
     ngOnInit(): void;
     ngAfterViewInit(): void;
     fillVirtualScroll: () => void;

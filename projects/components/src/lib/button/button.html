@@ -1,0 +1,101 @@
+<button 
+    [type]="type"
+    id="{{id}}"
+    [disabled]="disabled"
+    class="bizy-button {{customClass}}"
+    [ngClass]="{'bizy-toolbar__option--opened': opened, 'bizy-toolbar__option--selected': selected}"
+    (click)="onSelect.emit($event); selectButton($event)"
+    (keyup.enter)="onSelect.emit($event); selectButton($event)"
+    cdkOverlayOrigin 
+    #bizyButtonTrigger="cdkOverlayOrigin">
+    <span class="bizy-button__content">
+        <ng-content></ng-content>
+    </span>
+
+    <svg 
+        *ngIf="options && options.length > 0" 
+        class="bizy-button__option__content bizy-button__svg"
+        [ngClass]="{'bizy-button--opened': opened, 'bizy-button--closed': !opened}"
+        viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <path d="M33.17 17.17l-9.17 9.17-9.17-9.17-2.83 2.83 12 12 12-12z"/>
+        <path d="M0 0h48v48h-48z" fill="none"/>
+    </svg>
+
+</button>
+
+<ng-template
+    cdkConnectedOverlay
+    [cdkConnectedOverlayMinWidth]="_menuWidth"
+    (overlayOutsideClick)="closeAll();"
+    [cdkConnectedOverlayOrigin]="bizyButtonTrigger"
+    [cdkConnectedOverlayOpen]="opened">
+    <span class="bizy-button__option-menu">
+
+        <ng-container *ngFor="let option of options">
+
+            <button 
+                cdkOverlayOrigin #subOptionTrigger="cdkOverlayOrigin"
+                type="button"
+                class="bizy-button__option"
+                [ngClass]="{'bizy-button__option--opened': option.opened, 'bizy-button__option--selected': option.selected}"
+                (click)="selectOption(option, $event)"
+                (keyup.enter)="selectOption(option, $event)">
+                <span class="bizy-button__content">
+
+                    <div 
+                        *ngIf="option.icon"
+                        class="bizy-button__option__content"
+                        [customClass]="option.customClass"
+                        [innerHTML]="option.icon">
+                    </div>
+
+                    <h4 *ngIf="option.label" class="bizy-button__option__content bizy-button__option__label">{{option.label}}</h4>
+                </span>
+
+                <svg 
+                    *ngIf="option.options && option.options.length > 0"
+                    class="bizy-button__option__content bizy-button__svg"
+                    [ngClass]="{'bizy-button--opened': option.opened, 'bizy-button--closed': !option.opened}"
+                    viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M33.17 17.17l-9.17 9.17-9.17-9.17-2.83 2.83 12 12 12-12z"/>
+                    <path d="M0 0h48v48h-48z" fill="none"/>
+                </svg>
+
+            </button>
+    
+            <ng-template
+                cdkConnectedOverlay
+                [cdkConnectedOverlayMinWidth]="option._menuWidth"
+                [cdkConnectedOverlayOrigin]="subOptionTrigger"
+                [cdkConnectedOverlayOpen]="option.opened">
+                <span class="bizy-button__option-menu">
+    
+                    <ng-container *ngFor="let _option of option.options">
+
+                        <button 
+                            type="button"
+                            class="bizy-button__option"
+                            (click)="selectOption(_option, $event)"
+                            (keyup.enter)="selectOption(_option, $event)">
+                            <span class="bizy-button__content">
+
+                                <div 
+                                    *ngIf="_option.icon"
+                                    class="bizy-button__option__content"
+                                    [customClass]="_option.customClass"
+                                    [innerHTML]="_option.icon">
+                                </div>
+
+                                <h4 *ngIf="_option.label" class="bizy-button__option__content bizy-button__option__label">{{_option.label}}</h4>
+                            </span>
+                        </button>
+                
+                    </ng-container>
+                    
+                </span>
+            </ng-template>
+    
+        </ng-container>
+
+    </span>
+</ng-template>

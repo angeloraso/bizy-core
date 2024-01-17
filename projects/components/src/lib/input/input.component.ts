@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { IonInput } from '@ionic/angular';
 
 @Component({
   selector: 'bizy-input',
@@ -8,18 +9,46 @@ import { FormControl } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InputComponent {
-  @Input() title: string = '';
-  @Input() prefix: string = '';
-  @Input() suffix: string = '';
-  @Input() type: string = 'text';
-  @Input() control: FormControl<string | number>;
+  @ViewChild('bizyInput') bizyInput: IonInput;
+  @Input() id: string = `bizy-input-${Math.random()}`;
+  @Input() disabled: boolean = false;
+  @Input() readonly: boolean = false;
+  @Input() multiple: boolean = false;
+  @Input() clear: boolean = true;
+  @Input() autoFocus: boolean = true;
+  @Input() autoCapitalize: boolean = false;
+  @Input() autoCorrect: boolean = false;
+  @Input() browserAutoComplete: boolean = true;
+  @Input() type: 'text' | 'date' | 'password' | 'email' | 'number' | 'search' | 'tel' = 'text';
+  @Input() label: string = '';
+  @Input() max: number;
+  @Input() maxLength: number;
+  @Input() min: number;
+  @Input() minLength: number;
+  @Input() control: FormControl;
+  @Input() placeholder: string = '';
+  @Input() customClass: string;
+  @Output() onFocus = new EventEmitter<void>();
 
 
-  updateDate(dateISOString: string) {
-    this.control.setValue(dateISOString);
+  onInput(event: {target: {value: string | number}}) {
+    if (!event || !event.target) {
+      return;
+    }
+
+    this.control.markAsTouched();
+    this.control.setValue(event.target.value ?? null);
+  }
+
+  onBlur() {
+    this.control.markAsTouched();
   }
 
   focus() {
-    
+    if (!this.bizyInput || !this.bizyInput.setFocus) {
+      return;
+    }
+
+    this.bizyInput.setFocus();
   }
 }

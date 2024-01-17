@@ -1,8 +1,132 @@
 import * as i0 from '@angular/core';
-import { Injectable, Inject } from '@angular/core';
-import * as i1 from '@angular/router';
+import { ChangeDetectorRef, ViewContainerRef, Component, ChangeDetectionStrategy, Inject, ViewChild, Injectable, NgModule } from '@angular/core';
+import { Subject, take } from 'rxjs';
+import * as i1 from '@angular/cdk/dialog';
+import { DIALOG_DATA, DialogRef, Dialog, DialogModule } from '@angular/cdk/dialog';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import * as i1$1 from '@angular/router';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { filter, map, distinctUntilChanged } from 'rxjs/operators';
+
+class PopupWrapperComponent {
+    component;
+    dialogRef;
+    ref;
+    dynamicComponentContainer;
+    constructor(component, dialogRef, ref) {
+        this.component = component;
+        this.dialogRef = dialogRef;
+        this.ref = ref;
+    }
+    ngAfterViewInit() {
+        this.loadDynamicComponent();
+    }
+    loadDynamicComponent() {
+        if (this.component) {
+            this.dynamicComponentContainer.clear();
+            this.dynamicComponentContainer.createComponent(this.component);
+            this.ref.detectChanges();
+        }
+    }
+    close() {
+        this.dialogRef.close();
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: PopupWrapperComponent, deps: [{ token: DIALOG_DATA }, { token: DialogRef }, { token: ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "17.0.9", type: PopupWrapperComponent, selector: "bizy-popup-wrapper", viewQueries: [{ propertyName: "dynamicComponentContainer", first: true, predicate: ["dynamicComponentContainer"], descendants: true, read: ViewContainerRef }], ngImport: i0, template: "<div class=\"bizy-popup-wrapper\">\n\n    <button (click)=\"close()\" (keyup.enter)=\"close()\" class=\"bizy-popup-wrapper__close-button\">\n\n        <svg \n            data-name=\"Cancel button\"\n            id=\"bizy-popup-wrapper-close-svg\" \n            viewBox=\"0 0 200 200\"\n            xmlns=\"http://www.w3.org/2000/svg\">\n            <path id=\"bizy-popup-wrapper-close-svg-content\" d=\"M114,100l49-49a9.9,9.9,0,0,0-14-14L100,86,51,37A9.9,9.9,0,0,0,37,51l49,49L37,149a9.9,9.9,0,0,0,14,14l49-49,49,49a9.9,9.9,0,0,0,14-14Z\"/>\n        </svg>\n\n    </button>\n\n    <ng-container #dynamicComponentContainer></ng-container>\n\n</div>", styles: [".bizy-popup-wrapper{position:relative;background-color:var(--bizy-popup-background-color);padding:1rem;display:flex;flex-direction:column;row-gap:1rem;width:min(80vw,26rem);min-height:16rem;height:-moz-fit-content;height:fit-content}.bizy-popup-wrapper__close-button{position:absolute;right:.5rem;top:.5rem;border:none;cursor:pointer;background-color:transparent;transition:color .3s}.bizy-popup-wrapper__close-button #bizy-popup-wrapper-close-svg{height:1rem}.bizy-popup-wrapper__close-button #bizy-popup-wrapper-close-svg-content{fill:var(--bizy-popup-close-button-color)}.bizy-popup-wrapper__close-button:hover #bizy-popup-wrapper-close-svg-content{fill:var(--bizy-popup-close-button-hover-color)}\n"], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: PopupWrapperComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-popup-wrapper', changeDetection: ChangeDetectionStrategy.OnPush, template: "<div class=\"bizy-popup-wrapper\">\n\n    <button (click)=\"close()\" (keyup.enter)=\"close()\" class=\"bizy-popup-wrapper__close-button\">\n\n        <svg \n            data-name=\"Cancel button\"\n            id=\"bizy-popup-wrapper-close-svg\" \n            viewBox=\"0 0 200 200\"\n            xmlns=\"http://www.w3.org/2000/svg\">\n            <path id=\"bizy-popup-wrapper-close-svg-content\" d=\"M114,100l49-49a9.9,9.9,0,0,0-14-14L100,86,51,37A9.9,9.9,0,0,0,37,51l49,49L37,149a9.9,9.9,0,0,0,14,14l49-49,49,49a9.9,9.9,0,0,0,14-14Z\"/>\n        </svg>\n\n    </button>\n\n    <ng-container #dynamicComponentContainer></ng-container>\n\n</div>", styles: [".bizy-popup-wrapper{position:relative;background-color:var(--bizy-popup-background-color);padding:1rem;display:flex;flex-direction:column;row-gap:1rem;width:min(80vw,26rem);min-height:16rem;height:-moz-fit-content;height:fit-content}.bizy-popup-wrapper__close-button{position:absolute;right:.5rem;top:.5rem;border:none;cursor:pointer;background-color:transparent;transition:color .3s}.bizy-popup-wrapper__close-button #bizy-popup-wrapper-close-svg{height:1rem}.bizy-popup-wrapper__close-button #bizy-popup-wrapper-close-svg-content{fill:var(--bizy-popup-close-button-color)}.bizy-popup-wrapper__close-button:hover #bizy-popup-wrapper-close-svg-content{fill:var(--bizy-popup-close-button-hover-color)}\n"] }]
+        }], ctorParameters: () => [{ type: undefined, decorators: [{
+                    type: Inject,
+                    args: [DIALOG_DATA]
+                }] }, { type: i1.DialogRef, decorators: [{
+                    type: Inject,
+                    args: [DialogRef]
+                }] }, { type: i0.ChangeDetectorRef, decorators: [{
+                    type: Inject,
+                    args: [ChangeDetectorRef]
+                }] }], propDecorators: { dynamicComponentContainer: [{
+                type: ViewChild,
+                args: ['dynamicComponentContainer', { read: ViewContainerRef }]
+            }] } });
+
+class PopupService {
+    dialog;
+    #dialogs = new Set();
+    closed$ = new Subject();
+    #data;
+    constructor(dialog) {
+        this.dialog = dialog;
+    }
+    open(data) {
+        this.#data = data.data;
+        const dialogRef = this.dialog.open(PopupWrapperComponent, {
+            id: data.id,
+            data: data.component,
+            autoFocus: true,
+            hasBackdrop: true,
+            disableClose: data.disableClose ?? false,
+            panelClass: ['bizy-popup', data.customClass]
+        });
+        this.#dialogs.add(dialogRef);
+        dialogRef.closed.pipe(take(1)).subscribe(result => {
+            this.#dialogs.delete(dialogRef);
+            this.closed$.next(result);
+        });
+    }
+    getData() {
+        return this.#data;
+    }
+    close(data) {
+        let dialogRef;
+        if (data && data.id) {
+            dialogRef = Array.from(this.#dialogs).find(_dialogRef => _dialogRef.id === data.id);
+        }
+        else {
+            dialogRef = Array.from(this.#dialogs).pop();
+        }
+        if (dialogRef) {
+            dialogRef.close(data ? data.data : null);
+            this.#dialogs.delete(dialogRef);
+        }
+    }
+    closeAll() {
+        Array.from(this.#dialogs).forEach(_dialogRef => {
+            _dialogRef.close();
+        });
+        this.#dialogs.clear();
+    }
+    openedPopups() {
+        return this.#dialogs.size;
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: PopupService, deps: [{ token: Dialog }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: PopupService });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: PopupService, decorators: [{
+            type: Injectable
+        }], ctorParameters: () => [{ type: i1.Dialog, decorators: [{
+                    type: Inject,
+                    args: [Dialog]
+                }] }] });
+
+const COMPONENTS = [
+    PopupWrapperComponent,
+];
+class PopupModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: PopupModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "17.0.9", ngImport: i0, type: PopupModule, declarations: [PopupWrapperComponent], imports: [CommonModule, FormsModule, DialogModule] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: PopupModule, providers: [PopupService], imports: [CommonModule, FormsModule, DialogModule] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: PopupModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: [CommonModule, FormsModule, DialogModule],
+                    declarations: COMPONENTS,
+                    providers: [PopupService]
+                }]
+        }] });
 
 /**
  * Copyright 2020 Google LLC
@@ -230,10 +354,10 @@ class UserAgentService {
             });
         });
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: UserAgentService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: UserAgentService });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: UserAgentService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: UserAgentService });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: UserAgentService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: UserAgentService, decorators: [{
             type: Injectable
         }] });
 
@@ -286,10 +410,10 @@ class ValidatorService {
             return !control.value || (control.value && this.isNumber(control.value)) ? null : { bizyNumber: true };
         };
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: ValidatorService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: ValidatorService });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: ValidatorService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: ValidatorService });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: ValidatorService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: ValidatorService, decorators: [{
             type: Injectable
         }] });
 
@@ -317,10 +441,10 @@ class StorageService {
     clear() {
         localStorage.clear();
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: StorageService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: StorageService });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: StorageService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: StorageService });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: StorageService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: StorageService, decorators: [{
             type: Injectable
         }] });
 
@@ -411,10 +535,10 @@ class LogService {
         const log = `(${data.title}) ${data.fileName} - ${data.functionName}`;
         this.#log(log, data.color, data.param);
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: LogService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: LogService });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: LogService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: LogService });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: LogService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: LogService, decorators: [{
             type: Injectable
         }] });
 
@@ -489,19 +613,19 @@ class RouterService {
         const queryParams = str.length > 0 ? `?${str.join('&')}` : '';
         return queryParams;
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: RouterService, deps: [{ token: Router }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: RouterService });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: RouterService, deps: [{ token: Router }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: RouterService });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.11", ngImport: i0, type: RouterService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: RouterService, decorators: [{
             type: Injectable
-        }], ctorParameters: function () { return [{ type: i1.Router, decorators: [{
+        }], ctorParameters: () => [{ type: i1$1.Router, decorators: [{
                     type: Inject,
                     args: [Router]
-                }] }]; } });
+                }] }] });
 
 /**
  * Generated bundle index. Do not edit.
  */
 
-export { LogService, RouterService, StorageService, UserAgentService, ValidatorService };
+export { LogService, PopupModule, PopupService, RouterService, StorageService, UserAgentService, ValidatorService };
 //# sourceMappingURL=bizy-services.mjs.map

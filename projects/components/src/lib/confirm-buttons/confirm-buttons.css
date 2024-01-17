@@ -1,0 +1,45 @@
+.bizy-confirm-buttons {
+  background-color: transparent;
+  height: auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  column-gap: 1rem;
+  width: 100%;
+}
+
+.bizy-confirm-buttons--fixed {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+::ng-deep .bizy-confirm-buttons__confirm-button {
+  background-color: var(--bizy-confirm-buttons-confirm-background-color) !important;
+}
+
+::ng-deep .bizy-confirm-buttons__cancel-button {
+  background-color: var(--bizy-confirm-buttons-cancel-background-color) !important;
+}
+
+.bizy-confirm-buttons__svg {
+  height: 1rem;
+}
+
+.bizy-confirm-buttons__cancel-button__svg__content {
+  fill: var(--bizy-confirm-buttons-cancel-color);
+}
+
+.bizy-confirm-buttons__cancel-button__label {
+  color: var(--bizy-confirm-buttons-cancel-color);
+}
+
+.bizy-confirm-buttons__confirm-button__svg__content {
+  fill: var(--bizy-confirm-buttons-confirm-color);
+}
+
+.bizy-confirm-buttons__confirm-button__label {
+  color: var(--bizy-confirm-buttons-confirm-color);
+}

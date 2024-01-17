@@ -1,36 +1,35 @@
-<input >
+<ion-input 
+    #bizyInput
+    class="bizy-input {{customClass}}"
+    [ngClass]="{'bizy-input--error': control && control.touched && control.invalid}"
+    [type]="type"
+    [inputmode]="type"
+    id="{{id}}"
+    [disabled]="disabled"
+    [readonly]="readonly"
+    [value]="control?.value"
+    [spellcheck]="true"
+    [autocapitalize]="autoCapitalize ? 'on' : 'off'"
+    [autocorrect]="autoCorrect ? 'on' : 'off'"
+    [autocomplete]="browserAutoComplete ? 'on' : 'off'"
+    [autofocus]="autoFocus"
+    fill="solid"
+    [max]="max"
+    [maxlength]="maxLength"
+    [min]="min"
+    [minlength]="minLength"
+    [debounce]="300"
+    (ionBlur)="onBlur()"
+    (ionInput)="onInput($event)"
+    [clearInput]="clear"
+    [placeholder]="placeholder"
+    labelPlacement="stacked">
+    <div slot="start"><ng-content select="[input-start]"></ng-content></div>
+    <div slot="label">{{label}} <ng-content select="[input-label]"></ng-content></div>
+    <div slot="end"><ng-content select="[input-end]"></ng-content></div>
+</ion-input>
 
-<mat-form-field appearance="fill" class="anura-input" [hideRequiredMarker]="true" *ngIf="type !== 'date'">
-    <span class="anura-input__title">
-        <mat-label>{{title}}</mat-label>
-        <anura-help *ngIf="helpText || helpHtml" helpText="{{helpText}}" [helpHtml]="helpHtml"></anura-help>
-    </span>
-    <span *ngIf="prefix" class="anura-input__prefix">{{prefix}}</span>
-    <input 
-        [type]="type"
-        matInput
-        class="anura-input__input"
-        [anuraAutoFocus]="autoFocus"
-        [anuraOnlyNumbers]="type === 'number'"
-        [anuraOnlyPhoneDigits]="type === 'phone'"
-        [formControl]="control">
+<span class="bizy-input__errors" *ngIf="control && control.touched && control.invalid">
+    <ng-content select="[input-error]"></ng-content>
+</span>
 
-    <span *ngIf="suffix" class="anura-input__suffix">{{suffix}}</span>
-</mat-form-field>
-
-<mat-form-field appearance="fill" class="anura-input" [hideRequiredMarker]="true" *ngIf="type === 'date'">
-    <span class="anura-input__title">
-        <mat-label>{{title}}</mat-label>
-        <anura-help *ngIf="helpText || helpHtml" helpText="{{helpText}}" [helpHtml]="helpHtml"></anura-help>
-    </span>
-
-    <input 
-        matInput 
-        class="anura-input__input anura-input__date-input"
-        readonly="readonly"
-        (dateChange)="updateDate($event.value)"
-        [matDatepicker]="anuraDateInput"
-        [formControl]="control">
-    <mat-datepicker-toggle [disabled]="control.disabled" matIconSuffix [for]="anuraDateInput"></mat-datepicker-toggle>
-    <mat-datepicker #anuraDateInput></mat-datepicker>
-</mat-form-field>
