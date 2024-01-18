@@ -1,5 +1,6 @@
 <ion-input 
     #bizyInput
+    *ngIf="type !== 'date' && type !== 'date-time' && type !== 'time' && type !== 'month-year' && type !== 'year' && type !== 'month' && type !== 'search'"
     class="bizy-input {{customClass}}"
     [ngClass]="{'bizy-input--error': control && control.touched && control.invalid}"
     [type]="type"
@@ -29,7 +30,56 @@
     <div slot="end"><ng-content select="[input-end]"></ng-content></div>
 </ion-input>
 
+<ion-input 
+    *ngIf="type === 'date' || type === 'date-time' || type === 'time' || type === 'month-year' || type === 'year' || type === 'month'"
+    class="bizy-input {{customClass}}"
+    [ngClass]="{'bizy-input--error': control && control.touched && control.invalid}"
+    type="text"
+    id="{{id}}"
+    [disabled]="disabled"
+    [readonly]="true"
+    [value]="control?.value | date : (type === 'date' ? 'dd/MM/yyyy' : type === 'date-time' ? 'dd/MM/yyyy hh:mm' : type === 'time' ? 'hh:mm' : type === 'month-year' ? 'MMMM yyyy' : type === 'year' ? 'yyyy' : 'MMMM')"
+    fill="solid"
+    (ionBlur)="onBlur()"
+    [clearInput]="clear"
+    [placeholder]="placeholder"
+    labelPlacement="stacked">
+    <div slot="start"><ng-content select="[input-start]"></ng-content></div>
+    <div slot="label">{{label}} <ng-content select="[input-label]"></ng-content></div>
+    <div slot="end"><ng-content select="[input-end]"></ng-content></div>
+</ion-input>
+
 <span class="bizy-input__errors" *ngIf="control && control.touched && control.invalid">
     <ng-content select="[input-error]"></ng-content>
 </span>
+
+<ion-modal 
+    #bizyInputDateTimeModal
+    trigger="{{id}}"
+    class="bizy-date-input"
+    *ngIf="type === 'date' || type === 'date-time' || type === 'time' || type === 'month-year' || type === 'year' || type === 'month'">
+    <ng-template>
+
+        <ion-datetime 
+            #bizyInputDateTime
+            [presentation]="type" 
+            [firstDayOfWeek]="1"
+            [min]="min"
+            [max]="max"
+            locale="es-AR"
+            hourCycle="h24"
+            [showDefaultButtons]="true"
+            [cancelText]="cancelLabel"
+            [doneText]="confirmLabel"
+            [value]="control?.value">
+
+            <bizy-confirm-buttons
+                slot="buttons"
+                (cancel)="cancel(bizyInputDateTimeModal, bizyInputDateTime)"
+                (confirm)="confirm(bizyInputDateTimeModal, bizyInputDateTime)">
+            </bizy-confirm-buttons>
+        </ion-datetime>
+
+    </ng-template>
+</ion-modal>
 

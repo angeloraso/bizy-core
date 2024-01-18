@@ -43,3 +43,13 @@
     width: auto !important;
     height: auto !important;
 }
+
+::ng-deep .bizy-date-input {
+    --width: auto !important;
+    --height: auto !important;
+}
+
+::ng-deep ion-datetime {
+    --ion-color-base: var(--bizy-input-date-color);
+    --ion-color-contrast: var(--bizy-input-date-contrast-color) !important;
+}

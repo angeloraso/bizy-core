@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { InputComponent } from './input.component';
 import { IonicModule } from '@ionic/angular';
 import { ErrorModule } from '../error';
+import { ConfirmButtonsModule } from '../confirm-buttons';
 
 const COMPONENTS = [InputComponent];
 
@@ -12,7 +13,8 @@ const COMPONENTS = [InputComponent];
     CommonModule,
     FormsModule,
     IonicModule,
-    ErrorModule
+    ErrorModule,
+    ConfirmButtonsModule
   ],
   declarations: COMPONENTS,
   exports: COMPONENTS,

@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Inject, Input, Output, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { IonInput } from '@ionic/angular';
+import { IonDatetime, IonInput } from '@ionic/angular';
+import { IonModal } from '@ionic/angular/common';
 
 @Component({
   selector: 'bizy-input',
@@ -19,7 +20,7 @@ export class InputComponent {
   @Input() autoCapitalize: boolean = false;
   @Input() autoCorrect: boolean = false;
   @Input() browserAutoComplete: boolean = true;
-  @Input() type: 'text' | 'date' | 'password' | 'email' | 'number' | 'search' | 'tel' = 'text';
+  @Input() type: 'text' | 'date' | 'date-time' | 'time' | 'month-year' | 'month' | 'year' | 'password' | 'email' | 'number' | 'search' | 'tel' = 'text';
   @Input() label: string = '';
   @Input() max: number;
   @Input() maxLength: number;
@@ -27,17 +28,21 @@ export class InputComponent {
   @Input() minLength: number;
   @Input() control: FormControl;
   @Input() placeholder: string = '';
+  @Input() cancelLabel: string = 'Cancelar';
+  @Input() confirmLabel: string = 'Confirmar';
   @Input() customClass: string;
   @Output() onFocus = new EventEmitter<void>();
 
+  constructor(@Inject(ChangeDetectorRef) private ref: ChangeDetectorRef) {}
 
-  onInput(event: {target: {value: string | number}}) {
+  onInput = (event: {target: {value: string | number}}) => {
     if (!event || !event.target) {
       return;
     }
 
     this.control.markAsTouched();
     this.control.setValue(event.target.value ?? null);
+    this.ref.detectChanges();
   }
 
   onBlur() {
@@ -50,5 +55,27 @@ export class InputComponent {
     }
 
     this.bizyInput.setFocus();
+  }
+
+  cancel(modal: IonModal, dateTime: IonDatetime) {
+    if (!modal || !dateTime) {
+      return;
+    }
+
+    dateTime.cancel();
+    modal.dismiss();
+  }
+
+  confirm(modal: IonModal, dateTime: IonDatetime) {
+    if (!modal || !dateTime || !dateTime.value) {
+      return;
+    }
+
+    dateTime.confirm();
+
+    setTimeout(() => {
+      this.onInput({target: {value: String(dateTime.value) }})
+      modal.dismiss();
+    }, 1)
   }
 }
