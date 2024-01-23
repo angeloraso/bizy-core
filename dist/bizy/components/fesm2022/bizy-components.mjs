@@ -16,7 +16,7 @@ class ToggleComponent {
     renderer;
     bizyToggleInput;
     #afterViewInit = new BehaviorSubject(false);
-    id = String(Math.random());
+    id = `bizy-toggle-${Math.random()}`;
     label = '';
     labelPosition = 'after';
     disabled = false;
@@ -68,7 +68,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.0.9", ngImpor
                 type: Input
             }] } });
 
-const COMPONENTS$4 = [
+const COMPONENTS$5 = [
     ToggleComponent,
 ];
 class ToggleModule {
@@ -80,13 +80,13 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.0.9", ngImpor
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$4,
-                    exports: COMPONENTS$4
+                    declarations: COMPONENTS$5,
+                    exports: COMPONENTS$5
                 }]
         }] });
 
 class ButtonComponent {
-    id = String(Math.random());
+    id = `bizy-button-${Math.random()}`;
     disabled = false;
     type = 'button';
     customClass;
@@ -156,7 +156,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.0.9", ngImpor
                 type: Output
             }] } });
 
-const COMPONENTS$3 = [
+const COMPONENTS$4 = [
     ButtonComponent,
 ];
 class ButtonModule {
@@ -168,8 +168,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.0.9", ngImpor
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, OverlayModule],
-                    declarations: COMPONENTS$3,
-                    exports: COMPONENTS$3
+                    declarations: COMPONENTS$4,
+                    exports: COMPONENTS$4
                 }]
         }] });
 
@@ -218,7 +218,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.0.9", ngImpor
                 type: Output
             }] } });
 
-const COMPONENTS$2 = [
+const COMPONENTS$3 = [
     ConfirmButtonsComponent,
 ];
 class ConfirmButtonsModule {
@@ -230,8 +230,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.0.9", ngImpor
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, ButtonModule],
-                    declarations: COMPONENTS$2,
-                    exports: COMPONENTS$2
+                    declarations: COMPONENTS$3,
+                    exports: COMPONENTS$3
                 }]
         }] });
 
@@ -605,7 +605,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.0.9", ngImpor
                 type: Input
             }] } });
 
-const COMPONENTS$1 = [
+const COMPONENTS$2 = [
     ErrorComponent,
 ];
 class ErrorModule {
@@ -617,12 +617,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.0.9", ngImpor
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$1,
-                    exports: COMPONENTS$1
+                    declarations: COMPONENTS$2,
+                    exports: COMPONENTS$2
                 }]
         }] });
 
-const COMPONENTS = [InputComponent];
+const COMPONENTS$1 = [InputComponent];
 class InputModule {
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: InputModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
     static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "17.0.9", ngImport: i0, type: InputModule, declarations: [InputComponent], imports: [CommonModule,
@@ -646,8 +646,61 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.0.9", ngImpor
                         ErrorModule,
                         ConfirmButtonsModule
                     ],
+                    declarations: COMPONENTS$1,
+                    exports: COMPONENTS$1,
+                }]
+        }] });
+
+class TabsComponent {
+    customClass;
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: TabsComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "17.0.9", type: TabsComponent, selector: "bizy-tabs", inputs: { customClass: "customClass" }, ngImport: i0, template: "<div class=\"bizy-tabs {{customClass}}\">\n\n    <ng-content select=\"bizy-tab\"></ng-content>\n\n</div>", styles: [".bizy-tabs{display:flex;align-items:center;padding:0 .5rem;background-color:var(--bizy-tabs-background-color)}\n"], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: TabsComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-tabs', changeDetection: ChangeDetectionStrategy.OnPush, template: "<div class=\"bizy-tabs {{customClass}}\">\n\n    <ng-content select=\"bizy-tab\"></ng-content>\n\n</div>", styles: [".bizy-tabs{display:flex;align-items:center;padding:0 .5rem;background-color:var(--bizy-tabs-background-color)}\n"] }]
+        }], propDecorators: { customClass: [{
+                type: Input
+            }] } });
+
+class TabComponent {
+    id = `bizy-tab-${Math.random()}`;
+    selected = false;
+    customClass;
+    onSelect = new EventEmitter();
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: TabComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "17.0.9", type: TabComponent, selector: "bizy-tab", inputs: { id: "id", selected: "selected", customClass: "customClass" }, outputs: { onSelect: "onSelect" }, ngImport: i0, template: "<span class=\"bizy-tab__selected-line\" [ngClass]=\"{'bizy-tab__selected-line--visible': selected}\"></span>\n\n<button \n  type=\"button\"\n  id=\"{{id}}\"\n  [ngClass]=\"{'bizy-tab--selected': selected}\"\n  class=\"bizy-tab {{customClass}}\"\n  (click)=\"onSelect.emit()\"\n  (keyup.enter)=\"onSelect.emit()\">\n\n  <ng-content select=\"[tab-icon]\"></ng-content>\n\n  <ng-content select=\"[tab-label]\"></ng-content>\n\n</button>", styles: [":host{flex:1}.bizy-tab{width:100%;display:flex;flex-direction:column;align-items:center;row-gap:.3rem;border:none;background-color:transparent;color:var(--bizy-tab-color)}.bizy-tab--selected{color:var(--bizy-tab-selected-color)}@keyframes zoomIn{0%{opacity:0;transform:scale3d(.3,.3,.3)}50%{opacity:1}}.bizy-tab__selected-line{display:block;width:100%;height:.2rem;visibility:hidden;pointer-events:none;background-color:var(--bizy-tab-selected-color)}.bizy-tab__selected-line--visible{visibility:visible;animation-name:zoomIn;animation-duration:.3s;animation-fill-mode:both}\n"], dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: TabComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-tab', changeDetection: ChangeDetectionStrategy.OnPush, template: "<span class=\"bizy-tab__selected-line\" [ngClass]=\"{'bizy-tab__selected-line--visible': selected}\"></span>\n\n<button \n  type=\"button\"\n  id=\"{{id}}\"\n  [ngClass]=\"{'bizy-tab--selected': selected}\"\n  class=\"bizy-tab {{customClass}}\"\n  (click)=\"onSelect.emit()\"\n  (keyup.enter)=\"onSelect.emit()\">\n\n  <ng-content select=\"[tab-icon]\"></ng-content>\n\n  <ng-content select=\"[tab-label]\"></ng-content>\n\n</button>", styles: [":host{flex:1}.bizy-tab{width:100%;display:flex;flex-direction:column;align-items:center;row-gap:.3rem;border:none;background-color:transparent;color:var(--bizy-tab-color)}.bizy-tab--selected{color:var(--bizy-tab-selected-color)}@keyframes zoomIn{0%{opacity:0;transform:scale3d(.3,.3,.3)}50%{opacity:1}}.bizy-tab__selected-line{display:block;width:100%;height:.2rem;visibility:hidden;pointer-events:none;background-color:var(--bizy-tab-selected-color)}.bizy-tab__selected-line--visible{visibility:visible;animation-name:zoomIn;animation-duration:.3s;animation-fill-mode:both}\n"] }]
+        }], propDecorators: { id: [{
+                type: Input
+            }], selected: [{
+                type: Input
+            }], customClass: [{
+                type: Input
+            }], onSelect: [{
+                type: Output
+            }] } });
+
+const COMPONENTS = [
+    TabsComponent,
+    TabComponent
+];
+class TabsModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: TabsModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "17.0.9", ngImport: i0, type: TabsModule, declarations: [TabsComponent,
+            TabComponent], imports: [CommonModule, FormsModule], exports: [TabsComponent,
+            TabComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: TabsModule, imports: [CommonModule, FormsModule] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.0.9", ngImport: i0, type: TabsModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: [CommonModule, FormsModule],
                     declarations: COMPONENTS,
-                    exports: COMPONENTS,
+                    exports: COMPONENTS
                 }]
         }] });
 
@@ -655,5 +708,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.0.9", ngImpor
  * Generated bundle index. Do not edit.
  */
 
-export { ButtonComponent, ButtonModule, ConfirmButtonsComponent, ConfirmButtonsModule, ErrorComponent, ErrorModule, InputComponent, InputModule, ToggleComponent, ToggleModule, VirtualScrollComponent, VirtualScrollGridDirective, VirtualScrollModule, VirtualScrollNgForDirective };
+export { ButtonComponent, ButtonModule, ConfirmButtonsComponent, ConfirmButtonsModule, ErrorComponent, ErrorModule, InputComponent, InputModule, TabComponent, TabsComponent, TabsModule, ToggleComponent, ToggleModule, VirtualScrollComponent, VirtualScrollGridDirective, VirtualScrollModule, VirtualScrollNgForDirective };
 //# sourceMappingURL=bizy-components.mjs.map

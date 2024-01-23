@@ -8,7 +8,7 @@ import { IButtonOption } from './button.types';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ButtonComponent {
-  @Input() id: string = String(Math.random());
+  @Input() id: string = `bizy-button-${Math.random()}`
   @Input() disabled: boolean = false;
   @Input() type: 'button' | 'submit' = 'button';
   @Input() customClass: string;

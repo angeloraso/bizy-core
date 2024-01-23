@@ -1,0 +1,46 @@
+:host {
+    flex: 1;
+}
+
+.bizy-tab {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 0.3rem;
+    border: none;
+    background-color: transparent;
+    color: var(--bizy-tab-color);
+}
+
+.bizy-tab--selected {
+    color: var(--bizy-tab-selected-color);
+}
+
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        -webkit-transform: scale3d(0.3, 0.3, 0.3);
+        transform: scale3d(0.3, 0.3, 0.3);
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+.bizy-tab__selected-line {
+    display: block;
+    width: 100%;
+    height: 0.2rem;
+    visibility: hidden;
+    pointer-events: none;
+    background-color: var(--bizy-tab-selected-color);
+}
+
+.bizy-tab__selected-line--visible {
+    visibility: visible;
+    animation-name: zoomIn;
+    animation-duration: 0.3s;
+    animation-fill-mode: both;
+}

@@ -1,0 +1,15 @@
+<span class="bizy-tab__selected-line" [ngClass]="{'bizy-tab__selected-line--visible': selected}"></span>
+
+<button 
+  type="button"
+  id="{{id}}"
+  [ngClass]="{'bizy-tab--selected': selected}"
+  class="bizy-tab {{customClass}}"
+  (click)="onSelect.emit()"
+  (keyup.enter)="onSelect.emit()">
+
+  <ng-content select="[tab-icon]"></ng-content>
+
+  <ng-content select="[tab-label]"></ng-content>
+
+</button>

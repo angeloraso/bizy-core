@@ -11,7 +11,7 @@ import { BehaviorSubject, take, filter } from 'rxjs';
 export class ToggleComponent {
   @ViewChild('bizyToggleInput') bizyToggleInput: ElementRef;
   #afterViewInit = new BehaviorSubject<boolean>(false);
-  @Input() id: string = String(Math.random());
+  @Input() id: string = `bizy-toggle-${Math.random()}`;
   @Input() label: string = '';
   @Input() labelPosition: LabelPosition = 'after';
   @Input() disabled: boolean = false;
