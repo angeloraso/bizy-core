@@ -14,7 +14,9 @@ interface ILogData {
   param?: unknown
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class LogService {
   #lastLogTimestamp: number = 0;
 

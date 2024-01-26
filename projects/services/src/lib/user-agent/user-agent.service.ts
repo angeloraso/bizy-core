@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { getUserAgent } from './uach-retrofill';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class UserAgentService {
   get() {
     return new Promise<string>(resolve => {
@@ -14,7 +16,7 @@ export class UserAgentService {
         'fullVersionList'
       ])
         .then(userAgent => {
-          resolve(userAgent);
+          resolve(userAgent as string);
         })
         .catch(() => {
           resolve(window.navigator.userAgent);

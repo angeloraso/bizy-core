@@ -3,7 +3,9 @@ import { ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd, NavigationStart,
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class RouterService {
   private _backPath = '';
 

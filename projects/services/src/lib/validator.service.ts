@@ -1,6 +1,8 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Injectable } from '@angular/core';
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ValidatorService {
 
   isEmail(email: unknown): boolean {
