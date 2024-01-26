@@ -2,11 +2,7 @@
     position: relative;
     background-color: var(--bizy-popup-background-color);
     padding: 1rem ;
-    display: flex;
-    flex-direction: column;
-    row-gap: 1rem;
     width: min(80vw, 26rem);
-    min-height: 16rem;
     height: fit-content;
 }
 
