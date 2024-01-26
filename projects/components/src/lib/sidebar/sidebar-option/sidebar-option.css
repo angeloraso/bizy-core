@@ -1,0 +1,42 @@
+:host {
+    font-size: 1rem;
+}
+
+:host:has(> .bizy-sidebar-option__options:empty) .bizy-sidebar-option > .bizy-sidebar-option__arrow {
+    display: none !important;
+}
+
+.bizy-sidebar-option {
+    background: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 0.5rem;
+    padding: 0.5rem;
+    width: 100%;
+}
+
+.bizy-sidebar-option__arrow {
+    height: 1rem;
+    pointer-events: none;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.bizy-sidebar-option--selected .bizy-sidebar-option__arrow {
+    transform: rotate(180deg);
+}
+
+.bizy-sidebar-option__options {
+    max-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding-left: 0.5rem;
+    transition: max-height 0.3s ease;
+}
+
+.bizy-sidebar-option__options--opened {
+    max-height: 100vh !important;
+}

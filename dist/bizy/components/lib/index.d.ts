@@ -6,4 +6,5 @@ export * from './input';
 export * from './error';
 export * from './tabs';
 export * from './toolbar';
+export * from './sidebar';
 export { BizyComponentsModule } from './components.module';

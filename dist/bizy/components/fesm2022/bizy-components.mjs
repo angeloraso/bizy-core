@@ -68,7 +68,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Input
             }] } });
 
-const COMPONENTS$6 = [
+const COMPONENTS$7 = [
     ToggleComponent,
 ];
 class ToggleModule {
@@ -80,8 +80,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$6,
-                    exports: COMPONENTS$6
+                    declarations: COMPONENTS$7,
+                    exports: COMPONENTS$7
                 }]
         }] });
 
@@ -156,7 +156,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS$5 = [
+const COMPONENTS$6 = [
     ButtonComponent,
 ];
 class ButtonModule {
@@ -168,8 +168,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, OverlayModule],
-                    declarations: COMPONENTS$5,
-                    exports: COMPONENTS$5
+                    declarations: COMPONENTS$6,
+                    exports: COMPONENTS$6
                 }]
         }] });
 
@@ -218,7 +218,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS$4 = [
+const COMPONENTS$5 = [
     ConfirmButtonsComponent,
 ];
 class ConfirmButtonsModule {
@@ -230,8 +230,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, ButtonModule],
-                    declarations: COMPONENTS$4,
-                    exports: COMPONENTS$4
+                    declarations: COMPONENTS$5,
+                    exports: COMPONENTS$5
                 }]
         }] });
 
@@ -605,7 +605,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Input
             }] } });
 
-const COMPONENTS$3 = [
+const COMPONENTS$4 = [
     ErrorComponent,
 ];
 class ErrorModule {
@@ -617,12 +617,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$3,
-                    exports: COMPONENTS$3
+                    declarations: COMPONENTS$4,
+                    exports: COMPONENTS$4
                 }]
         }] });
 
-const COMPONENTS$2 = [InputComponent];
+const COMPONENTS$3 = [InputComponent];
 class InputModule {
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: InputModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
     static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: InputModule, declarations: [InputComponent], imports: [CommonModule,
@@ -646,8 +646,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                         ErrorModule,
                         ConfirmButtonsModule
                     ],
-                    declarations: COMPONENTS$2,
-                    exports: COMPONENTS$2,
+                    declarations: COMPONENTS$3,
+                    exports: COMPONENTS$3,
                 }]
         }] });
 
@@ -684,7 +684,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS$1 = [
+const COMPONENTS$2 = [
     TabsComponent,
     TabComponent
 ];
@@ -699,21 +699,21 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$1,
-                    exports: COMPONENTS$1
+                    declarations: COMPONENTS$2,
+                    exports: COMPONENTS$2
                 }]
         }] });
 
 class ToolbarComponent {
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: ToolbarComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: ToolbarComponent, selector: "bizy-toolbar", ngImport: i0, template: "<div class=\"bizy-toolbar\">\n\n    <span class=\"bizy-toolbar__start\">\n        \n        <ng-content select=\"[slot=start]\"></ng-content>\n\n    </span>\n\n    <span class=\"bizy-toolbar__end\">\n\n        <ng-content select=\"[slot=end]\"></ng-content>\n\n    </span>\n  \n\n</div>\n", styles: [".bizy-toolbar{height:var(--bizy-toolbar-height);width:100%;background-color:var(--bizy-toolbar-background-color);display:flex;align-items:center;justify-content:space-between;column-gap:1rem;padding:0 .5rem}.bizy-toolbar__start{display:flex;align-items:center;column-gap:1rem}.bizy-toolbar__end{display:flex;align-items:center;column-gap:1rem;justify-content:flex-end}\n"], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: ToolbarComponent, selector: "bizy-toolbar", ngImport: i0, template: "<div class=\"bizy-toolbar\">\n\n    <span class=\"bizy-toolbar__start\">\n        \n        <ng-content select=\"[slot=start]\"></ng-content>\n\n    </span>\n\n    <span class=\"bizy-toolbar__end\">\n\n        <ng-content select=\"[slot=end]\"></ng-content>\n\n    </span>\n  \n\n</div>\n", styles: [":host{font-size:1rem}.bizy-toolbar{height:var(--bizy-toolbar-height);width:100%;background-color:var(--bizy-toolbar-background-color);display:flex;align-items:center;justify-content:space-between;column-gap:1rem;padding:0 .5rem}.bizy-toolbar__start{display:flex;align-items:center;column-gap:1rem}.bizy-toolbar__end{display:flex;align-items:center;column-gap:1rem;justify-content:flex-end}\n"], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: ToolbarComponent, decorators: [{
             type: Component,
-            args: [{ selector: 'bizy-toolbar', changeDetection: ChangeDetectionStrategy.OnPush, template: "<div class=\"bizy-toolbar\">\n\n    <span class=\"bizy-toolbar__start\">\n        \n        <ng-content select=\"[slot=start]\"></ng-content>\n\n    </span>\n\n    <span class=\"bizy-toolbar__end\">\n\n        <ng-content select=\"[slot=end]\"></ng-content>\n\n    </span>\n  \n\n</div>\n", styles: [".bizy-toolbar{height:var(--bizy-toolbar-height);width:100%;background-color:var(--bizy-toolbar-background-color);display:flex;align-items:center;justify-content:space-between;column-gap:1rem;padding:0 .5rem}.bizy-toolbar__start{display:flex;align-items:center;column-gap:1rem}.bizy-toolbar__end{display:flex;align-items:center;column-gap:1rem;justify-content:flex-end}\n"] }]
+            args: [{ selector: 'bizy-toolbar', changeDetection: ChangeDetectionStrategy.OnPush, template: "<div class=\"bizy-toolbar\">\n\n    <span class=\"bizy-toolbar__start\">\n        \n        <ng-content select=\"[slot=start]\"></ng-content>\n\n    </span>\n\n    <span class=\"bizy-toolbar__end\">\n\n        <ng-content select=\"[slot=end]\"></ng-content>\n\n    </span>\n  \n\n</div>\n", styles: [":host{font-size:1rem}.bizy-toolbar{height:var(--bizy-toolbar-height);width:100%;background-color:var(--bizy-toolbar-background-color);display:flex;align-items:center;justify-content:space-between;column-gap:1rem;padding:0 .5rem}.bizy-toolbar__start{display:flex;align-items:center;column-gap:1rem}.bizy-toolbar__end{display:flex;align-items:center;column-gap:1rem;justify-content:flex-end}\n"] }]
         }] });
 
-const COMPONENTS = [
+const COMPONENTS$1 = [
     ToolbarComponent,
 ];
 class ToolbarModule {
@@ -722,6 +722,89 @@ class ToolbarModule {
     static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: ToolbarModule, imports: [CommonModule, FormsModule] });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: ToolbarModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: [CommonModule, FormsModule],
+                    declarations: COMPONENTS$1,
+                    exports: COMPONENTS$1
+                }]
+        }] });
+
+class SidebarFooterComponent {
+    customClass;
+    onSelect = new EventEmitter();
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: SidebarFooterComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: SidebarFooterComponent, selector: "bizy-sidebar-footer", inputs: { customClass: "customClass" }, outputs: { onSelect: "onSelect" }, ngImport: i0, template: "<button \n  type=\"button\"\n  class=\"bizy-sidebar-footer {{customClass}}\"\n  (click)=\"onSelect.emit($event)\"\n  (keyup.enter)=\"onSelect.emit($event)\">\n\n  <ng-content></ng-content>\n\n</button>", styles: [".bizy-sidebar-footer{background:transparent;border:none}\n"], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: SidebarFooterComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-sidebar-footer', changeDetection: ChangeDetectionStrategy.OnPush, template: "<button \n  type=\"button\"\n  class=\"bizy-sidebar-footer {{customClass}}\"\n  (click)=\"onSelect.emit($event)\"\n  (keyup.enter)=\"onSelect.emit($event)\">\n\n  <ng-content></ng-content>\n\n</button>", styles: [".bizy-sidebar-footer{background:transparent;border:none}\n"] }]
+        }], propDecorators: { customClass: [{
+                type: Input
+            }], onSelect: [{
+                type: Output
+            }] } });
+
+class SidebarHeaderComponent {
+    customClass;
+    onSelect = new EventEmitter();
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: SidebarHeaderComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: SidebarHeaderComponent, selector: "bizy-sidebar-header", inputs: { customClass: "customClass" }, outputs: { onSelect: "onSelect" }, ngImport: i0, template: "<button \n  type=\"button\"\n  class=\"bizy-sidebar-header {{customClass}}\"\n  (click)=\"onSelect.emit($event)\"\n  (keyup.enter)=\"onSelect.emit($event)\">\n\n  <ng-content></ng-content>\n\n</button>", styles: [":host{font-size:1rem}.bizy-sidebar-header{background:transparent;border:none}\n"], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: SidebarHeaderComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-sidebar-header', changeDetection: ChangeDetectionStrategy.OnPush, template: "<button \n  type=\"button\"\n  class=\"bizy-sidebar-header {{customClass}}\"\n  (click)=\"onSelect.emit($event)\"\n  (keyup.enter)=\"onSelect.emit($event)\">\n\n  <ng-content></ng-content>\n\n</button>", styles: [":host{font-size:1rem}.bizy-sidebar-header{background:transparent;border:none}\n"] }]
+        }], propDecorators: { customClass: [{
+                type: Input
+            }], onSelect: [{
+                type: Output
+            }] } });
+
+class SidebarOptionComponent {
+    customClass;
+    selected = false;
+    onSelect = new EventEmitter();
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: SidebarOptionComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: SidebarOptionComponent, selector: "bizy-sidebar-option", inputs: { customClass: "customClass", selected: "selected" }, outputs: { onSelect: "onSelect" }, ngImport: i0, template: "<button \n  type=\"button\"\n  [ngClass]=\"{'bizy-sidebar-option--selected': selected}\"\n  class=\"bizy-sidebar-option {{customClass}}\"\n  (click)=\"onSelect.emit($event)\"\n  (keyup.enter)=\"onSelect.emit($event)\">\n\n  <ng-content select=\"[sidebar-option-content]\"></ng-content>\n\n  <svg \n    class=\"bizy-sidebar-option__arrow\" \n    viewBox=\"0 0 96 96\" \n    xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"M81.8457,25.3876a6.0239,6.0239,0,0,0-8.45.7676L48,56.6257l-25.396-30.47a5.999,5.999,0,1,0-9.2114,7.6879L43.3943,69.8452a5.9969,5.9969,0,0,0,9.2114,0L82.6074,33.8431A6.0076,6.0076,0,0,0,81.8457,25.3876Z\"/>\n  </svg>\n\n</button>\n\n<span class=\"bizy-sidebar-option__options\" [ngClass]=\"{'bizy-sidebar-option__options--opened': selected}\">\n\n  <ng-content select=\"bizy-sidebar-option\"></ng-content>\n\n</span>\n", styles: [":host{font-size:1rem}:host:has(>.bizy-sidebar-option__options:empty) .bizy-sidebar-option>.bizy-sidebar-option__arrow{display:none!important}.bizy-sidebar-option{background:transparent;border:none;display:flex;align-items:center;justify-content:space-between;column-gap:.5rem;padding:.5rem;width:100%}.bizy-sidebar-option__arrow{height:1rem;pointer-events:none;display:block;transition:transform .3s ease}.bizy-sidebar-option--selected .bizy-sidebar-option__arrow{transform:rotate(180deg)}.bizy-sidebar-option__options{max-height:0;overflow:hidden;display:flex;flex-direction:column;padding-left:.5rem;transition:max-height .3s ease}.bizy-sidebar-option__options--opened{max-height:100vh!important}\n"], dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: SidebarOptionComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-sidebar-option', changeDetection: ChangeDetectionStrategy.OnPush, template: "<button \n  type=\"button\"\n  [ngClass]=\"{'bizy-sidebar-option--selected': selected}\"\n  class=\"bizy-sidebar-option {{customClass}}\"\n  (click)=\"onSelect.emit($event)\"\n  (keyup.enter)=\"onSelect.emit($event)\">\n\n  <ng-content select=\"[sidebar-option-content]\"></ng-content>\n\n  <svg \n    class=\"bizy-sidebar-option__arrow\" \n    viewBox=\"0 0 96 96\" \n    xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"M81.8457,25.3876a6.0239,6.0239,0,0,0-8.45.7676L48,56.6257l-25.396-30.47a5.999,5.999,0,1,0-9.2114,7.6879L43.3943,69.8452a5.9969,5.9969,0,0,0,9.2114,0L82.6074,33.8431A6.0076,6.0076,0,0,0,81.8457,25.3876Z\"/>\n  </svg>\n\n</button>\n\n<span class=\"bizy-sidebar-option__options\" [ngClass]=\"{'bizy-sidebar-option__options--opened': selected}\">\n\n  <ng-content select=\"bizy-sidebar-option\"></ng-content>\n\n</span>\n", styles: [":host{font-size:1rem}:host:has(>.bizy-sidebar-option__options:empty) .bizy-sidebar-option>.bizy-sidebar-option__arrow{display:none!important}.bizy-sidebar-option{background:transparent;border:none;display:flex;align-items:center;justify-content:space-between;column-gap:.5rem;padding:.5rem;width:100%}.bizy-sidebar-option__arrow{height:1rem;pointer-events:none;display:block;transition:transform .3s ease}.bizy-sidebar-option--selected .bizy-sidebar-option__arrow{transform:rotate(180deg)}.bizy-sidebar-option__options{max-height:0;overflow:hidden;display:flex;flex-direction:column;padding-left:.5rem;transition:max-height .3s ease}.bizy-sidebar-option__options--opened{max-height:100vh!important}\n"] }]
+        }], propDecorators: { customClass: [{
+                type: Input
+            }], selected: [{
+                type: Input
+            }], onSelect: [{
+                type: Output
+            }] } });
+
+class SidebarComponent {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: SidebarComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: SidebarComponent, selector: "bizy-sidebar", ngImport: i0, template: "<div class=\"bizy-sidebar\">\n\n  <span class=\"bizy-sidebar__content\">\n\n    <ng-content select=\"bizy-sidebar-header\"></ng-content>\n\n    <ng-content select=\"bizy-sidebar-option\"></ng-content>\n\n  </span>\n\n  <span class=\"bizy-sidebar__footer\">\n\n    <ng-content select=\"bizy-sidebar-footer\"></ng-content>\n\n  </span>\n\n</div>\n", styles: [":host{font-size:1rem}.bizy-sidebar{height:100%;width:auto;display:flex;flex-direction:column;justify-content:space-between}.bizy-sidebar__content{display:flex;flex-direction:column}\n"], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: SidebarComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-sidebar', changeDetection: ChangeDetectionStrategy.OnPush, template: "<div class=\"bizy-sidebar\">\n\n  <span class=\"bizy-sidebar__content\">\n\n    <ng-content select=\"bizy-sidebar-header\"></ng-content>\n\n    <ng-content select=\"bizy-sidebar-option\"></ng-content>\n\n  </span>\n\n  <span class=\"bizy-sidebar__footer\">\n\n    <ng-content select=\"bizy-sidebar-footer\"></ng-content>\n\n  </span>\n\n</div>\n", styles: [":host{font-size:1rem}.bizy-sidebar{height:100%;width:auto;display:flex;flex-direction:column;justify-content:space-between}.bizy-sidebar__content{display:flex;flex-direction:column}\n"] }]
+        }] });
+
+const COMPONENTS = [
+    SidebarComponent,
+    SidebarHeaderComponent,
+    SidebarOptionComponent,
+    SidebarFooterComponent
+];
+class SidebarModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: SidebarModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: SidebarModule, declarations: [SidebarComponent,
+            SidebarHeaderComponent,
+            SidebarOptionComponent,
+            SidebarFooterComponent], imports: [CommonModule, FormsModule], exports: [SidebarComponent,
+            SidebarHeaderComponent,
+            SidebarOptionComponent,
+            SidebarFooterComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: SidebarModule, imports: [CommonModule, FormsModule] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: SidebarModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
@@ -746,5 +829,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
  * Generated bundle index. Do not edit.
  */
 
-export { BizyComponentsModule, ButtonComponent, ButtonModule, ConfirmButtonsComponent, ConfirmButtonsModule, ErrorComponent, ErrorModule, InputComponent, InputModule, TabComponent, TabsComponent, TabsModule, ToggleComponent, ToggleModule, ToolbarComponent, ToolbarModule, VirtualScrollComponent, VirtualScrollGridDirective, VirtualScrollModule, VirtualScrollNgForDirective };
+export { BizyComponentsModule, ButtonComponent, ButtonModule, ConfirmButtonsComponent, ConfirmButtonsModule, ErrorComponent, ErrorModule, InputComponent, InputModule, SidebarComponent, SidebarFooterComponent, SidebarHeaderComponent, SidebarModule, SidebarOptionComponent, TabComponent, TabsComponent, TabsModule, ToggleComponent, ToggleModule, ToolbarComponent, ToolbarModule, VirtualScrollComponent, VirtualScrollGridDirective, VirtualScrollModule, VirtualScrollNgForDirective };
 //# sourceMappingURL=bizy-components.mjs.map
