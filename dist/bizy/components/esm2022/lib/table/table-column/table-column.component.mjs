@@ -1,0 +1,23 @@
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from '@angular/core';
+import * as i0 from "@angular/core";
+export class TableColumnComponent {
+    id = String(Math.random());
+    customClass = '';
+    onSelect = new EventEmitter();
+    getId = () => {
+        return this.id;
+    };
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TableColumnComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: TableColumnComponent, selector: "bizy-table-column", inputs: { id: "id", customClass: "customClass" }, outputs: { onSelect: "onSelect" }, ngImport: i0, template: "<button \n    type=\"button\"\n    id=\"{{id}}\"\n    (click)=\"onSelect.emit()\"\n    (keyup.enter)=\"onSelect.emit()\"\n    class=\"bizy-table-column {{customClass}}\">\n\n    <ng-content></ng-content>\n    \n</button>", styles: [":host{font-size:1rem;flex:1}:host:has(.bizy-table-column-arrows) .bizy-table-column{cursor:pointer!important}.bizy-table-column{font-size:1rem;width:100%;border:none;background-color:transparent;display:flex;align-items:center;column-gap:.3rem}.bizy-table-column__arrows{height:1rem;fill:var(--bizy-table-column-arrows-color, #2b94f4)}::ng-deep .bizy-table-column *{text-align:start}::ng-deep .bizy-table-column:hover .bizy-table-column-arrows{display:inline-block}\n"], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TableColumnComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-table-column', changeDetection: ChangeDetectionStrategy.OnPush, template: "<button \n    type=\"button\"\n    id=\"{{id}}\"\n    (click)=\"onSelect.emit()\"\n    (keyup.enter)=\"onSelect.emit()\"\n    class=\"bizy-table-column {{customClass}}\">\n\n    <ng-content></ng-content>\n    \n</button>", styles: [":host{font-size:1rem;flex:1}:host:has(.bizy-table-column-arrows) .bizy-table-column{cursor:pointer!important}.bizy-table-column{font-size:1rem;width:100%;border:none;background-color:transparent;display:flex;align-items:center;column-gap:.3rem}.bizy-table-column__arrows{height:1rem;fill:var(--bizy-table-column-arrows-color, #2b94f4)}::ng-deep .bizy-table-column *{text-align:start}::ng-deep .bizy-table-column:hover .bizy-table-column-arrows{display:inline-block}\n"] }]
+        }], propDecorators: { id: [{
+                type: Input
+            }], customClass: [{
+                type: Input
+            }], onSelect: [{
+                type: Output
+            }] } });
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidGFibGUtY29sdW1uLmNvbXBvbmVudC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uLy4uLy4uL3Byb2plY3RzL2NvbXBvbmVudHMvc3JjL2xpYi90YWJsZS90YWJsZS1jb2x1bW4vdGFibGUtY29sdW1uLmNvbXBvbmVudC50cyIsIi4uLy4uLy4uLy4uLy4uLy4uLy4uL3Byb2plY3RzL2NvbXBvbmVudHMvc3JjL2xpYi90YWJsZS90YWJsZS1jb2x1bW4vdGFibGUtY29sdW1uLmh0bWwiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxFQUFFLHVCQUF1QixFQUFFLFNBQVMsRUFBRSxLQUFLLEVBQUUsTUFBTSxFQUFFLFlBQVksRUFBRSxNQUFNLGVBQWUsQ0FBQzs7QUFRaEcsTUFBTSxPQUFPLG9CQUFvQjtJQUN0QixFQUFFLEdBQVcsTUFBTSxDQUFDLElBQUksQ0FBQyxNQUFNLEVBQUUsQ0FBQyxDQUFDO0lBQ25DLFdBQVcsR0FBVyxFQUFFLENBQUM7SUFDeEIsUUFBUSxHQUFHLElBQUksWUFBWSxFQUFRLENBQUM7SUFFOUMsS0FBSyxHQUFHLEdBQVcsRUFBRTtRQUNuQixPQUFPLElBQUksQ0FBQyxFQUFFLENBQUM7SUFDakIsQ0FBQyxDQUFBO3dHQVBVLG9CQUFvQjs0RkFBcEIsb0JBQW9CLDhJQ1JqQyw4TkFTUzs7NEZEREksb0JBQW9CO2tCQU5oQyxTQUFTOytCQUNFLG1CQUFtQixtQkFHWix1QkFBdUIsQ0FBQyxNQUFNOzhCQUd0QyxFQUFFO3NCQUFWLEtBQUs7Z0JBQ0csV0FBVztzQkFBbkIsS0FBSztnQkFDSSxRQUFRO3NCQUFqQixNQUFNIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgQ2hhbmdlRGV0ZWN0aW9uU3RyYXRlZ3ksIENvbXBvbmVudCwgSW5wdXQsIE91dHB1dCwgRXZlbnRFbWl0dGVyIH0gZnJvbSAnQGFuZ3VsYXIvY29yZSc7XG5cbkBDb21wb25lbnQoe1xuICBzZWxlY3RvcjogJ2JpenktdGFibGUtY29sdW1uJyxcbiAgdGVtcGxhdGVVcmw6ICcuL3RhYmxlLWNvbHVtbi5odG1sJyxcbiAgc3R5bGVVcmxzOiBbJy4vdGFibGUtY29sdW1uLmNzcyddLFxuICBjaGFuZ2VEZXRlY3Rpb246IENoYW5nZURldGVjdGlvblN0cmF0ZWd5Lk9uUHVzaFxufSlcbmV4cG9ydCBjbGFzcyBUYWJsZUNvbHVtbkNvbXBvbmVudCB7XG4gIEBJbnB1dCgpIGlkOiBzdHJpbmcgPSBTdHJpbmcoTWF0aC5yYW5kb20oKSk7XG4gIEBJbnB1dCgpIGN1c3RvbUNsYXNzOiBzdHJpbmcgPSAnJztcbiAgQE91dHB1dCgpIG9uU2VsZWN0ID0gbmV3IEV2ZW50RW1pdHRlcjx2b2lkPigpO1xuXG4gIGdldElkID0gKCk6IHN0cmluZyA9PiB7XG4gICAgcmV0dXJuIHRoaXMuaWQ7XG4gIH1cbn0iLCI8YnV0dG9uIFxuICAgIHR5cGU9XCJidXR0b25cIlxuICAgIGlkPVwie3tpZH19XCJcbiAgICAoY2xpY2spPVwib25TZWxlY3QuZW1pdCgpXCJcbiAgICAoa2V5dXAuZW50ZXIpPVwib25TZWxlY3QuZW1pdCgpXCJcbiAgICBjbGFzcz1cImJpenktdGFibGUtY29sdW1uIHt7Y3VzdG9tQ2xhc3N9fVwiPlxuXG4gICAgPG5nLWNvbnRlbnQ+PC9uZy1jb250ZW50PlxuICAgIFxuPC9idXR0b24+Il19

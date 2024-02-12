@@ -1,62 +1,15 @@
 import * as i0 from '@angular/core';
-import { Injectable, Inject, ChangeDetectorRef, ViewContainerRef, Component, ChangeDetectionStrategy, ViewChild, NgModule } from '@angular/core';
-import * as i1 from '@ngx-translate/core';
-import { TranslateService as TranslateService$1 } from '@ngx-translate/core';
-import * as i1$1 from '@angular/router';
+import { Injectable, Inject, ChangeDetectorRef, ViewContainerRef, Component, ChangeDetectionStrategy, ViewChild, NgModule, Pipe } from '@angular/core';
+import * as i1 from '@angular/router';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { filter, map, distinctUntilChanged } from 'rxjs/operators';
 import { Subject, take } from 'rxjs';
-import * as i1$2 from '@angular/cdk/dialog';
+import * as i1$1 from '@angular/cdk/dialog';
 import { DIALOG_DATA, DialogRef, Dialog, DialogModule } from '@angular/cdk/dialog';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-var LANGUAGE;
-(function (LANGUAGE) {
-    LANGUAGE["SPANISH"] = "es";
-    LANGUAGE["ENGLISH"] = "en";
-})(LANGUAGE || (LANGUAGE = {}));
-class TranslateService {
-    translate;
-    constructor(translate) {
-        this.translate = translate;
-    }
-    loadTranslations(...args) {
-        const locales = [...args];
-        locales.forEach(locale => {
-            this.translate.setTranslation(locale.lang, locale.translations, true);
-        });
-    }
-    addLangs(langs) {
-        this.translate.addLangs(langs);
-    }
-    getLangs() {
-        return this.translate.getLangs();
-    }
-    setDefault(lang) {
-        this.translate.setDefaultLang(lang);
-    }
-    getCurrentLang() {
-        return this.translate.currentLang;
-    }
-    use(lang) {
-        this.translate.use(lang);
-    }
-    get(translation) {
-        return this.translate.instant(translation);
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslateService, deps: [{ token: TranslateService$1 }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslateService, providedIn: 'root' });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslateService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }], ctorParameters: function () { return [{ type: i1.TranslateService, decorators: [{
-                    type: Inject,
-                    args: [TranslateService$1]
-                }] }]; } });
+import * as i1$2 from '@ngx-translate/core';
+import { TranslateService as TranslateService$1 } from '@ngx-translate/core';
 
 /**
  * Copyright 2020 Google LLC
@@ -563,7 +516,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             args: [{
                     providedIn: 'root'
                 }]
-        }], ctorParameters: function () { return [{ type: i1$1.Router, decorators: [{
+        }], ctorParameters: function () { return [{ type: i1.Router, decorators: [{
                     type: Inject,
                     args: [Router]
                 }] }]; } });
@@ -600,7 +553,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
         }], ctorParameters: function () { return [{ type: undefined, decorators: [{
                     type: Inject,
                     args: [DIALOG_DATA]
-                }] }, { type: i1$2.DialogRef, decorators: [{
+                }] }, { type: i1$1.DialogRef, decorators: [{
                     type: Inject,
                     args: [DialogRef]
                 }] }, { type: i0.ChangeDetectorRef, decorators: [{
@@ -627,6 +580,7 @@ class PopupService {
             autoFocus: true,
             hasBackdrop: true,
             disableClose: data.disableClose ?? false,
+            backdropClass: 'bizy-popup-backdrop',
             panelClass: ['bizy-popup', data.customClass]
         });
         this.#dialogs.add(dialogRef);
@@ -665,7 +619,7 @@ class PopupService {
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: PopupService, decorators: [{
             type: Injectable
-        }], ctorParameters: function () { return [{ type: i1$2.Dialog, decorators: [{
+        }], ctorParameters: function () { return [{ type: i1$1.Dialog, decorators: [{
                     type: Inject,
                     args: [Dialog]
                 }] }]; } });
@@ -687,9 +641,77 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 }]
         }] });
 
+var LANGUAGE;
+(function (LANGUAGE) {
+    LANGUAGE["SPANISH"] = "es";
+    LANGUAGE["ENGLISH"] = "en";
+})(LANGUAGE || (LANGUAGE = {}));
+class TranslateService {
+    translate;
+    constructor(translate) {
+        this.translate = translate;
+    }
+    loadTranslations(...args) {
+        const locales = [...args];
+        locales.forEach(locale => {
+            this.translate.setTranslation(locale.lang, locale.translations, true);
+        });
+    }
+    addLangs(langs) {
+        this.translate.addLangs(langs);
+    }
+    getLangs() {
+        return this.translate.getLangs();
+    }
+    setDefault(lang) {
+        this.translate.setDefaultLang(lang);
+    }
+    getCurrentLang() {
+        return this.translate.currentLang;
+    }
+    use(lang) {
+        this.translate.use(lang);
+    }
+    get(translation) {
+        return this.translate.instant(translation);
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslateService, deps: [{ token: TranslateService$1 }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslateService, providedIn: 'root' });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslateService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
+        }], ctorParameters: function () { return [{ type: i1$2.TranslateService, decorators: [{
+                    type: Inject,
+                    args: [TranslateService$1]
+                }] }]; } });
+
+class TranslatePipe {
+    translate;
+    constructor(translate) {
+        this.translate = translate;
+    }
+    transform(label) {
+        return this.translate.get(label);
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslatePipe, deps: [{ token: TranslateService }], target: i0.ɵɵFactoryTarget.Pipe });
+    static ɵpipe = i0.ɵɵngDeclarePipe({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: TranslatePipe, name: "translate" });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslatePipe, decorators: [{
+            type: Pipe,
+            args: [{
+                    name: 'translate',
+                }]
+        }], ctorParameters: function () { return [{ type: TranslateService, decorators: [{
+                    type: Inject,
+                    args: [TranslateService]
+                }] }]; } });
+
 /**
  * Generated bundle index. Do not edit.
  */
 
-export { LANGUAGE, LogService, PopupModule, PopupService, RouterService, StorageService, TranslateService, UserAgentService, ValidatorService };
+export { LANGUAGE, LogService, PopupModule, PopupService, RouterService, StorageService, TranslatePipe, TranslateService, UserAgentService, ValidatorService };
 //# sourceMappingURL=bizy-services.mjs.map

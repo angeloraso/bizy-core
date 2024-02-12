@@ -1,0 +1,13 @@
+<div 
+    id="{{id}}"
+    class="bizy-table-header {{customClass}}">
+
+    <ng-content select="bizy-table-column"></ng-content>
+
+    <bizy-checkbox 
+        *ngIf="selectable"
+        [(selected)]="selected"
+        (onSelect)="onSelect.emit(selected)">
+    </bizy-checkbox>
+    
+</div>

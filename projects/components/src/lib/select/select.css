@@ -1,0 +1,84 @@
+:host {
+    font-size: 1rem;
+    color: var(--bizy-select-color, #000);
+    fill: var(--bizy-select-color, #000);
+}
+
+.bizy-select {
+    font-size: 1rem;
+    width: 100%;
+    border: none;
+    background-color: var(--bizy-select-background-color, #fff);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 0.5rem;
+    color: inherit;
+    padding: .25rem .5rem 0;
+    cursor: pointer;
+    min-height: 3.3rem;
+    border-top-left-radius: 0.3rem;
+    border-top-right-radius: 0.3rem;
+    border-bottom: 0.1rem solid var(--bizy-select-border-color, #000);
+}
+
+.bizy-select--disabled {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed !important;
+}
+
+.bizy-select__arrow {
+    height: 1rem;
+    pointer-events: none;
+    display: block;
+    transition: transform 0.3s ease;
+    fill: inherit;
+}
+
+.bizy-select__arrow--opened {
+    transform: rotate(180deg);
+}
+
+.bizy-select__content {
+    font-size: 1rem;
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    row-gap: 0.5rem;
+    pointer-events: none;
+    align-self: flex-start;
+    text-align: start;
+}
+
+.bizy-select__content__label {
+    color: var(--bizy-select-label-color, #000);
+}
+
+.bizy-select__hidden-options {
+    visibility: hidden;
+    height: 0;
+    width: 0;
+    display: block;
+    pointer-events: none;
+}
+
+
+.bizy-select__options {
+    background-color: var(--bizy-select-background-color, #fff);
+    display: flex;
+    min-width: 100%;
+    flex-direction: column;
+    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+    max-height: 20rem;
+    overflow-y: scroll;
+    position: relative;
+    max-width: min(75%, 25rem);
+}
+
+.bizy-select__options__search {
+    position: sticky;
+    z-index: 1;
+    top: 0;
+}

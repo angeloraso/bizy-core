@@ -1,0 +1,91 @@
+.bizy-checkbox .bizy-checkbox__checkbox {
+    user-select: none;
+    cursor: pointer;
+    padding: 0.1rem;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+.bizy-checkbox .bizy-checkbox__checkbox:hover {
+    background: var(--bizy-checkbox-hover-color, #16aa8833);
+}
+
+.bizy-checkbox .bizy-checkbox__checkbox span {
+    float: left;
+    vertical-align: middle;
+    transform: translate3d(0, 0, 0);
+}
+
+.bizy-checkbox .bizy-checkbox__checkbox span:first-child {
+    position: relative;
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: 0.25rem;
+    transform: scale(1);
+    border: 0.1rem solid var(--bizy-checkbox-border-color, #cccfdb);
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 1px rgba(0, 16, 75, 0.05);
+}
+
+.bizy-checkbox .bizy-checkbox__checkbox span:first-child svg {
+    position: absolute;
+    top: 0.2rem;
+    left: 0.15rem;
+    fill: none;
+    stroke: #fff;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1.1rem;
+    stroke-dashoffset: 1.1rem;
+    transition: all 0.3s ease;
+    transition-delay: 0.1s;
+    transform: translate3d(0, 0, 0);
+}
+
+.bizy-checkbox .bizy-checkbox__checkbox:hover span:first-child {
+    border-color: var(--bizy-checkbox-selected-color, #16aa88);
+}
+
+.bizy-checkbox .bizy-checkbox__input {
+    position: absolute;
+    visibility: hidden;
+}
+
+.bizy-checkbox__input--disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: not-allowed !important;
+}
+
+.bizy-checkbox .bizy-checkbox__input:checked+.bizy-checkbox__checkbox span:first-child {
+    background-color: var(--bizy-checkbox-selected-color, #16aa88);
+    border-color: var(--bizy-checkbox-selected-color, #16aa88);
+    animation: bizy-checkbox-wave 0.4s ease;
+}
+
+.bizy-checkbox .bizy-checkbox__input:checked+.bizy-checkbox__checkbox span:first-child svg {
+    stroke-dashoffset: 0;
+}
+
+.bizy-checkbox .inline-svg {
+    position: absolute;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    user-select: none;
+}
+
+@-o-keyframes bizy-checkbox-wave {
+    50% {
+        transform: scale(0.9);
+    }
+}
+
+@keyframes bizy-checkbox-wave {
+    50% {
+        transform: scale(0.9);
+    }
+}

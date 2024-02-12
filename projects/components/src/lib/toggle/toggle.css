@@ -41,7 +41,7 @@
 .bizy-toggle__slide__knobs:before {
     content: '';
     position: absolute;
-    top: 0.15rem;
+    top: 0;
     left: 0.15rem;
     width: 1.3rem;
     height: 1.3rem;

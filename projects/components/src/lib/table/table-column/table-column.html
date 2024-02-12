@@ -1,0 +1,10 @@
+<button 
+    type="button"
+    id="{{id}}"
+    (click)="onSelect.emit()"
+    (keyup.enter)="onSelect.emit()"
+    class="bizy-table-column {{customClass}}">
+
+    <ng-content></ng-content>
+    
+</button>

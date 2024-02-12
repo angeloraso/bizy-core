@@ -1,0 +1,17 @@
+<button 
+    type="button"
+    id="{{id}}"
+    (click)="_onSelect($event)"
+    (keyup.enter)="_onSelect($event)"
+    [ngClass]="{'bizy-menu-option--selected': selected, 'bizy-menu-option--disabled': disabled}"
+    class="bizy-menu-option {{customClass}}">
+
+    <span class="bizy-menu-option__content">
+        <ng-content></ng-content>
+    </span>
+    
+</button>
+
+<span class="bizy-menu-option__menu">
+    <ng-content select="bizy-menu"></ng-content>
+</span>

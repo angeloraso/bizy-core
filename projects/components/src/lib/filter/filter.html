@@ -1,0 +1,32 @@
+<button 
+    type="button"
+    class="bizy-filter {{customClass}}"
+    [ngClass]="{'bizy-filter--disabled': disabled}"
+    id="{{id}}"
+    (click)="_onOpen($event)"
+    (keyup.enter)="_onOpen($event)"
+    cdkOverlayOrigin 
+    #bizyFilterTrigger="cdkOverlayOrigin">
+
+    <span class="bizy-filter__content">
+        <ng-content></ng-content>
+    </span>
+
+    <span class="bizy-filter__badge" [ngClass]="{'bizy-filter__badge--visible': _activated}"></span>
+    
+</button>
+
+<ng-template
+    cdkConnectedOverlay
+    [cdkConnectedOverlayMinWidth]="_filterWidth"
+    [cdkConnectedOverlayOrigin]="bizyFilterTrigger"
+    (overlayOutsideClick)="close($event)"
+    [cdkConnectedOverlayOpen]="opened">
+
+    <span class="bizy-filter__sections">
+
+        <ng-content select="bizy-filter-section"></ng-content>
+
+    </span>
+
+</ng-template>

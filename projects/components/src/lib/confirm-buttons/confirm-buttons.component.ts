@@ -25,5 +25,6 @@ export class ConfirmButtonsComponent {
     this.renderer.setStyle(this.componentRef.nativeElement, 'bottom', '0');
     this.renderer.setStyle(this.componentRef.nativeElement, 'left', '0');
     this.renderer.setStyle(this.componentRef.nativeElement, 'right', '0');
+    this.renderer.setStyle(this.componentRef.nativeElement, 'width', '100%');
   }
 }

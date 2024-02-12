@@ -1,0 +1,16 @@
+<div 
+    id="{{id}}"
+    class="bizy-table-row {{customClass}}"
+    [ngClass]="{'bizy-table-row--disabled': disabled, 'bizy-table-row--selected': selected}">
+
+    <ng-content select="bizy-table-column"></ng-content>
+
+    <bizy-checkbox 
+        *ngIf="selectable"
+        class="bizy-table-row__checkbox"
+        [(selected)]="selected"
+        [disabled]="disabled"
+        (onSelect)="onSelect.emit(selected)">
+    </bizy-checkbox>
+    
+</div>

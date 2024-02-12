@@ -1,0 +1,31 @@
+:host {
+    font-size: 1rem;
+    flex: 1;
+}
+
+:host:has(.bizy-table-column-arrows) .bizy-table-column {
+    cursor: pointer !important;
+}
+
+.bizy-table-column {
+    font-size: 1rem;
+    width: 100%;
+    border: none;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    column-gap: 0.3rem;
+}
+
+.bizy-table-column__arrows {
+    height: 1rem;
+    fill: var(--bizy-table-column-arrows-color, #2b94f4)
+}
+
+::ng-deep .bizy-table-column * {
+    text-align: start;
+} 
+
+::ng-deep .bizy-table-column:hover .bizy-table-column-arrows {
+    display: inline-block;
+}

@@ -1,3 +1,4 @@
+import { DOCUMENT } from '@angular/common';
 import {
   Directive,
   Input,
@@ -5,17 +6,11 @@ import {
   Inject,
   Renderer2,
 } from '@angular/core';
-import {
-  Subject,
-  interval,
-  take,
-  takeUntil,
-} from 'rxjs';
 
 type LoadingType = 'spinner' | 'card' | 'item';
 
 @Directive({
-  selector: '[bizyLoading]',
+  selector: '[bizyLoading]'
 })
 export class LoadingDirective {
   @Input() set bizyLoading(value: boolean) {
@@ -31,20 +26,15 @@ export class LoadingDirective {
 
   constructor(
     @Inject(ElementRef) private elementRef: ElementRef,
-    @Inject(Renderer2) private renderer: Renderer2
+    @Inject(Renderer2) private renderer: Renderer2,
+    @Inject(DOCUMENT) private document: Document
   ) {}
 
-  setLoading() {
-    const interval$ = interval(500);
-    const viewInit$: Subject<void> = new Subject();
-    interval$.pipe(takeUntil(viewInit$), take(6)).subscribe(() => {
-
+  setLoading = () => {
+    const mutationObserver = new MutationObserver(() => {
       if ((this.elementRef.nativeElement && (this.elementRef.nativeElement.offsetWidth === 0 || this.elementRef.nativeElement.offsetHeight === 0) && !this.#originalElement)) {
         return;
       }
-      
-      viewInit$.next();
-      viewInit$.complete();
 
       if (this.#currentValue) {
         this.#originalElement = this.elementRef.nativeElement;
@@ -75,6 +65,10 @@ export class LoadingDirective {
         this.renderer.insertBefore(this.#loadingElement.parentNode, this.#originalElement, this.#loadingElement);
         this.renderer.removeChild(this.#loadingElement.parentNode, this.#loadingElement);
       }
+
+      mutationObserver.disconnect();
     });
+
+    mutationObserver.observe(this.document.body, { childList: true, subtree: true });
   }
 }

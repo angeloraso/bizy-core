@@ -1,0 +1,53 @@
+<svg 
+    fill="none"
+    *ngIf="order !== 'asc' && order !== 'desc'"
+    name="bizy-table-column-arrows"
+    class="bizy-table-column-arrows animated fade-in {{customClass}}"
+    stroke="currentColor"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="2"
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0h24v24H0z" fill="none" stroke="none"/>
+    <path d="M3 9l4 -4l4 4m-4 -4v14"/>
+    <path d="M21 15l-4 4l-4 -4m4 4v-14"/>
+</svg>
+
+<svg 
+    fill="none"
+    *ngIf="order === 'desc'"
+    name="bizy-table-column-down-arrow"
+    class="bizy-table-column-arrows animated fade-in {{customClass}}"
+    [ngClass]="{'bizy-table-column-arrows--visible': show}"
+    stroke="currentColor"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="2"
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0h24v24H0z" fill="none" stroke="none"/>
+    <line x1="7" x2="7" y1="21" y2="3"/>
+    <path d="M20 18l-3 3l-3 -3"/>
+    <path d="M4 18l3 3l3 -3"/>
+    <line x1="17" x2="17" y1="21" y2="3"/>
+</svg>
+
+<svg
+    fill="none"
+    *ngIf="order === 'asc'"
+    name="bizy-table-column-up-arrow"
+    class="bizy-table-column-arrows animated fade-in {{customClass}}"
+    [ngClass]="{'bizy-table-column-arrows--visible': show}"
+    stroke="currentColor"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="2"
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0h24v24H0z" fill="none" stroke="none"/>
+    <line x1="17" x2="17" y1="3" y2="21"/>
+    <path d="M4 6l3 -3l3 3"/>
+    <path d="M20 6l-3 -3l-3 3"/>
+    <line x1="7" x2="7" y1="3" y2="21"/>
+</svg>

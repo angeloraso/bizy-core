@@ -15,8 +15,8 @@ export class ToggleComponent {
   @Input() label: string = '';
   @Input() labelPosition: LabelPosition = 'after';
   @Input() disabled: boolean = false;
+  @Output() checkedChange = new EventEmitter<boolean>();
   @Output() onSelect = new EventEmitter<boolean>();
-  @Output() valueChange = new EventEmitter<boolean>();
 
   _checked: boolean = false;
 

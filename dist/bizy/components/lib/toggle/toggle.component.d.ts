@@ -9,12 +9,12 @@ export declare class ToggleComponent {
     label: string;
     labelPosition: LabelPosition;
     disabled: boolean;
+    checkedChange: EventEmitter<boolean>;
     onSelect: EventEmitter<boolean>;
-    valueChange: EventEmitter<boolean>;
     _checked: boolean;
     set checked(checked: boolean);
     ngAfterViewInit(): void;
     constructor(renderer: Renderer2);
     static ɵfac: i0.ɵɵFactoryDeclaration<ToggleComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ToggleComponent, "bizy-toggle", never, { "id": { "alias": "id"; "required": false; }; "label": { "alias": "label"; "required": false; }; "labelPosition": { "alias": "labelPosition"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; "checked": { "alias": "checked"; "required": false; }; }, { "onSelect": "onSelect"; "valueChange": "valueChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ToggleComponent, "bizy-toggle", never, { "id": { "alias": "id"; "required": false; }; "label": { "alias": "label"; "required": false; }; "labelPosition": { "alias": "labelPosition"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; "checked": { "alias": "checked"; "required": false; }; }, { "checkedChange": "checkedChange"; "onSelect": "onSelect"; }, never, never, false, never>;
 }

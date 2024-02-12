@@ -1,0 +1,45 @@
+:host {
+    font-size: 1rem;
+}
+
+:host:has(> .bizy-menu-option__menu:not(:empty)) .bizy-menu-option {
+    display: none !important;
+}
+
+.bizy-menu-option {
+    font-size: 1rem;
+    width: 100%;
+    border: none;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 0.5rem;
+    padding: 0.5rem;
+    color: var(--bizy-menu-option-color, #000);
+    cursor: pointer;
+}
+
+.bizy-menu-option--selected {
+    color: var(--bizy-menu-option-selected-color, #fff) !important;
+    background-color: var(--bizy-menu-option-selected-background-color, #2b94f4) !important;
+}
+
+.bizy-menu-option--disabled {
+   opacity: 0.5;
+   pointer-events: none;
+   cursor: not-allowed !important;
+}
+
+.bizy-menu-option__content {
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    column-gap: 0.3rem;
+}
+
+
+::ng-deep .bizy-menu-option__menu * {
+    color: var(--bizy-menu-option-color, #000);
+    fill: var(--bizy-menu-option-color, #000);
+}

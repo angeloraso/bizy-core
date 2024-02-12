@@ -1,7 +1,8 @@
 import * as i0 from '@angular/core';
 import { Directive, Input, HostListener, ElementRef, Renderer2, Inject, Host, EventEmitter, Output, NgModule } from '@angular/core';
-import { interval, Subject, takeUntil, take, fromEvent, merge, timer, of } from 'rxjs';
 import * as i1 from '@angular/common';
+import { DOCUMENT } from '@angular/common';
+import { fromEvent, merge, timer, of } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 
 class OnlyNumbersDirective {
@@ -51,6 +52,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
 class LoadingDirective {
     elementRef;
     renderer;
+    document;
     set bizyLoading(value) {
         this.#currentValue = value;
         this.setLoading();
@@ -59,19 +61,16 @@ class LoadingDirective {
     #loadingElement;
     #originalElement;
     #currentValue;
-    constructor(elementRef, renderer) {
+    constructor(elementRef, renderer, document) {
         this.elementRef = elementRef;
         this.renderer = renderer;
+        this.document = document;
     }
-    setLoading() {
-        const interval$ = interval(500);
-        const viewInit$ = new Subject();
-        interval$.pipe(takeUntil(viewInit$), take(6)).subscribe(() => {
+    setLoading = () => {
+        const mutationObserver = new MutationObserver(() => {
             if ((this.elementRef.nativeElement && (this.elementRef.nativeElement.offsetWidth === 0 || this.elementRef.nativeElement.offsetHeight === 0) && !this.#originalElement)) {
                 return;
             }
-            viewInit$.next();
-            viewInit$.complete();
             if (this.#currentValue) {
                 this.#originalElement = this.elementRef.nativeElement;
                 const loadingWrapper = this.renderer.createElement('span');
@@ -98,15 +97,17 @@ class LoadingDirective {
                 this.renderer.insertBefore(this.#loadingElement.parentNode, this.#originalElement, this.#loadingElement);
                 this.renderer.removeChild(this.#loadingElement.parentNode, this.#loadingElement);
             }
+            mutationObserver.disconnect();
         });
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: LoadingDirective, deps: [{ token: ElementRef }, { token: Renderer2 }], target: i0.ɵɵFactoryTarget.Directive });
+        mutationObserver.observe(this.document.body, { childList: true, subtree: true });
+    };
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: LoadingDirective, deps: [{ token: ElementRef }, { token: Renderer2 }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Directive });
     static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "16.2.12", type: LoadingDirective, selector: "[bizyLoading]", inputs: { bizyLoading: "bizyLoading", type: "type" }, ngImport: i0 });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: LoadingDirective, decorators: [{
             type: Directive,
             args: [{
-                    selector: '[bizyLoading]',
+                    selector: '[bizyLoading]'
                 }]
         }], ctorParameters: function () { return [{ type: i0.ElementRef, decorators: [{
                     type: Inject,
@@ -114,6 +115,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 }] }, { type: i0.Renderer2, decorators: [{
                     type: Inject,
                     args: [Renderer2]
+                }] }, { type: Document, decorators: [{
+                    type: Inject,
+                    args: [DOCUMENT]
                 }] }]; }, propDecorators: { bizyLoading: [{
                 type: Input
             }], type: [{

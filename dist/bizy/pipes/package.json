@@ -1,0 +1,26 @@
+{
+  "name": "@bizy/pipes",
+  "version": "1.0.0",
+  "peerDependencies": {
+    "@angular/platform-browser": "16.2.12",
+    "@angular/core": "16.2.12",
+    "fuse.js": "7.0.0"
+  },
+  "dependencies": {
+    "tslib": "2.3.0"
+  },
+  "sideEffects": false,
+  "module": "fesm2022/bizy-pipes.mjs",
+  "typings": "index.d.ts",
+  "exports": {
+    "./package.json": {
+      "default": "./package.json"
+    },
+    ".": {
+      "types": "./index.d.ts",
+      "esm2022": "./esm2022/bizy-pipes.mjs",
+      "esm": "./esm2022/bizy-pipes.mjs",
+      "default": "./fesm2022/bizy-pipes.mjs"
+    }
+  }
+}

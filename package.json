@@ -4,9 +4,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "build-pipes": "ng build pipes",
     "build-components": "ng build components",
     "build-services": "ng build services",
-    "build-directives": "ng build directives"
+    "build-directives": "ng build directives",
+    "build-all": "npm run build-pipes; npm run build-components; npm run build-directives; npm run build-services;"
   },
   "dependencies": {
     "@angular/animations": "16.2.12",

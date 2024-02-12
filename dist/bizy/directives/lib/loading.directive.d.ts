@@ -5,10 +5,11 @@ export declare class LoadingDirective {
     #private;
     private elementRef;
     private renderer;
+    private document;
     set bizyLoading(value: boolean);
     type: LoadingType;
-    constructor(elementRef: ElementRef, renderer: Renderer2);
-    setLoading(): void;
+    constructor(elementRef: ElementRef, renderer: Renderer2, document: Document);
+    setLoading: () => void;
     static ɵfac: i0.ɵɵFactoryDeclaration<LoadingDirective, never>;
     static ɵdir: i0.ɵɵDirectiveDeclaration<LoadingDirective, "[bizyLoading]", never, { "bizyLoading": { "alias": "bizyLoading"; "required": false; }; "type": { "alias": "type"; "required": false; }; }, {}, never, never, false, never>;
 }

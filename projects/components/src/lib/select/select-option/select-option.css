@@ -1,0 +1,44 @@
+:host {
+    font-size: 1rem;
+}
+
+:host:has(> .bizy-select-option__select:not(:empty)) .bizy-select-option {
+    display: none !important;
+}
+
+.bizy-select-option {
+    font-size: 1rem;
+    width: 100%;
+    border: none;
+    background-color: var(--bizy-select-background-color, #fff);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 0.5rem;
+    padding: 0.5rem;
+    color: var(--bizy-select-option-color, #000);
+    cursor: pointer;
+}
+
+.bizy-select-option:hover {
+    background-color: var(--bizy-select-option-hover-background-color, #2b94f444);
+}
+
+.bizy-select-option--selected {
+    color: var(--bizy-select-option-selected-color, #fff);
+    background-color: var(--bizy-select-option-selected-background-color, #2b94f4);
+}
+
+.bizy-select-option--disabled {
+   opacity: 0.5;
+   pointer-events: none;
+   cursor: not-allowed !important;
+}
+
+.bizy-select-option__content {
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    column-gap: 0.3rem;
+    text-align: start;
+}

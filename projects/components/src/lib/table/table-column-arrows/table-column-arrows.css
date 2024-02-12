@@ -1,0 +1,15 @@
+:host {
+    font-size: 1rem;
+}
+
+.bizy-table-column-arrows {
+    display: none;
+    font-size: 1rem;
+    height: 1rem;
+    color: var(--bizy-table-column-arrow-color, #2b94f4);
+}
+
+.bizy-table-column-arrows--visible {
+    display: inline-block;
+}
+

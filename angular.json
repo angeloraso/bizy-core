@@ -71,6 +71,29 @@
           "defaultConfiguration": "production"
         }
       }
+    },
+    "pipes": {
+      "projectType": "library",
+      "root": "projects/pipes",
+      "sourceRoot": "projects/pipes/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/pipes/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/pipes/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/pipes/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        }
+      }
     }
   }
 }

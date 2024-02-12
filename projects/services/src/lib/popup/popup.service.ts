@@ -23,6 +23,7 @@ export class PopupService<T, R> {
       autoFocus: true,
       hasBackdrop: true,
       disableClose: data.disableClose ?? false,
+      backdropClass: 'bizy-popup-backdrop',
       panelClass: ['bizy-popup', data.customClass] 
     } as DialogConfig<unknown, DialogRef<R, PopupWrapperComponent<T>>>));
 
