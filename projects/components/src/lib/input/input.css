@@ -1,3 +1,8 @@
+:host {
+    font-size: 1rem;
+    width: 100%;
+}
+
 ::ng-deep .bizy-input {
     --color: var(--bizy-input-color) !important;
     --background: var(--bizy-input-background-color) !important;

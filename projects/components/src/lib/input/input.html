@@ -20,8 +20,9 @@
     [min]="min"
     [minlength]="minLength"
     [debounce]="300"
-    (ionBlur)="onBlur()"
+    (ionBlur)="_onBlur()"
     (ionInput)="onInput($event)"
+    (keyup.enter)="enter.emit()"
     [clearInput]="clear"
     [placeholder]="placeholder"
     labelPlacement="stacked">
@@ -40,7 +41,7 @@
     [readonly]="true"
     [value]="control?.value | date : (type === 'date' ? 'dd/MM/yyyy' : type === 'date-time' ? 'dd/MM/yyyy hh:mm' : type === 'time' ? 'hh:mm' : type === 'month-year' ? 'MMMM yyyy' : type === 'year' ? 'yyyy' : 'MMMM')"
     fill="solid"
-    (ionBlur)="onBlur()"
+    (ionBlur)="_onBlur()"
     [clearInput]="clear"
     [placeholder]="placeholder"
     labelPlacement="stacked">

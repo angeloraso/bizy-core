@@ -32,6 +32,8 @@ export class InputComponent {
   @Input() confirmLabel: string = 'Confirmar';
   @Input() customClass: string;
   @Output() onFocus = new EventEmitter<void>();
+  @Output() enter = new EventEmitter<void>();
+  @Output() onBlur = new EventEmitter<void>();
 
   constructor(@Inject(ChangeDetectorRef) private ref: ChangeDetectorRef) {}
 
@@ -45,8 +47,9 @@ export class InputComponent {
     this.ref.detectChanges();
   }
 
-  onBlur() {
+  _onBlur() {
     this.control.markAsTouched();
+    this.onBlur.emit();
   }
 
   focus() {
