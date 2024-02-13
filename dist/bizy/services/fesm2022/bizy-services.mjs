@@ -9,7 +9,7 @@ import { DIALOG_DATA, DialogRef, Dialog, DialogModule } from '@angular/cdk/dialo
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import * as i1$2 from '@ngx-translate/core';
-import { TranslateService as TranslateService$1 } from '@ngx-translate/core';
+import { TranslateService as TranslateService$1, TranslateModule as TranslateModule$1 } from '@ngx-translate/core';
 
 /**
  * Copyright 2020 Google LLC
@@ -676,13 +676,10 @@ class TranslateService {
         return this.translate.instant(translation);
     }
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslateService, deps: [{ token: TranslateService$1 }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslateService, providedIn: 'root' });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslateService });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslateService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
+            type: Injectable
         }], ctorParameters: function () { return [{ type: i1$2.TranslateService, decorators: [{
                     type: Inject,
                     args: [TranslateService$1]
@@ -709,9 +706,35 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                     args: [TranslateService]
                 }] }]; } });
 
+class TranslatePipeModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslatePipeModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: TranslatePipeModule, declarations: [TranslatePipe], exports: [TranslatePipe] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslatePipeModule });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslatePipeModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    declarations: [TranslatePipe],
+                    exports: [TranslatePipe]
+                }]
+        }] });
+
+class TranslateModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslateModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: TranslateModule, imports: [i1$2.TranslateModule] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslateModule, providers: [TranslateService], imports: [TranslateModule$1.forRoot()] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslateModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: [TranslateModule$1.forRoot()],
+                    providers: [TranslateService]
+                }]
+        }] });
+
 /**
  * Generated bundle index. Do not edit.
  */
 
-export { LANGUAGE, LogService, PopupModule, PopupService, RouterService, StorageService, TranslatePipe, TranslateService, UserAgentService, ValidatorService };
+export { LANGUAGE, LogService, PopupModule, PopupService, RouterService, StorageService, TranslateModule, TranslatePipe, TranslatePipeModule, TranslateService, UserAgentService, ValidatorService };
 //# sourceMappingURL=bizy-services.mjs.map

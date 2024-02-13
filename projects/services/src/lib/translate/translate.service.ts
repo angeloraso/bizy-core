@@ -10,9 +10,7 @@ export interface ILocale {
   translations: Record<string, unknown>;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class TranslateService {
   constructor(@Inject(ngxTranslateService) private translate: ngxTranslateService) {}
 
