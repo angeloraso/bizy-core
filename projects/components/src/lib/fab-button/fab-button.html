@@ -1,0 +1,13 @@
+<button 
+    type="button"
+    id="{{id}}"
+    class="bizy-fab-button {{customClass}}"
+    [ngClass]="{'bizy-button--disabled': disabled}"
+    (click)="_onSelect($event)"
+    (keyup.enter)="_onSelect($event)">
+    <span class="bizy-fab-button__content">
+        <ng-content></ng-content>
+    </span>
+    
+</button>
+

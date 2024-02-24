@@ -1,0 +1,30 @@
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import * as i0 from "@angular/core";
+import * as i1 from "@angular/common";
+export class FabButtonComponent {
+    id = String(Math.random());
+    disabled = false;
+    customClass = '';
+    onSelect = new EventEmitter();
+    _onSelect(event) {
+        if (this.disabled) {
+            return;
+        }
+        this.onSelect.emit(event);
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: FabButtonComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: FabButtonComponent, selector: "bizy-fab-button", inputs: { id: "id", disabled: "disabled", customClass: "customClass" }, outputs: { onSelect: "onSelect" }, ngImport: i0, template: "<button \n    type=\"button\"\n    id=\"{{id}}\"\n    class=\"bizy-fab-button {{customClass}}\"\n    [ngClass]=\"{'bizy-button--disabled': disabled}\"\n    (click)=\"_onSelect($event)\"\n    (keyup.enter)=\"_onSelect($event)\">\n    <span class=\"bizy-fab-button__content\">\n        <ng-content></ng-content>\n    </span>\n    \n</button>\n\n", styles: [":host{font-size:1rem}.bizy-fab-button{display:flex;display:grid;place-items:center;border-radius:50%;color:var(---bizy-fab-button-color, #ffffff);border:none;background-color:var(---bizy-fab-button-background-color, #16aa88);cursor:pointer;position:absolute;bottom:.5rem;right:.5rem;padding:1.2rem 1.3rem}.bizy-fab-button:hover{filter:brightness(95%)}.bizy-fab-button__content{width:100%;justify-content:center;align-items:center;flex-direction:column;row-gap:.5rem}.bizy-fab-button--disabled{opacity:.5;cursor:not-allowed!important;pointer-events:none}\n"], dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: FabButtonComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-fab-button', changeDetection: ChangeDetectionStrategy.OnPush, template: "<button \n    type=\"button\"\n    id=\"{{id}}\"\n    class=\"bizy-fab-button {{customClass}}\"\n    [ngClass]=\"{'bizy-button--disabled': disabled}\"\n    (click)=\"_onSelect($event)\"\n    (keyup.enter)=\"_onSelect($event)\">\n    <span class=\"bizy-fab-button__content\">\n        <ng-content></ng-content>\n    </span>\n    \n</button>\n\n", styles: [":host{font-size:1rem}.bizy-fab-button{display:flex;display:grid;place-items:center;border-radius:50%;color:var(---bizy-fab-button-color, #ffffff);border:none;background-color:var(---bizy-fab-button-background-color, #16aa88);cursor:pointer;position:absolute;bottom:.5rem;right:.5rem;padding:1.2rem 1.3rem}.bizy-fab-button:hover{filter:brightness(95%)}.bizy-fab-button__content{width:100%;justify-content:center;align-items:center;flex-direction:column;row-gap:.5rem}.bizy-fab-button--disabled{opacity:.5;cursor:not-allowed!important;pointer-events:none}\n"] }]
+        }], propDecorators: { id: [{
+                type: Input
+            }], disabled: [{
+                type: Input
+            }], customClass: [{
+                type: Input
+            }], onSelect: [{
+                type: Output
+            }] } });
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZmFiLWJ1dHRvbi5jb21wb25lbnQuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi8uLi9wcm9qZWN0cy9jb21wb25lbnRzL3NyYy9saWIvZmFiLWJ1dHRvbi9mYWItYnV0dG9uLmNvbXBvbmVudC50cyIsIi4uLy4uLy4uLy4uLy4uLy4uL3Byb2plY3RzL2NvbXBvbmVudHMvc3JjL2xpYi9mYWItYnV0dG9uL2ZhYi1idXR0b24uaHRtbCJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxPQUFPLEVBQUUsdUJBQXVCLEVBQUUsU0FBUyxFQUFFLFlBQVksRUFBRSxLQUFLLEVBQUUsTUFBTSxFQUFFLE1BQU0sZUFBZSxDQUFDOzs7QUFRaEcsTUFBTSxPQUFPLGtCQUFrQjtJQUNwQixFQUFFLEdBQVcsTUFBTSxDQUFDLElBQUksQ0FBQyxNQUFNLEVBQUUsQ0FBQyxDQUFDO0lBQ25DLFFBQVEsR0FBWSxLQUFLLENBQUM7SUFDMUIsV0FBVyxHQUFXLEVBQUUsQ0FBQztJQUN4QixRQUFRLEdBQUcsSUFBSSxZQUFZLEVBQWdCLENBQUM7SUFFdEQsU0FBUyxDQUFDLEtBQW1CO1FBQzNCLElBQUksSUFBSSxDQUFDLFFBQVEsRUFBRTtZQUNqQixPQUFPO1NBQ1I7UUFFRCxJQUFJLENBQUMsUUFBUSxDQUFDLElBQUksQ0FBQyxLQUFLLENBQUMsQ0FBQztJQUM1QixDQUFDO3dHQVpVLGtCQUFrQjs0RkFBbEIsa0JBQWtCLGtLQ1IvQix5VkFhQTs7NEZETGEsa0JBQWtCO2tCQU45QixTQUFTOytCQUNFLGlCQUFpQixtQkFHVix1QkFBdUIsQ0FBQyxNQUFNOzhCQUd0QyxFQUFFO3NCQUFWLEtBQUs7Z0JBQ0csUUFBUTtzQkFBaEIsS0FBSztnQkFDRyxXQUFXO3NCQUFuQixLQUFLO2dCQUNJLFFBQVE7c0JBQWpCLE1BQU0iLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBDaGFuZ2VEZXRlY3Rpb25TdHJhdGVneSwgQ29tcG9uZW50LCBFdmVudEVtaXR0ZXIsIElucHV0LCBPdXRwdXQgfSBmcm9tICdAYW5ndWxhci9jb3JlJztcblxuQENvbXBvbmVudCh7XG4gIHNlbGVjdG9yOiAnYml6eS1mYWItYnV0dG9uJyxcbiAgdGVtcGxhdGVVcmw6ICcuL2ZhYi1idXR0b24uaHRtbCcsXG4gIHN0eWxlVXJsczogWycuL2ZhYi1idXR0b24uY3NzJ10sXG4gIGNoYW5nZURldGVjdGlvbjogQ2hhbmdlRGV0ZWN0aW9uU3RyYXRlZ3kuT25QdXNoXG59KVxuZXhwb3J0IGNsYXNzIEZhYkJ1dHRvbkNvbXBvbmVudCB7XG4gIEBJbnB1dCgpIGlkOiBzdHJpbmcgPSBTdHJpbmcoTWF0aC5yYW5kb20oKSk7XG4gIEBJbnB1dCgpIGRpc2FibGVkOiBib29sZWFuID0gZmFsc2U7XG4gIEBJbnB1dCgpIGN1c3RvbUNsYXNzOiBzdHJpbmcgPSAnJztcbiAgQE91dHB1dCgpIG9uU2VsZWN0ID0gbmV3IEV2ZW50RW1pdHRlcjxQb2ludGVyRXZlbnQ+KCk7XG5cbiAgX29uU2VsZWN0KGV2ZW50OiBQb2ludGVyRXZlbnQpIHtcbiAgICBpZiAodGhpcy5kaXNhYmxlZCkge1xuICAgICAgcmV0dXJuO1xuICAgIH1cblxuICAgIHRoaXMub25TZWxlY3QuZW1pdChldmVudCk7XG4gIH1cbn0iLCI8YnV0dG9uIFxuICAgIHR5cGU9XCJidXR0b25cIlxuICAgIGlkPVwie3tpZH19XCJcbiAgICBjbGFzcz1cImJpenktZmFiLWJ1dHRvbiB7e2N1c3RvbUNsYXNzfX1cIlxuICAgIFtuZ0NsYXNzXT1cInsnYml6eS1idXR0b24tLWRpc2FibGVkJzogZGlzYWJsZWR9XCJcbiAgICAoY2xpY2spPVwiX29uU2VsZWN0KCRldmVudClcIlxuICAgIChrZXl1cC5lbnRlcik9XCJfb25TZWxlY3QoJGV2ZW50KVwiPlxuICAgIDxzcGFuIGNsYXNzPVwiYml6eS1mYWItYnV0dG9uX19jb250ZW50XCI+XG4gICAgICAgIDxuZy1jb250ZW50PjwvbmctY29udGVudD5cbiAgICA8L3NwYW4+XG4gICAgXG48L2J1dHRvbj5cblxuIl19

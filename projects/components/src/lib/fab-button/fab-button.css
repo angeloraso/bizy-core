@@ -1,0 +1,36 @@
+:host {
+    font-size: 1rem;
+}
+
+.bizy-fab-button {
+    display: flex;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    color: var(---bizy-fab-button-color, #ffffff);
+    border: none;
+    background-color: var(---bizy-fab-button-background-color, #16aa88);
+    cursor: pointer;
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    padding: 1.2rem 1.3rem;
+}
+
+.bizy-fab-button:hover {
+    filter: brightness(95%);
+}
+
+.bizy-fab-button__content {
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    row-gap: 0.5rem;
+}
+
+.bizy-fab-button--disabled {
+    opacity: 0.5;
+    cursor: not-allowed !important;
+    pointer-events: none;
+}
