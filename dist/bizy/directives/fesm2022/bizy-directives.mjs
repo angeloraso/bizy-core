@@ -54,53 +54,56 @@ class LoadingDirective {
     renderer;
     document;
     set bizyLoading(value) {
-        this.#currentValue = value;
-        this.setLoading();
+        if ((this.elementRef.nativeElement && (this.elementRef.nativeElement.offsetWidth === 0 || this.elementRef.nativeElement.offsetHeight === 0) && !this.#originalElement)) {
+            const mutationObserver = new MutationObserver(() => {
+                if ((this.elementRef.nativeElement && (this.elementRef.nativeElement.offsetWidth === 0 || this.elementRef.nativeElement.offsetHeight === 0) && !this.#originalElement)) {
+                    return;
+                }
+                this.#setLoading(value);
+                mutationObserver.disconnect();
+            });
+            mutationObserver.observe(this.document.body, { childList: true, subtree: true });
+        }
+        else {
+            this.#setLoading(value);
+        }
     }
     type = 'spinner';
     #loadingElement;
     #originalElement;
-    #currentValue;
     constructor(elementRef, renderer, document) {
         this.elementRef = elementRef;
         this.renderer = renderer;
         this.document = document;
     }
-    setLoading = () => {
-        const mutationObserver = new MutationObserver(() => {
-            if ((this.elementRef.nativeElement && (this.elementRef.nativeElement.offsetWidth === 0 || this.elementRef.nativeElement.offsetHeight === 0) && !this.#originalElement)) {
-                return;
-            }
-            if (this.#currentValue) {
-                this.#originalElement = this.elementRef.nativeElement;
-                const loadingWrapper = this.renderer.createElement('span');
-                this.renderer.setStyle(loadingWrapper, 'width', `${this.elementRef.nativeElement.offsetWidth}px`);
-                this.renderer.setStyle(loadingWrapper, 'height', `${this.elementRef.nativeElement.offsetHeight}px`);
-                this.renderer.setStyle(loadingWrapper, 'display', 'grid');
-                this.renderer.setStyle(loadingWrapper, 'placeItems', 'center');
-                const backgroundColor = window.getComputedStyle(this.elementRef.nativeElement, null).getPropertyValue('background-color');
-                this.renderer.setStyle(loadingWrapper, 'backgroundColor', backgroundColor);
-                this.renderer.setStyle(loadingWrapper, 'pointer-events', 'none');
-                const loading = this.renderer.createElement('span');
-                this.renderer.addClass(loading, `bizy-loading--${this.type}`);
-                const minSize = Math.min(this.elementRef.nativeElement.offsetWidth, this.elementRef.nativeElement.offsetHeight);
-                this.renderer.setStyle(loading, 'width', `${minSize * 0.8}px`);
-                this.renderer.setStyle(loading, 'height', `${minSize * 0.8}px`);
-                this.renderer.setStyle(loading, 'maxWidth', '20vmax');
-                this.renderer.setStyle(loading, 'maxHeight', '20vmax');
-                this.renderer.appendChild(loadingWrapper, loading);
-                this.#loadingElement = loadingWrapper;
-                this.renderer.insertBefore(this.#originalElement.parentNode, this.#loadingElement, this.#originalElement);
-                this.renderer.removeChild(this.#originalElement.parentNode, this.#originalElement);
-            }
-            else if (this.#loadingElement && this.#originalElement && this.#currentValue === false) {
-                this.renderer.insertBefore(this.#loadingElement.parentNode, this.#originalElement, this.#loadingElement);
-                this.renderer.removeChild(this.#loadingElement.parentNode, this.#loadingElement);
-            }
-            mutationObserver.disconnect();
-        });
-        mutationObserver.observe(this.document.body, { childList: true, subtree: true });
-    };
+    #setLoading(value) {
+        if (value) {
+            this.#originalElement = this.elementRef.nativeElement;
+            const loadingWrapper = this.renderer.createElement('span');
+            this.renderer.setStyle(loadingWrapper, 'width', `${this.elementRef.nativeElement.offsetWidth}px`);
+            this.renderer.setStyle(loadingWrapper, 'height', `${this.elementRef.nativeElement.offsetHeight}px`);
+            this.renderer.setStyle(loadingWrapper, 'display', 'grid');
+            this.renderer.setStyle(loadingWrapper, 'placeItems', 'center');
+            const backgroundColor = window.getComputedStyle(this.elementRef.nativeElement, null).getPropertyValue('background-color');
+            this.renderer.setStyle(loadingWrapper, 'backgroundColor', backgroundColor);
+            this.renderer.setStyle(loadingWrapper, 'pointer-events', 'none');
+            const loading = this.renderer.createElement('span');
+            this.renderer.addClass(loading, `bizy-loading--${this.type}`);
+            const minSize = Math.min(this.elementRef.nativeElement.offsetWidth, this.elementRef.nativeElement.offsetHeight);
+            this.renderer.setStyle(loading, 'width', `${minSize * 0.8}px`);
+            this.renderer.setStyle(loading, 'height', `${minSize * 0.8}px`);
+            this.renderer.setStyle(loading, 'maxWidth', '15vmax');
+            this.renderer.setStyle(loading, 'maxHeight', '15vmax');
+            this.renderer.appendChild(loadingWrapper, loading);
+            this.#loadingElement = loadingWrapper;
+            this.renderer.insertBefore(this.#originalElement.parentNode, this.#loadingElement, this.#originalElement);
+            this.renderer.removeChild(this.#originalElement.parentNode, this.#originalElement);
+        }
+        else if (this.#loadingElement && this.#originalElement && value === false) {
+            this.renderer.insertBefore(this.#loadingElement.parentNode, this.#originalElement, this.#loadingElement);
+            this.renderer.removeChild(this.#loadingElement.parentNode, this.#loadingElement);
+        }
+    }
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: LoadingDirective, deps: [{ token: ElementRef }, { token: Renderer2 }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Directive });
     static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "16.2.12", type: LoadingDirective, selector: "[bizyLoading]", inputs: { bizyLoading: "bizyLoading", type: "type" }, ngImport: i0 });
 }

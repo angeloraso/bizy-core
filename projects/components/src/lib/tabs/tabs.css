@@ -1,5 +1,5 @@
 .bizy-tabs {
     display: flex;
     align-items: center;
-    background-color: var(--bizy-tabs-background-color);
+    background-color: var(--bizy-tabs-background-color, #ffffff);
 }

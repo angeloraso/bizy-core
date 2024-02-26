@@ -3,11 +3,11 @@ import * as i0 from "@angular/core";
 export class TabsComponent {
     customClass;
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TabsComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: TabsComponent, selector: "bizy-tabs", inputs: { customClass: "customClass" }, ngImport: i0, template: "<div class=\"bizy-tabs {{customClass}}\">\n\n    <ng-content select=\"bizy-tab\"></ng-content>\n\n</div>", styles: [".bizy-tabs{display:flex;align-items:center;background-color:var(--bizy-tabs-background-color)}\n"], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: TabsComponent, selector: "bizy-tabs", inputs: { customClass: "customClass" }, ngImport: i0, template: "<div class=\"bizy-tabs {{customClass}}\">\n\n    <ng-content select=\"bizy-tab\"></ng-content>\n\n</div>", styles: [".bizy-tabs{display:flex;align-items:center;background-color:var(--bizy-tabs-background-color, #ffffff)}\n"], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TabsComponent, decorators: [{
             type: Component,
-            args: [{ selector: 'bizy-tabs', changeDetection: ChangeDetectionStrategy.OnPush, template: "<div class=\"bizy-tabs {{customClass}}\">\n\n    <ng-content select=\"bizy-tab\"></ng-content>\n\n</div>", styles: [".bizy-tabs{display:flex;align-items:center;background-color:var(--bizy-tabs-background-color)}\n"] }]
+            args: [{ selector: 'bizy-tabs', changeDetection: ChangeDetectionStrategy.OnPush, template: "<div class=\"bizy-tabs {{customClass}}\">\n\n    <ng-content select=\"bizy-tab\"></ng-content>\n\n</div>", styles: [".bizy-tabs{display:flex;align-items:center;background-color:var(--bizy-tabs-background-color, #ffffff)}\n"] }]
         }], propDecorators: { customClass: [{
                 type: Input
             }] } });

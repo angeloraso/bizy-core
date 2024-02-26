@@ -1,7 +1,7 @@
 import * as i0 from '@angular/core';
 import { EventEmitter, Renderer2, Component, ChangeDetectionStrategy, Inject, ViewChild, Input, Output, NgModule, ElementRef, Directive, TemplateRef, ChangeDetectorRef, ContentChild, ContentChildren, Pipe } from '@angular/core';
 import * as i1 from '@angular/common';
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { CommonModule, DOCUMENT, DecimalPipe } from '@angular/common';
 import * as i2$2 from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { BehaviorSubject, filter, take, Subject, interval, Subscription } from 'rxjs';
@@ -12,6 +12,7 @@ import * as i2$1 from '@ionic/angular';
 import { IonicModule } from '@ionic/angular';
 import * as i2$3 from '@angular/cdk/overlay';
 import { OverlayModule } from '@angular/cdk/overlay';
+import * as echarts from 'echarts';
 
 class ToggleComponent {
     renderer;
@@ -666,11 +667,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
 class TabsComponent {
     customClass;
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TabsComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: TabsComponent, selector: "bizy-tabs", inputs: { customClass: "customClass" }, ngImport: i0, template: "<div class=\"bizy-tabs {{customClass}}\">\n\n    <ng-content select=\"bizy-tab\"></ng-content>\n\n</div>", styles: [".bizy-tabs{display:flex;align-items:center;background-color:var(--bizy-tabs-background-color)}\n"], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: TabsComponent, selector: "bizy-tabs", inputs: { customClass: "customClass" }, ngImport: i0, template: "<div class=\"bizy-tabs {{customClass}}\">\n\n    <ng-content select=\"bizy-tab\"></ng-content>\n\n</div>", styles: [".bizy-tabs{display:flex;align-items:center;background-color:var(--bizy-tabs-background-color, #ffffff)}\n"], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TabsComponent, decorators: [{
             type: Component,
-            args: [{ selector: 'bizy-tabs', changeDetection: ChangeDetectionStrategy.OnPush, template: "<div class=\"bizy-tabs {{customClass}}\">\n\n    <ng-content select=\"bizy-tab\"></ng-content>\n\n</div>", styles: [".bizy-tabs{display:flex;align-items:center;background-color:var(--bizy-tabs-background-color)}\n"] }]
+            args: [{ selector: 'bizy-tabs', changeDetection: ChangeDetectionStrategy.OnPush, template: "<div class=\"bizy-tabs {{customClass}}\">\n\n    <ng-content select=\"bizy-tab\"></ng-content>\n\n</div>", styles: [".bizy-tabs{display:flex;align-items:center;background-color:var(--bizy-tabs-background-color, #ffffff)}\n"] }]
         }], propDecorators: { customClass: [{
                 type: Input
             }] } });
@@ -681,11 +682,11 @@ class TabComponent {
     customClass;
     onSelect = new EventEmitter();
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TabComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: TabComponent, selector: "bizy-tab", inputs: { id: "id", selected: "selected", customClass: "customClass" }, outputs: { onSelect: "onSelect" }, ngImport: i0, template: "<span class=\"bizy-tab__selected-line\" [ngClass]=\"{'bizy-tab__selected-line--visible': selected}\"></span>\n\n<button \n  type=\"button\"\n  id=\"{{id}}\"\n  [ngClass]=\"{'bizy-tab--selected': selected}\"\n  class=\"bizy-tab {{customClass}}\"\n  (click)=\"onSelect.emit()\"\n  (keyup.enter)=\"onSelect.emit()\">\n\n  <ng-content select=\"[tab-icon]\"></ng-content>\n\n  <ng-content select=\"[tab-label]\"></ng-content>\n\n</button>", styles: [":host{flex:1}.bizy-tab{width:100%;display:flex;flex-direction:column;align-items:center;border:none;background-color:transparent;color:var(--bizy-tab-color);cursor:pointer}.bizy-tab--selected{color:var(--bizy-tab-selected-color)}@keyframes zoomIn{0%{opacity:0;transform:scale3d(.3,.3,.3)}50%{opacity:1}}.bizy-tab__selected-line{display:block;width:100%;height:.2rem;visibility:hidden;margin-bottom:.5rem;pointer-events:none;background-color:var(--bizy-tab-selected-color)}.bizy-tab__selected-line--visible{visibility:visible;animation-name:zoomIn;animation-duration:.3s;animation-fill-mode:both}\n"], dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: TabComponent, selector: "bizy-tab", inputs: { id: "id", selected: "selected", customClass: "customClass" }, outputs: { onSelect: "onSelect" }, ngImport: i0, template: "<span class=\"bizy-tab__selected-line\" [ngClass]=\"{'bizy-tab__selected-line--visible': selected}\"></span>\n\n<button \n  type=\"button\"\n  id=\"{{id}}\"\n  [ngClass]=\"{'bizy-tab--selected': selected}\"\n  class=\"bizy-tab {{customClass}}\"\n  (click)=\"onSelect.emit()\"\n  (keyup.enter)=\"onSelect.emit()\">\n\n  <ng-content select=\"[tab-icon]\"></ng-content>\n\n  <ng-content select=\"[tab-label]\"></ng-content>\n\n</button>", styles: [":host{flex:1}.bizy-tab{width:100%;display:flex;flex-direction:column;align-items:center;border:none;background-color:transparent;color:var(--bizy-tab-color, #666666);cursor:pointer}.bizy-tab--selected{color:var(--bizy-tab-selected-color, #16aa88)}@keyframes zoomIn{0%{opacity:0;transform:scale3d(.3,.3,.3)}50%{opacity:1}}.bizy-tab__selected-line{display:block;width:100%;height:.2rem;visibility:hidden;margin-bottom:.5rem;pointer-events:none;background-color:var(--bizy-tab-selected-color, #16aa88)}.bizy-tab__selected-line--visible{visibility:visible;animation-name:zoomIn;animation-duration:.3s;animation-fill-mode:both}\n"], dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TabComponent, decorators: [{
             type: Component,
-            args: [{ selector: 'bizy-tab', changeDetection: ChangeDetectionStrategy.OnPush, template: "<span class=\"bizy-tab__selected-line\" [ngClass]=\"{'bizy-tab__selected-line--visible': selected}\"></span>\n\n<button \n  type=\"button\"\n  id=\"{{id}}\"\n  [ngClass]=\"{'bizy-tab--selected': selected}\"\n  class=\"bizy-tab {{customClass}}\"\n  (click)=\"onSelect.emit()\"\n  (keyup.enter)=\"onSelect.emit()\">\n\n  <ng-content select=\"[tab-icon]\"></ng-content>\n\n  <ng-content select=\"[tab-label]\"></ng-content>\n\n</button>", styles: [":host{flex:1}.bizy-tab{width:100%;display:flex;flex-direction:column;align-items:center;border:none;background-color:transparent;color:var(--bizy-tab-color);cursor:pointer}.bizy-tab--selected{color:var(--bizy-tab-selected-color)}@keyframes zoomIn{0%{opacity:0;transform:scale3d(.3,.3,.3)}50%{opacity:1}}.bizy-tab__selected-line{display:block;width:100%;height:.2rem;visibility:hidden;margin-bottom:.5rem;pointer-events:none;background-color:var(--bizy-tab-selected-color)}.bizy-tab__selected-line--visible{visibility:visible;animation-name:zoomIn;animation-duration:.3s;animation-fill-mode:both}\n"] }]
+            args: [{ selector: 'bizy-tab', changeDetection: ChangeDetectionStrategy.OnPush, template: "<span class=\"bizy-tab__selected-line\" [ngClass]=\"{'bizy-tab__selected-line--visible': selected}\"></span>\n\n<button \n  type=\"button\"\n  id=\"{{id}}\"\n  [ngClass]=\"{'bizy-tab--selected': selected}\"\n  class=\"bizy-tab {{customClass}}\"\n  (click)=\"onSelect.emit()\"\n  (keyup.enter)=\"onSelect.emit()\">\n\n  <ng-content select=\"[tab-icon]\"></ng-content>\n\n  <ng-content select=\"[tab-label]\"></ng-content>\n\n</button>", styles: [":host{flex:1}.bizy-tab{width:100%;display:flex;flex-direction:column;align-items:center;border:none;background-color:transparent;color:var(--bizy-tab-color, #666666);cursor:pointer}.bizy-tab--selected{color:var(--bizy-tab-selected-color, #16aa88)}@keyframes zoomIn{0%{opacity:0;transform:scale3d(.3,.3,.3)}50%{opacity:1}}.bizy-tab__selected-line{display:block;width:100%;height:.2rem;visibility:hidden;margin-bottom:.5rem;pointer-events:none;background-color:var(--bizy-tab-selected-color, #16aa88)}.bizy-tab__selected-line--visible{visibility:visible;animation-name:zoomIn;animation-duration:.3s;animation-fill-mode:both}\n"] }]
         }], propDecorators: { id: [{
                 type: Input
             }], selected: [{
@@ -1853,6 +1854,572 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 }]
         }] });
 
+class LineChartComponent {
+    renderer;
+    elementRef;
+    document;
+    decimalPipe;
+    saveAsImageButtonLabel = 'Descargar';
+    xLabelPrefix = '';
+    xLabelSuffix = '';
+    yLabelPrefix = '';
+    yLabelSuffix = '';
+    labelsX = [];
+    height;
+    width;
+    chartContainer = null;
+    set data(data) {
+        if (data && data.length > 0) {
+            this.#setChartData(data);
+        }
+    }
+    constructor(renderer, elementRef, document, decimalPipe) {
+        this.renderer = renderer;
+        this.elementRef = elementRef;
+        this.document = document;
+        this.decimalPipe = decimalPipe;
+    }
+    async #setChartData(data) {
+        let size = { width: this.width, height: this.height };
+        if (!this.width || !this.height) {
+            size = await this.#getChartSize();
+        }
+        if (!this.chartContainer) {
+            this.chartContainer = this.renderer.createElement('div');
+            this.renderer.setStyle(this.chartContainer, 'width', `${size.width}px`);
+            this.renderer.setStyle(this.chartContainer, 'height', `${size.height}px`);
+            this.renderer.appendChild(this.elementRef.nativeElement, this.chartContainer);
+        }
+        const color = [];
+        const _data = [];
+        const legendData = [];
+        data.forEach(_d => {
+            if (_d.color) {
+                color.push(_d.color);
+            }
+            legendData.push(_d.name);
+            _data.push({
+                type: 'line',
+                id: _d.id ?? String(Math.random()),
+                name: _d.name,
+                smooth: true,
+                data: !_d.values || _d.values.length === 0 ? [0] : _d.values
+            });
+        });
+        const option = {
+            tooltip: {
+                trigger: 'axis',
+                appendToBody: true,
+                formatter: this.#tooltipFormatter
+            },
+            legend: {
+                y: 'bottom',
+                padding: [0, 0, 0, 0],
+                data: legendData
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    saveAsImage: {
+                        show: true,
+                        title: this.saveAsImageButtonLabel
+                    }
+                },
+                iconStyle: {
+                    emphasis: {
+                        textAlign: 'right'
+                    }
+                }
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    data: this.labelsX,
+                    axisLabel: {
+                        formatter: `${this.xLabelPrefix}{value}${this.xLabelSuffix}`,
+                        fontSize: 10,
+                    }
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    axisLabel: {
+                        formatter: `${this.yLabelPrefix}{value}${this.yLabelSuffix}`,
+                        fontSize: 10
+                    }
+                }
+            ],
+            series: _data
+        };
+        option.grid = {
+            bottom: `${Math.max(legendData.length * 2.4, 10)}%`,
+            containLabel: true,
+            left: '3%',
+            right: '3%'
+        };
+        if (color.length > 0) {
+            option.color = color;
+        }
+        if ((legendData.length / 18) > 1) {
+            this.renderer.setStyle(this.chartContainer, 'height', `${this.height * (legendData.length / 18)}px`);
+        }
+        echarts.init(this.chartContainer).setOption(option);
+    }
+    #tooltipFormatter = (params) => {
+        let tooltip = `${params[0].name}`;
+        const lineParam = params.filter(_param => _param.componentSubType === 'line');
+        lineParam.forEach(_param => {
+            const line = `<span style="color: ${_param.color}; font-size: 2rem; position: relative; top: 0.3rem;">-</span>`;
+            tooltip += `<br/>${line} ${_param.seriesName} : ${this.yLabelPrefix}${this.decimalPipe.transform(_param.value, '1.2-2')}${this.yLabelSuffix}`;
+        });
+        return tooltip;
+    };
+    #getChartSize() {
+        return new Promise(resolve => {
+            const mutationObserver = new MutationObserver(() => {
+                const parentRef = this.renderer.parentNode(this.elementRef.nativeElement);
+                if (parentRef && parentRef.offsetWidth && parentRef.offsetHeight) {
+                    let width = (this.width || parentRef.offsetWidth);
+                    let height = (this.height || parentRef.offsetHeight);
+                    mutationObserver.disconnect();
+                    resolve({ width, height });
+                }
+            });
+            mutationObserver.observe(this.document.body, { childList: true, subtree: true });
+        });
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: LineChartComponent, deps: [{ token: Renderer2 }, { token: ElementRef }, { token: DOCUMENT }, { token: DecimalPipe }], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: LineChartComponent, selector: "bizy-line-chart", inputs: { saveAsImageButtonLabel: "saveAsImageButtonLabel", xLabelPrefix: "xLabelPrefix", xLabelSuffix: "xLabelSuffix", yLabelPrefix: "yLabelPrefix", yLabelSuffix: "yLabelSuffix", labelsX: "labelsX", height: "height", width: "width", data: "data" }, ngImport: i0, template: '', isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: LineChartComponent, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'bizy-line-chart',
+                    template: '',
+                    changeDetection: ChangeDetectionStrategy.OnPush
+                }]
+        }], ctorParameters: function () { return [{ type: i0.Renderer2, decorators: [{
+                    type: Inject,
+                    args: [Renderer2]
+                }] }, { type: i0.ElementRef, decorators: [{
+                    type: Inject,
+                    args: [ElementRef]
+                }] }, { type: Document, decorators: [{
+                    type: Inject,
+                    args: [DOCUMENT]
+                }] }, { type: i1.DecimalPipe, decorators: [{
+                    type: Inject,
+                    args: [DecimalPipe]
+                }] }]; }, propDecorators: { saveAsImageButtonLabel: [{
+                type: Input
+            }], xLabelPrefix: [{
+                type: Input
+            }], xLabelSuffix: [{
+                type: Input
+            }], yLabelPrefix: [{
+                type: Input
+            }], yLabelSuffix: [{
+                type: Input
+            }], labelsX: [{
+                type: Input
+            }], height: [{
+                type: Input
+            }], width: [{
+                type: Input
+            }], data: [{
+                type: Input
+            }] } });
+
+class LineChartModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: LineChartModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: LineChartModule, declarations: [LineChartComponent], imports: [CommonModule], exports: [LineChartComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: LineChartModule, providers: [DecimalPipe], imports: [CommonModule] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: LineChartModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: [CommonModule],
+                    declarations: [LineChartComponent],
+                    exports: [LineChartComponent],
+                    providers: [DecimalPipe]
+                }]
+        }] });
+
+class BarChartComponent {
+    renderer;
+    elementRef;
+    document;
+    decimalPipe;
+    saveAsImageButtonLabel = 'Descargar';
+    xLabelPrefix = '';
+    xLabelSuffix = '';
+    yLabelPrefix = '';
+    yLabelSuffix = '';
+    labelsX = [];
+    height;
+    width;
+    chartContainer = null;
+    set data(data) {
+        if (data && data.length > 0) {
+            this.#setChartData(data);
+        }
+    }
+    constructor(renderer, elementRef, document, decimalPipe) {
+        this.renderer = renderer;
+        this.elementRef = elementRef;
+        this.document = document;
+        this.decimalPipe = decimalPipe;
+    }
+    async #setChartData(data) {
+        let size = { width: this.width, height: this.height };
+        if (!this.width || !this.height) {
+            size = await this.#getChartSize();
+        }
+        if (!this.chartContainer) {
+            this.chartContainer = this.renderer.createElement('div');
+            this.renderer.setStyle(this.chartContainer, 'width', `${size.width}px`);
+            this.renderer.setStyle(this.chartContainer, 'height', `${size.height}px`);
+            this.renderer.appendChild(this.elementRef.nativeElement, this.chartContainer);
+        }
+        const color = [];
+        const _data = [];
+        const legendData = [];
+        data.forEach(_d => {
+            if (_d.color) {
+                color.push(_d.color);
+            }
+            legendData.push(_d.name);
+            _data.push({
+                type: 'bar',
+                id: _d.id ?? String(Math.random()),
+                name: _d.name,
+                smooth: true,
+                data: !_d.values || _d.values.length === 0 ? [0] : _d.values
+            });
+        });
+        const option = {
+            tooltip: {
+                trigger: 'axis',
+                appendToBody: true,
+                formatter: this.#tooltipFormatter
+            },
+            legend: {
+                y: 'bottom',
+                padding: [0, 0, 0, 0],
+                data: legendData
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    saveAsImage: {
+                        show: true,
+                        title: this.saveAsImageButtonLabel
+                    }
+                },
+                iconStyle: {
+                    emphasis: {
+                        textAlign: 'right'
+                    }
+                }
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    data: this.labelsX,
+                    axisLabel: {
+                        formatter: `${this.xLabelPrefix}{value}${this.xLabelSuffix}`,
+                        fontSize: 10,
+                    }
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    axisLabel: {
+                        formatter: `${this.yLabelPrefix}{value}${this.yLabelSuffix}`,
+                        fontSize: 10
+                    }
+                }
+            ],
+            series: _data
+        };
+        option.grid = {
+            bottom: `${Math.max(legendData.length * 2.4, 10)}%`,
+            containLabel: true,
+            left: '3%',
+            right: '3%'
+        };
+        if (color.length > 0) {
+            option.color = color;
+        }
+        if ((legendData.length / 18) > 1) {
+            this.renderer.setStyle(this.chartContainer, 'height', `${this.height * (legendData.length / 18)}px`);
+        }
+        echarts.init(this.chartContainer).setOption(option);
+    }
+    #tooltipFormatter = (params) => {
+        let tooltip = `${params[0].name}`;
+        const barParam = params.filter(_param => _param.componentSubType === 'bar');
+        barParam.forEach(_param => {
+            const bullet = `<span style="color: ${_param.color}; font-size: 2rem; position: relative; top: 0.3rem;">&#8226;</span>`;
+            tooltip += `<br/>${bullet} ${_param.seriesName} : ${this.yLabelPrefix}${this.decimalPipe.transform(_param.value, '1.2-2')}${this.yLabelSuffix}`;
+        });
+        return tooltip;
+    };
+    #getChartSize() {
+        return new Promise(resolve => {
+            const mutationObserver = new MutationObserver(() => {
+                const parentRef = this.renderer.parentNode(this.elementRef.nativeElement);
+                if (parentRef && parentRef.offsetWidth && parentRef.offsetHeight) {
+                    let width = (this.width || parentRef.offsetWidth);
+                    let height = (this.height || parentRef.offsetHeight);
+                    mutationObserver.disconnect();
+                    resolve({ width, height });
+                }
+            });
+            mutationObserver.observe(this.document.body, { childList: true, subtree: true });
+        });
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BarChartComponent, deps: [{ token: Renderer2 }, { token: ElementRef }, { token: DOCUMENT }, { token: DecimalPipe }], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BarChartComponent, selector: "bizy-bar-chart", inputs: { saveAsImageButtonLabel: "saveAsImageButtonLabel", xLabelPrefix: "xLabelPrefix", xLabelSuffix: "xLabelSuffix", yLabelPrefix: "yLabelPrefix", yLabelSuffix: "yLabelSuffix", labelsX: "labelsX", height: "height", width: "width", data: "data" }, ngImport: i0, template: '', isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BarChartComponent, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'bizy-bar-chart',
+                    template: '',
+                    changeDetection: ChangeDetectionStrategy.OnPush
+                }]
+        }], ctorParameters: function () { return [{ type: i0.Renderer2, decorators: [{
+                    type: Inject,
+                    args: [Renderer2]
+                }] }, { type: i0.ElementRef, decorators: [{
+                    type: Inject,
+                    args: [ElementRef]
+                }] }, { type: Document, decorators: [{
+                    type: Inject,
+                    args: [DOCUMENT]
+                }] }, { type: i1.DecimalPipe, decorators: [{
+                    type: Inject,
+                    args: [DecimalPipe]
+                }] }]; }, propDecorators: { saveAsImageButtonLabel: [{
+                type: Input
+            }], xLabelPrefix: [{
+                type: Input
+            }], xLabelSuffix: [{
+                type: Input
+            }], yLabelPrefix: [{
+                type: Input
+            }], yLabelSuffix: [{
+                type: Input
+            }], labelsX: [{
+                type: Input
+            }], height: [{
+                type: Input
+            }], width: [{
+                type: Input
+            }], data: [{
+                type: Input
+            }] } });
+
+class BarChartModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BarChartModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BarChartModule, declarations: [BarChartComponent], imports: [CommonModule], exports: [BarChartComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BarChartModule, providers: [DecimalPipe], imports: [CommonModule] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BarChartModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: [CommonModule],
+                    declarations: [BarChartComponent],
+                    exports: [BarChartComponent],
+                    providers: [DecimalPipe]
+                }]
+        }] });
+
+const EMPTY_CHART = [0];
+class PieChartComponent {
+    renderer;
+    elementRef;
+    document;
+    decimalPipe;
+    title = '';
+    currency = '';
+    saveAsImageButtonLabel = 'Descargar';
+    isCurrency = false;
+    decimals = 2;
+    height;
+    width;
+    chartContainer = null;
+    constructor(renderer, elementRef, document, decimalPipe) {
+        this.renderer = renderer;
+        this.elementRef = elementRef;
+        this.document = document;
+        this.decimalPipe = decimalPipe;
+    }
+    set data(data) {
+        if (data && data.length > 0) {
+            this.#setChartData(data);
+        }
+        else if (data && data.length === 0) {
+            if (this.chartContainer) {
+                this.renderer.removeChild(this.elementRef.nativeElement, this.chartContainer);
+                this.chartContainer = null;
+            }
+            this.#setChartData(EMPTY_CHART);
+        }
+    }
+    async #setChartData(data) {
+        let size = { width: this.width, height: this.height };
+        if (!this.width || !this.height) {
+            size = await this.#getChartSize();
+        }
+        if (!this.chartContainer) {
+            this.chartContainer = this.renderer.createElement('div');
+            this.renderer.setStyle(this.chartContainer, 'width', `${size.width}px`);
+            this.renderer.setStyle(this.chartContainer, 'height', `${size.height}px`);
+            this.renderer.appendChild(this.elementRef.nativeElement, this.chartContainer);
+        }
+        const color = [];
+        let total = 0;
+        data.forEach(_d => {
+            total += _d.value;
+            if (_d.color) {
+                color.push(_d.color);
+            }
+        });
+        const option = {
+            tooltip: {
+                trigger: 'item',
+                formatter: (item) => `${item.name}: ${this.currency ? this.currency + this.decimalPipe.transform(item.value, '1.2-2') : this.decimalPipe.transform(item.value, '1.2-2')} (${item.percent.toFixed()}%)`
+            },
+            title: {
+                show: this.title,
+                text: this.title,
+                left: 'left',
+                textStyle: {
+                    color: '#2484c6',
+                    width: this.width - 40,
+                    overflow: 'break'
+                },
+                subtext: `Total: ${this.currency ? this.currency + this.decimalPipe.transform(total, '1.2-2') : this.decimalPipe.transform(total, '1.2-2')}`
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    saveAsImage: {
+                        show: true,
+                        title: this.saveAsImageButtonLabel
+                    }
+                },
+                iconStyle: {
+                    emphasis: {
+                        textAlign: 'right'
+                    }
+                }
+            },
+            series: [
+                {
+                    type: 'pie',
+                    radius: '50%',
+                    center: this.width >= 576 ? ['50%', '50%'] : ['50%', '65%'],
+                    data,
+                    itemStyle: {
+                        emphasis: {
+                            label: {
+                                show: true
+                            }
+                        },
+                        normal: {
+                            label: {
+                                position: 'outer',
+                                formatter: (item) => {
+                                    return `${item.name}: ${this.currency ? this.currency + this.decimalPipe.transform(item.value, '1.2-2') : this.decimalPipe.transform(item.value, '1.2-2')} (${item.percent.toFixed()}%)`;
+                                }
+                            },
+                            labelLine: {
+                                show: true
+                            }
+                        }
+                    }
+                }
+            ]
+        };
+        if (color.length > 0 && color.length === data.length) {
+            option.color = color;
+        }
+        echarts.init(this.chartContainer).setOption(option);
+    }
+    #getChartSize() {
+        return new Promise(resolve => {
+            const mutationObserver = new MutationObserver(() => {
+                const parentRef = this.renderer.parentNode(this.elementRef.nativeElement);
+                if (parentRef && parentRef.offsetWidth && parentRef.offsetHeight) {
+                    let width = this.width || parentRef.offsetWidth;
+                    let height = this.height || parentRef.offsetHeight;
+                    mutationObserver.disconnect();
+                    resolve({ width, height });
+                }
+            });
+            mutationObserver.observe(this.document.body, { childList: true, subtree: true });
+        });
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: PieChartComponent, deps: [{ token: Renderer2 }, { token: ElementRef }, { token: DOCUMENT }, { token: DecimalPipe }], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: PieChartComponent, selector: "bizy-pie-chart", inputs: { title: "title", currency: "currency", saveAsImageButtonLabel: "saveAsImageButtonLabel", isCurrency: "isCurrency", decimals: "decimals", height: "height", width: "width", data: "data" }, ngImport: i0, template: '', isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: PieChartComponent, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'bizy-pie-chart',
+                    template: '',
+                    changeDetection: ChangeDetectionStrategy.OnPush
+                }]
+        }], ctorParameters: function () { return [{ type: i0.Renderer2, decorators: [{
+                    type: Inject,
+                    args: [Renderer2]
+                }] }, { type: i0.ElementRef, decorators: [{
+                    type: Inject,
+                    args: [ElementRef]
+                }] }, { type: Document, decorators: [{
+                    type: Inject,
+                    args: [DOCUMENT]
+                }] }, { type: i1.DecimalPipe, decorators: [{
+                    type: Inject,
+                    args: [DecimalPipe]
+                }] }]; }, propDecorators: { title: [{
+                type: Input
+            }], currency: [{
+                type: Input
+            }], saveAsImageButtonLabel: [{
+                type: Input
+            }], isCurrency: [{
+                type: Input
+            }], decimals: [{
+                type: Input
+            }], height: [{
+                type: Input
+            }], width: [{
+                type: Input
+            }], data: [{
+                type: Input
+            }] } });
+
+class PieChartModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: PieChartModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: PieChartModule, declarations: [PieChartComponent], imports: [CommonModule], exports: [PieChartComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: PieChartModule, providers: [DecimalPipe], imports: [CommonModule] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: PieChartModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: [CommonModule],
+                    declarations: [PieChartComponent],
+                    exports: [PieChartComponent],
+                    providers: [DecimalPipe]
+                }]
+        }] });
+
 class BizyComponentsModule {
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyComponentsModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
     static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BizyComponentsModule, imports: [i2$1.IonicModule] });
@@ -1869,5 +2436,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
  * Generated bundle index. Do not edit.
  */
 
-export { BizyComponentsModule, ButtonComponent, ButtonModule, CheckboxComponent, CheckboxModule, ConfirmButtonsComponent, ConfirmButtonsModule, ErrorComponent, ErrorModule, FabButtonComponent, FabButtonModule, FilterComponent, FilterModule, FilterPipe, FilterSectionComponent, FilterSectionOptionComponent, InputComponent, InputModule, MenuComponent, MenuModule, MenuOptionComponent, SelectComponent, SelectModule, SelectOptionComponent, SidebarComponent, SidebarFooterComponent, SidebarHeaderComponent, SidebarModule, SidebarOptionComponent, TabComponent, TableColumnArrowsComponent, TableColumnComponent, TableComponent, TableFooterComponent, TableHeaderComponent, TableModule, TableRowComponent, TabsComponent, TabsModule, ToggleComponent, ToggleModule, ToolbarComponent, ToolbarModule, VirtualScrollComponent, VirtualScrollGridDirective, VirtualScrollModule, VirtualScrollNgForDirective };
+export { BarChartComponent, BarChartModule, BizyComponentsModule, ButtonComponent, ButtonModule, CheckboxComponent, CheckboxModule, ConfirmButtonsComponent, ConfirmButtonsModule, ErrorComponent, ErrorModule, FabButtonComponent, FabButtonModule, FilterComponent, FilterModule, FilterPipe, FilterSectionComponent, FilterSectionOptionComponent, InputComponent, InputModule, LineChartComponent, LineChartModule, MenuComponent, MenuModule, MenuOptionComponent, PieChartComponent, PieChartModule, SelectComponent, SelectModule, SelectOptionComponent, SidebarComponent, SidebarFooterComponent, SidebarHeaderComponent, SidebarModule, SidebarOptionComponent, TabComponent, TableColumnArrowsComponent, TableColumnComponent, TableComponent, TableFooterComponent, TableHeaderComponent, TableModule, TableRowComponent, TabsComponent, TabsModule, ToggleComponent, ToggleModule, ToolbarComponent, ToolbarModule, VirtualScrollComponent, VirtualScrollGridDirective, VirtualScrollModule, VirtualScrollNgForDirective };
 //# sourceMappingURL=bizy-components.mjs.map

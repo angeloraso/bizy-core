@@ -9,12 +9,12 @@
     align-items: center;
     border: none;
     background-color: transparent;
-    color: var(--bizy-tab-color);
+    color: var(--bizy-tab-color, #666666);
     cursor: pointer;
 }
 
 .bizy-tab--selected {
-    color: var(--bizy-tab-selected-color);
+    color: var(--bizy-tab-selected-color, #16aa88);
 }
 
 @keyframes zoomIn {
@@ -36,7 +36,7 @@
     visibility: hidden;
     margin-bottom: 0.5rem;
     pointer-events: none;
-    background-color: var(--bizy-tab-selected-color);
+    background-color: var(--bizy-tab-selected-color, #16aa88);
 }
 
 .bizy-tab__selected-line--visible {

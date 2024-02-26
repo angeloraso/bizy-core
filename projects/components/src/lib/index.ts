@@ -13,4 +13,7 @@ export * from './menu';
 export * from './filter';
 export * from './checkbox';
 export * from './select';
+export * from './line-chart';
+export * from './bar-chart';
+export * from './pie-chart';
 export { BizyComponentsModule } from './components.module';
