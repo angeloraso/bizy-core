@@ -24,6 +24,7 @@ export class LineChartComponent {
   @Input() labelsX: Array<string> = [];
   @Input() height: number;
   @Input() width: number;
+  @Input() tooltip: boolean = true;
 
   chartContainer: HTMLDivElement | null = null;
 
@@ -75,6 +76,7 @@ export class LineChartComponent {
 
     const option: any = {
       tooltip: {
+        show: this.tooltip,
         trigger: 'axis',
         appendToBody: true,
         formatter: this.#tooltipFormatter
