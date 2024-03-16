@@ -1,19 +1,37 @@
 :host {
     font-size: 1rem;
+    width: fit-content;
+    min-width: 100%
 }
 
 .bizy-table-footer {
     font-size: 1rem;
-    width: 100%;
     padding: 0 0.3rem;
     display: flex;
     align-items: center;
     height: var(--bizy-table-footer-height, 2.4rem);
+    width: fit-content;
+    min-width: var(--bizy-table-width, 100%);
     background-color: var(--bizy-table-header-background-color, #ffffff);
     border-top: 0.1rem solid var(--bizy-table-border-bottom-color, #eeeeee);
+}
+
+.bizy-table-footer__checkbox-wrapper {
+    z-index: 1;
+    background-color: inherit;
+    padding: 0 10px;
+    display: grid;
+    place-items: center;
+    position: relative;
+    height: 100%;
 }
 
 .bizy-table-footer__checkbox {
     visibility: hidden;
     pointer-events: none;
+    opacity: 0;
+}
+
+.bizy-table-footer__checkbox--shadow {
+    box-shadow: -19px 0px 28px -9px rgba(0,0,0,0.5);
 }

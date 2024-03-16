@@ -9,8 +9,10 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input } 
 export class TableFooterComponent {
   @Input() id: string = String(Math.random());
   @Input() customClass: string = '';
-  
-  _selectable: boolean | null = null;
+
+  marginRight = 0;
+
+  _selectable: boolean = false;
 
   constructor(
     @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
@@ -22,6 +24,11 @@ export class TableFooterComponent {
 
   setSelectable = (selectable: boolean): void => {
     this._selectable = selectable;
+    this.ref.detectChanges();
+  }
+
+  setMarginRight(margin: number) {
+    this.marginRight = margin > 5 ? margin : 5;
     this.ref.detectChanges();
   }
 }

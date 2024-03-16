@@ -14,15 +14,21 @@
   bottom: 0;
   right: 0;
   left: 0;
-  width: 100%;
+}
+
+.bizy-confirm-buttons--sticky {
+  position: sticky;
+  bottom: 0;
+  right: 0;
+  left: 0;
 }
 
 ::ng-deep .bizy-confirm-buttons__confirm-button {
-  background-color: var(--bizy-confirm-buttons-confirm-background-color) !important;
+  background-color: var(--bizy-confirm-buttons-confirm-background-color, #16aa88) !important;
 }
 
 ::ng-deep .bizy-confirm-buttons__cancel-button {
-  background-color: var(--bizy-confirm-buttons-cancel-background-color) !important;
+  background-color: var(--bizy-confirm-buttons-cancel-background-color, #e76565) !important;
 }
 
 .bizy-confirm-buttons__svg {
@@ -30,17 +36,17 @@
 }
 
 .bizy-confirm-buttons__cancel-button__svg__content {
-  fill: var(--bizy-confirm-buttons-cancel-color);
+  fill: var(--bizy-confirm-buttons-cancel-color, #fff);
 }
 
 .bizy-confirm-buttons__cancel-button__label {
-  color: var(--bizy-confirm-buttons-cancel-color);
+  color: var(--bizy-confirm-buttons-cancel-color, #fff);
 }
 
 .bizy-confirm-buttons__confirm-button__svg__content {
-  fill: var(--bizy-confirm-buttons-confirm-color);
+  fill: var(--bizy-confirm-buttons-confirm-color, #fff);
 }
 
 .bizy-confirm-buttons__confirm-button__label {
-  color: var(--bizy-confirm-buttons-confirm-color);
+  color: var(--bizy-confirm-buttons-confirm-color, #fff);
 }

@@ -1,0 +1,20 @@
+<div class="bizy-slider">
+
+    <input 
+        #fromSlider
+        class="bizy-slider__from"
+        type="range"
+        [ngModel]="_min"
+        [min]="minLimit"
+        [max]="maxLimit"
+        (ngModelChange)="setFromSlider($event)"/>
+
+    <input 
+        #toSlider
+        type="range"
+        [ngStyle]="{'z-index': 2, background: 'linear-gradient(to right, var(--bizy-slider-color) 0%, var(--bizy-slider-color) ' + ((_min - minLimit) / (maxLimit - minLimit)) * 100 + '%, var(--bizy-slider-range-color) ' + ((_min - minLimit) / (maxLimit - minLimit)) * 100 + '%, var(--bizy-slider-range-color) ' + ((_max - minLimit) / (maxLimit - minLimit)) * 100 + '%, var(--bizy-slider-color) ' + ((_max - minLimit) / (maxLimit - minLimit)) * 100 + '%, var(--bizy-slider-color) 100%)'}"
+        [ngModel]="_max"
+        [min]="minLimit"
+        [max]="maxLimit"
+        (ngModelChange)="setToSlider($event)"/>
+</div>

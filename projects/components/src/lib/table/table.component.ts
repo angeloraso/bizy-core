@@ -1,9 +1,11 @@
-import { Component, Input, ChangeDetectionStrategy, ContentChildren, QueryList, ContentChild, Inject, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, ContentChildren, QueryList, ContentChild, Inject, ChangeDetectorRef, ViewChild, AfterContentInit, ElementRef } from '@angular/core';
 import { TableHeaderComponent } from './table-header/table-header.component';
 import { TableFooterComponent } from './table-footer/table-footer.component';
 import { TableRowComponent } from './table-row/table-row.component';
 import { DOCUMENT } from '@angular/common';
-import { Subscription } from 'rxjs';
+import { Subscription, fromEvent } from 'rxjs';
+import { TableScrollingComponent } from './table-scrolling/table-scrolling.component';
+import { TableScrollingDirective } from './table-scrolling/table-scrolling.directive';
 
 @Component({
   selector: 'bizy-table',
@@ -11,84 +13,116 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./table.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TableComponent {
+export class TableComponent implements AfterContentInit {
+  @ViewChild(TableScrollingComponent) viewport: TableScrollingComponent;
+  @ContentChild(TableScrollingDirective) virtualFor: TableScrollingDirective;
   @ContentChild(TableHeaderComponent) header: TableHeaderComponent;
   @ContentChildren(TableRowComponent) rows: QueryList<TableRowComponent>;
   @ContentChild(TableFooterComponent) footer: TableFooterComponent;
 
-  #rows: Array<TableRowComponent> = [];
-  #mutationObserver: MutationObserver;
+  #selectableMutationObserver: MutationObserver;
+  #rowScrollingMutationObserver: MutationObserver;
+  #afterViewInitObserver: MutationObserver;
   #subscription = new Subscription();
+  marginRight: number = 0;
 
   @Input() set selectable(selectable: boolean) {
-    if (!selectable) {
-      return;
-    }
-
-    this.#mutationObserver = new MutationObserver(() => {
-      if (!this.rows || (this.#rows.length === 0 && this.rows.length === 0)) {
+    this.#selectableMutationObserver = new MutationObserver(() => {
+      if (!this.rows || this.rows.length === 0) {
         return;
       }
-
-      if (this.#rowsAreEqual(this.#rows, this.rows.toArray())) {
-        return;
-      }
-
-      this.#rows = this.rows.toArray();
 
       this.rows.forEach(_row => {
-          _row.setSelectable(true);
+        _row.setSelectable(selectable);
+        _row.setMarginRight(this.marginRight);
       });
 
       if (this.header) {
-        this.header.setSelectable(true);
-
-        this.#subscription.add(this.header.onSelect.subscribe(selected => {
-          this.rows.forEach(_row => {
-            _row.setSelected(selected);
-          })
-        }));
+        this.header.setSelectable(selectable);
       }
 
       if (this.footer) {
-        this.footer.setSelectable(true);
+        this.footer.setSelectable(selectable);
       }
 
-      this.#mutationObserver.disconnect();
       this.ref.detectChanges();      
     });
 
-    this.#mutationObserver.observe(this.document.body, { childList: true, subtree: true });
+    this.#selectableMutationObserver.observe(this.document.body, { childList: true, subtree: true });
   };
 
   constructor(
     @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef,
-    @Inject(DOCUMENT) private document: Document
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(ElementRef) private elementRef: ElementRef
   ) {}
 
-  #rowsAreEqual(arr1: Array<TableRowComponent>, arr2: Array<TableRowComponent>) {
-    if (arr1.length !== arr2.length) {
-        return false;
-    }
+  ngAfterContentInit() {
+    this.#rowScrollingMutationObserver = new MutationObserver(() => {
+      if (!this.virtualFor) {
+        return;
+      }
 
-    arr1.sort((a, b) => a.id.localeCompare(b.id));
-    arr2.sort((a, b) => a.id.localeCompare(b.id));
-
-    for (let i = 0; i < arr1.length; i++) {
-        for (let key in arr1[i]) {
-            if (arr1[i][key] !== arr2[i][key]) {
-                return false;
-            }
+      this.viewport.attachView(this.virtualFor);
+      this.#rowScrollingMutationObserver.disconnect();
+  
+      this.ref.detectChanges();     
+      
+      this.#afterViewInitObserver = new MutationObserver(() => {
+        if (!this.elementRef.nativeElement.offsetWidth) {
+          return;
         }
-    }
+  
+        this.marginRight = (this.elementRef.nativeElement.scrollWidth - this.elementRef.nativeElement.offsetWidth) - this.elementRef.nativeElement.scrollLeft;
+        this.rows.forEach(_row => {
+            _row.setMarginRight(this.marginRight);
+        });
 
-    return true;
+        if (this.header) {
+          this.header.setMarginRight(this.marginRight);
+        }
+
+        if (this.footer) {
+          this.footer.setMarginRight(this.marginRight);
+        }
+
+        this.#subscription.add(fromEvent(this.elementRef.nativeElement, 'scroll', { capture: true }).subscribe(() => {
+          this.marginRight = (this.elementRef.nativeElement.scrollWidth - this.elementRef.nativeElement.offsetWidth) - this.elementRef.nativeElement.scrollLeft;
+          this.rows.forEach(_row => {
+            _row.setMarginRight(this.marginRight);
+          });
+          
+          if (this.header) {
+            this.header.setMarginRight(this.marginRight);
+          }
+  
+          if (this.footer) {
+            this.footer.setMarginRight(this.marginRight);
+          }
+        }));
+  
+        this.#afterViewInitObserver.disconnect();   
+        this.ref.detectChanges();   
+      });
+
+      this.#afterViewInitObserver.observe(this.document.body, { childList: true, subtree: true });
+    });
+
+    this.#rowScrollingMutationObserver.observe(this.document.body, { childList: true, subtree: true });
   }
 
   ngOnDestroy() {
     this.#subscription.unsubscribe();
-    if (this.#mutationObserver) {
-      this.#mutationObserver.disconnect();
+    if (this.#selectableMutationObserver) {
+      this.#selectableMutationObserver.disconnect();
+    }
+
+    if (this.#rowScrollingMutationObserver) {
+      this.#rowScrollingMutationObserver.disconnect();
+    }
+
+    if (this.#afterViewInitObserver) {
+      this.#afterViewInitObserver.disconnect();
     }
   }
 }

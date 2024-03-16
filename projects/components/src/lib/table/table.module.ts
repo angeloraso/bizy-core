@@ -9,6 +9,8 @@ import { TableFooterComponent } from './table-footer/table-footer.component';
 import { TableRowComponent } from './table-row/table-row.component';
 import { TableColumnComponent } from './table-column/table-column.component';
 import { TableColumnArrowsComponent } from './table-column-arrows/table-column-arrows.component';
+import { TableScrollingDirective } from './table-scrolling/table-scrolling.directive';
+import { TableScrollingComponent } from './table-scrolling/table-scrolling.component';
 
 const COMPONENTS: Array<any> = [
   TableComponent,
@@ -16,7 +18,9 @@ const COMPONENTS: Array<any> = [
   TableFooterComponent,
   TableRowComponent,
   TableColumnComponent,
-  TableColumnArrowsComponent
+  TableColumnArrowsComponent,
+  TableScrollingDirective,
+  TableScrollingComponent
 ];
 
 @NgModule({

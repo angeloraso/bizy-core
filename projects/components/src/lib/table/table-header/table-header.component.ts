@@ -13,6 +13,8 @@ export class TableHeaderComponent {
   @Input() selectable: boolean | null = null;
   @Output() onSelect = new EventEmitter<boolean>();
 
+  marginRight = 0;
+
   constructor(
     @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
   ) {}
@@ -31,6 +33,11 @@ export class TableHeaderComponent {
     }
 
     this.selectable = selectable;
+    this.ref.detectChanges();
+  }
+
+  setMarginRight(margin: number) {
+    this.marginRight = margin > 5 ? margin : 5;
     this.ref.detectChanges();
   }
 }

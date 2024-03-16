@@ -14,6 +14,8 @@ export class TableRowComponent {
   @Input() selectable: boolean | null = null;
   @Output() onSelect = new EventEmitter<boolean>();
 
+  marginRight = 0;
+
   constructor(
     @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
   ) {}
@@ -42,6 +44,11 @@ export class TableRowComponent {
     
     this.selected = selected;
     this.onSelect.emit(selected);
+    this.ref.detectChanges();
+  }
+
+  setMarginRight(margin: number) {
+    this.marginRight = margin > 5 ? margin : 5;
     this.ref.detectChanges();
   }
 }

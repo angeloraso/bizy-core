@@ -6,8 +6,10 @@
     <ng-content select="bizy-table-column"></ng-content>
 
     <bizy-checkbox 
-        *ngIf="selectable"
+        *ngIf="selectable !== null"
         class="bizy-table-row__checkbox"
+        [ngStyle]="{right: marginRight + 'px'}"
+        [ngClass]="{'bizy-table-row__checkbox--hidden': selectable === false, 'bizy-table-row__checkbox--shadow': marginRight > 5}"
         [(selected)]="selected"
         [disabled]="disabled"
         (onSelect)="onSelect.emit(selected)">

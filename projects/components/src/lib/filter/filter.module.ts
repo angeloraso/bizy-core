@@ -4,21 +4,26 @@ import { FormsModule } from '@angular/forms';
 import { FilterComponent } from './filter.component';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { FilterSectionComponent } from './filter-section/filter-section.component';
-import { FilterSectionOptionComponent } from './filter-section-option/filter-section-option.component';
 import { CheckboxModule } from '../checkbox';
-import { FilterPipe } from './filter.pipe';
+import { FilterPipe, RangeFilterPipe } from './pipes';
+import { FilterSectionRangeOptionComponent } from './filter-section-range-option/filter-section-range-option.component';
+import { InputModule } from '../input';
+import { SliderModule } from '../slider';
+import { FilterSectionCheckboxOptionComponent } from './filter-section-checkbox-option/filter-section-checkbox-option.component';
 
 const COMPONENTS = [
   FilterComponent,
   FilterSectionComponent,
-  FilterSectionOptionComponent,
-  FilterPipe
+  FilterSectionCheckboxOptionComponent,
+  FilterSectionRangeOptionComponent,
+  FilterPipe,
+  RangeFilterPipe,
 ];
 
 @NgModule({
-  imports: [CommonModule, FormsModule, OverlayModule, CheckboxModule],
+  imports: [CommonModule, FormsModule, OverlayModule, CheckboxModule, InputModule, SliderModule],
   declarations: COMPONENTS,
   exports: COMPONENTS,
-  providers: [FilterPipe]
+  providers: [FilterPipe, RangeFilterPipe]
 })
 export class FilterModule {}

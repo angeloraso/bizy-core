@@ -1,0 +1,42 @@
+:host {
+    font-size: 1rem;
+}
+
+:host:has(> .bizy-accordion__options:empty) .bizy-accordion > .bizy-accordion__arrow {
+    display: none !important;
+}
+
+.bizy-accordion {
+    background: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 0.5rem;
+    padding: 0.5rem;
+    width: 100%;
+}
+
+.bizy-accordion__arrow {
+    height: 1rem;
+    pointer-events: none;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.bizy-accordion--selected .bizy-accordion__arrow {
+    transform: rotate(180deg);
+}
+
+.bizy-accordion__options {
+    max-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding-left: 0.5rem;
+    transition: max-height 0.3s ease;
+}
+
+.bizy-accordion__options--opened {
+    max-height: 100vh !important;
+}

@@ -11,8 +11,8 @@
     align-items: center;
     justify-content: space-between;
     column-gap: 0.5rem;
-    padding: 0.5rem;
     cursor: pointer;
+    padding: var(--bizy-filter-padding, 0);
     color: var(--bizy-filter-color, #fff);
     position: relative;
 }
@@ -25,10 +25,10 @@
 
 .bizy-filter__badge {
     position: absolute;
-    top: -0.4rem;
-    right: -0.4rem;
-    height: 1rem;
-    width: 1rem;
+    top: -0.2rem;
+    right: -0.2rem;
+    height: 0.5rem;
+    width: 0.5rem;
     border-radius: 50%;
     background-color: var(--bizy-filter-badge-color, #e76565);
     display: none;

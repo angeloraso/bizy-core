@@ -3,9 +3,9 @@
 }
 
 .bizy-toolbar {
-    height: var(--bizy-toolbar-height);
+    height: var(--bizy-toolbar-height, 3.2rem);
     width: 100%;
-    background-color: var(--bizy-toolbar-background-color);
+    background-color: var(--bizy-toolbar-background-color, #f3f3f3);
     display: flex;
     align-items: center;
     justify-content: space-between;

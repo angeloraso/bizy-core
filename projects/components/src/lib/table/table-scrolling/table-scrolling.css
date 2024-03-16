@@ -1,0 +1,7 @@
+::ng-deep .cdk-virtual-scrollable {
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
+  contain: inline-size !important;
+}

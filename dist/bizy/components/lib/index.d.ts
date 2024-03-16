@@ -16,4 +16,6 @@ export * from './select';
 export * from './line-chart';
 export * from './bar-chart';
 export * from './pie-chart';
+export * from './accordion';
+export * from './slider';
 export { BizyComponentsModule } from './components.module';

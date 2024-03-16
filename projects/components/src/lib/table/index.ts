@@ -1,3 +1,6 @@
+export { ITableRow } from './table.types';
+export { TableScrollingComponent } from './table-scrolling/table-scrolling.component';
+export { TableScrollingDirective } from './table-scrolling/table-scrolling.directive';
 export { TableColumnArrowsComponent } from './table-column-arrows/table-column-arrows.component';
 export { TableColumnComponent } from './table-column/table-column.component';
 export { TableRowComponent } from './table-row/table-row.component';

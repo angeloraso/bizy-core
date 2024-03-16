@@ -1,5 +1,6 @@
-export { FilterPipe } from './filter.pipe';
+export { FilterSectionCheckboxOptionComponent } from './filter-section-checkbox-option/filter-section-checkbox-option.component';
+export { FilterSectionRangeOptionComponent } from './filter-section-range-option/filter-section-range-option.component';
+export { FilterPipe, RangeFilterPipe } from './pipes';
 export { FilterSectionComponent } from './filter-section/filter-section.component';
-export { FilterSectionOptionComponent } from './filter-section-option/filter-section-option.component';
 export { FilterModule } from './filter.module';
 export { FilterComponent } from './filter.component';

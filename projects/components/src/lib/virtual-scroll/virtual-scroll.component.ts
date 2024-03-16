@@ -1,15 +1,17 @@
-import { debounceTime, skip, takeUntil } from 'rxjs/operators';
-import { Subscription, Subject, interval } from 'rxjs';
-import { Component, ContentChild, Input, AfterViewInit, Inject, ChangeDetectorRef, OnInit, ElementRef } from '@angular/core';
+import { debounceTime, skip } from 'rxjs/operators';
+import { Subscription, Subject } from 'rxjs';
+import { Component, ContentChild, Input, Inject, ChangeDetectorRef, OnInit, ElementRef, ChangeDetectionStrategy } from '@angular/core';
 import { VirtualScrollNgForDirective } from './virtual-scroll-ng-for.directive';
+import { DOCUMENT } from '@angular/common';
 
 const MIN_VIRTUAL_SCROLL_WIDTH = 300;
 @Component({
   selector: 'bizy-virtual-scroll',
   templateUrl: './virtual-scroll.html',
-  styleUrls: ['./virtual-scroll.css']
+  styleUrls: ['./virtual-scroll.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class VirtualScrollComponent implements OnInit, AfterViewInit {
+export class VirtualScrollComponent implements OnInit {
   @ContentChild(VirtualScrollNgForDirective) virtualFor: VirtualScrollNgForDirective;
   @Input() itemMinHeight: number | string;
   @Input() itemMinWidth: number | string;
@@ -22,13 +24,17 @@ export class VirtualScrollComponent implements OnInit, AfterViewInit {
   _itemMinHeight: number;
   bizyVirtualScrollWidth: number;
   notifier$ = new Subject<void>();
+  #fontSize: number = 0;
 
-  private _resizeObserver: ResizeObserver;
-  private _subscription = new Subscription();
+  #resizeObserver: ResizeObserver;
+  #mutationObserver: MutationObserver;
+  #subscription = new Subscription();
 
   constructor(
     @Inject(ElementRef) private elementRef: ElementRef,
-    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef) {}
+    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef,
+    @Inject(DOCUMENT) private document: Document
+  ) {}
 
   ngOnInit() {
     if (this.#isString(this.itemMinHeight) && this.itemMinHeight.includes('rem')) {
@@ -36,49 +42,54 @@ export class VirtualScrollComponent implements OnInit, AfterViewInit {
     } else {
       this._itemMinHeight = this.itemMinHeight as number;
     }
-  }
 
-  ngAfterViewInit() {
-    setTimeout(() => {
-      const finishInterval$ = new Subject<void>();
-      interval(50).pipe(takeUntil(finishInterval$)).subscribe(() => {
-        const virtualScrollWidth = this.elementRef.nativeElement.offsetWidth;
-        if (virtualScrollWidth) {
-          finishInterval$.next();
-          finishInterval$.complete();
-          this.bizyVirtualScrollWidth = virtualScrollWidth;
-          this._subscription.add(this.virtualFor.items.subscribe(items => {
-            if (items) {
-              if (items.length > 0) {
-                this.items = items;
-                this.fillVirtualScroll();
+    this.#mutationObserver = new MutationObserver(() => {
+      const virtualScrollWidth = this.elementRef.nativeElement.offsetWidth || this.elementRef.nativeElement.firstChild.offsetWidth;
+      if (!virtualScrollWidth) {
+        return;
+      }
 
-                if (!this._resizeObserver) {
-                  this._resizeObserver = new ResizeObserver(() => this.notifier$.next());
-                  this._resizeObserver.observe(this.elementRef.nativeElement.parentElement?.parentElement as HTMLElement);
-                  this._subscription.add(this.notifier$.pipe(skip(1), debounceTime(100)).subscribe(() => {
-                    if (this.elementRef.nativeElement.offsetWidth) {
-                      this.bizyVirtualScrollWidth = this.elementRef.nativeElement.offsetWidth;
-                      this.fillVirtualScroll();
-                    }
-                  }));
-                }
-              } else {
-                this.virtualScrollItems = [];
-              }
-            }
-          }));
+      this.bizyVirtualScrollWidth = virtualScrollWidth;
+      this.#subscription.add(this.virtualFor.items.subscribe(items => {
+        if (!items) {
+          return;
         }
-      });
-    }, 1);
+
+        if (items.length > 0) {
+          this.items = items;
+          this.#fillVirtualScroll();
+
+          if (!this.#resizeObserver) {
+            this.#resizeObserver = new ResizeObserver(() => this.notifier$.next());
+            this.#resizeObserver.observe(this.elementRef.nativeElement.parentElement?.parentElement as HTMLElement);
+            this.#subscription.add(this.notifier$.pipe(skip(1), debounceTime(100)).subscribe(() => {
+              if (this.elementRef.nativeElement?.firstChild?.firstChild?.clientWidth) {
+                this.bizyVirtualScrollWidth = this.elementRef.nativeElement.firstChild.firstChild.clientWidth;
+                this.#fillVirtualScroll();
+              }
+            }));
+            this.notifier$.next();
+          }
+        } else {
+          this.virtualScrollItems = [];
+        }
+      }));
+
+      this.#mutationObserver.disconnect();
+    });
+
+    this.#mutationObserver.observe(this.document.body, { childList: true, subtree: true });
   }
 
-  fillVirtualScroll = () => {
+  #fillVirtualScroll = () => {
     if (this.bizyVirtualScrollWidth < MIN_VIRTUAL_SCROLL_WIDTH) {
       this.itemsByRow = 1;
     } else {
-      const fontSize = window.getComputedStyle(this.elementRef.nativeElement).getPropertyValue('font-size');
-      const gridGap = Number(fontSize.split('px')[0]) || 14;
+      if (!this.#fontSize) {
+        const fontSize = window.getComputedStyle(this.elementRef.nativeElement).getPropertyValue('font-size');
+        this.#fontSize = Number(fontSize.split('px')[0]);
+      }
+      const gridGap = this.#fontSize || 14;
       let itemMinWidth: number = 1;
       if (this.#isString(this.itemMinWidth)) {
         if (this.itemMinWidth.includes('rem')) {
@@ -121,6 +132,13 @@ export class VirtualScrollComponent implements OnInit, AfterViewInit {
 
 
   ngOnDestroy() {
-    this._subscription.unsubscribe();
+    this.#subscription.unsubscribe();
+    if (this.#resizeObserver) {
+      this.#resizeObserver.disconnect();
+    }
+
+    if (this.#mutationObserver) {
+      this.#mutationObserver.disconnect();
+    }
   }
 }

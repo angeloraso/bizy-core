@@ -1,8 +1,7 @@
-<div class="bizy-confirm-buttons" [ngClass]="{'bizy-confirm-buttons--fixed': fixed}">
+<div class="bizy-confirm-buttons bizy-confirm-buttons--{{position}}">
 
     <bizy-button 
         customClass="bizy-confirm-buttons__cancel-button"
-        [disabled]="disabled"
         type="button"
         (onSelect)="cancel.emit()">
         <svg 

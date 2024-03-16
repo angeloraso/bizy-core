@@ -1,0 +1,15 @@
+:host {
+    font-size: 1rem;
+}
+
+.bizy-filter-section-range-option {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+}
+
+.bizy-filter-section-range-option__inputs {
+    display: flex;
+    align-items: center;
+    column-gap: 0.5rem;
+}

@@ -1,11 +1,12 @@
 import { Subject } from 'rxjs';
-import { AfterViewInit, ChangeDetectorRef, OnInit, ElementRef } from '@angular/core';
+import { ChangeDetectorRef, OnInit, ElementRef } from '@angular/core';
 import { VirtualScrollNgForDirective } from './virtual-scroll-ng-for.directive';
 import * as i0 from "@angular/core";
-export declare class VirtualScrollComponent implements OnInit, AfterViewInit {
+export declare class VirtualScrollComponent implements OnInit {
     #private;
     private elementRef;
     private ref;
+    private document;
     virtualFor: VirtualScrollNgForDirective;
     itemMinHeight: number | string;
     itemMinWidth: number | string;
@@ -17,12 +18,8 @@ export declare class VirtualScrollComponent implements OnInit, AfterViewInit {
     _itemMinHeight: number;
     bizyVirtualScrollWidth: number;
     notifier$: Subject<void>;
-    private _resizeObserver;
-    private _subscription;
-    constructor(elementRef: ElementRef, ref: ChangeDetectorRef);
+    constructor(elementRef: ElementRef, ref: ChangeDetectorRef, document: Document);
     ngOnInit(): void;
-    ngAfterViewInit(): void;
-    fillVirtualScroll: () => void;
     ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<VirtualScrollComponent, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<VirtualScrollComponent, "bizy-virtual-scroll", never, { "itemMinHeight": { "alias": "itemMinHeight"; "required": false; }; "itemMinWidth": { "alias": "itemMinWidth"; "required": false; }; "emptyText": { "alias": "emptyText"; "required": false; }; "viewportHeight": { "alias": "viewportHeight"; "required": false; }; }, {}, ["virtualFor"], ["*"], false, never>;

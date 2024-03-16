@@ -1,0 +1,13 @@
+<cdk-virtual-scroll-viewport 
+    [itemSize]="itemSize"
+    [minBufferPx]="itemSize + (itemSize * 20)"
+    [maxBufferPx]="itemSize + (itemSize * 40)">
+    
+    <ng-content></ng-content>
+
+    <ng-template #tableScrollingContent>
+      <ng-template let-item cdkVirtualFor [cdkVirtualForOf]="items$ | async">
+        <ng-template *ngTemplateOutlet="itemTemplate; context: { $implicit: item }"></ng-template>
+      </ng-template>
+    </ng-template>
+</cdk-virtual-scroll-viewport>

@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, ContentChildren, QueryList, Inject } from '@angular/core';
-import { FilterSectionOptionComponent } from '../filter-section-option/filter-section-option.component';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, ContentChildren, QueryList, Inject, ContentChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
+import { FilterSectionRangeOptionComponent } from '../filter-section-range-option/filter-section-range-option.component';
+import { FilterSectionCheckboxOptionComponent } from '../filter-section-checkbox-option/filter-section-checkbox-option.component';
 
 @Component({
   selector: 'bizy-filter-section',
@@ -10,12 +11,14 @@ import { DOCUMENT } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FilterSectionComponent {
-  @ContentChildren(FilterSectionOptionComponent) private options: QueryList<FilterSectionOptionComponent>;
+  @ContentChildren(FilterSectionCheckboxOptionComponent) private checkboxOptions: QueryList<FilterSectionCheckboxOptionComponent>;
+  @ContentChild(FilterSectionRangeOptionComponent) private rangeOption: FilterSectionRangeOptionComponent;
   @Input() id: string = String(Math.random());
   @Input() disabled: boolean = false;
   @Input() customClass: string = '';
   @Input() selected: boolean = true;
   @Output() onSelect = new EventEmitter<Array<{id: string, selected: boolean}>>();
+  @Output() onRange = new EventEmitter<{min: number | null, max: number | null}>();
 
   #subscription = new Subscription();
 
@@ -26,37 +29,48 @@ export class FilterSectionComponent {
   ) {}
 
   ngAfterViewInit() {
-    if (this.options && this.options.length > 0) {
+    const mutationObserver = new MutationObserver(() => {
+      if (this.checkboxOptions && this.checkboxOptions.length > 0) {
 
-      this.options.forEach(_option => {
-        this._options.push({id: _option.getId(), selected: _option.getSelected()})
-      });
-      
-      const selectedOptions = this._options.filter(_option => _option.selected === true);
-      this.selected = selectedOptions.length === this._options.length;
-
-      this.#listenOptionChanges();
-    } else {
-      const mutationObserver = new MutationObserver(() => {
-        if (this.options && this.options.length > 0) {
-          this.options.forEach(_option => {
-            this._options.push({id: _option.getId(), selected: _option.getSelected()})
-          });
-
-          const selectedOptions = this._options.filter(_option => _option.selected === true);
-          this.selected = selectedOptions.length === this._options.length;
-
-          this.#listenOptionChanges();
-          mutationObserver.disconnect();
-        }
-      });
+        this.checkboxOptions.forEach(_option => {
+          this._options.push({id: _option.getId(), selected: _option.getSelected()})
+        });
+        
+        const selectedOptions = this._options.filter(_option => _option.selected === true);
+        this.selected = selectedOptions.length === this._options.length;
   
-      mutationObserver.observe(this.document.body, { childList: true, subtree: true });
-    }
+        this.checkboxOptions.forEach(_option => {
+
+          this.#subscription.add(_option.onSelect.subscribe(data => {
+            const index = this._options.findIndex(_option => _option.id === data.id);
+            if (index !== -1) {
+              this._options[index] = data;
+            } else {
+              this._options.push(data);
+            }
+
+            const selectedOptions = this._options.filter(_option => _option.selected === true);
+            this.selected = selectedOptions.length === this._options.length;
+
+            this.onSelect.emit(this._options);
+          }));
+        });
+
+        mutationObserver.disconnect();
+      } else if (this.rangeOption) {
+        this.#subscription.add(this.rangeOption.onChange.subscribe(data => {
+          this.selected = this.rangeOption.getSelected();
+          this.onRange.emit(data);
+        }));
+        mutationObserver.disconnect();
+      }
+    });
+
+    mutationObserver.observe(this.document.body, { childList: true, subtree: true });
   }
 
   _onSelect() {
-    if (this.disabled) {
+    if (this.disabled || this.rangeOption) {
       return;
     }
 
@@ -66,32 +80,17 @@ export class FilterSectionComponent {
       return {..._option, selected: this.selected};
     })
 
-    this.options.forEach(_option => {
+    this.checkboxOptions.forEach(_option => {
       _option.setSelect(this.selected);
     })
   }
 
-  #listenOptionChanges = () => {
-    if (!this.options) {
+  onClear() {
+    if (!this.rangeOption) {
       return;
     }
 
-    this.options.forEach(_option => {
-
-      this.#subscription.add(_option.onSelect.subscribe(data => {
-        const index = this._options.findIndex(_option => _option.id === data.id);
-        if (index !== -1) {
-          this._options[index] = data;
-        } else {
-          this._options.push(data);
-        }
-
-        const selectedOptions = this._options.filter(_option => _option.selected === true);
-        this.selected = selectedOptions.length === this._options.length;
-
-        this.onSelect.emit(this._options);
-      }));
-    });
+    this.rangeOption.onClear();
   }
 
   getSelected() {

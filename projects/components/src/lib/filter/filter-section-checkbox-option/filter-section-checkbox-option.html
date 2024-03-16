@@ -1,0 +1,14 @@
+<div 
+    class="bizy-filter-section-checkbox-option {{customClass}}"
+    id="{{id}}"
+    (click)="_onSelect()"
+    (keyup.enter)="_onSelect()">
+
+    <ng-content></ng-content>
+
+    <bizy-checkbox 
+        [selected]="selected"
+        [disabled]="disabled">
+    </bizy-checkbox>
+    
+</div>

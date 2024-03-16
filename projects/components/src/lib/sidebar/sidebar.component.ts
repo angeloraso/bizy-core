@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter} from '@angular/core';
 
 @Component({
   selector: 'bizy-sidebar',
@@ -7,5 +7,6 @@ import { ChangeDetectionStrategy, Component} from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SidebarComponent {
-
+  @Input() opened: boolean = false;
+  @Output() onOpen = new EventEmitter<boolean>(); 
 }

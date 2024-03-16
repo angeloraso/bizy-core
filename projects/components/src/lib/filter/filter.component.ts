@@ -97,6 +97,19 @@ export class FilterComponent {
           this._sections.push({id: _section.getId(), selected: _section.getSelected()});
         }
 
+        const selectedSections = this._sections.filter(_section => _section.selected === true);
+        this._activated = selectedSections.length !== this._sections.length;
+        this.ref.detectChanges();
+      }));
+
+      this.#subscription.add(_section.onRange.subscribe(() => {
+        const index = this._sections.findIndex(__section => __section.id === _section.id);
+        if (index !== -1) {
+          this._sections[index] = {id: _section.getId(), selected: _section.getSelected()};
+        } else {
+          this._sections.push({id: _section.getId(), selected: _section.getSelected()});
+        }
+
         const selectedOptions = this._sections.filter(_section => _section.selected === true);
         this._activated = selectedOptions.length !== this._sections.length;
         this.ref.detectChanges();

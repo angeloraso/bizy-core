@@ -5,9 +5,8 @@
     [ngClass]="{'bizy-button--disabled': disabled}"
     (click)="_onSelect($event)"
     (keyup.enter)="_onSelect($event)">
-    <span class="bizy-button__content">
-        <ng-content></ng-content>
-    </span>
+        
+    <ng-content></ng-content>
     
 </button>
 

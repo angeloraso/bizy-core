@@ -1,5 +1,8 @@
 :host {
     font-size: 1rem;
+    width: 100%;
+    display: flex;
+    min-width: fit-content;
 }
 
 .bizy-table-row {
@@ -8,7 +11,7 @@
     display: flex;
     align-items: center;
     padding: 0 0.3rem;
-    height: var(--bizy-table-row-height, 2.8rem);
+    height: var(--bizy-table-row-height, 2rem);
     background-color: var(--bizy-table-row-background-color, #ffffff);
     border-bottom: 0.1rem solid var(--bizy-table-border-bottom-color, #eeeeee);
 }
@@ -20,7 +23,31 @@
 }
 
 .bizy-table-row--selected {
-    background-color: var(--bizy-table-row-selected-color, #e2eefa);
+    background-color: var(--bizy-table-row-selected-background-color, #2484C6) !important;
+}
+
+::ng-deep .bizy-table-row--selected * {
+    font-weight: bold !important;
+    color: var(--bizy-table-row-selected-color, #ffffff) !important;;
+}
+
+.bizy-table-row__checkbox {
+    z-index: 1;
+    background-color: inherit;
+    padding: 0 10px;
+    display: grid;
+    place-items: center;
+    position: relative;
+    height: 100%;
+}
+
+.bizy-table-row__checkbox--shadow {
+    box-shadow: -19px 0px 28px -9px rgba(0,0,0,0.5);
+}
+
+.bizy-table-row__checkbox--hidden {
+    visibility: hidden;
+    pointer-events: none;
 }
 
 ::ng-deep .bizy-table-row:first-child {

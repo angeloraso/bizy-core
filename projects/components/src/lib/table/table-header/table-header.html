@@ -4,10 +4,17 @@
 
     <ng-content select="bizy-table-column"></ng-content>
 
-    <bizy-checkbox 
-        *ngIf="selectable"
-        [(selected)]="selected"
-        (onSelect)="onSelect.emit(selected)">
-    </bizy-checkbox>
-    
+    <span 
+        *ngIf="selectable !== null"
+        class="bizy-table-header__checkbox-wrapper"
+        [ngStyle]="{right: marginRight + 'px'}"
+        [ngClass]="{'bizy-table-footer__checkbox--shadow': marginRight > 5}">
+        
+        <bizy-checkbox 
+            [(selected)]="selected"
+            (onSelect)="onSelect.emit(selected)"
+            [ngClass]="{'bizy-table-header__checkbox--hidden': selectable === false}">
+        </bizy-checkbox>
+    </span>
+
 </div>
