@@ -2,6 +2,7 @@ import { QueryList, ChangeDetectorRef, AfterContentInit, ElementRef } from '@ang
 import { TableHeaderComponent } from './table-header/table-header.component';
 import { TableFooterComponent } from './table-footer/table-footer.component';
 import { TableRowComponent } from './table-row/table-row.component';
+import { Subject } from 'rxjs';
 import { TableScrollingComponent } from './table-scrolling/table-scrolling.component';
 import { TableScrollingDirective } from './table-scrolling/table-scrolling.directive';
 import * as i0 from "@angular/core";
@@ -15,6 +16,7 @@ export declare class TableComponent implements AfterContentInit {
     header: TableHeaderComponent;
     rows: QueryList<TableRowComponent>;
     footer: TableFooterComponent;
+    notifier$: Subject<void>;
     marginRight: number;
     set selectable(selectable: boolean);
     constructor(ref: ChangeDetectorRef, document: Document, elementRef: ElementRef);

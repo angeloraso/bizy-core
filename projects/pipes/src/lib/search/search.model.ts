@@ -54,8 +54,10 @@ export class FuseOptions implements IFuseOptions {
     const defaultOptions = {
       // Se activa includeScore para poder buscar internamente en propiedades de tipo array
       includeScore: true,
-      // Se reduce a 0.3 el threshold (default: 0.6) para aumentar precisión en resultados
-      threshold: 0.3
+      // Cuando es verdadero, la búsqueda ignorará la ubicación y la distancia, por lo que no importará en qué parte de la cadena aparezca el patrón
+      ignoreLocation: true,
+      // Se reduce a 0.1 el threshold (default: 0.6) para aumentar precisión en resultados
+      threshold: 0.1
     };
 
     if (options) {

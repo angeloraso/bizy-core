@@ -1,0 +1,23 @@
+<div class="bizy-toast-wrapper bizy-toast-wrapper--{{type}}">
+
+    <button (click)="close()" (keyup.enter)="close()" class="bizy-toast-wrapper__close-button">
+
+        <svg 
+            data-name="Cancel button"
+            id="bizy-toast-wrapper-close-svg" 
+            viewBox="0 0 200 200"
+            xmlns="http://www.w3.org/2000/svg">
+            <path id="bizy-toast-wrapper-close-svg-content" d="M114,100l49-49a9.9,9.9,0,0,0-14-14L100,86,51,37A9.9,9.9,0,0,0,37,51l49,49L37,149a9.9,9.9,0,0,0,14,14l49-49,49,49a9.9,9.9,0,0,0,14-14Z"/>
+        </svg>
+
+    </button>
+
+
+    <h1 class="bizy-toast-wrapper__title bizy-toast-wrapper__title--{{type}}" *ngIf="title">{{title}}</h1>
+
+    <h5 class="bizy-toast-wrapper__msg" *ngIf="msg">{{msg}}</h5>
+
+
+    <span class="bizy-toast__progress bizy-toast__progress--{{type}}"></span>
+    
+</div>

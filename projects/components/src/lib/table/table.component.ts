@@ -3,7 +3,7 @@ import { TableHeaderComponent } from './table-header/table-header.component';
 import { TableFooterComponent } from './table-footer/table-footer.component';
 import { TableRowComponent } from './table-row/table-row.component';
 import { DOCUMENT } from '@angular/common';
-import { Subscription, fromEvent } from 'rxjs';
+import { Subject, Subscription, debounceTime, fromEvent, skip } from 'rxjs';
 import { TableScrollingComponent } from './table-scrolling/table-scrolling.component';
 import { TableScrollingDirective } from './table-scrolling/table-scrolling.directive';
 
@@ -22,7 +22,9 @@ export class TableComponent implements AfterContentInit {
 
   #selectableMutationObserver: MutationObserver;
   #rowScrollingMutationObserver: MutationObserver;
-  #afterViewInitObserver: MutationObserver;
+  #afterContentInitObserver: MutationObserver;
+  #resizeObserver: ResizeObserver;
+  notifier$ = new Subject<void>();
   #subscription = new Subscription();
   marginRight: number = 0;
 
@@ -68,7 +70,7 @@ export class TableComponent implements AfterContentInit {
   
       this.ref.detectChanges();     
       
-      this.#afterViewInitObserver = new MutationObserver(() => {
+      this.#afterContentInitObserver = new MutationObserver(() => {
         if (!this.elementRef.nativeElement.offsetWidth) {
           return;
         }
@@ -101,14 +103,33 @@ export class TableComponent implements AfterContentInit {
           }
         }));
   
-        this.#afterViewInitObserver.disconnect();   
+        this.#afterContentInitObserver.disconnect();   
         this.ref.detectChanges();   
       });
 
-      this.#afterViewInitObserver.observe(this.document.body, { childList: true, subtree: true });
+      this.#afterContentInitObserver.observe(this.document.body, { childList: true, subtree: true });
     });
 
     this.#rowScrollingMutationObserver.observe(this.document.body, { childList: true, subtree: true });
+
+
+    this.#resizeObserver = new ResizeObserver(() => this.notifier$.next());
+    this.#resizeObserver.observe(this.elementRef.nativeElement);
+    this.#subscription.add(this.notifier$.pipe(skip(1), debounceTime(100)).subscribe(() => {
+      this.marginRight = (this.elementRef.nativeElement.scrollWidth - this.elementRef.nativeElement.offsetWidth) - this.elementRef.nativeElement.scrollLeft;
+      this.rows.forEach(_row => {
+        _row.setMarginRight(this.marginRight);
+      });
+      
+      if (this.header) {
+        this.header.setMarginRight(this.marginRight);
+      }
+
+      if (this.footer) {
+        this.footer.setMarginRight(this.marginRight);
+      }
+    }));
+    this.notifier$.next();
   }
 
   ngOnDestroy() {
@@ -121,8 +142,12 @@ export class TableComponent implements AfterContentInit {
       this.#rowScrollingMutationObserver.disconnect();
     }
 
-    if (this.#afterViewInitObserver) {
-      this.#afterViewInitObserver.disconnect();
+    if (this.#afterContentInitObserver) {
+      this.#afterContentInitObserver.disconnect();
+    }
+
+    if (this.#resizeObserver) {
+      this.#resizeObserver.disconnect();
     }
   }
 }

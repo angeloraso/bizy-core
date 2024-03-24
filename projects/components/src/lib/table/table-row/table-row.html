@@ -9,10 +9,10 @@
         *ngIf="selectable !== null"
         class="bizy-table-row__checkbox"
         [ngStyle]="{right: marginRight + 'px'}"
-        [ngClass]="{'bizy-table-row__checkbox--hidden': selectable === false, 'bizy-table-row__checkbox--shadow': marginRight > 5}"
-        [(selected)]="selected"
+        [ngClass]="{'bizy-table-row__checkbox--hidden': selectable === false, 'bizy-table-row__checkbox--shadow': marginRight > 0}"
+        [selected]="selected"
         [disabled]="disabled"
-        (onSelect)="onSelect.emit(selected)">
+        (onSelect)="onSelect.emit($event)">
     </bizy-checkbox>
     
 </div>

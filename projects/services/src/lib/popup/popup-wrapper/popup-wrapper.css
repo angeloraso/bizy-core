@@ -1,8 +1,7 @@
 .bizy-popup-wrapper {
     position: relative;
     background-color: var(--bizy-popup-background-color);
-    padding: 1rem ;
-    width: min(80vw, 26rem);
+    min-width: min(80vw, 26rem);
     height: fit-content;
 }
 
@@ -14,6 +13,7 @@
     cursor: pointer;
     background-color: transparent;
     transition: color 0.3s;
+    z-index: 1;
 }
 
 .bizy-popup-wrapper__close-button #bizy-popup-wrapper-close-svg {

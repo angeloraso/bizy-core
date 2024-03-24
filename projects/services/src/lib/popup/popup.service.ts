@@ -1,46 +1,45 @@
 import { ComponentType } from "@angular/cdk/portal";
 import { Inject, Injectable } from "@angular/core";
-import { Subject, take } from "rxjs";
+import { take } from "rxjs";
 import { PopupWrapperComponent } from "./popup-wrapper/popup-wrapper.component";
-import { Dialog, DialogConfig, DialogRef } from '@angular/cdk/dialog';
+import { Dialog, DialogRef } from '@angular/cdk/dialog';
 
 @Injectable()
-export class PopupService<T, R> {
-  #dialogs = new Set<DialogRef<R, PopupWrapperComponent<T>>>();
+export class PopupService {
+  #dialogs = new Set<DialogRef<unknown, PopupWrapperComponent<unknown>>>();
   
-  closed$ = new Subject<R>();
-
   #data: unknown;
 
   constructor(@Inject(Dialog) private dialog: Dialog) { }
 
 
-  open(data: {component: ComponentType<T>, data?: unknown, customClass?: string, disableClose?: boolean, id?: string}) {
+  open<R>(data: {component: ComponentType<unknown>, data?: unknown, customClass?: string, disableClose?: boolean, id?: string}, callback?: (res: R) => void) {
     this.#data = data.data;
-    const dialogRef = this.dialog.open<R, unknown, PopupWrapperComponent<T>>(PopupWrapperComponent, ({
+    const dialogRef = this.dialog.open(PopupWrapperComponent, ({
       id: data.id,
       data: data.component,
       autoFocus: true,
       hasBackdrop: true,
       disableClose: data.disableClose ?? false,
-      backdropClass: 'bizy-popup-backdrop',
       panelClass: ['bizy-popup', data.customClass] 
-    } as DialogConfig<unknown, DialogRef<R, PopupWrapperComponent<T>>>));
+    }));
 
     this.#dialogs.add(dialogRef);
 
-    dialogRef.closed.pipe(take(1)).subscribe(result => {
+    dialogRef.closed.pipe(take(1)).subscribe(response => {
       this.#dialogs.delete(dialogRef);
-      this.closed$.next(result);
+      if (callback) {
+        callback(response as R);
+      }
     });
   }
 
-  getData<S>() {
-    return this.#data as S;
+  getData<D>() {
+    return this.#data as D;
   }
 
-  close(data?: {id?: string, data?: R}) {
-    let dialogRef: DialogRef<R, PopupWrapperComponent<T>>;
+  close(data?: {id?: string, response?: unknown}) {
+    let dialogRef: DialogRef<unknown, PopupWrapperComponent<unknown>> | null = null;
     if (data && data.id) {
       dialogRef = Array.from(this.#dialogs).find(_dialogRef => _dialogRef.id === data.id);
     } else {
@@ -48,7 +47,7 @@ export class PopupService<T, R> {
     }
 
     if (dialogRef) {
-      dialogRef.close(data ? data.data : null);
+      dialogRef.close(data ? data.response : null);
       this.#dialogs.delete(dialogRef);
     }
   }

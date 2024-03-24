@@ -9,6 +9,7 @@
     min-width: 150px;
     width: fit-content;
     height: fit-content;
+    z-index: 10;
 }
 
 .bizy-popup-backdrop {

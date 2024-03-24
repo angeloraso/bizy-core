@@ -48,7 +48,7 @@ export class TableRowComponent {
   }
 
   setMarginRight(margin: number) {
-    this.marginRight = margin > 5 ? margin : 5;
+    this.marginRight = margin - 5;
     this.ref.detectChanges();
   }
 }
