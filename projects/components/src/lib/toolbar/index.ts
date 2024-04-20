@@ -1,2 +1,2 @@
-export { BizyToolbarNewModule } from './toolbar-new.module';
-export { BizyToolbarNewComponent } from './toolbar-new.component';
+export { BizyToolbarModule } from './toolbar.module';
+export { BizyToolbarComponent } from './toolbar.component';

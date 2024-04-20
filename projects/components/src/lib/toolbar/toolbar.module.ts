@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { BizyToolbarNewComponent } from './toolbar-new.component';
+import { BizyToolbarComponent } from './toolbar.component';
 
 const COMPONENTS = [
-  BizyToolbarNewComponent,
+  BizyToolbarComponent,
 ];
 
 @NgModule({
@@ -12,4 +12,4 @@ const COMPONENTS = [
   declarations: COMPONENTS,
   exports: COMPONENTS
 })
-export class BizyToolbarNewModule {}
+export class BizyToolbarModule {}

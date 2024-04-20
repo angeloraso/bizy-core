@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BizySidebarNewComponent } from './sidebar-new.component';
+import { BizySidebarComponent } from './sidebar.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BizyAccordionModule } from '../accordion';
@@ -9,7 +9,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { BizySidebarFloatingOptionTitleComponent } from './sidebar-floating-option-title/sidebar-floating-option-title.component';
 
 const COMPONENTS = [
-  BizySidebarNewComponent,
+  BizySidebarComponent,
   BizySidebarOptionComponent,
   BizySidebarFloatingOptionComponent,
   BizySidebarFloatingOptionTitleComponent
@@ -20,4 +20,4 @@ const COMPONENTS = [
   declarations: COMPONENTS,
   exports: COMPONENTS
 })
-export class BizySidebarNewModule {}
+export class BizySidebarModule {}

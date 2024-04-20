@@ -5,12 +5,12 @@ import { DOCUMENT } from '@angular/common';
 import { BizySidebarFloatingOptionComponent } from './sidebar-floating-option/sidebar-floating-option.component';
 
 @Component({
-  selector: 'bizy-sidebar-new',
-  templateUrl: './sidebar-new.html',
-  styleUrls: ['./sidebar-new.css'],
+  selector: 'bizy-sidebar',
+  templateUrl: './sidebar.html',
+  styleUrls: ['./sidebar.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BizySidebarNewComponent implements OnInit {
+export class BizySidebarComponent implements OnInit {
   @ContentChildren(BizySidebarOptionComponent) options!: QueryList<BizySidebarOptionComponent>;
   @ContentChildren(BizySidebarFloatingOptionComponent) floatingOptions!: QueryList<BizySidebarFloatingOptionComponent>;
   @Input() toggle: boolean = false;
