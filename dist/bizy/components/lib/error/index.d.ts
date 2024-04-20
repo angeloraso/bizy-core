@@ -1,2 +1,2 @@
-export { ErrorModule } from './error.module';
-export { ErrorComponent } from './error.component';
+export { BizyErrorModule } from './error.module';
+export { BizyErrorComponent } from './error.component';

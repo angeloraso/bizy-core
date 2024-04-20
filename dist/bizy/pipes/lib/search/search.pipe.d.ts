@@ -2,7 +2,7 @@ import { IFuseOptions } from './search.model';
 import { PipeTransform } from '@angular/core';
 import Fuse from 'fuse.js';
 import * as i0 from "@angular/core";
-export declare class SearchPipe implements PipeTransform {
+export declare class BizySearchPipe implements PipeTransform {
     fuseOptions: IFuseOptions;
     fuse: Fuse<any>;
     elements: Array<unknown>;
@@ -12,6 +12,6 @@ export declare class SearchPipe implements PipeTransform {
         threshold: number;
     };
     transform<T>(elements: Array<T>, search: Array<string>, keys?: Array<string>, options?: IFuseOptions): Array<T>;
-    static ɵfac: i0.ɵɵFactoryDeclaration<SearchPipe, never>;
-    static ɵpipe: i0.ɵɵPipeDeclaration<SearchPipe, "bizySearch", false>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<BizySearchPipe, never>;
+    static ɵpipe: i0.ɵɵPipeDeclaration<BizySearchPipe, "bizySearch", false>;
 }

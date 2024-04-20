@@ -1,2 +1,2 @@
-export { InputComponent } from './input.component';
-export { InputModule } from './input.module';
+export { BizyInputComponent } from './input.component';
+export { BizyInputModule } from './input.module';

@@ -8,9 +8,9 @@ import {
   Inject,
   ElementRef,
 } from '@angular/core';
-import { TableRowComponent } from '../table-row/table-row.component';
-import { TableScrollingDirective } from './table-scrolling.directive';
-import { ITableRow } from '../table.types';
+import { BizyTableRowComponent } from '../table-row/table-row.component';
+import { BizyTableScrollingDirective } from './table-scrolling.directive';
+import { IBizyTableRow } from '../table.types';
 
 @Component({
   selector: 'bizy-table-scrolling',
@@ -21,12 +21,12 @@ import { ITableRow } from '../table.types';
 
 // FIX: This components fixes the bug with Angular CDK virtual scrolling not supporting content projection.
 // https://github.com/angular/components/issues/15277
-export class TableScrollingComponent {
+export class BizyTableScrollingComponent {
   @ViewChild('tableScrollingContent') content: TemplateRef<object>;
 
   #view: ViewContainerRef;
-  items$: Observable<Array<ITableRow>>;
-  itemTemplate: TemplateRef<TableRowComponent>;
+  items$: Observable<Array<IBizyTableRow>>;
+  itemTemplate: TemplateRef<BizyTableRowComponent>;
 
   itemSize: number;
 
@@ -35,7 +35,7 @@ export class TableScrollingComponent {
   ) {}
 
   /** Called by the virtual-for directive inside of the viewport. */
-  public attachView(tableDirective: TableScrollingDirective) {
+  public attachView(tableDirective: BizyTableScrollingDirective) {
     if (this.#view) {
       return;
     }

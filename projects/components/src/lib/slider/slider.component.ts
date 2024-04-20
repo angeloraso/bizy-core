@@ -14,7 +14,7 @@ import {
   styleUrls: ['./slider.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SliderComponent {
+export class BizySliderComponent {
   @ViewChild('fromSlider') fromSlider: ElementRef
   @ViewChild('toSlider') toSlider: ElementRef
   @Input() minLimit: number = 0;

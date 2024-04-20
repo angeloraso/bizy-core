@@ -2,7 +2,7 @@ import { ElementRef, Renderer2 } from '@angular/core';
 import { IBarChartData } from './bar-chart.types';
 import { DecimalPipe } from '@angular/common';
 import * as i0 from "@angular/core";
-export declare class BarChartComponent {
+export declare class BizyBarChartComponent {
     #private;
     private renderer;
     private elementRef;
@@ -20,6 +20,6 @@ export declare class BarChartComponent {
     chartContainer: HTMLDivElement | null;
     set data(data: Array<IBarChartData>);
     constructor(renderer: Renderer2, elementRef: ElementRef, document: Document, decimalPipe: DecimalPipe);
-    static ɵfac: i0.ɵɵFactoryDeclaration<BarChartComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<BarChartComponent, "bizy-bar-chart", never, { "saveAsImageButtonLabel": { "alias": "saveAsImageButtonLabel"; "required": false; }; "xLabelPrefix": { "alias": "xLabelPrefix"; "required": false; }; "xLabelSuffix": { "alias": "xLabelSuffix"; "required": false; }; "yLabelPrefix": { "alias": "yLabelPrefix"; "required": false; }; "yLabelSuffix": { "alias": "yLabelSuffix"; "required": false; }; "labelsX": { "alias": "labelsX"; "required": false; }; "height": { "alias": "height"; "required": false; }; "width": { "alias": "width"; "required": false; }; "tooltip": { "alias": "tooltip"; "required": false; }; "data": { "alias": "data"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<BizyBarChartComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<BizyBarChartComponent, "bizy-bar-chart", never, { "saveAsImageButtonLabel": { "alias": "saveAsImageButtonLabel"; "required": false; }; "xLabelPrefix": { "alias": "xLabelPrefix"; "required": false; }; "xLabelSuffix": { "alias": "xLabelSuffix"; "required": false; }; "yLabelPrefix": { "alias": "yLabelPrefix"; "required": false; }; "yLabelSuffix": { "alias": "yLabelSuffix"; "required": false; }; "labelsX": { "alias": "labelsX"; "required": false; }; "height": { "alias": "height"; "required": false; }; "width": { "alias": "width"; "required": false; }; "tooltip": { "alias": "tooltip"; "required": false; }; "data": { "alias": "data"; "required": false; }; }, {}, never, never, false, never>;
 }

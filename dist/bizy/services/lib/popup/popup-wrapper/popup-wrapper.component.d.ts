@@ -2,7 +2,7 @@ import { DialogRef } from '@angular/cdk/dialog';
 import { ComponentType } from '@angular/cdk/portal';
 import { ChangeDetectorRef, ViewContainerRef } from '@angular/core';
 import * as i0 from "@angular/core";
-export declare class PopupWrapperComponent<T> {
+export declare class BizyPopupWrapperComponent<T> {
     private component;
     private dialogRef;
     private ref;
@@ -11,6 +11,6 @@ export declare class PopupWrapperComponent<T> {
     ngAfterViewInit(): void;
     loadDynamicComponent(): void;
     close(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<PopupWrapperComponent<any>, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<PopupWrapperComponent<any>, "bizy-popup-wrapper", never, {}, {}, never, never, false, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<BizyPopupWrapperComponent<any>, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<BizyPopupWrapperComponent<any>, "bizy-popup-wrapper", never, {}, {}, never, never, false, never>;
 }

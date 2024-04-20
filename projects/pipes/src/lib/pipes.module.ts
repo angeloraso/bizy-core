@@ -1,18 +1,20 @@
 import { NgModule } from '@angular/core';
-import { OrderByPipe } from './orderBy.pipe';
-import { ReducePipe } from './reduce.pipe';
-import { SafePipe } from './safe.pipe';
-import { SearchPipe } from './search';
+import { BizyOrderByPipe } from './orderBy.pipe';
+import { BizyReducePipe } from './reduce.pipe';
+import { BizySafePipe } from './safe.pipe';
+import { BizySearchPipe } from './search';
+import { BizySelectedPipe } from './selected.pipe';
 
 const PIPES = [
-  OrderByPipe,
-  ReducePipe,
-  SafePipe,
-  SearchPipe
+  BizyOrderByPipe,
+  BizyReducePipe,
+  BizySafePipe,
+  BizySearchPipe,
+  BizySelectedPipe
 ];
 @NgModule({
   declarations: PIPES,
   exports: PIPES,
-  providers: [SearchPipe, OrderByPipe]
+  providers: PIPES
 })
-export class PipesModule {}
+export class BizyPipesModule {}

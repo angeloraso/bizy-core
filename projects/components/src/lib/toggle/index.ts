@@ -1,3 +1,3 @@
 export { LabelPosition } from './toggle.types';
-export { ToggleModule } from './toggle.module';
-export { ToggleComponent } from './toggle.component';
+export { BizyToggleModule } from './toggle.module';
+export { BizyToggleComponent } from './toggle.component';

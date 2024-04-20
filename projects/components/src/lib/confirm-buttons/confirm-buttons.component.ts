@@ -6,7 +6,7 @@ import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input } from 
   styleUrls: ['./confirm-buttons.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ConfirmButtonsComponent {
+export class BizyConfirmButtonsComponent {
   @Input() confirmLabel: string = 'Confirmar';
   @Input() cancelLabel: string = 'Cancelar';
   @Input() position: 'fixed' | 'sticky';

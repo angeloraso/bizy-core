@@ -1,11 +1,163 @@
-import * as i0 from '@angular/core';
-import { Directive, Input, HostListener, ElementRef, Renderer2, Inject, Host, EventEmitter, Output, NgModule } from '@angular/core';
 import * as i1 from '@angular/common';
 import { DOCUMENT } from '@angular/common';
+import * as i0 from '@angular/core';
+import { ElementRef, Renderer2, Directive, Inject, Input, HostListener, Host, EventEmitter, Output, NgModule } from '@angular/core';
 import { fromEvent, merge, timer, of } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 
-class OnlyNumbersDirective {
+class BizyTooltipDirective {
+    elRef;
+    renderer;
+    document;
+    tooltipTitle = '';
+    customClass = '';
+    clickeable = false;
+    placement = 'top';
+    delay; // Milliseconds, Ej; 500, 1000, etc
+    tooltip;
+    hiding;
+    constructor(elRef, renderer, document) {
+        this.elRef = elRef;
+        this.renderer = renderer;
+        this.document = document;
+    }
+    onMouseEnter() {
+        if (!this.tooltip) {
+            if (!this.tooltipTitle) {
+                return;
+            }
+            this.hiding = false;
+            this.show();
+        }
+    }
+    onMouseLeave() {
+        if (this.tooltip && !this.hiding) {
+            if (!this.tooltipTitle) {
+                return;
+            }
+            this.hiding = true;
+            this.hide();
+        }
+        // Fix fixed tooltips
+        this.document.querySelectorAll('.bizy-tooltip-identify').forEach(element => {
+            this.renderer.removeChild(this.document.body, element);
+        });
+    }
+    onClick() {
+        if (this.tooltip && !this.hiding) {
+            this.hiding = true;
+            this.hide();
+            return;
+        }
+        if (!this.tooltip && this.tooltipTitle && this.clickeable) {
+            this.hiding = false;
+            this.show();
+        }
+    }
+    show() {
+        this.create();
+        this.setPosition();
+        this.renderer.addClass(this.tooltip, 'bizy-tooltip-identify');
+        this.renderer.addClass(this.tooltip, 'bizy-tooltip--show');
+        if (this.customClass) {
+            this.renderer.addClass(this.tooltip, this.customClass);
+        }
+    }
+    hide() {
+        this.renderer.removeClass(this.tooltip, 'bizy-tooltip--show');
+        window.setTimeout(() => {
+            this.renderer.removeChild(this.document.body, this.tooltip);
+            this.tooltip = null;
+        }, Number(this.delay));
+    }
+    create() {
+        this.tooltip = this.renderer.createElement('span');
+        const sentences = String(this.tooltipTitle).split('</br>');
+        sentences.forEach(_sentence => {
+            this.renderer.appendChild(this.tooltip, this.renderer.createText(_sentence));
+            this.renderer.appendChild(this.tooltip, this.renderer.createElement('br'));
+        });
+        this.renderer.appendChild(this.document.body, this.tooltip);
+        this.renderer.addClass(this.tooltip, 'bizy-tooltip');
+        this.renderer.addClass(this.tooltip, 'bizy-tooltip-' + this.placement);
+        if (this.delay) {
+            this.renderer.setStyle(this.tooltip, '-webkit-transition', 'opacity ' + this.delay + 'ms');
+            this.renderer.setStyle(this.tooltip, '-moz-transition', 'opacity ' + this.delay + 'ms');
+            this.renderer.setStyle(this.tooltip, '-o-transition', 'opacity ' + this.delay + 'ms');
+            this.renderer.setStyle(this.tooltip, 'transition', 'opacity ' + this.delay + 'ms');
+        }
+    }
+    setPosition() {
+        const elRefPosition = this.elRef.nativeElement.getBoundingClientRect();
+        const tooltipPos = this.tooltip?.getBoundingClientRect();
+        const scrollPos = window.pageYOffset || this.document.documentElement.scrollTop || this.document.body.scrollTop || 0;
+        let top;
+        let left;
+        if (this.placement === 'top') {
+            // @ts-ignore
+            top = elRefPosition.top - tooltipPos.height - 10;
+            // @ts-ignore
+            left = elRefPosition.left + ((elRefPosition.width - tooltipPos.width) / 2);
+        }
+        else if (this.placement === 'right') {
+            // @ts-ignore
+            top = elRefPosition.top + ((elRefPosition.height - tooltipPos.height) / 2);
+            left = elRefPosition.right + 10;
+        }
+        else if (this.placement === 'bottom') {
+            top = elRefPosition.bottom + 10;
+            // @ts-ignore
+            left = elRefPosition.left + ((elRefPosition.width - tooltipPos.width) / 2);
+        }
+        else if (this.placement === 'left') {
+            // @ts-ignore
+            top = elRefPosition.top + ((elRefPosition.height - tooltipPos.height) / 2);
+            // @ts-ignore
+            left = elRefPosition.left - tooltipPos.width - 10;
+        }
+        this.renderer.setStyle(this.tooltip, 'top', (top + scrollPos) + 'px');
+        this.renderer.setStyle(this.tooltip, 'left', left + 'px');
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyTooltipDirective, deps: [{ token: ElementRef }, { token: Renderer2 }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Directive });
+    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "16.2.12", type: BizyTooltipDirective, selector: "[bizyTooltip]", inputs: { tooltipTitle: ["bizyTooltip", "tooltipTitle"], customClass: "customClass", clickeable: "clickeable", placement: "placement", delay: "delay" }, host: { listeners: { "mouseenter": "onMouseEnter()", "mouseleave": "onMouseLeave()", "click": "onClick()" } }, ngImport: i0 });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyTooltipDirective, decorators: [{
+            type: Directive,
+            args: [{
+                    selector: '[bizyTooltip]'
+                }]
+        }], ctorParameters: function () { return [{ type: i0.ElementRef, decorators: [{
+                    type: Inject,
+                    args: [ElementRef]
+                }] }, { type: i0.Renderer2, decorators: [{
+                    type: Inject,
+                    args: [Renderer2]
+                }] }, { type: Document, decorators: [{
+                    type: Inject,
+                    args: [DOCUMENT]
+                }] }]; }, propDecorators: { tooltipTitle: [{
+                type: Input,
+                args: ['bizyTooltip']
+            }], customClass: [{
+                type: Input
+            }], clickeable: [{
+                type: Input
+            }], placement: [{
+                type: Input
+            }], delay: [{
+                type: Input
+            }], onMouseEnter: [{
+                type: HostListener,
+                args: ['mouseenter']
+            }], onMouseLeave: [{
+                type: HostListener,
+                args: ['mouseleave']
+            }], onClick: [{
+                type: HostListener,
+                args: ['click']
+            }] } });
+
+class BizyOnlyNumbersDirective {
     onlyNumbers;
     regexStr = '^[0-9]*$';
     onKeyDown(event) {
@@ -33,10 +185,10 @@ class OnlyNumbersDirective {
             e.preventDefault();
         }
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: OnlyNumbersDirective, deps: [], target: i0.ɵɵFactoryTarget.Directive });
-    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "16.2.12", type: OnlyNumbersDirective, selector: "[bizyOnlyNumbers]", inputs: { onlyNumbers: ["bizyOnlyNumbers", "onlyNumbers"] }, host: { listeners: { "keydown": "onKeyDown($event)" } }, ngImport: i0 });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyOnlyNumbersDirective, deps: [], target: i0.ɵɵFactoryTarget.Directive });
+    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "16.2.12", type: BizyOnlyNumbersDirective, selector: "[bizyOnlyNumbers]", inputs: { onlyNumbers: ["bizyOnlyNumbers", "onlyNumbers"] }, host: { listeners: { "keydown": "onKeyDown($event)" } }, ngImport: i0 });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: OnlyNumbersDirective, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyOnlyNumbersDirective, decorators: [{
             type: Directive,
             args: [{
                     selector: '[bizyOnlyNumbers]'
@@ -49,7 +201,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 args: ['keydown', ['$event']]
             }] } });
 
-class LoadingDirective {
+class BizyLoadingDirective {
     elementRef;
     renderer;
     document;
@@ -104,10 +256,10 @@ class LoadingDirective {
             this.renderer.removeChild(this.#loadingElement.parentNode, this.#loadingElement);
         }
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: LoadingDirective, deps: [{ token: ElementRef }, { token: Renderer2 }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Directive });
-    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "16.2.12", type: LoadingDirective, selector: "[bizyLoading]", inputs: { bizyLoading: "bizyLoading", type: "type" }, ngImport: i0 });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyLoadingDirective, deps: [{ token: ElementRef }, { token: Renderer2 }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Directive });
+    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "16.2.12", type: BizyLoadingDirective, selector: "[bizyLoading]", inputs: { bizyLoading: "bizyLoading", type: "type" }, ngImport: i0 });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: LoadingDirective, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyLoadingDirective, decorators: [{
             type: Directive,
             args: [{
                     selector: '[bizyLoading]'
@@ -127,7 +279,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Input
             }] } });
 
-class OnlyPhoneDigitsDirective {
+class BizyOnlyPhoneDigitsDirective {
     onlyPhoneNumbers;
     regexStr = '^[0-9*#+]*$';
     onKeyDown(event) {
@@ -148,10 +300,10 @@ class OnlyPhoneDigitsDirective {
             e.preventDefault();
         }
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: OnlyPhoneDigitsDirective, deps: [], target: i0.ɵɵFactoryTarget.Directive });
-    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "16.2.12", type: OnlyPhoneDigitsDirective, selector: "[bizyOnlyPhoneDigits]", inputs: { onlyPhoneNumbers: ["bizyOnlyPhoneDigits", "onlyPhoneNumbers"] }, host: { listeners: { "keydown": "onKeyDown($event)" } }, ngImport: i0 });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyOnlyPhoneDigitsDirective, deps: [], target: i0.ɵɵFactoryTarget.Directive });
+    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "16.2.12", type: BizyOnlyPhoneDigitsDirective, selector: "[bizyOnlyPhoneDigits]", inputs: { onlyPhoneNumbers: ["bizyOnlyPhoneDigits", "onlyPhoneNumbers"] }, host: { listeners: { "keydown": "onKeyDown($event)" } }, ngImport: i0 });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: OnlyPhoneDigitsDirective, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyOnlyPhoneDigitsDirective, decorators: [{
             type: Directive,
             args: [{
                     selector: '[bizyOnlyPhoneDigits]'
@@ -164,16 +316,16 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 args: ['keydown', ['$event']]
             }] } });
 
-class NgForTrackByIdDirective {
+class BizyNgForTrackByIdDirective {
     ngFor;
     constructor(ngFor) {
         this.ngFor = ngFor;
         this.ngFor.ngForTrackBy = (_index, item) => item.id;
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: NgForTrackByIdDirective, deps: [{ token: i1.NgForOf, host: true }], target: i0.ɵɵFactoryTarget.Directive });
-    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "16.2.12", type: NgForTrackByIdDirective, selector: "[ngForBizyTrackById]", ngImport: i0 });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyNgForTrackByIdDirective, deps: [{ token: i1.NgForOf, host: true }], target: i0.ɵɵFactoryTarget.Directive });
+    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "16.2.12", type: BizyNgForTrackByIdDirective, selector: "[ngForBizyTrackById]", ngImport: i0 });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: NgForTrackByIdDirective, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyNgForTrackByIdDirective, decorators: [{
             type: Directive,
             args: [{
                     selector: '[ngForBizyTrackById]'
@@ -182,7 +334,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                     type: Host
                 }] }]; } });
 
-class LongPressDirective {
+class BizyLongPressDirective {
     elementRef;
     threshold = 500;
     press = new EventEmitter();
@@ -206,10 +358,10 @@ class LongPressDirective {
             this.#event.unsubscribe();
         }
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: LongPressDirective, deps: [{ token: ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
-    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "16.2.12", type: LongPressDirective, selector: "[bizyLongPress]", inputs: { threshold: "threshold" }, outputs: { press: "press" }, ngImport: i0 });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyLongPressDirective, deps: [{ token: ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
+    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "16.2.12", type: BizyLongPressDirective, selector: "[bizyLongPress]", inputs: { threshold: "threshold" }, outputs: { press: "press" }, ngImport: i0 });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: LongPressDirective, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyLongPressDirective, decorators: [{
             type: Directive,
             args: [{
                     selector: '[bizyLongPress]',
@@ -224,26 +376,26 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             }] } });
 
 const DIRECTIVES = [
-    LoadingDirective,
-    LongPressDirective,
-    OnlyNumbersDirective,
-    OnlyPhoneDigitsDirective,
-    NgForTrackByIdDirective,
+    BizyLoadingDirective,
+    BizyLongPressDirective,
+    BizyOnlyNumbersDirective,
+    BizyOnlyPhoneDigitsDirective,
+    BizyNgForTrackByIdDirective,
 ];
-class DirectivesModule {
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: DirectivesModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: DirectivesModule, declarations: [LoadingDirective,
-            LongPressDirective,
-            OnlyNumbersDirective,
-            OnlyPhoneDigitsDirective,
-            NgForTrackByIdDirective], exports: [LoadingDirective,
-            LongPressDirective,
-            OnlyNumbersDirective,
-            OnlyPhoneDigitsDirective,
-            NgForTrackByIdDirective] });
-    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: DirectivesModule });
+class BizyDirectivesModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyDirectivesModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BizyDirectivesModule, declarations: [BizyLoadingDirective,
+            BizyLongPressDirective,
+            BizyOnlyNumbersDirective,
+            BizyOnlyPhoneDigitsDirective,
+            BizyNgForTrackByIdDirective], exports: [BizyLoadingDirective,
+            BizyLongPressDirective,
+            BizyOnlyNumbersDirective,
+            BizyOnlyPhoneDigitsDirective,
+            BizyNgForTrackByIdDirective] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyDirectivesModule });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: DirectivesModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyDirectivesModule, decorators: [{
             type: NgModule,
             args: [{
                     declarations: DIRECTIVES,
@@ -255,5 +407,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
  * Generated bundle index. Do not edit.
  */
 
-export { DirectivesModule, LoadingDirective, LongPressDirective, NgForTrackByIdDirective, OnlyNumbersDirective, OnlyPhoneDigitsDirective };
+export { BizyDirectivesModule, BizyLoadingDirective, BizyLongPressDirective, BizyNgForTrackByIdDirective, BizyOnlyNumbersDirective, BizyOnlyPhoneDigitsDirective, BizyTooltipDirective };
 //# sourceMappingURL=bizy-directives.mjs.map

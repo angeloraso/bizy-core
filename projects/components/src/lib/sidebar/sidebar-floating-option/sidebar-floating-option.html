@@ -1,0 +1,33 @@
+<button 
+    type="button"
+    class="bizy-sidebar-floating-option {{customClass}}"
+    [ngClass]="{'bizy-sidebar-floating-option--disabled': disabled, 'bizy-sidebar-floating-option--selected': selected}"
+    id="{{id}}"
+    (click)="_onSelect($event)"
+    (keyup.enter)="_onSelect($event)"
+    cdkOverlayOrigin 
+    #bizySidebarFloatingOptionTrigger="cdkOverlayOrigin">
+
+    <span class="bizy-sidebar-floating-option__content">
+        <ng-content></ng-content>
+    </span>
+    
+</button>
+
+<ng-template
+    cdkConnectedOverlay
+    [cdkConnectedOverlayOffsetX]="offsetX"
+    [cdkConnectedOverlayOffsetY]="offsetY"
+    [cdkConnectedOverlayOrigin]="bizySidebarFloatingOptionTrigger"
+    (overlayOutsideClick)="close($event)"
+    [cdkConnectedOverlayOpen]="selected">
+
+    <span class="bizy-sidebar-floating-option__options">
+
+        <ng-content select="bizy-sidebar-floating-option-title"></ng-content>
+
+        <ng-content select="bizy-sidebar-option"></ng-content>
+
+    </span>
+
+</ng-template>

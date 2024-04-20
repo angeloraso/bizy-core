@@ -3,11 +3,11 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({
   name: 'bizyFilter'
 })
-export class FilterPipe implements PipeTransform {
+export class BizyFilterPipe implements PipeTransform {
   transform<T>(
     items: Array<T>,
     property: string,
-    states: Array<{ id: string; selected: boolean }>
+    states: Array<{ id: string | number | boolean; selected: boolean }>
   ): Array<T> {
     if (!items || items.length === 0) {
       return [];

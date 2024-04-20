@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class StorageService {
+export class BizyStorageService {
 
   get<T>(key: string): T {
     const item = localStorage.getItem(key);

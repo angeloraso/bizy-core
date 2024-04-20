@@ -1,7 +1,9 @@
 :host {
     font-size: 1rem;
-    color: var(--bizy-menu-color, #fff);
-    fill: var(--bizy-menu-color, #fff);
+}
+
+:host:has(> .bizy-menu__options:empty) .bizy-menu > .bizy-menu__arrow {
+    display: none !important;
 }
 
 .bizy-menu {
@@ -13,8 +15,8 @@
     align-items: center;
     justify-content: space-between;
     column-gap: 0.5rem;
-    color: inherit;
-    padding: 0.5rem;
+    padding: var(--bizy-menu-padding);
+    color: var(--bizy-menu-color);
     cursor: pointer;
 }
 
@@ -29,7 +31,7 @@
     pointer-events: none;
     display: block;
     transition: transform 0.3s ease;
-    fill: inherit;
+    fill: var(--bizy-menu-color);
 }
 
 .bizy-menu__arrow--opened {
@@ -46,8 +48,9 @@
 
 
 .bizy-menu__options {
-    background-color: var(--bizy-menu-background-color, #fff);
-    min-width: 100%;
+    background-color: var(--bizy-menu-background-color);
+    min-width: 10rem;
+    width: 100%;
     display: flex;
     flex-direction: column;
     box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);

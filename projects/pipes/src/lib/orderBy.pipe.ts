@@ -3,7 +3,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({
   name: 'bizyOrderBy'
 })
-export class OrderByPipe implements PipeTransform {
+export class BizyOrderByPipe implements PipeTransform {
   transform<T>(items: Array<T>, order: 'asc' | 'desc' | null = null, property: string = '', turnOff: boolean = false): Array<T> {
     if (turnOff) {
       return items;

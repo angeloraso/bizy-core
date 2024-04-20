@@ -1,3 +1,3 @@
-export { PieChartComponent } from './pie-chart.component';
-export { IPieChartData } from './pie-chart.types';
-export { PieChartModule } from './pie-chart.module';
+export { BizyPieChartComponent } from './pie-chart.component';
+export { IBizyPieChartData } from './pie-chart.types';
+export { BizyPieChartModule } from './pie-chart.module';

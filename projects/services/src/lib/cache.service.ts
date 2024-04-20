@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@angular/core';
-import { RouterService } from './router.service';
+import { BizyRouterService } from './router.service';
 @Injectable()
-export class CacheService {
+export class BizyCacheService {
   readonly CACHE_PREFIX = 'BIZY-CACHE';
-  constructor(@Inject(RouterService) private router: RouterService) {}
+  constructor(@Inject(BizyRouterService) private router: BizyRouterService) {}
 
   getData<T>(key?: string): T {
     if (!key) {

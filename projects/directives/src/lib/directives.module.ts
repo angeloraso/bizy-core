@@ -1,19 +1,19 @@
-import { OnlyNumbersDirective } from './only-numbers.directive';
+import { BizyOnlyNumbersDirective } from './only-numbers.directive';
 import { NgModule } from '@angular/core';
-import { LoadingDirective } from './loading.directive';
-import { OnlyPhoneDigitsDirective } from './only-phone-digits.directive';
-import { NgForTrackByIdDirective } from './track-by-id.directive';
-import { LongPressDirective } from './long-press.directive';
+import { BizyLoadingDirective } from './loading.directive';
+import { BizyOnlyPhoneDigitsDirective } from './only-phone-digits.directive';
+import { BizyNgForTrackByIdDirective } from './track-by-id.directive';
+import { BizyLongPressDirective } from './long-press.directive';
 
 const DIRECTIVES = [
-  LoadingDirective,
-  LongPressDirective,
-  OnlyNumbersDirective,
-  OnlyPhoneDigitsDirective,
-  NgForTrackByIdDirective,
+  BizyLoadingDirective,
+  BizyLongPressDirective,
+  BizyOnlyNumbersDirective,
+  BizyOnlyPhoneDigitsDirective,
+  BizyNgForTrackByIdDirective,
 ];
 @NgModule({
   declarations: DIRECTIVES,
   exports: DIRECTIVES,
 })
-export class DirectivesModule {}
+export class BizyDirectivesModule {}

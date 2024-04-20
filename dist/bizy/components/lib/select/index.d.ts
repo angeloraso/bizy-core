@@ -1,3 +1,3 @@
-export { SelectOptionComponent } from './select-option/select-option.component';
-export { SelectModule } from './select.module';
-export { SelectComponent } from './select.component';
+export { BizySelectOptionComponent } from './select-option/select-option.component';
+export { BizySelectModule } from './select.module';
+export { BizySelectComponent } from './select.component';

@@ -1,3 +1,3 @@
-export { TabsModule } from './tabs.module';
-export { TabsComponent } from './tabs.component';
-export { TabComponent } from './tab/tab.component';
+export { BizyTabsModule } from './tabs.module';
+export { BizyTabsComponent } from './tabs.component';
+export { BizyTabComponent } from './tab/tab.component';

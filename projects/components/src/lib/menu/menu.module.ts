@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MenuComponent } from './menu.component';
+import { BizyMenuComponent } from './menu.component';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { MenuOptionComponent } from './menu-option/menu-option.component';
+import { BizyMenuOptionComponent } from './menu-option/menu-option.component';
+import { BizyMenuTitleComponent } from './menu-title/menu-title.component';
 
 const COMPONENTS = [
-  MenuComponent,
-  MenuOptionComponent
+  BizyMenuComponent,
+  BizyMenuOptionComponent,
+  BizyMenuTitleComponent
 ];
 
 @NgModule({
@@ -15,4 +17,4 @@ const COMPONENTS = [
   declarations: COMPONENTS,
   exports: COMPONENTS
 })
-export class MenuModule {}
+export class BizyMenuModule {}

@@ -1,11 +1,11 @@
 import { Component, Input, ChangeDetectionStrategy, ContentChildren, QueryList, ContentChild, Inject, ChangeDetectorRef, ViewChild, AfterContentInit, ElementRef } from '@angular/core';
-import { TableHeaderComponent } from './table-header/table-header.component';
-import { TableFooterComponent } from './table-footer/table-footer.component';
-import { TableRowComponent } from './table-row/table-row.component';
+import { BizyTableHeaderComponent } from './table-header/table-header.component';
+import { BizyTableFooterComponent } from './table-footer/table-footer.component';
+import { BizyTableRowComponent } from './table-row/table-row.component';
 import { DOCUMENT } from '@angular/common';
 import { Subject, Subscription, debounceTime, fromEvent, skip } from 'rxjs';
-import { TableScrollingComponent } from './table-scrolling/table-scrolling.component';
-import { TableScrollingDirective } from './table-scrolling/table-scrolling.directive';
+import { BizyTableScrollingComponent } from './table-scrolling/table-scrolling.component';
+import { BizyTableScrollingDirective } from './table-scrolling/table-scrolling.directive';
 
 @Component({
   selector: 'bizy-table',
@@ -13,12 +13,12 @@ import { TableScrollingDirective } from './table-scrolling/table-scrolling.direc
   styleUrls: ['./table.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TableComponent implements AfterContentInit {
-  @ViewChild(TableScrollingComponent) viewport: TableScrollingComponent;
-  @ContentChild(TableScrollingDirective) virtualFor: TableScrollingDirective;
-  @ContentChild(TableHeaderComponent) header: TableHeaderComponent;
-  @ContentChildren(TableRowComponent) rows: QueryList<TableRowComponent>;
-  @ContentChild(TableFooterComponent) footer: TableFooterComponent;
+export class BizyTableComponent implements AfterContentInit {
+  @ViewChild(BizyTableScrollingComponent) viewport: BizyTableScrollingComponent;
+  @ContentChild(BizyTableScrollingDirective) virtualFor: BizyTableScrollingDirective;
+  @ContentChild(BizyTableHeaderComponent) header: BizyTableHeaderComponent;
+  @ContentChildren(BizyTableRowComponent) rows: QueryList<BizyTableRowComponent>;
+  @ContentChild(BizyTableFooterComponent) footer: BizyTableFooterComponent;
 
   #selectableMutationObserver: MutationObserver;
   #rowScrollingMutationObserver: MutationObserver;
@@ -75,7 +75,7 @@ export class TableComponent implements AfterContentInit {
           return;
         }
   
-        this.marginRight = (this.elementRef.nativeElement.scrollWidth - this.elementRef.nativeElement.offsetWidth) - this.elementRef.nativeElement.scrollLeft;
+        this.marginRight = this.elementRef.nativeElement.scrollWidth ? (this.elementRef.nativeElement.scrollWidth - this.elementRef.nativeElement.offsetWidth) - this.elementRef.nativeElement.scrollLeft : 0;
         this.rows.forEach(_row => {
             _row.setMarginRight(this.marginRight);
         });
@@ -89,7 +89,7 @@ export class TableComponent implements AfterContentInit {
         }
 
         this.#subscription.add(fromEvent(this.elementRef.nativeElement, 'scroll', { capture: true }).subscribe(() => {
-          this.marginRight = (this.elementRef.nativeElement.scrollWidth - this.elementRef.nativeElement.offsetWidth) - this.elementRef.nativeElement.scrollLeft;
+          this.marginRight = this.elementRef.nativeElement.scrollWidth ? (this.elementRef.nativeElement.scrollWidth - this.elementRef.nativeElement.offsetWidth) - this.elementRef.nativeElement.scrollLeft : 0;
           this.rows.forEach(_row => {
             _row.setMarginRight(this.marginRight);
           });
@@ -116,7 +116,7 @@ export class TableComponent implements AfterContentInit {
     this.#resizeObserver = new ResizeObserver(() => this.notifier$.next());
     this.#resizeObserver.observe(this.elementRef.nativeElement);
     this.#subscription.add(this.notifier$.pipe(skip(1), debounceTime(100)).subscribe(() => {
-      this.marginRight = (this.elementRef.nativeElement.scrollWidth - this.elementRef.nativeElement.offsetWidth) - this.elementRef.nativeElement.scrollLeft;
+      this.marginRight = this.elementRef.nativeElement.scrollWidth ? (this.elementRef.nativeElement.scrollWidth - this.elementRef.nativeElement.offsetWidth) - this.elementRef.nativeElement.scrollLeft : 0;
       this.rows.forEach(_row => {
         _row.setMarginRight(this.marginRight);
       });

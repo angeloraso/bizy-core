@@ -4,7 +4,7 @@ import Fuse from 'fuse.js';
 @Pipe({
   name: 'bizySearch'
 })
-export class SearchPipe implements PipeTransform {
+export class BizySearchPipe implements PipeTransform {
   fuseOptions: IFuseOptions;
   fuse: Fuse<any>;
   elements: Array<unknown>;

@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ConfirmButtonsComponent } from './confirm-buttons.component';
-import { ButtonModule } from '../button';
+import { BizyConfirmButtonsComponent } from './confirm-buttons.component';
+import { BizyButtonModule } from '../button';
 
 const COMPONENTS = [
-  ConfirmButtonsComponent,
+  BizyConfirmButtonsComponent,
 ];
 
 @NgModule({
-  imports: [CommonModule, FormsModule, ButtonModule],
+  imports: [CommonModule, FormsModule, BizyButtonModule],
   declarations: COMPONENTS,
   exports: COMPONENTS
 })
-export class ConfirmButtonsModule {}
+export class BizyConfirmButtonsModule {}

@@ -1,2 +1,2 @@
-export { SliderModule } from './slider.module';
-export { SliderComponent } from './slider.component';
+export { BizySliderModule } from './slider.module';
+export { BizySliderComponent } from './slider.component';

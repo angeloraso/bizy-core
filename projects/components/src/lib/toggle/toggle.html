@@ -7,7 +7,7 @@
             #bizyToggleInput
             id="{{id}}"
             type="checkbox"
-            (change)="checkedChange.emit(!_checked); onSelect.emit(!_checked)"
+            (change)="checkedChange.emit(!checked); onSelect.emit(!_checked)"
             class="bizy-toggle__slide__checkbox"
             [ngClass]="{'bizy-toggle__slide__checkbox--disabled': disabled}">
         <div class="bizy-toggle__slide__knobs"></div>

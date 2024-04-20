@@ -1,0 +1,14 @@
+:host {
+    font-size: 1rem;
+}
+
+.bizy-sidebar-floating-option-title {
+    background-color: var(--bizy-sidebar-floating-option-title-background-color);
+    color: var(--bizy-sidebar-floating-option-title-color);
+    padding: 0.5rem;
+    cursor: default;
+    text-decoration: underline 0.1rem var(--bizy-sidebar-floating-option-title-underline-color);
+    text-underline-offset: 0.2rem;
+    display: flex;
+    align-items: center;
+}

@@ -1,4 +1,4 @@
-import { MenuOptionComponent } from './menu-option/menu-option.component';
+import { BizyMenuOptionComponent } from './menu-option/menu-option.component';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, EventEmitter, Inject, Input, Output, QueryList } from '@angular/core';
 import { Subscription } from 'rxjs';
 
@@ -8,11 +8,14 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./menu.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MenuComponent {
-  @ContentChildren(MenuOptionComponent) options!: QueryList<MenuOptionComponent>;
+export class BizyMenuComponent {
+  @ContentChildren(BizyMenuOptionComponent) options!: QueryList<BizyMenuOptionComponent>;
   @Input() id: string = String(Math.random());
   @Input() disabled: boolean = false;
+  @Input() offsetX: number = 0;
+  @Input() offsetY: number = 0;
   @Input() customClass: string = '';
+  @Input() hideArrow: boolean = false;
   @Input() opened: boolean = false;
   @Output() onSelect = new EventEmitter<PointerEvent>();
 
@@ -27,8 +30,11 @@ export class MenuComponent {
       return;
     }
 
-    this.selectButton(event)
     this.onSelect.emit(event);
+
+    if (this.options && this.options.length > 0) {
+      this.selectButton(event)
+    }
   }
 
   selectButton(event: any) {
@@ -40,7 +46,7 @@ export class MenuComponent {
 
     if (this.opened) {
       if (this.options) {
-        this.options.forEach((option: MenuOptionComponent) => {
+        this.options.forEach((option: BizyMenuOptionComponent) => {
           this.#subscription.add(option.onSelect.subscribe(event => {
             this.close(event);
           }));

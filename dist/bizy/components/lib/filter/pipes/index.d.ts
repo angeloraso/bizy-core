@@ -1,2 +1,2 @@
-export { FilterPipe } from "./filter.pipe";
-export { RangeFilterPipe } from "./rangeFilter.pipe";
+export { BizyFilterPipe } from "./filter.pipe";
+export { BizyRangeFilterPipe } from "./rangeFilter.pipe";

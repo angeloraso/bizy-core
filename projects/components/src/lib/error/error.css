@@ -1,3 +1,16 @@
+:host {
+    font-size: 1rem;
+    animation-name: fade-in;
+    animation-duration: 0.5s;
+    animation-fill-mode: both;
+}
+
+:host * {
+    color: var(--bizy-error-color);
+    fill: var(--bizy-error-color);
+    font-weight: bold;
+}
+
 @keyframes fade-in {
     from {
         opacity: 0;
@@ -6,12 +19,4 @@
     to {
         opacity: 1;
     }
-}
-
-.bizy-error {
-    color: var(--bizy-error-color);
-    font-weight: bold;
-    animation-name: fade-in;
-    animation-duration: 0.5s;
-    animation-fill-mode: both;
 }

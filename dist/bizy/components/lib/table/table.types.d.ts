@@ -1,3 +1,3 @@
-export interface ITableRow {
+export interface IBizyTableRow {
     selected: boolean;
 }

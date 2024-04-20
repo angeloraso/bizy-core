@@ -5,7 +5,7 @@ import { interval, Subject } from 'rxjs';
 @Directive({
   selector: '[virtualScrollGrid]'
 })
-export class VirtualScrollGridDirective implements AfterViewInit {
+export class BizyVirtualScrollGridDirective implements AfterViewInit {
   constructor(
     @Inject(ElementRef) private elRef: ElementRef,
     @Inject(Renderer2) private renderer: Renderer2

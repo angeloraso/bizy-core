@@ -1,0 +1,60 @@
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Inject, Input, Output } from '@angular/core';
+import * as i0 from "@angular/core";
+import * as i1 from "@angular/common";
+export class BizyBreadcrumbComponent {
+    ref;
+    onSelect = new EventEmitter();
+    _breadcrumbs = [];
+    showGoBack = false;
+    constructor(ref) {
+        this.ref = ref;
+    }
+    set breadcrumbs(breadcrumbs) {
+        if (breadcrumbs) {
+            this._breadcrumbs = breadcrumbs;
+            this.showGoBack = false;
+            let counter = 0;
+            for (let i = 0; i < breadcrumbs.length; i++) {
+                if (!breadcrumbs[i].skip) {
+                    counter++;
+                }
+                if (counter > 1) {
+                    this.showGoBack = true;
+                    this.ref.detectChanges();
+                    break;
+                }
+            }
+        }
+    }
+    goTo(breadcrumb) {
+        if (breadcrumb.skip) {
+            return;
+        }
+        this.onSelect.emit(breadcrumb);
+    }
+    goBack() {
+        if (!this._breadcrumbs[this._breadcrumbs.length - 2]) {
+            return;
+        }
+        for (let i = this._breadcrumbs.length; i > 0; i--) {
+            if (!this._breadcrumbs[i - 2].skip) {
+                this.onSelect.emit(this._breadcrumbs[i - 2]);
+                break;
+            }
+        }
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyBreadcrumbComponent, deps: [{ token: ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyBreadcrumbComponent, selector: "bizy-breadcrumb", inputs: { breadcrumbs: "breadcrumbs" }, outputs: { onSelect: "onSelect" }, ngImport: i0, template: "<ul class=\"bizy-breadcrumb\">\n  <li *ngFor=\"let breadcrumb of _breadcrumbs; let last = last; let i = index\">\n    <button \n      class=\"bizy-breadcrumb__link\"\n      [ngClass]=\"{'bizy-breadcrumb__link--skip': breadcrumb.skip || last}\"\n      type=\"button\" \n      (click)=\"goTo(breadcrumb)\">\n      {{breadcrumb.label}}\n    </button>\n    <button\n      type=\"button\"\n      *ngIf=\"last && showGoBack\"\n      class=\"bizy-breadcrumb__go-back\"\n      (click)=\"goBack()\">\n      <svg \n        class=\"bizy-breadcrumb__go-back__icon\"\n        fill=\"none\"\n        stroke=\"currentColor\"\n        stroke-linecap=\"round\"\n        stroke-linejoin=\"round\"\n        stroke-width=\"2\"\n        viewBox=\"0 0 24 24\"\n        xmlns=\"http://www.w3.org/2000/svg\">\n        <path d=\"M0 0h24v24H0z\" fill=\"none\" stroke=\"none\"/>\n        <path d=\"M9 11l-4 4l4 4m-4 -4h11a4 4 0 0 0 0 -8h-1\"/>\n      </svg>\n    </button>\n  </li>\n</ul>\n  ", styles: [":host{font-size:1rem}.bizy-breadcrumb{list-style:none;margin:0;padding:0}.bizy-breadcrumb li{display:inline}.bizy-breadcrumb li:before{content:\"/\";margin:0 .3rem}.bizy-breadcrumb li:first-child:before{content:\"\";margin:0}.bizy-breadcrumb__link{cursor:pointer;border:none;background-color:transparent;color:var(--bizy-breadcrumb-link-color)}.bizy-breadcrumb__link:hover{filter:brightness(95%)}.bizy-breadcrumb__link--skip{cursor:default;color:var(--bizy-breadcrumb-path-color)}.bizy-breadcrumb__link--skip:hover{color:var(--bizy-breadcrumb-path-color)}.bizy-breadcrumb__go-back{cursor:pointer;margin-left:.4rem;position:relative;top:.5rem;background-color:transparent;border:none}.bizy-breadcrumb__go-back__icon{color:var(--bizy-breadcrumb-link-color);height:1rem;position:relative;bottom:.3rem}\n"], dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1.NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }, { kind: "directive", type: i1.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyBreadcrumbComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-breadcrumb', changeDetection: ChangeDetectionStrategy.OnPush, template: "<ul class=\"bizy-breadcrumb\">\n  <li *ngFor=\"let breadcrumb of _breadcrumbs; let last = last; let i = index\">\n    <button \n      class=\"bizy-breadcrumb__link\"\n      [ngClass]=\"{'bizy-breadcrumb__link--skip': breadcrumb.skip || last}\"\n      type=\"button\" \n      (click)=\"goTo(breadcrumb)\">\n      {{breadcrumb.label}}\n    </button>\n    <button\n      type=\"button\"\n      *ngIf=\"last && showGoBack\"\n      class=\"bizy-breadcrumb__go-back\"\n      (click)=\"goBack()\">\n      <svg \n        class=\"bizy-breadcrumb__go-back__icon\"\n        fill=\"none\"\n        stroke=\"currentColor\"\n        stroke-linecap=\"round\"\n        stroke-linejoin=\"round\"\n        stroke-width=\"2\"\n        viewBox=\"0 0 24 24\"\n        xmlns=\"http://www.w3.org/2000/svg\">\n        <path d=\"M0 0h24v24H0z\" fill=\"none\" stroke=\"none\"/>\n        <path d=\"M9 11l-4 4l4 4m-4 -4h11a4 4 0 0 0 0 -8h-1\"/>\n      </svg>\n    </button>\n  </li>\n</ul>\n  ", styles: [":host{font-size:1rem}.bizy-breadcrumb{list-style:none;margin:0;padding:0}.bizy-breadcrumb li{display:inline}.bizy-breadcrumb li:before{content:\"/\";margin:0 .3rem}.bizy-breadcrumb li:first-child:before{content:\"\";margin:0}.bizy-breadcrumb__link{cursor:pointer;border:none;background-color:transparent;color:var(--bizy-breadcrumb-link-color)}.bizy-breadcrumb__link:hover{filter:brightness(95%)}.bizy-breadcrumb__link--skip{cursor:default;color:var(--bizy-breadcrumb-path-color)}.bizy-breadcrumb__link--skip:hover{color:var(--bizy-breadcrumb-path-color)}.bizy-breadcrumb__go-back{cursor:pointer;margin-left:.4rem;position:relative;top:.5rem;background-color:transparent;border:none}.bizy-breadcrumb__go-back__icon{color:var(--bizy-breadcrumb-link-color);height:1rem;position:relative;bottom:.3rem}\n"] }]
+        }], ctorParameters: function () { return [{ type: i0.ChangeDetectorRef, decorators: [{
+                    type: Inject,
+                    args: [ChangeDetectorRef]
+                }] }]; }, propDecorators: { onSelect: [{
+                type: Output
+            }], breadcrumbs: [{
+                type: Input
+            }] } });
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYnJlYWRjcnVtYi5jb21wb25lbnQuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi8uLi9wcm9qZWN0cy9jb21wb25lbnRzL3NyYy9saWIvYnJlYWRjcnVtYi9icmVhZGNydW1iLmNvbXBvbmVudC50cyIsIi4uLy4uLy4uLy4uLy4uLy4uL3Byb2plY3RzL2NvbXBvbmVudHMvc3JjL2xpYi9icmVhZGNydW1iL2JyZWFkY3J1bWIuaHRtbCJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxPQUFPLEVBQUUsdUJBQXVCLEVBQUUsaUJBQWlCLEVBQUUsU0FBUyxFQUFFLFlBQVksRUFBRSxNQUFNLEVBQUUsS0FBSyxFQUFFLE1BQU0sRUFBRSxNQUFNLGVBQWUsQ0FBQzs7O0FBUzNILE1BQU0sT0FBTyx1QkFBdUI7SUFNRztJQUwzQixRQUFRLEdBQUcsSUFBSSxZQUFZLEVBQW1CLENBQUM7SUFDekQsWUFBWSxHQUEyQixFQUFFLENBQUM7SUFDMUMsVUFBVSxHQUFZLEtBQUssQ0FBQztJQUU1QixZQUNxQyxHQUFzQjtRQUF0QixRQUFHLEdBQUgsR0FBRyxDQUFtQjtJQUN4RCxDQUFDO0lBRUosSUFBYSxXQUFXLENBQUMsV0FBbUM7UUFDMUQsSUFBSSxXQUFXLEVBQUU7WUFDZixJQUFJLENBQUMsWUFBWSxHQUFHLFdBQVcsQ0FBQztZQUNoQyxJQUFJLENBQUMsVUFBVSxHQUFHLEtBQUssQ0FBQztZQUN4QixJQUFJLE9BQU8sR0FBRyxDQUFDLENBQUM7WUFDaEIsS0FBSyxJQUFJLENBQUMsR0FBRyxDQUFDLEVBQUUsQ0FBQyxHQUFHLFdBQVcsQ0FBQyxNQUFNLEVBQUUsQ0FBQyxFQUFFLEVBQUU7Z0JBQzNDLElBQUksQ0FBQyxXQUFXLENBQUMsQ0FBQyxDQUFDLENBQUMsSUFBSSxFQUFFO29CQUN4QixPQUFPLEVBQUUsQ0FBQztpQkFDWDtnQkFFRCxJQUFJLE9BQU8sR0FBRyxDQUFDLEVBQUU7b0JBQ2YsSUFBSSxDQUFDLFVBQVUsR0FBRyxJQUFJLENBQUM7b0JBQ3ZCLElBQUksQ0FBQyxHQUFHLENBQUMsYUFBYSxFQUFFLENBQUM7b0JBQ3pCLE1BQU07aUJBQ1A7YUFDRjtTQUNGO0lBQ0gsQ0FBQztJQUVELElBQUksQ0FBQyxVQUEyQjtRQUM5QixJQUFJLFVBQVUsQ0FBQyxJQUFJLEVBQUU7WUFDbkIsT0FBTztTQUNSO1FBRUQsSUFBSSxDQUFDLFFBQVEsQ0FBQyxJQUFJLENBQUMsVUFBVSxDQUFDLENBQUM7SUFDakMsQ0FBQztJQUVELE1BQU07UUFDSixJQUFJLENBQUMsSUFBSSxDQUFDLFlBQVksQ0FBQyxJQUFJLENBQUMsWUFBWSxDQUFDLE1BQU0sR0FBRyxDQUFDLENBQUMsRUFBRTtZQUNwRCxPQUFPO1NBQ1I7UUFFRCxLQUFLLElBQUksQ0FBQyxHQUFHLElBQUksQ0FBQyxZQUFZLENBQUMsTUFBTSxFQUFFLENBQUMsR0FBRyxDQUFDLEVBQUUsQ0FBQyxFQUFFLEVBQUU7WUFDakQsSUFBSSxDQUFDLElBQUksQ0FBQyxZQUFZLENBQUMsQ0FBQyxHQUFHLENBQUMsQ0FBQyxDQUFDLElBQUksRUFBRTtnQkFDbEMsSUFBSSxDQUFDLFFBQVEsQ0FBQyxJQUFJLENBQUMsSUFBSSxDQUFDLFlBQVksQ0FBQyxDQUFDLEdBQUcsQ0FBQyxDQUFDLENBQUMsQ0FBQztnQkFDN0MsTUFBTTthQUNQO1NBQ0Y7SUFDSCxDQUFDO3dHQS9DVSx1QkFBdUIsa0JBTXhCLGlCQUFpQjs0RkFOaEIsdUJBQXVCLGtJQ1RwQyx1OEJBNkJFOzs0RkRwQlcsdUJBQXVCO2tCQU5uQyxTQUFTOytCQUNFLGlCQUFpQixtQkFHVix1QkFBdUIsQ0FBQyxNQUFNOzswQkFRNUMsTUFBTTsyQkFBQyxpQkFBaUI7NENBTGpCLFFBQVE7c0JBQWpCLE1BQU07Z0JBUU0sV0FBVztzQkFBdkIsS0FBSyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IENoYW5nZURldGVjdGlvblN0cmF0ZWd5LCBDaGFuZ2VEZXRlY3RvclJlZiwgQ29tcG9uZW50LCBFdmVudEVtaXR0ZXIsIEluamVjdCwgSW5wdXQsIE91dHB1dCB9IGZyb20gJ0Bhbmd1bGFyL2NvcmUnO1xuaW1wb3J0IHsgSUJpenlCcmVhZGNydW1iIH0gZnJvbSAnLi9icmVhZGNydW1iLnR5cGVzJztcblxuQENvbXBvbmVudCh7XG4gIHNlbGVjdG9yOiAnYml6eS1icmVhZGNydW1iJyxcbiAgdGVtcGxhdGVVcmw6ICcuL2JyZWFkY3J1bWIuaHRtbCcsXG4gIHN0eWxlVXJsczogWycuL2JyZWFkY3J1bWIuY3NzJ10sXG4gIGNoYW5nZURldGVjdGlvbjogQ2hhbmdlRGV0ZWN0aW9uU3RyYXRlZ3kuT25QdXNoXG59KVxuZXhwb3J0IGNsYXNzIEJpenlCcmVhZGNydW1iQ29tcG9uZW50IHtcbiAgQE91dHB1dCgpIG9uU2VsZWN0ID0gbmV3IEV2ZW50RW1pdHRlcjxJQml6eUJyZWFkY3J1bWI+KCk7XG4gIF9icmVhZGNydW1iczogQXJyYXk8SUJpenlCcmVhZGNydW1iPiA9IFtdO1xuICBzaG93R29CYWNrOiBib29sZWFuID0gZmFsc2U7XG5cbiAgY29uc3RydWN0b3IoXG4gICAgQEluamVjdChDaGFuZ2VEZXRlY3RvclJlZikgcHJpdmF0ZSByZWY6IENoYW5nZURldGVjdG9yUmVmXG4gICkge31cblxuICBASW5wdXQoKSBzZXQgYnJlYWRjcnVtYnMoYnJlYWRjcnVtYnM6IEFycmF5PElCaXp5QnJlYWRjcnVtYj4pIHtcbiAgICBpZiAoYnJlYWRjcnVtYnMpIHtcbiAgICAgIHRoaXMuX2JyZWFkY3J1bWJzID0gYnJlYWRjcnVtYnM7XG4gICAgICB0aGlzLnNob3dHb0JhY2sgPSBmYWxzZTtcbiAgICAgIGxldCBjb3VudGVyID0gMDtcbiAgICAgIGZvciAobGV0IGkgPSAwOyBpIDwgYnJlYWRjcnVtYnMubGVuZ3RoOyBpKyspIHtcbiAgICAgICAgaWYgKCFicmVhZGNydW1ic1tpXS5za2lwKSB7XG4gICAgICAgICAgY291bnRlcisrO1xuICAgICAgICB9XG5cbiAgICAgICAgaWYgKGNvdW50ZXIgPiAxKSB7XG4gICAgICAgICAgdGhpcy5zaG93R29CYWNrID0gdHJ1ZTtcbiAgICAgICAgICB0aGlzLnJlZi5kZXRlY3RDaGFuZ2VzKCk7XG4gICAgICAgICAgYnJlYWs7XG4gICAgICAgIH1cbiAgICAgIH1cbiAgICB9XG4gIH1cblxuICBnb1RvKGJyZWFkY3J1bWI6IElCaXp5QnJlYWRjcnVtYikge1xuICAgIGlmIChicmVhZGNydW1iLnNraXApIHtcbiAgICAgIHJldHVybjtcbiAgICB9XG5cbiAgICB0aGlzLm9uU2VsZWN0LmVtaXQoYnJlYWRjcnVtYik7XG4gIH1cblxuICBnb0JhY2soKSB7XG4gICAgaWYgKCF0aGlzLl9icmVhZGNydW1ic1t0aGlzLl9icmVhZGNydW1icy5sZW5ndGggLSAyXSkge1xuICAgICAgcmV0dXJuO1xuICAgIH1cblxuICAgIGZvciAobGV0IGkgPSB0aGlzLl9icmVhZGNydW1icy5sZW5ndGg7IGkgPiAwOyBpLS0pIHtcbiAgICAgIGlmICghdGhpcy5fYnJlYWRjcnVtYnNbaSAtIDJdLnNraXApIHtcbiAgICAgICAgdGhpcy5vblNlbGVjdC5lbWl0KHRoaXMuX2JyZWFkY3J1bWJzW2kgLSAyXSk7XG4gICAgICAgIGJyZWFrO1xuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIiwiPHVsIGNsYXNzPVwiYml6eS1icmVhZGNydW1iXCI+XG4gIDxsaSAqbmdGb3I9XCJsZXQgYnJlYWRjcnVtYiBvZiBfYnJlYWRjcnVtYnM7IGxldCBsYXN0ID0gbGFzdDsgbGV0IGkgPSBpbmRleFwiPlxuICAgIDxidXR0b24gXG4gICAgICBjbGFzcz1cImJpenktYnJlYWRjcnVtYl9fbGlua1wiXG4gICAgICBbbmdDbGFzc109XCJ7J2JpenktYnJlYWRjcnVtYl9fbGluay0tc2tpcCc6IGJyZWFkY3J1bWIuc2tpcCB8fCBsYXN0fVwiXG4gICAgICB0eXBlPVwiYnV0dG9uXCIgXG4gICAgICAoY2xpY2spPVwiZ29UbyhicmVhZGNydW1iKVwiPlxuICAgICAge3ticmVhZGNydW1iLmxhYmVsfX1cbiAgICA8L2J1dHRvbj5cbiAgICA8YnV0dG9uXG4gICAgICB0eXBlPVwiYnV0dG9uXCJcbiAgICAgICpuZ0lmPVwibGFzdCAmJiBzaG93R29CYWNrXCJcbiAgICAgIGNsYXNzPVwiYml6eS1icmVhZGNydW1iX19nby1iYWNrXCJcbiAgICAgIChjbGljayk9XCJnb0JhY2soKVwiPlxuICAgICAgPHN2ZyBcbiAgICAgICAgY2xhc3M9XCJiaXp5LWJyZWFkY3J1bWJfX2dvLWJhY2tfX2ljb25cIlxuICAgICAgICBmaWxsPVwibm9uZVwiXG4gICAgICAgIHN0cm9rZT1cImN1cnJlbnRDb2xvclwiXG4gICAgICAgIHN0cm9rZS1saW5lY2FwPVwicm91bmRcIlxuICAgICAgICBzdHJva2UtbGluZWpvaW49XCJyb3VuZFwiXG4gICAgICAgIHN0cm9rZS13aWR0aD1cIjJcIlxuICAgICAgICB2aWV3Qm94PVwiMCAwIDI0IDI0XCJcbiAgICAgICAgeG1sbnM9XCJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Z1wiPlxuICAgICAgICA8cGF0aCBkPVwiTTAgMGgyNHYyNEgwelwiIGZpbGw9XCJub25lXCIgc3Ryb2tlPVwibm9uZVwiLz5cbiAgICAgICAgPHBhdGggZD1cIk05IDExbC00IDRsNCA0bS00IC00aDExYTQgNCAwIDAgMCAwIC04aC0xXCIvPlxuICAgICAgPC9zdmc+XG4gICAgPC9idXR0b24+XG4gIDwvbGk+XG48L3VsPlxuICAiXX0=

@@ -12,7 +12,7 @@ type LoadingType = 'spinner' | 'card' | 'item';
 @Directive({
   selector: '[bizyLoading]'
 })
-export class LoadingDirective {
+export class BizyLoadingDirective {
   @Input() set bizyLoading(value: boolean) {
     if ((this.elementRef.nativeElement && (this.elementRef.nativeElement.offsetWidth === 0 || this.elementRef.nativeElement.offsetHeight === 0) && !this.#originalElement)) {
       const mutationObserver = new MutationObserver(() => {

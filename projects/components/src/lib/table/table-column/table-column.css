@@ -15,7 +15,7 @@
 
 .bizy-table-column {
     font-size: 1rem;
-    min-width: var(--bizy-table-column-min-width, 2rem);
+    min-width: var(--bizy-table-column-min-width);
     width: 100%;
     border: none;
     background-color: transparent;
@@ -23,11 +23,6 @@
     align-items: center;
     column-gap: 0.3rem;
     padding-right: 0.3rem;
-}
-
-.bizy-table-column__arrows {
-    height: 1rem;
-    fill: var(--bizy-table-column-arrows-color, #2b94f4)
 }
 
 ::ng-deep .bizy-table-column * {

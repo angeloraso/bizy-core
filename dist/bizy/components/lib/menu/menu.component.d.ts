@@ -1,13 +1,16 @@
-import { MenuOptionComponent } from './menu-option/menu-option.component';
+import { BizyMenuOptionComponent } from './menu-option/menu-option.component';
 import { ChangeDetectorRef, EventEmitter, QueryList } from '@angular/core';
 import * as i0 from "@angular/core";
-export declare class MenuComponent {
+export declare class BizyMenuComponent {
     #private;
     private ref;
-    options: QueryList<MenuOptionComponent>;
+    options: QueryList<BizyMenuOptionComponent>;
     id: string;
     disabled: boolean;
+    offsetX: number;
+    offsetY: number;
     customClass: string;
+    hideArrow: boolean;
     opened: boolean;
     onSelect: EventEmitter<PointerEvent>;
     _menuWidth: number;
@@ -20,6 +23,6 @@ export declare class MenuComponent {
         };
     }) => void;
     ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<MenuComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<MenuComponent, "bizy-menu", never, { "id": { "alias": "id"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; "opened": { "alias": "opened"; "required": false; }; }, { "onSelect": "onSelect"; }, ["options"], ["*", "bizy-menu-option"], false, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<BizyMenuComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<BizyMenuComponent, "bizy-menu", never, { "id": { "alias": "id"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; "offsetX": { "alias": "offsetX"; "required": false; }; "offsetY": { "alias": "offsetY"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; "hideArrow": { "alias": "hideArrow"; "required": false; }; "opened": { "alias": "opened"; "required": false; }; }, { "onSelect": "onSelect"; }, ["options"], ["*", "bizy-menu-title", "bizy-menu-option"], false, never>;
 }

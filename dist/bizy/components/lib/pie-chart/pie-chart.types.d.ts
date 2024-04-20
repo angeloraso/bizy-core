@@ -1,4 +1,4 @@
-export interface IPieChartData {
+export interface IBizyPieChartData {
     name: string;
     value: number;
     color?: string;

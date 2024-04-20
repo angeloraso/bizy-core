@@ -4,7 +4,7 @@ interface ILogData {
     functionName: string;
     param?: unknown;
 }
-export declare class LogService {
+export declare class BizyLogService {
     #private;
     debug(data: string | ILogData, param?: unknown): void;
     info(data: string | ILogData, param?: unknown): void;
@@ -21,7 +21,7 @@ export declare class LogService {
     templateWarn(data: ILogData): void;
     /** DEPRECATED */
     templateError(data: ILogData): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<LogService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<LogService>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<BizyLogService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<BizyLogService>;
 }
 export {};

@@ -1,8 +1,8 @@
 <button 
     type="button"
     id="{{id}}"
-    (click)="onSelect.emit()"
-    (keyup.enter)="onSelect.emit()"
+    (click)="onSelect.emit($event)"
+    (keyup.enter)="onSelect.emit($event)"
     class="bizy-table-column {{customClass}}">
 
     <ng-content></ng-content>

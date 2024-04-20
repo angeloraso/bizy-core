@@ -1,3 +1,3 @@
-export { LineChartComponent } from './line-chart.component';
+export { BizyLineChartComponent } from './line-chart.component';
 export { ILineChartData } from './line-chart.types';
-export { LineChartModule } from './line-chart.module';
+export { BizyLineChartModule } from './line-chart.module';

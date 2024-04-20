@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ErrorComponent } from './error.component';
+import { BizyErrorComponent } from './error.component';
 
 const COMPONENTS = [
-  ErrorComponent,
+  BizyErrorComponent,
 ];
 
 @NgModule({
@@ -12,4 +12,4 @@ const COMPONENTS = [
   declarations: COMPONENTS,
   exports: COMPONENTS
 })
-export class ErrorModule {}
+export class BizyErrorModule {}

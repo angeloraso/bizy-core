@@ -8,7 +8,7 @@ interface Item {
 @Directive({
   selector: '[ngForBizyTrackById]'
 })
-export class NgForTrackByIdDirective<T extends Item> {
+export class BizyNgForTrackByIdDirective<T extends Item> {
   constructor(@Host() private readonly ngFor: NgForOf<T>) {
     this.ngFor.ngForTrackBy = (_index: number, item: T) => item.id;
   }

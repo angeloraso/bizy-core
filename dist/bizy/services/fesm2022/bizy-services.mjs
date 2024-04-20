@@ -1,15 +1,263 @@
+import * as i1$2 from '@angular/common';
+import { DOCUMENT, CommonModule } from '@angular/common';
 import * as i0 from '@angular/core';
-import { Injectable, Inject, ChangeDetectorRef, ViewContainerRef, Component, ChangeDetectionStrategy, ViewChild, NgModule, Pipe } from '@angular/core';
+import { Injectable, Inject, RendererFactory2, ChangeDetectorRef, ViewContainerRef, Component, ChangeDetectionStrategy, ViewChild, NgModule, Pipe } from '@angular/core';
+import { BehaviorSubject, take } from 'rxjs';
 import * as i1 from '@angular/router';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { filter, map, distinctUntilChanged } from 'rxjs/operators';
-import { take } from 'rxjs';
 import * as i1$1 from '@angular/cdk/dialog';
 import { DIALOG_DATA, DialogRef, Dialog, DialogModule } from '@angular/cdk/dialog';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import * as i1$2 from '@ngx-translate/core';
+import * as i1$3 from '@ngx-translate/core';
 import { TranslateService as TranslateService$1, TranslateModule as TranslateModule$1 } from '@ngx-translate/core';
+
+class BizyKeyboardService {
+    document;
+    #shiftHolding = new BehaviorSubject(false);
+    get shiftHolding$() {
+        return this.#shiftHolding.asObservable();
+    }
+    constructor(document) {
+        this.document = document;
+        this.document.addEventListener('keydown', (event) => {
+            if (event.key === 'Shift') {
+                this.#shiftHolding.next(true);
+            }
+        });
+        this.document.addEventListener('keyup', (event) => {
+            if (event.key === 'Shift') {
+                this.#shiftHolding.next(false);
+            }
+        });
+    }
+    isShiftHolding() {
+        return this.#shiftHolding.value;
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyKeyboardService, deps: [{ token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyKeyboardService });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyKeyboardService, decorators: [{
+            type: Injectable
+        }], ctorParameters: function () { return [{ type: Document, decorators: [{
+                    type: Inject,
+                    args: [DOCUMENT]
+                }] }]; } });
+
+class BizyExportToCSVService {
+    document;
+    rendererFactory;
+    #loading = false;
+    #renderer;
+    constructor(document, rendererFactory) {
+        this.document = document;
+        this.rendererFactory = rendererFactory;
+        this.#renderer = this.rendererFactory.createRenderer(null, null);
+    }
+    toCSV(data) {
+        if (this.#loading || !data.items || !Array.isArray(data.items) || !data.model) {
+            return;
+        }
+        try {
+            this.#loading = true;
+            const csv = this.#getCSV(data.items, data.model);
+            if (!data.fileName) {
+                data.fileName = 'bizy-csv';
+            }
+            this.#downloadCSV({ csv, fileName: data.fileName });
+        }
+        finally {
+            this.#loading = false;
+        }
+    }
+    #getCSV(items, model) {
+        let toCopy = '';
+        for (const key in model) {
+            if (key) {
+                toCopy += `${model[key]},`;
+            }
+        }
+        items.forEach(_item => {
+            // Remove the last character (',')
+            toCopy = toCopy.slice(0, -1);
+            toCopy += '\n';
+            for (const key in model) {
+                let value = _item;
+                const nestedProperty = key.split('.');
+                for (let i = 0; i < nestedProperty.length; i++) {
+                    const _property = nestedProperty[i];
+                    if (value) {
+                        value = value[_property];
+                    }
+                    else {
+                        break;
+                    }
+                }
+                if (typeof value !== undefined || value !== null) {
+                    toCopy += `${value},`;
+                }
+                else {
+                    toCopy += ',';
+                }
+            }
+        });
+        return toCopy;
+    }
+    #downloadCSV(data) {
+        const blob = new Blob([data.csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const downloadButton = this.#renderer.createElement('a');
+        downloadButton.setAttribute('download', data.fileName);
+        downloadButton.href = url;
+        this.#renderer.appendChild(this.document.body, downloadButton);
+        downloadButton.click();
+        this.#renderer.removeChild(this.document.body, downloadButton);
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyExportToCSVService, deps: [{ token: DOCUMENT }, { token: RendererFactory2 }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyExportToCSVService });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyExportToCSVService, decorators: [{
+            type: Injectable
+        }], ctorParameters: function () { return [{ type: Document, decorators: [{
+                    type: Inject,
+                    args: [DOCUMENT]
+                }] }, { type: i0.RendererFactory2, decorators: [{
+                    type: Inject,
+                    args: [RendererFactory2]
+                }] }]; } });
+
+class BizyRouterService {
+    router;
+    _backPath = '';
+    transitionsEnd$;
+    transitionsStart$;
+    constructor(router) {
+        this.router = router;
+        this.transitionsEnd$ = this.router.events.pipe(filter(event => event instanceof NavigationEnd), map((event) => event.id), distinctUntilChanged(), map(() => this.router.routerState.snapshot.root));
+        this.transitionsStart$ = this.router.events.pipe(filter(event => event instanceof NavigationStart), map((event) => event.id), distinctUntilChanged(), map(() => this.router.routerState.snapshot.root));
+    }
+    getURL() {
+        return window.location.pathname;
+    }
+    getBackPath() {
+        return this._backPath;
+    }
+    getId(activatedRoute, param) {
+        return activatedRoute.snapshot.paramMap.get(param);
+    }
+    getQueryParam(activatedRoute, param) {
+        return activatedRoute.snapshot.queryParamMap.get(param);
+    }
+    goTo(data) {
+        this._backPath = this.getURL();
+        if (data.path[0] === '/') {
+            this.router.navigateByUrl(`${data.path}${this._serialize(data.params)}`, {
+                replaceUrl: true
+            });
+            return;
+        }
+        const path = this.getURL();
+        const index = path.indexOf('?');
+        const url = index !== -1 ? path.substring(0, index) : path;
+        this.router.navigateByUrl(`${url}/${data.path}${this._serialize(data.params)}`, {
+            replaceUrl: true
+        });
+    }
+    goBack() {
+        if (this._backPath) {
+            this.router.navigateByUrl(this._backPath, { replaceUrl: true });
+            this._backPath = '';
+        }
+        else {
+            const index = this.getURL().lastIndexOf('/');
+            const backURL = this.getURL().substring(0, index);
+            this.router.navigateByUrl(backURL, { replaceUrl: true });
+        }
+    }
+    reload(force) {
+        if (force) {
+            window.location.reload();
+        }
+        else {
+            this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+                this.goTo({ path: this.getURL() });
+            });
+        }
+    }
+    _serialize(params) {
+        if (!params) {
+            return '';
+        }
+        const str = [];
+        for (const param in params) {
+            if (params[param]) {
+                str.push(encodeURIComponent(param) + '=' + encodeURIComponent(params[param]));
+            }
+        }
+        const queryParams = str.length > 0 ? `?${str.join('&')}` : '';
+        return queryParams;
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyRouterService, deps: [{ token: Router }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyRouterService, providedIn: 'root' });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyRouterService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
+        }], ctorParameters: function () { return [{ type: i1.Router, decorators: [{
+                    type: Inject,
+                    args: [Router]
+                }] }]; } });
+
+class BizyCacheService {
+    router;
+    CACHE_PREFIX = 'BIZY-CACHE';
+    constructor(router) {
+        this.router = router;
+    }
+    getData(key) {
+        if (!key) {
+            key = `${this.CACHE_PREFIX}-${this.router.getURL()}`;
+        }
+        const data = sessionStorage.getItem(key);
+        if (data) {
+            return JSON.parse(data);
+        }
+        return {};
+    }
+    setData(value, key) {
+        if (!value) {
+            return;
+        }
+        if (!key) {
+            key = `${this.CACHE_PREFIX}-${this.router.getURL()}`;
+        }
+        sessionStorage.setItem(key, JSON.stringify(value));
+    }
+    remove(key) {
+        if (!key) {
+            key = `${this.CACHE_PREFIX}-${this.router.getURL()}`;
+        }
+        sessionStorage.removeItem(key);
+    }
+    removeAll() {
+        const cacheKeys = Object.keys(sessionStorage).filter(key => {
+            return key.includes(this.CACHE_PREFIX);
+        });
+        cacheKeys.forEach(value => {
+            sessionStorage.removeItem(value);
+        });
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyCacheService, deps: [{ token: BizyRouterService }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyCacheService });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyCacheService, decorators: [{
+            type: Injectable
+        }], ctorParameters: function () { return [{ type: BizyRouterService, decorators: [{
+                    type: Inject,
+                    args: [BizyRouterService]
+                }] }]; } });
 
 /**
  * Copyright 2020 Google LLC
@@ -247,7 +495,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 }]
         }] });
 
-class ValidatorService {
+class BizyValidatorService {
     isEmail(email) {
         const regex = /^(([^ñ<>()[\]\\.,;:\s@"]+(\.[^ñ<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return regex.test(String(email).toLowerCase());
@@ -296,17 +544,17 @@ class ValidatorService {
             return !control.value || (control.value && this.isNumber(control.value)) ? null : { bizyNumber: true };
         };
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: ValidatorService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: ValidatorService, providedIn: 'root' });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyValidatorService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyValidatorService, providedIn: 'root' });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: ValidatorService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyValidatorService, decorators: [{
             type: Injectable,
             args: [{
                     providedIn: 'root'
                 }]
         }] });
 
-class StorageService {
+class BizyStorageService {
     get(key) {
         const item = localStorage.getItem(key);
         try {
@@ -330,10 +578,10 @@ class StorageService {
     clear() {
         localStorage.clear();
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: StorageService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: StorageService, providedIn: 'root' });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyStorageService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyStorageService, providedIn: 'root' });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: StorageService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyStorageService, decorators: [{
             type: Injectable,
             args: [{
                     providedIn: 'root'
@@ -348,7 +596,7 @@ var COLOR;
     COLOR["WARNING"] = "#F7A64C";
     COLOR["ERROR"] = "#EF4C59";
 })(COLOR || (COLOR = {}));
-class LogService {
+class BizyLogService {
     #lastLogTimestamp = 0;
     #log(log, color, param) {
         const difference = this.#lastLogTimestamp ? Date.now() - this.#lastLogTimestamp : 0;
@@ -427,101 +675,17 @@ class LogService {
         const log = `(${data.title}) ${data.fileName} - ${data.functionName}`;
         this.#log(log, data.color, data.param);
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: LogService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: LogService, providedIn: 'root' });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyLogService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyLogService, providedIn: 'root' });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: LogService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyLogService, decorators: [{
             type: Injectable,
             args: [{
                     providedIn: 'root'
                 }]
         }] });
 
-class RouterService {
-    router;
-    _backPath = '';
-    transitionsEnd$;
-    transitionsStart$;
-    constructor(router) {
-        this.router = router;
-        this.transitionsEnd$ = this.router.events.pipe(filter(event => event instanceof NavigationEnd), map((event) => event.id), distinctUntilChanged(), map(() => this.router.routerState.snapshot.root));
-        this.transitionsStart$ = this.router.events.pipe(filter(event => event instanceof NavigationStart), map((event) => event.id), distinctUntilChanged(), map(() => this.router.routerState.snapshot.root));
-    }
-    getURL() {
-        return window.location.pathname;
-    }
-    getBackPath() {
-        return this._backPath;
-    }
-    getId(activatedRoute, param) {
-        return activatedRoute.snapshot.paramMap.get(param);
-    }
-    getQueryParam(activatedRoute, param) {
-        return activatedRoute.snapshot.queryParamMap.get(param);
-    }
-    goTo(data) {
-        this._backPath = this.getURL();
-        if (data.path[0] === '/') {
-            this.router.navigateByUrl(`${data.path}${this._serialize(data.params)}`, {
-                replaceUrl: true
-            });
-            return;
-        }
-        const path = this.getURL();
-        const index = path.indexOf('?');
-        const url = index !== -1 ? path.substring(0, index) : path;
-        this.router.navigateByUrl(`${url}/${data.path}${this._serialize(data.params)}`, {
-            replaceUrl: true
-        });
-    }
-    goBack() {
-        if (this._backPath) {
-            this.router.navigateByUrl(this._backPath, { replaceUrl: true });
-            this._backPath = '';
-        }
-        else {
-            const index = this.getURL().lastIndexOf('/');
-            const backURL = this.getURL().substring(0, index);
-            this.router.navigateByUrl(backURL, { replaceUrl: true });
-        }
-    }
-    reload(force) {
-        if (force) {
-            window.location.reload();
-        }
-        else {
-            this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-                this.goTo({ path: this.getURL() });
-            });
-        }
-    }
-    _serialize(params) {
-        if (!params) {
-            return '';
-        }
-        const str = [];
-        for (const param in params) {
-            if (params[param]) {
-                str.push(encodeURIComponent(param) + '=' + encodeURIComponent(params[param]));
-            }
-        }
-        const queryParams = str.length > 0 ? `?${str.join('&')}` : '';
-        return queryParams;
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: RouterService, deps: [{ token: Router }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: RouterService, providedIn: 'root' });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: RouterService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }], ctorParameters: function () { return [{ type: i1.Router, decorators: [{
-                    type: Inject,
-                    args: [Router]
-                }] }]; } });
-
-class PopupWrapperComponent {
+class BizyPopupWrapperComponent {
     component;
     dialogRef;
     ref;
@@ -544,10 +708,10 @@ class PopupWrapperComponent {
     close() {
         this.dialogRef.close();
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: PopupWrapperComponent, deps: [{ token: DIALOG_DATA }, { token: DialogRef }, { token: ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: PopupWrapperComponent, selector: "bizy-popup-wrapper", viewQueries: [{ propertyName: "dynamicComponentContainer", first: true, predicate: ["dynamicComponentContainer"], descendants: true, read: ViewContainerRef }], ngImport: i0, template: "<div class=\"bizy-popup-wrapper\">\n\n    <button (click)=\"close()\" (keyup.enter)=\"close()\" class=\"bizy-popup-wrapper__close-button\">\n\n        <svg \n            data-name=\"Cancel button\"\n            id=\"bizy-popup-wrapper-close-svg\" \n            viewBox=\"0 0 200 200\"\n            xmlns=\"http://www.w3.org/2000/svg\">\n            <path id=\"bizy-popup-wrapper-close-svg-content\" d=\"M114,100l49-49a9.9,9.9,0,0,0-14-14L100,86,51,37A9.9,9.9,0,0,0,37,51l49,49L37,149a9.9,9.9,0,0,0,14,14l49-49,49,49a9.9,9.9,0,0,0,14-14Z\"/>\n        </svg>\n\n    </button>\n\n    <ng-container #dynamicComponentContainer></ng-container>\n\n</div>", styles: [".bizy-popup-wrapper{position:relative;background-color:var(--bizy-popup-background-color);min-width:min(80vw,26rem);height:-moz-fit-content;height:fit-content}.bizy-popup-wrapper__close-button{position:absolute;right:.5rem;top:.5rem;border:none;cursor:pointer;background-color:transparent;transition:color .3s;z-index:1}.bizy-popup-wrapper__close-button #bizy-popup-wrapper-close-svg{height:1rem}.bizy-popup-wrapper__close-button #bizy-popup-wrapper-close-svg-content{fill:var(--bizy-popup-close-button-color)}.bizy-popup-wrapper__close-button:hover #bizy-popup-wrapper-close-svg-content{fill:var(--bizy-popup-close-button-hover-color)}\n"], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyPopupWrapperComponent, deps: [{ token: DIALOG_DATA }, { token: DialogRef }, { token: ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyPopupWrapperComponent, selector: "bizy-popup-wrapper", viewQueries: [{ propertyName: "dynamicComponentContainer", first: true, predicate: ["dynamicComponentContainer"], descendants: true, read: ViewContainerRef }], ngImport: i0, template: "<div class=\"bizy-popup-wrapper\">\n\n    <button (click)=\"close()\" (keyup.enter)=\"close()\" class=\"bizy-popup-wrapper__close-button\">\n\n        <svg \n            data-name=\"Cancel button\"\n            id=\"bizy-popup-wrapper-close-svg\" \n            viewBox=\"0 0 200 200\"\n            xmlns=\"http://www.w3.org/2000/svg\">\n            <path id=\"bizy-popup-wrapper-close-svg-content\" d=\"M114,100l49-49a9.9,9.9,0,0,0-14-14L100,86,51,37A9.9,9.9,0,0,0,37,51l49,49L37,149a9.9,9.9,0,0,0,14,14l49-49,49,49a9.9,9.9,0,0,0,14-14Z\"/>\n        </svg>\n\n    </button>\n\n    <ng-container #dynamicComponentContainer></ng-container>\n\n</div>", styles: [".bizy-popup-wrapper{position:relative;background-color:var(--bizy-popup-background-color);min-width:min(80vw,26rem);height:-moz-fit-content;height:fit-content}.bizy-popup-wrapper__close-button{position:absolute;right:.5rem;top:.5rem;border:none;cursor:pointer;background-color:transparent;transition:color .3s;z-index:1}.bizy-popup-wrapper__close-button #bizy-popup-wrapper-close-svg{height:1rem}.bizy-popup-wrapper__close-button #bizy-popup-wrapper-close-svg-content{fill:var(--bizy-popup-close-button-color)}.bizy-popup-wrapper__close-button:hover #bizy-popup-wrapper-close-svg-content{fill:var(--bizy-popup-close-button-hover-color)}\n"], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: PopupWrapperComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyPopupWrapperComponent, decorators: [{
             type: Component,
             args: [{ selector: 'bizy-popup-wrapper', changeDetection: ChangeDetectionStrategy.OnPush, template: "<div class=\"bizy-popup-wrapper\">\n\n    <button (click)=\"close()\" (keyup.enter)=\"close()\" class=\"bizy-popup-wrapper__close-button\">\n\n        <svg \n            data-name=\"Cancel button\"\n            id=\"bizy-popup-wrapper-close-svg\" \n            viewBox=\"0 0 200 200\"\n            xmlns=\"http://www.w3.org/2000/svg\">\n            <path id=\"bizy-popup-wrapper-close-svg-content\" d=\"M114,100l49-49a9.9,9.9,0,0,0-14-14L100,86,51,37A9.9,9.9,0,0,0,37,51l49,49L37,149a9.9,9.9,0,0,0,14,14l49-49,49,49a9.9,9.9,0,0,0,14-14Z\"/>\n        </svg>\n\n    </button>\n\n    <ng-container #dynamicComponentContainer></ng-container>\n\n</div>", styles: [".bizy-popup-wrapper{position:relative;background-color:var(--bizy-popup-background-color);min-width:min(80vw,26rem);height:-moz-fit-content;height:fit-content}.bizy-popup-wrapper__close-button{position:absolute;right:.5rem;top:.5rem;border:none;cursor:pointer;background-color:transparent;transition:color .3s;z-index:1}.bizy-popup-wrapper__close-button #bizy-popup-wrapper-close-svg{height:1rem}.bizy-popup-wrapper__close-button #bizy-popup-wrapper-close-svg-content{fill:var(--bizy-popup-close-button-color)}.bizy-popup-wrapper__close-button:hover #bizy-popup-wrapper-close-svg-content{fill:var(--bizy-popup-close-button-hover-color)}\n"] }]
         }], ctorParameters: function () { return [{ type: undefined, decorators: [{
@@ -564,7 +728,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 args: ['dynamicComponentContainer', { read: ViewContainerRef }]
             }] } });
 
-class PopupService {
+class BizyPopupService {
     dialog;
     #dialogs = new Set();
     #data;
@@ -573,7 +737,7 @@ class PopupService {
     }
     open(data, callback) {
         this.#data = data.data;
-        const dialogRef = this.dialog.open(PopupWrapperComponent, ({
+        const dialogRef = this.dialog.open(BizyPopupWrapperComponent, ({
             id: data.id,
             data: data.component,
             autoFocus: true,
@@ -614,10 +778,122 @@ class PopupService {
     openedPopups() {
         return this.#dialogs.size;
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: PopupService, deps: [{ token: Dialog }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: PopupService });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyPopupService, deps: [{ token: Dialog }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyPopupService });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: PopupService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyPopupService, decorators: [{
+            type: Injectable
+        }], ctorParameters: function () { return [{ type: i1$1.Dialog, decorators: [{
+                    type: Inject,
+                    args: [Dialog]
+                }] }]; } });
+
+const COMPONENTS$1 = [
+    BizyPopupWrapperComponent,
+];
+class BizyPopupModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyPopupModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BizyPopupModule, declarations: [BizyPopupWrapperComponent], imports: [CommonModule, FormsModule, DialogModule] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyPopupModule, providers: [BizyPopupService], imports: [CommonModule, FormsModule, DialogModule] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyPopupModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: [CommonModule, FormsModule, DialogModule],
+                    declarations: COMPONENTS$1,
+                    providers: [BizyPopupService]
+                }]
+        }] });
+
+class BizyToastWrapperComponent {
+    data;
+    toast;
+    type = TOAST.INFO;
+    title = '';
+    msg = '';
+    constructor(data, toast) {
+        this.data = data;
+        this.toast = toast;
+        this.type = this.data.type;
+        this.title = this.data.title;
+        this.msg = this.data.msg;
+    }
+    close() {
+        this.toast.close();
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyToastWrapperComponent, deps: [{ token: DIALOG_DATA }, { token: BizyToastService }], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyToastWrapperComponent, selector: "bizy-toast-wrapper", ngImport: i0, template: "<div class=\"bizy-toast-wrapper bizy-toast-wrapper--{{type}}\">\n\n    <button (click)=\"close()\" (keyup.enter)=\"close()\" class=\"bizy-toast-wrapper__close-button\">\n\n        <svg \n            data-name=\"Cancel button\"\n            id=\"bizy-toast-wrapper-close-svg\" \n            viewBox=\"0 0 200 200\"\n            xmlns=\"http://www.w3.org/2000/svg\">\n            <path id=\"bizy-toast-wrapper-close-svg-content\" d=\"M114,100l49-49a9.9,9.9,0,0,0-14-14L100,86,51,37A9.9,9.9,0,0,0,37,51l49,49L37,149a9.9,9.9,0,0,0,14,14l49-49,49,49a9.9,9.9,0,0,0,14-14Z\"/>\n        </svg>\n\n    </button>\n\n\n    <h1 class=\"bizy-toast-wrapper__title bizy-toast-wrapper__title--{{type}}\" *ngIf=\"title\">{{title}}</h1>\n\n    <h5 class=\"bizy-toast-wrapper__msg\" *ngIf=\"msg\">{{msg}}</h5>\n\n\n    <span class=\"bizy-toast__progress bizy-toast__progress--{{type}}\"></span>\n    \n</div>", styles: [".bizy-toast-wrapper{position:relative;width:100%;min-width:20rem;height:-moz-fit-content;height:fit-content;min-height:3rem;border-left:.4rem solid #fff;border-top-left-radius:.5rem;border-bottom-left-radius:.5rem;display:flex;flex-direction:column;justify-content:center;row-gap:.5rem;padding:.5rem;box-shadow:0 18px 25px #32325d40,0 3px 6px #0000001a}.bizy-toast-wrapper__title{max-width:min(28rem,60vw)}.bizy-toast-wrapper__msg{max-width:min(30rem,70vw)}.bizy-toast-wrapper--default{background-color:var(--bizy-toast-default-background-color, #fff);border-left-color:var(--bizy-toast-default-color, #666666)}.bizy-toast-wrapper__title--default{color:var(--bizy-toast-default-color, #666666)}.bizy-toast-wrapper--info{background-color:var(--bizy-toast-info-background-color, #fff);border-left-color:var(--bizy-toast-info-color, #2b94f4)}.bizy-toast-wrapper__title--info{color:var(--bizy-toast-info-color, #2b94f4)}.bizy-toast-wrapper--success{background-color:var(--bizy-toast-success-background-color, #fff);border-left-color:var(--bizy-toast-success-color, #5fbc5a)}.bizy-toast-wrapper__title--success{color:var(--bizy-toast-success-color, #5fbc5a)}.bizy-toast-wrapper--warning{background-color:var(--bizy-toast-warning-background-color, #fff);border-left-color:var(--bizy-toast-warning-color, #f7a64c)}.bizy-toast-wrapper__title--warning{color:var(--bizy-toast-warning-color, #f7a64c)}.bizy-toast-wrapper--danger{background-color:var(--bizy-toast-danger-background-color, #fff);border-left-color:var(--bizy-toast-danger-color, #e76565)}.bizy-toast-wrapper__title--danger{color:var(--bizy-toast-danger-color, #e76565)}.bizy-toast-wrapper__close-button{position:absolute;right:.5rem;top:.5rem;border:none;cursor:pointer;background-color:transparent;transition:color .3s;z-index:1}.bizy-toast-wrapper__close-button #bizy-toast-wrapper-close-svg{height:1rem}.bizy-toast-wrapper__close-button #bizy-toast-wrapper-close-svg-content{fill:var(--bizy-toast-close-button-color, #666666)}.bizy-toast-wrapper__close-button:hover #bizy-toast-wrapper-close-svg-content{fill:var(--bizy-toast-close-button-hover-color, #333333)}.bizy-toast__progress{width:100%;height:.1rem;display:inline-block;position:absolute;bottom:0;left:0;right:0;overflow:hidden}.bizy-toast__progress--default{background-color:var(--bizy-toast-default-color, #666666)}.bizy-toast__progress--info{background-color:var(--bizy-toast-info-color, #2b94f4)}.bizy-toast__progress--success{background-color:var(--bizy-toast-success-color, #5fbc5a)}.bizy-toast__progress--warning{background-color:var(--bizy-toast-warning-color, #f7a64c)}.bizy-toast__progress--danger{background-color:var(--bizy-toast-danger-color, #e76565)}.bizy-toast__progress:after{content:\"\";box-sizing:border-box;width:0;height:.1rem;background-color:#fff;position:absolute;top:0;left:0;animation:progress 2.5s linear infinite}@keyframes progress{0%{width:0}to{width:100%}}\n"], dependencies: [{ kind: "directive", type: i1$2.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyToastWrapperComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-toast-wrapper', changeDetection: ChangeDetectionStrategy.OnPush, template: "<div class=\"bizy-toast-wrapper bizy-toast-wrapper--{{type}}\">\n\n    <button (click)=\"close()\" (keyup.enter)=\"close()\" class=\"bizy-toast-wrapper__close-button\">\n\n        <svg \n            data-name=\"Cancel button\"\n            id=\"bizy-toast-wrapper-close-svg\" \n            viewBox=\"0 0 200 200\"\n            xmlns=\"http://www.w3.org/2000/svg\">\n            <path id=\"bizy-toast-wrapper-close-svg-content\" d=\"M114,100l49-49a9.9,9.9,0,0,0-14-14L100,86,51,37A9.9,9.9,0,0,0,37,51l49,49L37,149a9.9,9.9,0,0,0,14,14l49-49,49,49a9.9,9.9,0,0,0,14-14Z\"/>\n        </svg>\n\n    </button>\n\n\n    <h1 class=\"bizy-toast-wrapper__title bizy-toast-wrapper__title--{{type}}\" *ngIf=\"title\">{{title}}</h1>\n\n    <h5 class=\"bizy-toast-wrapper__msg\" *ngIf=\"msg\">{{msg}}</h5>\n\n\n    <span class=\"bizy-toast__progress bizy-toast__progress--{{type}}\"></span>\n    \n</div>", styles: [".bizy-toast-wrapper{position:relative;width:100%;min-width:20rem;height:-moz-fit-content;height:fit-content;min-height:3rem;border-left:.4rem solid #fff;border-top-left-radius:.5rem;border-bottom-left-radius:.5rem;display:flex;flex-direction:column;justify-content:center;row-gap:.5rem;padding:.5rem;box-shadow:0 18px 25px #32325d40,0 3px 6px #0000001a}.bizy-toast-wrapper__title{max-width:min(28rem,60vw)}.bizy-toast-wrapper__msg{max-width:min(30rem,70vw)}.bizy-toast-wrapper--default{background-color:var(--bizy-toast-default-background-color, #fff);border-left-color:var(--bizy-toast-default-color, #666666)}.bizy-toast-wrapper__title--default{color:var(--bizy-toast-default-color, #666666)}.bizy-toast-wrapper--info{background-color:var(--bizy-toast-info-background-color, #fff);border-left-color:var(--bizy-toast-info-color, #2b94f4)}.bizy-toast-wrapper__title--info{color:var(--bizy-toast-info-color, #2b94f4)}.bizy-toast-wrapper--success{background-color:var(--bizy-toast-success-background-color, #fff);border-left-color:var(--bizy-toast-success-color, #5fbc5a)}.bizy-toast-wrapper__title--success{color:var(--bizy-toast-success-color, #5fbc5a)}.bizy-toast-wrapper--warning{background-color:var(--bizy-toast-warning-background-color, #fff);border-left-color:var(--bizy-toast-warning-color, #f7a64c)}.bizy-toast-wrapper__title--warning{color:var(--bizy-toast-warning-color, #f7a64c)}.bizy-toast-wrapper--danger{background-color:var(--bizy-toast-danger-background-color, #fff);border-left-color:var(--bizy-toast-danger-color, #e76565)}.bizy-toast-wrapper__title--danger{color:var(--bizy-toast-danger-color, #e76565)}.bizy-toast-wrapper__close-button{position:absolute;right:.5rem;top:.5rem;border:none;cursor:pointer;background-color:transparent;transition:color .3s;z-index:1}.bizy-toast-wrapper__close-button #bizy-toast-wrapper-close-svg{height:1rem}.bizy-toast-wrapper__close-button #bizy-toast-wrapper-close-svg-content{fill:var(--bizy-toast-close-button-color, #666666)}.bizy-toast-wrapper__close-button:hover #bizy-toast-wrapper-close-svg-content{fill:var(--bizy-toast-close-button-hover-color, #333333)}.bizy-toast__progress{width:100%;height:.1rem;display:inline-block;position:absolute;bottom:0;left:0;right:0;overflow:hidden}.bizy-toast__progress--default{background-color:var(--bizy-toast-default-color, #666666)}.bizy-toast__progress--info{background-color:var(--bizy-toast-info-color, #2b94f4)}.bizy-toast__progress--success{background-color:var(--bizy-toast-success-color, #5fbc5a)}.bizy-toast__progress--warning{background-color:var(--bizy-toast-warning-color, #f7a64c)}.bizy-toast__progress--danger{background-color:var(--bizy-toast-danger-color, #e76565)}.bizy-toast__progress:after{content:\"\";box-sizing:border-box;width:0;height:.1rem;background-color:#fff;position:absolute;top:0;left:0;animation:progress 2.5s linear infinite}@keyframes progress{0%{width:0}to{width:100%}}\n"] }]
+        }], ctorParameters: function () { return [{ type: undefined, decorators: [{
+                    type: Inject,
+                    args: [DIALOG_DATA]
+                }] }, { type: BizyToastService, decorators: [{
+                    type: Inject,
+                    args: [BizyToastService]
+                }] }]; } });
+
+var TOAST;
+(function (TOAST) {
+    TOAST["DEFAULT"] = "default";
+    TOAST["SUCCESS"] = "success";
+    TOAST["INFO"] = "info";
+    TOAST["WARNING"] = "warning";
+    TOAST["DANGER"] = "danger";
+})(TOAST || (TOAST = {}));
+class BizyToastService {
+    dialog;
+    #toast = null;
+    #closing = false;
+    constructor(dialog) {
+        this.dialog = dialog;
+    }
+    #open(data) {
+        this.#toast = this.dialog.open(BizyToastWrapperComponent, {
+            data,
+            autoFocus: true,
+            hasBackdrop: false,
+            disableClose: false,
+            panelClass: ['bizy-toast', 'bizy-toast--in']
+        });
+        setTimeout(() => {
+            this.close();
+        }, 3000);
+    }
+    default(data) {
+        this.#open({ type: TOAST.DEFAULT, ...data });
+    }
+    info(data) {
+        this.#open({ type: TOAST.INFO, ...data });
+    }
+    success(data) {
+        this.#open({ type: TOAST.SUCCESS, ...data });
+    }
+    warning(data) {
+        this.#open({ type: TOAST.WARNING, ...data });
+    }
+    danger(data) {
+        this.#open({ type: TOAST.DANGER, ...data });
+    }
+    close = () => {
+        if (!this.#toast || this.#closing) {
+            return;
+        }
+        this.#closing = true;
+        this.#toast.removePanelClass('bizy-toast--in');
+        this.#toast.addPanelClass('bizy-toast--out');
+        setTimeout(() => {
+            this.#toast.close();
+            this.#toast = null;
+            this.#closing = false;
+        }, 500);
+    };
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyToastService, deps: [{ token: Dialog }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyToastService });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyToastService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: i1$1.Dialog, decorators: [{
                     type: Inject,
@@ -625,19 +901,19 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 }] }]; } });
 
 const COMPONENTS = [
-    PopupWrapperComponent,
+    BizyToastWrapperComponent,
 ];
-class PopupModule {
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: PopupModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: PopupModule, declarations: [PopupWrapperComponent], imports: [CommonModule, FormsModule, DialogModule] });
-    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: PopupModule, providers: [PopupService], imports: [CommonModule, FormsModule, DialogModule] });
+class BizyToastModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyToastModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BizyToastModule, declarations: [BizyToastWrapperComponent], imports: [CommonModule, FormsModule, DialogModule] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyToastModule, providers: [BizyToastService], imports: [CommonModule, FormsModule, DialogModule] });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: PopupModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyToastModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, DialogModule],
                     declarations: COMPONENTS,
-                    providers: [PopupService]
+                    providers: [BizyToastService]
                 }]
         }] });
 
@@ -680,7 +956,7 @@ class TranslateService {
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslateService, decorators: [{
             type: Injectable
-        }], ctorParameters: function () { return [{ type: i1$2.TranslateService, decorators: [{
+        }], ctorParameters: function () { return [{ type: i1$3.TranslateService, decorators: [{
                     type: Inject,
                     args: [TranslateService$1]
                 }] }]; } });
@@ -721,7 +997,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
 
 class TranslateModule {
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslateModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: TranslateModule, imports: [i1$2.TranslateModule] });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: TranslateModule, imports: [i1$3.TranslateModule] });
     static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslateModule, providers: [TranslateService], imports: [TranslateModule$1.forRoot()] });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslateModule, decorators: [{
@@ -736,5 +1012,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
  * Generated bundle index. Do not edit.
  */
 
-export { LANGUAGE, LogService, PopupModule, PopupService, RouterService, StorageService, TranslateModule, TranslatePipe, TranslatePipeModule, TranslateService, UserAgentService, ValidatorService };
+export { BizyCacheService, BizyExportToCSVService, BizyKeyboardService, BizyLogService, BizyPopupModule, BizyPopupService, BizyRouterService, BizyStorageService, BizyToastModule, BizyToastService, BizyValidatorService, LANGUAGE, TranslateModule, TranslatePipe, TranslatePipeModule, TranslateService, UserAgentService };
 //# sourceMappingURL=bizy-services.mjs.map

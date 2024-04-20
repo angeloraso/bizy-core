@@ -1,0 +1,9 @@
+:root {
+    --bizy-loading-color-1st-line: #2484c6;
+    --bizy-loading-color-2nd-line: #2484c6;
+    --bizy-loading-color-3rd-line: #2484c6;
+
+    --bizy-tooltip-color: #355b7f;
+    --bizy-tooltip-background-color: #d0e8fc;
+    --bizy-tooltip-border-color: #355b7f;
+}

@@ -6,7 +6,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
   styleUrls: ['./fab-button.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FabButtonComponent {
+export class BizyFabButtonComponent {
   @Input() id: string = String(Math.random());
   @Input() disabled: boolean = false;
   @Input() customClass: string = '';

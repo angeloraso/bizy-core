@@ -5,25 +5,19 @@
     <span class="bizy-filter-section-range-option__inputs">
 
         <bizy-input
+            class="bizy-filter-section-range-option__input"
             [title]="minLabel"
             type="number"
             [control]="minValue">
         </bizy-input>
 
         <bizy-input
+            class="bizy-filter-section-range-option__input"
             [title]="maxLabel"
             type="number"
             [control]="maxValue">
         </bizy-input>
 
     </span>
-
-    <bizy-slider 
-        [min]="minValue.value"
-        [minLimit]="_minLimit"
-        [maxLimit]="_maxLimit"
-        [max]="maxValue.value"
-        (onChange)="minValue.setValue($event.min); maxValue.setValue($event.max)">
-    </bizy-slider>
     
 </div>

@@ -4,7 +4,7 @@ import { DomSanitizer, SafeHtml, SafeResourceUrl, SafeScript, SafeStyle, SafeUrl
 @Pipe({
   name: 'bizySafe'
 })
-export class SafePipe implements PipeTransform {
+export class BizySafePipe implements PipeTransform {
   constructor(@Inject(DomSanitizer) private sanitizer: DomSanitizer) {}
 
   public transform(value: any, type: string): SafeHtml | SafeStyle | SafeScript | SafeUrl | SafeResourceUrl {

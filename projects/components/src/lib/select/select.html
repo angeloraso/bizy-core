@@ -9,7 +9,7 @@
     #bizySelectTrigger="cdkOverlayOrigin">
 
     <span class="bizy-select__content">
-        <h5 class="bizy-select__content__label" *ngIf="label">{{label}}</h5>
+        <h4 class="bizy-select__content__label" *ngIf="label">{{label}}</h4>
         <span>{{_optionValue}}</span>
     </span>
 
@@ -37,7 +37,7 @@
     <span class="bizy-select__options">
 
         <span class="bizy-select__options__search">
-            <ng-content select="bizy-search-input"></ng-content>
+            <ng-content select="bizy-input"></ng-content>
         </span>
 
         <ng-content select="bizy-select-option"></ng-content>

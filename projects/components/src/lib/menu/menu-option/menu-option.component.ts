@@ -6,7 +6,7 @@ import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from 
   styleUrls: ['./menu-option.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MenuOptionComponent {
+export class BizyMenuOptionComponent {
   @Input() id: string = String(Math.random());
   @Input() disabled: boolean = false;
   @Input() customClass: string = '';

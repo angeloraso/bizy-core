@@ -6,7 +6,7 @@ import { ChangeDetectionStrategy, Component, Input, Inject, ChangeDetectorRef, O
   styleUrls: ['./table-header.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TableHeaderComponent {
+export class BizyTableHeaderComponent {
   @Input() id: string = String(Math.random());
   @Input() customClass: string = '';
   @Input() selected: boolean = false;

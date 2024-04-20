@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AccordionComponent } from './accordion.component';
+import { BizyAccordionComponent } from './accordion.component';
 
 const COMPONENTS = [
-  AccordionComponent,
+  BizyAccordionComponent,
 ];
 
 @NgModule({
@@ -12,4 +12,4 @@ const COMPONENTS = [
   declarations: COMPONENTS,
   exports: COMPONENTS
 })
-export class AccordionModule {}
+export class BizyAccordionModule {}

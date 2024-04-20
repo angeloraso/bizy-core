@@ -7,8 +7,8 @@
 
         <bizy-checkbox 
             class="bizy-filter-section__header__checkbox"
-            (onSelect)="_onSelect()"
-            [selected]="selected"
+            (onSelect)="_onSelect(_activated)"
+            [selected]="!_activated"
             [disabled]="disabled">
         </bizy-checkbox>
 
@@ -29,7 +29,9 @@
         <ng-content select="bizy-filter-section-checkbox-option"></ng-content>
 
         <ng-content select="bizy-filter-section-range-option"></ng-content>
-        
+
+        <ng-content select="bizy-filter-section-search-option"></ng-content>
+
     </span>
 
 </div>

@@ -5,7 +5,7 @@ import { filter, map, switchMap } from 'rxjs/operators';
 @Directive({
   selector: '[bizyLongPress]',
 })
-export class LongPressDirective implements OnDestroy {
+export class BizyLongPressDirective implements OnDestroy {
   @Input() threshold = 500;
   @Output() press = new EventEmitter<void>();
   

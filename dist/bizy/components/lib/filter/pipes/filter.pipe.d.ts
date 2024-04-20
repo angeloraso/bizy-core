@@ -1,10 +1,10 @@
 import { PipeTransform } from '@angular/core';
 import * as i0 from "@angular/core";
-export declare class FilterPipe implements PipeTransform {
+export declare class BizyFilterPipe implements PipeTransform {
     transform<T>(items: Array<T>, property: string, states: Array<{
-        id: string;
+        id: string | number | boolean;
         selected: boolean;
     }>): Array<T>;
-    static ɵfac: i0.ɵɵFactoryDeclaration<FilterPipe, never>;
-    static ɵpipe: i0.ɵɵPipeDeclaration<FilterPipe, "bizyFilter", false>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<BizyFilterPipe, never>;
+    static ɵpipe: i0.ɵɵPipeDeclaration<BizyFilterPipe, "bizyFilter", false>;
 }

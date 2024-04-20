@@ -12,8 +12,8 @@
     justify-content: space-between;
     column-gap: 0.5rem;
     cursor: pointer;
-    padding: var(--bizy-filter-padding, 0);
-    color: var(--bizy-filter-color, #fff);
+    padding: var(--bizy-filter-padding);
+    color: var(--bizy-filter-color);
     position: relative;
 }
 
@@ -30,7 +30,7 @@
     height: 0.5rem;
     width: 0.5rem;
     border-radius: 50%;
-    background-color: var(--bizy-filter-badge-color, #e76565);
+    background-color: var(--bizy-filter-badge-color);
     display: none;
 }
 
@@ -49,7 +49,7 @@
 
 .bizy-filter__sections {
     max-width: 75vw;
-    background-color: var(--bizy-filter-background-color, #fff);
+    background-color: var(--bizy-filter-background-color);
     min-width: 100%;
     display: flex;
     column-gap: 1.2rem;

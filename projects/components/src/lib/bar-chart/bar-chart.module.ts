@@ -1,11 +1,11 @@
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { BarChartComponent } from './bar-chart.component';
+import { BizyBarChartComponent } from './bar-chart.component';
 
 @NgModule({
   imports: [CommonModule],
-  declarations: [BarChartComponent],
-  exports: [BarChartComponent],
+  declarations: [BizyBarChartComponent],
+  exports: [BizyBarChartComponent],
   providers: [DecimalPipe]
 })
-export class BarChartModule {}
+export class BizyBarChartModule {}

@@ -6,8 +6,7 @@ import { ChangeDetectionStrategy, Component, Input, Inject, ChangeDetectorRef, O
   styleUrls: ['./select-option.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SelectOptionComponent {
-  @Input() key: string | number;
+export class BizySelectOptionComponent {
   @Input() id: string = String(Math.random());
   @Input() disabled: boolean = false;
   @Input() customClass: string = '';
@@ -24,22 +23,16 @@ export class SelectOptionComponent {
       return;
     }
 
-    this.selected = true;
     this.onSelect.emit();
     this.ref.detectChanges();
   }
 
-  setSelected = (selected: boolean): void => {
-    this.selected = selected;
-    this.ref.detectChanges();
-  }
-
-  getKey = (): string | number => {
-    return this.key;
-  }
-
   getId = (): string => {
     return this.id;
+  }
+
+  getSelected = (): boolean => {
+    return this.selected;
   }
 
   getValue = (): string => {

@@ -1,6 +1,6 @@
 import { ValidatorFn } from '@angular/forms';
 import * as i0 from "@angular/core";
-export declare class ValidatorService {
+export declare class BizyValidatorService {
     isEmail(email: unknown): boolean;
     isPassFormat(pass: unknown): boolean;
     isNoSpecialCharacter(name: string): boolean;
@@ -11,6 +11,6 @@ export declare class ValidatorService {
     emailValidator(): ValidatorFn;
     phoneNumberValidator(): ValidatorFn;
     numberValidator(): ValidatorFn;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ValidatorService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<ValidatorService>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<BizyValidatorService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<BizyValidatorService>;
 }

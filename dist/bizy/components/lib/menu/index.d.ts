@@ -1,3 +1,4 @@
-export { MenuOptionComponent } from './menu-option/menu-option.component';
-export { MenuModule } from './menu.module';
-export { MenuComponent } from './menu.component';
+export { BizyMenuTitleComponent } from './menu-title/menu-title.component';
+export { BizyMenuOptionComponent } from './menu-option/menu-option.component';
+export { BizyMenuModule } from './menu.module';
+export { BizyMenuComponent } from './menu.component';

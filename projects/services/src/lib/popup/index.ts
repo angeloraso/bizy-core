@@ -1,3 +1,3 @@
-export { IPopupResponse } from './popup.types';
-export { PopupService } from './popup.service';
-export { PopupModule } from './popup.module';
+export { IBizyPopupResponse } from './popup.types';
+export { BizyPopupService } from './popup.service';
+export { BizyPopupModule } from './popup.module';

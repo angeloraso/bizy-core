@@ -22,7 +22,7 @@
     [debounce]="300"
     (ionBlur)="_onBlur()"
     (ionInput)="onInput($event)"
-    (keyup.enter)="enter.emit()"
+    (keyup.enter)="onEnter.emit()"
     [clearInput]="clear"
     [placeholder]="placeholder"
     labelPlacement="stacked">

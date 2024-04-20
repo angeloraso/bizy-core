@@ -1,6 +1,6 @@
-import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
+import { DIALOG_DATA } from '@angular/cdk/dialog';
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
-import { TOAST, ToastService } from '../toast.service';
+import { TOAST, BizyToastService } from '../toast.service';
 
 @Component({
   selector: 'bizy-toast-wrapper',
@@ -8,7 +8,7 @@ import { TOAST, ToastService } from '../toast.service';
   styleUrls: ['./toast-wrapper.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ToastWrapperComponent {
+export class BizyToastWrapperComponent {
 
   type: TOAST = TOAST.INFO;
   title: string = '';
@@ -16,7 +16,7 @@ export class ToastWrapperComponent {
 
   constructor(
     @Inject(DIALOG_DATA) private data: {type: TOAST, title: string, msg: string},
-    @Inject(ToastService) private toast: ToastService,
+    @Inject(BizyToastService) private toast: BizyToastService,
   ) {
     this.type = this.data.type;
     this.title = this.data.title;

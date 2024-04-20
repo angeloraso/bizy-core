@@ -8,26 +8,19 @@ import { Subscription, debounceTime } from 'rxjs';
   styleUrls: ['./filter-section-range-option.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FilterSectionRangeOptionComponent implements AfterViewInit {
+export class BizyFilterSectionRangeOptionComponent implements AfterViewInit {
   @Input() id: string = String(Math.random());
   @Input() disabled: boolean = false;
-  @Input() minLabel: string = 'Min';
-  @Input() maxLabel: string = 'Max';
+  @Input() minLabel: string = 'Mayor o igual';
+  @Input() maxLabel: string = 'Menor o igual';
   @Input() customClass: string = '';
   @Output() onChange = new EventEmitter<{min: number | null, max: number | null}>();
 
   _minLimit: number;
   _maxLimit: number;
 
-  ngAfterViewInit() {
-    if (this._minLimit) {
-      this.minValue.setValue(this._minLimit);
-    }
-
-    if (this._maxLimit) {
-      this.maxValue.setValue(this._maxLimit);
-    }
-  }
+  form: FormGroup;
+  #subscription = new Subscription();
 
   @Input() set min(min: number | null) {
     if (typeof min === 'undefined' || min === null) {
@@ -53,7 +46,6 @@ export class FilterSectionRangeOptionComponent implements AfterViewInit {
     }
 
     this._minLimit = min;
-    this.minValue.setValue(min);
     if (typeof this._maxLimit === 'undefined' || this._maxLimit === null) {
       this.minValue.setValidators([Validators.max(min)])
     } else {
@@ -67,16 +59,12 @@ export class FilterSectionRangeOptionComponent implements AfterViewInit {
     }
 
     this._maxLimit = max;
-    this.maxValue.setValue(max);
     if (typeof this._minLimit === 'undefined' || this._minLimit === null) {
       this.maxValue.setValidators([Validators.max(max)])
     } else {
       this.maxValue.setValidators([Validators.min(this._minLimit), Validators.max(max)])
     }
   };
-
-  form: FormGroup;
-  #subscription = new Subscription();
 
   constructor(
     @Inject(FormBuilder) private fb: FormBuilder
@@ -85,7 +73,9 @@ export class FilterSectionRangeOptionComponent implements AfterViewInit {
       minValue: [null],
       maxValue: [null]
     });
+  }
 
+  ngAfterViewInit() {
     this.#subscription.add(this.minValue.valueChanges.pipe(debounceTime(300)).subscribe(_value => {
       const min = _value === '' ? null : Number(_value);
       if (typeof this._minLimit !== 'undefined' && this._minLimit !== null && min && min < this._minLimit) {
@@ -111,7 +101,7 @@ export class FilterSectionRangeOptionComponent implements AfterViewInit {
 
       const min = this.minValue.value === null || this.minValue.value === '' ? null : Number(this.minValue.value);
 
-      if (min !== null && max !== null  && max < min) {
+      if (min !== null && max !== null && max < min) {
         return;
       }
 
@@ -127,17 +117,17 @@ export class FilterSectionRangeOptionComponent implements AfterViewInit {
     return this.form.get('maxValue')!;
   }
 
-  onClear() {
-    this.minValue.setValue(this._minLimit);
+  onClear = () => {
+    this.minValue.setValue('');
 
-    this.maxValue.setValue(this._maxLimit);
+    this.maxValue.setValue('');
   }
 
-  getId() {
+  getId = () => {
     return this.id;
   }
 
-  getSelected() {
-    return this.minValue.value === this._minLimit && this.maxValue.value === this._maxLimit;
+  isActivated = () => {
+    return (this.minValue.value || this.minValue.value === 0 || this.maxValue.value || this.maxValue.value === 0 ) && (this.minValue.value !== this._minLimit || this.maxValue.value !== this._maxLimit);
   }
 }

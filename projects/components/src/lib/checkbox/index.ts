@@ -1,2 +1,2 @@
-export { CheckboxModule } from './checkbox.module';
-export { CheckboxComponent } from './checkbox.component';
+export { BizyCheckboxModule } from './checkbox.module';
+export { BizyCheckboxComponent } from './checkbox.component';

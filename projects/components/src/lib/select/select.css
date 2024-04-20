@@ -1,25 +1,24 @@
+
 :host {
     font-size: 1rem;
-    color: var(--bizy-select-color, #000);
-    fill: var(--bizy-select-color, #000);
 }
 
 .bizy-select {
     font-size: 1rem;
     width: 100%;
     border: none;
-    background-color: var(--bizy-select-background-color, #fff);
+    background-color: var(--bizy-select-background-color);
     display: flex;
     align-items: center;
     justify-content: space-between;
     column-gap: 0.5rem;
-    color: inherit;
+    color: var(--bizy-select-color);
     padding: .25rem .5rem 0;
     cursor: pointer;
     min-height: 3.3rem;
     border-top-left-radius: 0.3rem;
     border-top-right-radius: 0.3rem;
-    border-bottom: 0.1rem solid var(--bizy-select-border-color, #000);
+    border-bottom: 0.1rem solid var(--bizy-select-border-color);
 }
 
 .bizy-select--disabled {
@@ -33,7 +32,7 @@
     pointer-events: none;
     display: block;
     transition: transform 0.3s ease;
-    fill: inherit;
+    fill: var(--bizy-select-color);
 }
 
 .bizy-select__arrow--opened {
@@ -53,7 +52,8 @@
 }
 
 .bizy-select__content__label {
-    color: var(--bizy-select-label-color, #000);
+    font-weight: bold;
+    color: var(--bizy-select-label-color);
 }
 
 .bizy-select__hidden-options {
@@ -66,7 +66,7 @@
 
 
 .bizy-select__options {
-    background-color: var(--bizy-select-background-color, #fff);
+    background-color: var(--bizy-select-background-color);
     display: flex;
     min-width: 100%;
     flex-direction: column;

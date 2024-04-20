@@ -1,4 +1,4 @@
-export interface IPopupResponse {
+export interface IBizyPopupResponse {
     id: string;
     response: unknown;
 }

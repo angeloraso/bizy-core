@@ -1,5 +1,10 @@
+:host {
+    font-size: 1rem;
+}
+
 .bizy-tabs {
     display: flex;
     align-items: center;
-    background-color: var(--bizy-tabs-background-color, #ffffff);
+    column-gap: var(--bizy-tabs-column-gap);
+    background-color: var(--bizy-tabs-background-color);
 }

@@ -2,10 +2,14 @@
     font-size: 1rem;
 }
 
-.bizy-filter-section-checkbox-option{
+.bizy-filter-section-checkbox-option {
     display: flex;
     align-items: center;
     column-gap: 0.3rem;
     justify-content: space-between;
     cursor: pointer;
+}
+
+.bizy-filter-section-checkbox-option__checkbox {
+    pointer-events: none;
 }

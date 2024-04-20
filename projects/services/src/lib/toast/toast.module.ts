@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ToastWrapperComponent } from './toast-wrapper/toast-wrapper.component';
-import { ToastService } from './toast.service';
+import { BizyToastWrapperComponent } from './toast-wrapper/toast-wrapper.component';
+import { BizyToastService } from './toast.service';
 import { DialogModule } from '@angular/cdk/dialog';
 
 const COMPONENTS = [
-  ToastWrapperComponent,
+  BizyToastWrapperComponent,
 ];
 
 @NgModule({
   imports: [CommonModule, FormsModule, DialogModule],
   declarations: COMPONENTS,
-  providers: [ToastService]
+  providers: [BizyToastService]
 })
-export class ToastModule {}
+export class BizyToastModule {}

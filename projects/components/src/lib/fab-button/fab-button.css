@@ -7,9 +7,9 @@
     display: grid;
     place-items: center;
     border-radius: 50%;
-    color: var(---bizy-fab-button-color, #ffffff);
+    color: var(--bizy-fab-button-color);
     border: none;
-    background-color: var(---bizy-fab-button-background-color, #16aa88);
+    background-color: var(--bizy-fab-button-background-color);
     cursor: pointer;
     position: absolute;
     bottom: 0.5rem;

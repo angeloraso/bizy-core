@@ -13,3 +13,7 @@
     align-items: center;
     column-gap: 0.5rem;
 }
+
+.bizy-filter-section-range-option__input {
+    --bizy-input-background-color: #f3f3f3 !important;
+}

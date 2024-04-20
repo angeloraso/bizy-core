@@ -6,36 +6,42 @@ import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, Inject
   styleUrls: ['./filter-section-checkbox-option.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FilterSectionCheckboxOptionComponent {
+export class BizyFilterSectionCheckboxOptionComponent {
   @Input() id: string = String(Math.random());
   @Input() disabled: boolean = false;
   @Input() customClass: string = '';
-  @Input() selected: boolean = true;
-  @Output() onSelect = new EventEmitter<{id: string, selected: boolean}>();
+  @Output() onChange = new EventEmitter<boolean>();
+
+  @Input() set selected(selected: boolean) {
+    if (typeof selected === 'undefined' || selected === null) {
+      return;
+    }
+
+    this._selected = selected;
+    this.onSelect(selected);
+  }
+
+  _selected: boolean = true;
 
   constructor(
     @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
   ) {}
 
-  _onSelect() {
+  onSelect = (selected: boolean) => {
     if (this.disabled) {
       return;
     }
 
-    this.setSelect(!this.selected)
-  }
-
-  setSelect(selected: boolean) {
-    this.selected = selected;
-    this.onSelect.emit({id: this.id, selected: this.selected});
+    this._selected = selected;
+    this.onChange.emit(selected);
     this.ref.detectChanges();
   }
 
-  getSelected() {
-    return this.selected;
+  getSelected = () => {
+    return this._selected;
   }
 
-  getId() {
+  getId = () => {
     return this.id;
   }
 }

@@ -6,6 +6,4 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   styleUrls: ['./error.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ErrorComponent {
-  @Input() label: string;
-}
+export class BizyErrorComponent {}

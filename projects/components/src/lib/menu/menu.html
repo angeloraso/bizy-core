@@ -13,7 +13,8 @@
     </span>
     
     <svg 
-        class="bizy-menu__arrow" 
+        class="bizy-menu__arrow"
+        *ngIf="!hideArrow" 
         viewBox="0 0 96 96" 
         [ngClass]="{'bizy-menu__arrow--opened': opened}"
         xmlns="http://www.w3.org/2000/svg">
@@ -23,12 +24,16 @@
 
 <ng-template
     cdkConnectedOverlay
+    [cdkConnectedOverlayOffsetX]="offsetX"
+    [cdkConnectedOverlayOffsetY]="offsetY"
     [cdkConnectedOverlayMinWidth]="_menuWidth"
     [cdkConnectedOverlayOrigin]="bizyMenuTrigger"
     (overlayOutsideClick)="close($event)"
     [cdkConnectedOverlayOpen]="opened">
 
     <span class="bizy-menu__options">
+
+        <ng-content select="bizy-menu-title"></ng-content>
 
         <ng-content select="bizy-menu-option"></ng-content>
 

@@ -13,13 +13,14 @@
     flex-direction: column;
     row-gap: 0.3rem;
     overflow-x: clip;
+    background-color: var(--bizy-table-background-color);
 }
 
 .bizy-table__rows {
     display: flex;
     flex-direction: column;
-    height: var(--bizy-table-height, 30rem);
-    width: var(--bizy-table-width, 100%);
+    height: var(--bizy-table-height);
+    width: var(--bizy-table-width);
     min-width: fit-content;
     overflow-x: hidden;
 }

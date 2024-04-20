@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { PopupWrapperComponent } from './popup-wrapper/popup-wrapper.component';
-import { PopupService } from './popup.service';
+import { BizyPopupWrapperComponent } from './popup-wrapper/popup-wrapper.component';
+import { BizyPopupService } from './popup.service';
 import { DialogModule } from '@angular/cdk/dialog';
 
 const COMPONENTS = [
-  PopupWrapperComponent,
+  BizyPopupWrapperComponent,
 ];
 
 @NgModule({
   imports: [CommonModule, FormsModule, DialogModule],
   declarations: COMPONENTS,
-  providers: [PopupService]
+  providers: [BizyPopupService]
 })
-export class PopupModule {}
+export class BizyPopupModule {}

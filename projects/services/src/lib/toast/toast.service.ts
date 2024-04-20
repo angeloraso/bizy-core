@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { ToastWrapperComponent } from './toast-wrapper/toast-wrapper.component';
+import { BizyToastWrapperComponent } from './toast-wrapper/toast-wrapper.component';
 import { Dialog, DialogConfig, DialogRef } from '@angular/cdk/dialog';
 
 export enum TOAST {
@@ -11,21 +11,21 @@ export enum TOAST {
 }
 
 @Injectable()
-export class ToastService {
-  #toast: DialogRef<ToastWrapperComponent> | null = null;
+export class BizyToastService {
+  #toast: DialogRef<BizyToastWrapperComponent> | null = null;
   
   #closing: boolean = false;
 
   constructor(@Inject(Dialog) private dialog: Dialog) { }
 
   #open(data: {type: TOAST, title?: string, msg?: string }) {
-    this.#toast = this.dialog.open<ToastWrapperComponent>(ToastWrapperComponent, ({
+    this.#toast = this.dialog.open<BizyToastWrapperComponent>(BizyToastWrapperComponent, ({
       data,
       autoFocus: true,
       hasBackdrop: false,
       disableClose: false,
       panelClass: ['bizy-toast', 'bizy-toast--in'] 
-    } as DialogConfig<unknown, DialogRef<ToastWrapperComponent>>));
+    } as DialogConfig<unknown, DialogRef<BizyToastWrapperComponent>>));
 
     setTimeout(() => {
       this.close();

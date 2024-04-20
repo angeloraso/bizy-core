@@ -9,7 +9,7 @@ import { IonModal } from '@ionic/angular/common';
   styleUrls: ['./input.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class InputComponent {
+export class BizyInputComponent {
   @ViewChild('bizyInput') bizyInput: IonInput;
   @Input() id: string = `bizy-input-${Math.random()}`;
   @Input() disabled: boolean = false;
@@ -32,7 +32,7 @@ export class InputComponent {
   @Input() confirmLabel: string = 'Confirmar';
   @Input() customClass: string;
   @Output() onFocus = new EventEmitter<void>();
-  @Output() enter = new EventEmitter<void>();
+  @Output() onEnter = new EventEmitter<void>();
   @Output() onBlur = new EventEmitter<void>();
 
   constructor(@Inject(ChangeDetectorRef) private ref: ChangeDetectorRef) {}

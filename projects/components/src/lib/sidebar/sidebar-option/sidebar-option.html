@@ -1,0 +1,13 @@
+<bizy-accordion
+    class="{{customClass}}"
+    customClass="bizy-sidebar-option {{selected ? 'bizy-sidebar-option--selected' : ''}}"
+    [opened]="selected"
+    (onOpen)="_onSelect()">
+
+    <ng-content></ng-content>
+
+    <span accordion-option *ngIf="options && options.length > 0">
+        <ng-content select="bizy-sidebar-option"></ng-content>
+    </span>
+
+</bizy-accordion>

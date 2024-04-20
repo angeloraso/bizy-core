@@ -1,6 +1,6 @@
 import { ElementRef, EventEmitter } from '@angular/core';
 import * as i0 from "@angular/core";
-export declare class SliderComponent {
+export declare class BizySliderComponent {
     fromSlider: ElementRef;
     toSlider: ElementRef;
     minLimit: number;
@@ -15,6 +15,6 @@ export declare class SliderComponent {
     set max(max: number);
     setFromSlider(value: number): void;
     setToSlider(value: number): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<SliderComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<SliderComponent, "bizy-slider", never, { "minLimit": { "alias": "minLimit"; "required": false; }; "maxLimit": { "alias": "maxLimit"; "required": false; }; "min": { "alias": "min"; "required": false; }; "max": { "alias": "max"; "required": false; }; }, { "onChange": "onChange"; }, never, never, false, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<BizySliderComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<BizySliderComponent, "bizy-slider", never, { "minLimit": { "alias": "minLimit"; "required": false; }; "maxLimit": { "alias": "maxLimit"; "required": false; }; "min": { "alias": "min"; "required": false; }; "max": { "alias": "max"; "required": false; }; }, { "onChange": "onChange"; }, never, never, false, never>;
 }

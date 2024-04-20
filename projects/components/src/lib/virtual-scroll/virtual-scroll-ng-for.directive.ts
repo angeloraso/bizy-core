@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
   selector: '[virtualNgFor]'
 })
 
-export class VirtualScrollNgForDirective {
+export class BizyVirtualScrollNgForDirective {
   public _items = new BehaviorSubject<Array<unknown>>([]);
 
   get items() {

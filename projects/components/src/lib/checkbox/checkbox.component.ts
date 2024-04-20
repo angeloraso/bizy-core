@@ -6,7 +6,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
   styleUrls: ['./checkbox.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CheckboxComponent {
+export class BizyCheckboxComponent {
   @Input() id: string = String(Math.random());
   @Input() name: string;
   @Input() selected: boolean = false;

@@ -17,7 +17,7 @@ interface ILogData {
 @Injectable({
   providedIn: 'root'
 })
-export class LogService {
+export class BizyLogService {
   #lastLogTimestamp: number = 0;
 
   #log(log: string, color: COLOR, param: unknown): void {

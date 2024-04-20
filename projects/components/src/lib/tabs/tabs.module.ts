@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TabsComponent } from './tabs.component';
-import { TabComponent } from './tab/tab.component';
+import { BizyTabsComponent } from './tabs.component';
+import { BizyTabComponent } from './tab/tab.component';
 
 const COMPONENTS = [
- TabsComponent,
- TabComponent
+ BizyTabsComponent,
+ BizyTabComponent
 ];
 
 @NgModule({
@@ -14,4 +14,4 @@ const COMPONENTS = [
   declarations: COMPONENTS,
   exports: COMPONENTS
 })
-export class TabsModule {}
+export class BizyTabsModule {}

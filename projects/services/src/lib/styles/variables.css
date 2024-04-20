@@ -1,0 +1,19 @@
+:root {
+    --bizy-popup-background-color: #fff;
+    --bizy-popup-close-button-color: #666;
+    --bizy-popup-close-button-hover-color: #e76565;
+
+    --bizy-toast-border-left: 0.4rem solid #fff;
+    --bizy-toast-default-background-color: #fff;
+    --bizy-toast-default-color: #666;
+    --bizy-toast-info-background-color: #fff;
+    --bizy-toast-info-color: #2484c6;
+    --bizy-toast-success-background-color: #fff;
+    --bizy-toast-success-color: #5fbc5a;
+    --bizy-toast-warning-background-color: #fff;
+    --bizy-toast-warning-color: #f7a64c;
+    --bizy-toast-danger-background-color: #fff;
+    --bizy-toast-danger-color: #e76565;
+    --bizy-toast-close-button-color: #666;
+    --bizy-toast-close-button-hover-color: #333;
+}

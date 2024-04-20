@@ -15,7 +15,7 @@ import { DOCUMENT, DecimalPipe } from '@angular/common';
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BarChartComponent {
+export class BizyBarChartComponent {
   @Input() saveAsImageButtonLabel: string = 'Descargar';
   @Input() xLabelPrefix: string = '';
   @Input() xLabelSuffix: string = '';

@@ -1,7 +1,7 @@
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import * as i0 from "@angular/core";
-export declare class RouterService {
+export declare class BizyRouterService {
     private router;
     private _backPath;
     transitionsEnd$: Observable<ActivatedRouteSnapshot>;
@@ -18,6 +18,6 @@ export declare class RouterService {
     goBack(): void;
     reload(force?: boolean): void;
     private _serialize;
-    static ɵfac: i0.ɵɵFactoryDeclaration<RouterService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<RouterService>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<BizyRouterService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<BizyRouterService>;
 }

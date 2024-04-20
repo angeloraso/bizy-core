@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SliderComponent } from './slider.component';
+import { BizySliderComponent } from './slider.component';
 
 const COMPONENTS = [
-  SliderComponent,
+  BizySliderComponent,
 ];
 
 @NgModule({
@@ -12,4 +12,4 @@ const COMPONENTS = [
   declarations: COMPONENTS,
   exports: COMPONENTS
 })
-export class SliderModule {}
+export class BizySliderModule {}

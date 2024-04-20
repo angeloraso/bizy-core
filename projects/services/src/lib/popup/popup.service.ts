@@ -1,12 +1,12 @@
 import { ComponentType } from "@angular/cdk/portal";
 import { Inject, Injectable } from "@angular/core";
 import { take } from "rxjs";
-import { PopupWrapperComponent } from "./popup-wrapper/popup-wrapper.component";
+import { BizyPopupWrapperComponent } from "./popup-wrapper/popup-wrapper.component";
 import { Dialog, DialogRef } from '@angular/cdk/dialog';
 
 @Injectable()
-export class PopupService {
-  #dialogs = new Set<DialogRef<unknown, PopupWrapperComponent<unknown>>>();
+export class BizyPopupService {
+  #dialogs = new Set<DialogRef<unknown, BizyPopupWrapperComponent<unknown>>>();
   
   #data: unknown;
 
@@ -15,7 +15,7 @@ export class PopupService {
 
   open<R>(data: {component: ComponentType<unknown>, data?: unknown, customClass?: string, disableClose?: boolean, id?: string}, callback?: (res: R) => void) {
     this.#data = data.data;
-    const dialogRef = this.dialog.open(PopupWrapperComponent, ({
+    const dialogRef = this.dialog.open(BizyPopupWrapperComponent, ({
       id: data.id,
       data: data.component,
       autoFocus: true,
@@ -39,7 +39,7 @@ export class PopupService {
   }
 
   close(data?: {id?: string, response?: unknown}) {
-    let dialogRef: DialogRef<unknown, PopupWrapperComponent<unknown>> | null = null;
+    let dialogRef: DialogRef<unknown, BizyPopupWrapperComponent<unknown>> | null = null;
     if (data && data.id) {
       dialogRef = Array.from(this.#dialogs).find(_dialogRef => _dialogRef.id === data.id);
     } else {

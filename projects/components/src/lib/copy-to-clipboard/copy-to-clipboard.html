@@ -1,0 +1,8 @@
+<button 
+  class="bizy-copy-to-clipboard {{customClass}}"
+  type="button"
+  [disabled]="(loading$ | async)"
+  (click)="copyToClipboard(); $event.stopPropagation()">
+  <i *ngIf="(loading$ | async)" class="fas fa-spinner fa-spin"></i>
+  <i *ngIf="!(loading$ | async)" class="fas fa-copy"></i>
+</button>

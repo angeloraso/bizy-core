@@ -6,7 +6,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
   styleUrls: ['./button.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ButtonComponent {
+export class BizyButtonComponent {
   @Input() id: string = String(Math.random());
   @Input() disabled: boolean = false;
   @Input() type: 'button' | 'submit' = 'button';

@@ -1,18 +1,32 @@
-<div 
-    id="{{id}}"
-    class="bizy-table-row {{customClass}}"
-    [ngClass]="{'bizy-table-row--disabled': disabled, 'bizy-table-row--selected': selected}">
+<bizy-accordion 
+    class="bizy-table-row__accordion"
+    customClass="bizy-table-row__accordion {{disabled ? 'bizy-table-row--disabled' : ''}} {{selected ? 'bizy-table-row--selected' : ''}} {{opened ? 'bizy-table-row--opened' : ''}}"
+    [opened]="opened"
+    (onOpen)="onOpen.emit($event)">
 
-    <ng-content select="bizy-table-column"></ng-content>
+    <button
+        type="button"
+        id="{{id}}"
+        class="bizy-table-row {{customClass}}"
+        (click)="onSelect.emit(!selected)"
+        (keyup.enter)="onSelect.emit(!selected)"
+        [ngClass]="{'bizy-table-row--disabled': disabled, 'bizy-table-row--selected': selected}">
 
-    <bizy-checkbox 
-        *ngIf="selectable !== null"
-        class="bizy-table-row__checkbox"
-        [ngStyle]="{right: marginRight + 'px'}"
-        [ngClass]="{'bizy-table-row__checkbox--hidden': selectable === false, 'bizy-table-row__checkbox--shadow': marginRight > 0}"
-        [selected]="selected"
-        [disabled]="disabled"
-        (onSelect)="onSelect.emit($event)">
-    </bizy-checkbox>
-    
-</div>
+        <ng-content select="bizy-table-column"></ng-content>
+
+        <bizy-checkbox 
+            *ngIf="selectable !== null"
+            class="bizy-table-row__checkbox"
+            [ngStyle]="{right: marginRight + 'px'}"
+            [ngClass]="{'bizy-table-row__checkbox--hidden': selectable === false, 'bizy-table-row__checkbox--shadow': marginRight > 0}"
+            [selected]="selected"
+            [disabled]="disabled"
+            (click)="$event.stopPropagation()"
+            (onSelect)="onSelect.emit($event)">
+        </bizy-checkbox>
+        
+    </button>
+
+    <ng-content accordion-option select="bizy-table-row-expand-content"></ng-content>
+
+</bizy-accordion>

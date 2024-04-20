@@ -1,6 +1,7 @@
-export { DirectivesModule } from "./directives.module";
-export { LoadingDirective } from "./loading.directive";
-export { LongPressDirective } from "./long-press.directive";
-export { OnlyNumbersDirective } from "./only-numbers.directive";
-export { OnlyPhoneDigitsDirective } from "./only-phone-digits.directive";
-export { NgForTrackByIdDirective } from "./track-by-id.directive";
+export { BizyTooltipDirective } from './tooltip.directive';
+export { BizyDirectivesModule } from "./directives.module";
+export { BizyLoadingDirective } from "./loading.directive";
+export { BizyLongPressDirective } from "./long-press.directive";
+export { BizyOnlyNumbersDirective } from "./only-numbers.directive";
+export { BizyOnlyPhoneDigitsDirective } from "./only-phone-digits.directive";
+export { BizyNgForTrackByIdDirective } from "./track-by-id.directive";

@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ButtonComponent } from './button.component';
+import { BizyButtonComponent } from './button.component';
 
 const COMPONENTS = [
-  ButtonComponent,
+  BizyButtonComponent,
 ];
 
 @NgModule({
@@ -12,4 +12,4 @@ const COMPONENTS = [
   declarations: COMPONENTS,
   exports: COMPONENTS
 })
-export class ButtonModule {}
+export class BizyButtonModule {}

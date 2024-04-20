@@ -7,12 +7,14 @@ import * as i5 from "./table-column/table-column.component";
 import * as i6 from "./table-column-arrows/table-column-arrows.component";
 import * as i7 from "./table-scrolling/table-scrolling.directive";
 import * as i8 from "./table-scrolling/table-scrolling.component";
-import * as i9 from "@angular/common";
-import * as i10 from "@angular/forms";
-import * as i11 from "@angular/cdk/scrolling";
-import * as i12 from "../checkbox/checkbox.module";
-export declare class TableModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<TableModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<TableModule, [typeof i1.TableComponent, typeof i2.TableHeaderComponent, typeof i3.TableFooterComponent, typeof i4.TableRowComponent, typeof i5.TableColumnComponent, typeof i6.TableColumnArrowsComponent, typeof i7.TableScrollingDirective, typeof i8.TableScrollingComponent], [typeof i9.CommonModule, typeof i10.FormsModule, typeof i11.ScrollingModule, typeof i12.CheckboxModule], [typeof i1.TableComponent, typeof i2.TableHeaderComponent, typeof i3.TableFooterComponent, typeof i4.TableRowComponent, typeof i5.TableColumnComponent, typeof i6.TableColumnArrowsComponent, typeof i7.TableScrollingDirective, typeof i8.TableScrollingComponent]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<TableModule>;
+import * as i9 from "./table-row-expand-content/table-row-expand-content.component";
+import * as i10 from "@angular/common";
+import * as i11 from "@angular/forms";
+import * as i12 from "@angular/cdk/scrolling";
+import * as i13 from "../checkbox/checkbox.module";
+import * as i14 from "../accordion/accordion.module";
+export declare class BizyTableModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<BizyTableModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<BizyTableModule, [typeof i1.BizyTableComponent, typeof i2.BizyTableHeaderComponent, typeof i3.BizyTableFooterComponent, typeof i4.BizyTableRowComponent, typeof i5.BizyTableColumnComponent, typeof i6.BizyTableColumnArrowsComponent, typeof i7.BizyTableScrollingDirective, typeof i8.BizyTableScrollingComponent, typeof i9.BizyTableRowExpandContentComponent], [typeof i10.CommonModule, typeof i11.FormsModule, typeof i12.ScrollingModule, typeof i13.BizyCheckboxModule, typeof i14.BizyAccordionModule], [typeof i1.BizyTableComponent, typeof i2.BizyTableHeaderComponent, typeof i3.BizyTableFooterComponent, typeof i4.BizyTableRowComponent, typeof i5.BizyTableColumnComponent, typeof i6.BizyTableColumnArrowsComponent, typeof i7.BizyTableScrollingDirective, typeof i8.BizyTableScrollingComponent, typeof i9.BizyTableRowExpandContentComponent]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<BizyTableModule>;
 }

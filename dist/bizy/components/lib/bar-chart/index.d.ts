@@ -1,3 +1,3 @@
-export { BarChartComponent } from './bar-chart.component';
+export { BizyBarChartComponent } from './bar-chart.component';
 export { IBarChartData } from './bar-chart.types';
-export { BarChartModule } from './bar-chart.module';
+export { BizyBarChartModule } from './bar-chart.module';

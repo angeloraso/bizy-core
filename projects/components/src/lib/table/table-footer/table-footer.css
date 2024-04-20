@@ -1,7 +1,7 @@
 :host {
     font-size: 1rem;
     width: fit-content;
-    min-width: 100%
+    min-width: 100%;
 }
 
 .bizy-table-footer {
@@ -9,11 +9,10 @@
     padding: 0 0.3rem;
     display: flex;
     align-items: center;
-    height: var(--bizy-table-footer-height, 2.4rem);
+    height: var(--bizy-table-footer-height);
     width: fit-content;
-    min-width: var(--bizy-table-width, 100%);
-    background-color: var(--bizy-table-header-background-color, #ffffff);
-    border-top: 0.1rem solid var(--bizy-table-border-bottom-color, #eeeeee);
+    min-width: var(--bizy-table-width);
+    background-color: var(--bizy-table-footer-background-color);
 }
 
 .bizy-table-footer__checkbox-wrapper {

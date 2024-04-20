@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
-export class KeyboardService {
+export class BizyKeyboardService {
   #shiftHolding = new BehaviorSubject<boolean>(false);
 
   get shiftHolding$(): Observable<boolean> {

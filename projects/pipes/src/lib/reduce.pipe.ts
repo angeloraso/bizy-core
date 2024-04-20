@@ -3,7 +3,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({
   name: 'bizyReduce'
 })
-export class ReducePipe implements PipeTransform {
+export class BizyReducePipe implements PipeTransform {
   transform(items: Array<unknown>, key: string): number {
     if (!items) {
       return 0;

@@ -1,6 +1,6 @@
 import { ChangeDetectorRef } from '@angular/core';
 import * as i0 from "@angular/core";
-export declare class TableFooterComponent {
+export declare class BizyTableFooterComponent {
     private ref;
     id: string;
     customClass: string;
@@ -10,6 +10,6 @@ export declare class TableFooterComponent {
     getId: () => string;
     setSelectable: (selectable: boolean) => void;
     setMarginRight(margin: number): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<TableFooterComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<TableFooterComponent, "bizy-table-footer", never, { "id": { "alias": "id"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; }, {}, never, ["bizy-table-column"], false, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<BizyTableFooterComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<BizyTableFooterComponent, "bizy-table-footer", never, { "id": { "alias": "id"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; }, {}, never, ["bizy-table-column"], false, never>;
 }

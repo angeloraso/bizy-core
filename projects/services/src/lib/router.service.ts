@@ -6,7 +6,7 @@ import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class RouterService {
+export class BizyRouterService {
   private _backPath = '';
 
   transitionsEnd$: Observable<ActivatedRouteSnapshot>;

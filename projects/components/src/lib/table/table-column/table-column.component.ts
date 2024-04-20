@@ -6,10 +6,10 @@ import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from 
   styleUrls: ['./table-column.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TableColumnComponent {
+export class BizyTableColumnComponent {
   @Input() id: string = String(Math.random());
   @Input() customClass: string = '';
-  @Output() onSelect = new EventEmitter<void>();
+  @Output() onSelect = new EventEmitter<PointerEvent>();
 
   getId = (): string => {
     return this.id;

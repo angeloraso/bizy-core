@@ -6,7 +6,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input } 
   styleUrls: ['./table-footer.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TableFooterComponent {
+export class BizyTableFooterComponent {
   @Input() id: string = String(Math.random());
   @Input() customClass: string = '';
 

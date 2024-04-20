@@ -1,7 +1,7 @@
 import { debounceTime, skip } from 'rxjs/operators';
 import { Subscription, Subject } from 'rxjs';
 import { Component, ContentChild, Input, Inject, ChangeDetectorRef, OnInit, ElementRef, ChangeDetectionStrategy } from '@angular/core';
-import { VirtualScrollNgForDirective } from './virtual-scroll-ng-for.directive';
+import { BizyVirtualScrollNgForDirective } from './virtual-scroll-ng-for.directive';
 import { DOCUMENT } from '@angular/common';
 
 const MIN_VIRTUAL_SCROLL_WIDTH = 300;
@@ -11,8 +11,8 @@ const MIN_VIRTUAL_SCROLL_WIDTH = 300;
   styleUrls: ['./virtual-scroll.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class VirtualScrollComponent implements OnInit {
-  @ContentChild(VirtualScrollNgForDirective) virtualFor: VirtualScrollNgForDirective;
+export class BizyVirtualScrollComponent implements OnInit {
+  @ContentChild(BizyVirtualScrollNgForDirective) virtualFor: BizyVirtualScrollNgForDirective;
   @Input() itemMinHeight: number | string;
   @Input() itemMinWidth: number | string;
   @Input() emptyText: string = 'Sin elementos para mostrar';
@@ -72,6 +72,7 @@ export class VirtualScrollComponent implements OnInit {
           }
         } else {
           this.virtualScrollItems = [];
+          this.ref.detectChanges();
         }
       }));
 

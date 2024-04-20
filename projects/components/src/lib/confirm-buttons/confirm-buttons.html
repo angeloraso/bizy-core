@@ -1,7 +1,7 @@
 <div class="bizy-confirm-buttons bizy-confirm-buttons--{{position}}">
 
     <bizy-button 
-        customClass="bizy-confirm-buttons__cancel-button"
+        class="bizy-confirm-buttons__cancel-button"
         type="button"
         (onSelect)="cancel.emit()">
         <svg 
@@ -15,7 +15,7 @@
     </bizy-button>
 
     <bizy-button 
-        customClass="bizy-confirm-buttons__confirm-button"
+        class="bizy-confirm-buttons__confirm-button"
         [disabled]="disabled"
         type="submit"
         (onSelect)="confirm.emit()">

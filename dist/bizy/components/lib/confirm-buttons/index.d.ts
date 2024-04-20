@@ -1,2 +1,2 @@
-export { ConfirmButtonsComponent } from './confirm-buttons.component';
-export { ConfirmButtonsModule } from './confirm-buttons.module';
+export { BizyConfirmButtonsComponent } from './confirm-buttons.component';
+export { BizyConfirmButtonsModule } from './confirm-buttons.module';

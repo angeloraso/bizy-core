@@ -1,2 +1,2 @@
-export { ButtonModule } from './button.module';
-export { ButtonComponent } from './button.component';
+export { BizyButtonModule } from './button.module';
+export { BizyButtonComponent } from './button.component';

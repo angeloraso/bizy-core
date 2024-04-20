@@ -1,7 +1,7 @@
 import { ComponentType } from "@angular/cdk/portal";
 import { Dialog } from '@angular/cdk/dialog';
 import * as i0 from "@angular/core";
-export declare class PopupService {
+export declare class BizyPopupService {
     #private;
     private dialog;
     constructor(dialog: Dialog);
@@ -19,6 +19,6 @@ export declare class PopupService {
     }): void;
     closeAll(): void;
     openedPopups(): number;
-    static ɵfac: i0.ɵɵFactoryDeclaration<PopupService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<PopupService>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<BizyPopupService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<BizyPopupService>;
 }

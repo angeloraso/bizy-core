@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SelectComponent } from './select.component';
+import { BizySelectComponent } from './select.component';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { SelectOptionComponent } from './select-option/select-option.component';
+import { BizySelectOptionComponent } from './select-option/select-option.component';
 
 const COMPONENTS = [
-  SelectComponent,
-  SelectOptionComponent
+  BizySelectComponent,
+  BizySelectOptionComponent
 ];
 
 @NgModule({
@@ -15,4 +15,4 @@ const COMPONENTS = [
   declarations: COMPONENTS,
   exports: COMPONENTS
 })
-export class SelectModule {}
+export class BizySelectModule {}

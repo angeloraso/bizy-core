@@ -8,15 +8,15 @@ import { BehaviorSubject, take, filter } from 'rxjs';
   styleUrls: ['./toggle.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ToggleComponent {
+export class BizyToggleComponent {
   @ViewChild('bizyToggleInput') bizyToggleInput: ElementRef;
   #afterViewInit = new BehaviorSubject<boolean>(false);
-  @Input() id: string = `bizy-toggle-${Math.random()}`;
+  @Input() id: string = String(Math.random());
   @Input() label: string = '';
   @Input() labelPosition: LabelPosition = 'after';
   @Input() disabled: boolean = false;
-  @Output() checkedChange = new EventEmitter<boolean>();
   @Output() onSelect = new EventEmitter<boolean>();
+  @Output() checkedChange = new EventEmitter<boolean>();
 
   _checked: boolean = false;
 

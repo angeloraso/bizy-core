@@ -10,7 +10,7 @@
     display: none;
     font-size: 1rem;
     height: 1rem;
-    fill: var(--bizy-table-column-arrow-color, #2b94f4);
+    fill: var(--bizy-table-column-arrows-color);
 }
 
 .bizy-table-column-arrows--visible {

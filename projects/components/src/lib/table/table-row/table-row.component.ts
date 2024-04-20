@@ -6,13 +6,15 @@ import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, Change
   styleUrls: ['./table-row.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TableRowComponent {
+export class BizyTableRowComponent {
   @Input() id: string = String(Math.random());
   @Input() customClass: string = '';
   @Input() disabled: boolean = false;
   @Input() selected: boolean = false;
+  @Input() opened: boolean = false;
   @Input() selectable: boolean | null = null;
   @Output() onSelect = new EventEmitter<boolean>();
+  @Output() onOpen = new EventEmitter<boolean>();
 
   marginRight = 0;
 

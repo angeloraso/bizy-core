@@ -10,23 +10,23 @@
     font-size: 1rem;
     width: 100%;
     border: none;
-    background-color: var(--bizy-select-background-color, #fff);
+    background-color: var(--bizy-select-background-color);
     display: flex;
     align-items: center;
     justify-content: space-between;
     column-gap: 0.5rem;
     padding: 0.5rem;
-    color: var(--bizy-select-option-color, #000);
+    color: var(--bizy-select-option-color);
     cursor: pointer;
 }
 
 .bizy-select-option:hover {
-    background-color: var(--bizy-select-option-hover-background-color, #2b94f444);
+    background-color: var(--bizy-select-option-hover-background-color);
 }
 
 .bizy-select-option--selected {
-    color: var(--bizy-select-option-selected-color, #fff);
-    background-color: var(--bizy-select-option-selected-background-color, #2b94f4);
+    color: var(--bizy-select-option-selected-color);
+    background-color: var(--bizy-select-option-selected-background-color);
 }
 
 .bizy-select-option--disabled {

@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, EventEmitter } from '@angular/core';
 import * as i0 from "@angular/core";
-export declare class TableHeaderComponent {
+export declare class BizyTableHeaderComponent {
     private ref;
     id: string;
     customClass: string;
@@ -13,6 +13,6 @@ export declare class TableHeaderComponent {
     getSelected: () => boolean;
     setSelectable: (selectable: boolean) => void;
     setMarginRight(margin: number): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<TableHeaderComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<TableHeaderComponent, "bizy-table-header", never, { "id": { "alias": "id"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; "selected": { "alias": "selected"; "required": false; }; "selectable": { "alias": "selectable"; "required": false; }; }, { "onSelect": "onSelect"; }, never, ["bizy-table-column"], false, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<BizyTableHeaderComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<BizyTableHeaderComponent, "bizy-table-header", never, { "id": { "alias": "id"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; "selected": { "alias": "selected"; "required": false; }; "selectable": { "alias": "selectable"; "required": false; }; }, { "onSelect": "onSelect"; }, never, ["bizy-table-column"], false, never>;
 }

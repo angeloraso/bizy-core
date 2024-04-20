@@ -1,5 +1,5 @@
-import { SelectOptionComponent } from './select-option/select-option.component';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Inject, Input, Output, QueryList, ContentChildren, OnInit } from '@angular/core';
+import { BizySelectOptionComponent } from './select-option/select-option.component';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Inject, Input, Output, QueryList, ContentChildren, OnInit, AfterViewInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 
@@ -9,45 +9,19 @@ import { DOCUMENT } from '@angular/common';
   styleUrls: ['./select.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SelectComponent implements OnInit {
-  @ContentChildren(SelectOptionComponent) options: QueryList<SelectOptionComponent>;
+export class BizySelectComponent implements AfterViewInit {
+  @ContentChildren(BizySelectOptionComponent) options: QueryList<BizySelectOptionComponent>;
   @Input() id: string = String(Math.random());
   @Input() disabled: boolean = false;
   @Input() label: string = '';
   @Input() customClass: string = '';
   @Input() opened: boolean = false;
-  @Output() onSelect = new EventEmitter<string | number>();
-  @Output() valueChange = new EventEmitter<string | number>();
   @Output() onOpen = new EventEmitter<PointerEvent>();
 
-  @Input() set value(value: string | number) {
-    if (typeof value === 'undefined' || value === null) {
-      return;
-    }
-
-    this._value = value;
-    this._optionValue = '';
-
-    if (this.options && this.options.length > 0) {
-      this.options.forEach(_option => {
-        if (_option.getKey() === value) {
-          _option.setSelected(true);
-          this._optionValue = _option.getValue();
-        } else {
-          _option.setSelected(false);
-        }
-      })
-    }
-
-    this.ref.detectChanges();
-  }
-
-
   _selectWidth: number;
-  _value: string | number;
   _optionValue: string = '';
 
-  #options: Array<SelectOptionComponent> = [];
+  #options: Array<BizySelectOptionComponent> = [];
 
   #subscription = new Subscription();
   #mutationObserver: MutationObserver;
@@ -57,7 +31,7 @@ export class SelectComponent implements OnInit {
     @Inject(DOCUMENT) private document: Document
   ) {}
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.#mutationObserver = new MutationObserver(() => {
       if (!this.options || (this.#options.length === 0 && this.options.length === 0)) {
         return;
@@ -71,15 +45,10 @@ export class SelectComponent implements OnInit {
 
       this._optionValue = '';
 
-      if (this._value) {
-        this.options.forEach(_option => {
-          if (_option.getKey() === this._value) {
-            _option.setSelected(true);
-            this._optionValue = _option.getValue();
-          } else {
-            _option.setSelected(false);
-          }
-        });
+      const option = this.#options.find(_option => _option.getSelected());
+
+      if (option) {
+        this._optionValue = option.getValue();
       }
 
       this.ref.detectChanges();      
@@ -118,29 +87,16 @@ export class SelectComponent implements OnInit {
   }
 
   #listenOptionChanges = () => {
-    if (!this.options) {
-      return;
-    }
-
     this.options.forEach(_option => {
-
       this.#subscription.add(_option.onSelect.subscribe(() => {
-        this.options.forEach(__option => {
-          if (__option.getId() !== _option.getId()) {
-            __option.setSelected(false);
-          }
-        })
-
         this._optionValue = _option.getValue();
-        this.valueChange.emit(_option.getKey());
-        this.onSelect.emit(_option.getKey());
         this.close(null);
         this.ref.detectChanges();
       }));
     });
   }
 
-  #optionsAreEqual(arr1: Array<SelectOptionComponent>, arr2: Array<SelectOptionComponent>) {
+  #optionsAreEqual(arr1: Array<BizySelectOptionComponent>, arr2: Array<BizySelectOptionComponent>) {
     if (arr1.length !== arr2.length) {
         return false;
     }

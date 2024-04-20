@@ -1,6 +1,6 @@
 import { EventEmitter } from '@angular/core';
 import * as i0 from "@angular/core";
-export declare class CheckboxComponent {
+export declare class BizyCheckboxComponent {
     id: string;
     name: string;
     selected: boolean;
@@ -9,6 +9,6 @@ export declare class CheckboxComponent {
     onSelect: EventEmitter<boolean>;
     _checkboxId: string;
     setSelected(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<CheckboxComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<CheckboxComponent, "bizy-checkbox", never, { "id": { "alias": "id"; "required": false; }; "name": { "alias": "name"; "required": false; }; "selected": { "alias": "selected"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; }, { "selectedChange": "selectedChange"; "onSelect": "onSelect"; }, never, never, false, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<BizyCheckboxComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<BizyCheckboxComponent, "bizy-checkbox", never, { "id": { "alias": "id"; "required": false; }; "name": { "alias": "name"; "required": false; }; "selected": { "alias": "selected"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; }, { "selectedChange": "selectedChange"; "onSelect": "onSelect"; }, never, never, false, never>;
 }

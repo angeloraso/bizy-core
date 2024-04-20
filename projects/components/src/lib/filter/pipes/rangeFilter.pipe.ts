@@ -3,7 +3,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({
   name: 'bizyRangeFilter'
 })
-export class RangeFilterPipe implements PipeTransform {
+export class BizyRangeFilterPipe implements PipeTransform {
   transform<T>(
     items: Array<T>,
     property: string,

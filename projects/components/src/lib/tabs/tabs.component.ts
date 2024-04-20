@@ -6,6 +6,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   styleUrls: ['./tabs.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TabsComponent {
+export class BizyTabsComponent {
   @Input() customClass: string
 }
