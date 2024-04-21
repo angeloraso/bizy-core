@@ -381,6 +381,7 @@ const DIRECTIVES = [
     BizyOnlyNumbersDirective,
     BizyOnlyPhoneDigitsDirective,
     BizyNgForTrackByIdDirective,
+    BizyTooltipDirective
 ];
 class BizyDirectivesModule {
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyDirectivesModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
@@ -388,11 +389,13 @@ class BizyDirectivesModule {
             BizyLongPressDirective,
             BizyOnlyNumbersDirective,
             BizyOnlyPhoneDigitsDirective,
-            BizyNgForTrackByIdDirective], exports: [BizyLoadingDirective,
+            BizyNgForTrackByIdDirective,
+            BizyTooltipDirective], exports: [BizyLoadingDirective,
             BizyLongPressDirective,
             BizyOnlyNumbersDirective,
             BizyOnlyPhoneDigitsDirective,
-            BizyNgForTrackByIdDirective] });
+            BizyNgForTrackByIdDirective,
+            BizyTooltipDirective] });
     static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyDirectivesModule });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyDirectivesModule, decorators: [{

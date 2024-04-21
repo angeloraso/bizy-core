@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
-import { TranslateModule as ngxTranslateModule } from '@ngx-translate/core';
-import { TranslateService } from './translate.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { BizyTranslateService } from './translate.service';
 
 @NgModule({
-  imports: [ngxTranslateModule.forRoot()],
-  providers: [TranslateService]
+  imports: [TranslateModule.forRoot()],
+  providers: [BizyTranslateService]
 })
 
-export class TranslateModule {}
+export class BizyTranslateModule {}

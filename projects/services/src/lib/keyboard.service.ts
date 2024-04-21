@@ -2,7 +2,9 @@ import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class BizyKeyboardService {
   #shiftHolding = new BehaviorSubject<boolean>(false);
 

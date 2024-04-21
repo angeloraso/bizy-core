@@ -1,4 +1,4 @@
-export { TranslatePipe } from './translate.pipe';
-export { TranslatePipeModule } from './translate.pipe.module';
-export { TranslateModule } from './translate.module';
-export { ILocale, TranslateService, LANGUAGE } from './translate.service';
+export { BizyTranslatePipe } from './translate.pipe';
+export { BizyTranslatePipeModule } from './translate.pipe.module';
+export { BizyTranslateModule } from './translate.module';
+export { ILocale, BizyTranslateService, LANGUAGE } from './translate.service';

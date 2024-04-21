@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { TranslateService as ngxTranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 
 export enum LANGUAGE {
   SPANISH = 'es',
@@ -10,9 +10,11 @@ export interface ILocale {
   translations: Record<string, unknown>;
 }
 
-@Injectable()
-export class TranslateService {
-  constructor(@Inject(ngxTranslateService) private translate: ngxTranslateService) {}
+@Injectable({
+  providedIn: 'root'
+})
+export class BizyTranslateService {
+  constructor(@Inject(TranslateService) private translate: TranslateService) {}
 
   public loadTranslations(...args: ILocale[]): void {
     const locales = [...args];

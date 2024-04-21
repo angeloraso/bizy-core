@@ -4,6 +4,7 @@ import { BizyLoadingDirective } from './loading.directive';
 import { BizyOnlyPhoneDigitsDirective } from './only-phone-digits.directive';
 import { BizyNgForTrackByIdDirective } from './track-by-id.directive';
 import { BizyLongPressDirective } from './long-press.directive';
+import { BizyTooltipDirective } from './tooltip.directive';
 
 const DIRECTIVES = [
   BizyLoadingDirective,
@@ -11,6 +12,7 @@ const DIRECTIVES = [
   BizyOnlyNumbersDirective,
   BizyOnlyPhoneDigitsDirective,
   BizyNgForTrackByIdDirective,
+  BizyTooltipDirective
 ];
 @NgModule({
   declarations: DIRECTIVES,

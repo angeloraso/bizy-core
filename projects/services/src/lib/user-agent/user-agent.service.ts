@@ -4,7 +4,7 @@ import { getUserAgent } from './uach-retrofill';
 @Injectable({
   providedIn: 'root'
 })
-export class UserAgentService {
+export class BizyUserAgentService {
   get() {
     return new Promise<string>(resolve => {
       getUserAgent([

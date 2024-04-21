@@ -1,11 +1,11 @@
 import { Pipe, PipeTransform, Inject } from '@angular/core';
-import { TranslateService } from './translate.service';
+import { BizyTranslateService } from './translate.service';
 
 @Pipe({
   name: 'translate',
 })
-export class TranslatePipe implements PipeTransform {
-  constructor(@Inject(TranslateService) private translate: TranslateService) {}
+export class BizyTranslatePipe implements PipeTransform {
+  constructor(@Inject(BizyTranslateService) private translate: BizyTranslateService) {}
 
   transform(label: string): string {
     return this.translate.get(label);

@@ -1,4 +1,4 @@
-import { TranslateService as ngxTranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import * as i0 from "@angular/core";
 export declare enum LANGUAGE {
     SPANISH = "es",
@@ -8,9 +8,9 @@ export interface ILocale {
     lang: LANGUAGE;
     translations: Record<string, unknown>;
 }
-export declare class TranslateService {
+export declare class BizyTranslateService {
     private translate;
-    constructor(translate: ngxTranslateService);
+    constructor(translate: TranslateService);
     loadTranslations(...args: ILocale[]): void;
     addLangs(langs: Array<LANGUAGE>): void;
     getLangs(): Array<LANGUAGE>;
@@ -18,6 +18,6 @@ export declare class TranslateService {
     getCurrentLang(): LANGUAGE;
     use(lang: LANGUAGE): void;
     get(translation: string): string;
-    static ɵfac: i0.ɵɵFactoryDeclaration<TranslateService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<TranslateService>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<BizyTranslateService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<BizyTranslateService>;
 }

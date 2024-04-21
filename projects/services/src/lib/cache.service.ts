@@ -1,6 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
 import { BizyRouterService } from './router.service';
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class BizyCacheService {
   readonly CACHE_PREFIX = 'BIZY-CACHE';
   constructor(@Inject(BizyRouterService) private router: BizyRouterService) {}

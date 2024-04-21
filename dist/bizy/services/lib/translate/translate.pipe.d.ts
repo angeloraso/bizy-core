@@ -1,10 +1,10 @@
 import { PipeTransform } from '@angular/core';
-import { TranslateService } from './translate.service';
+import { BizyTranslateService } from './translate.service';
 import * as i0 from "@angular/core";
-export declare class TranslatePipe implements PipeTransform {
+export declare class BizyTranslatePipe implements PipeTransform {
     private translate;
-    constructor(translate: TranslateService);
+    constructor(translate: BizyTranslateService);
     transform(label: string): string;
-    static ɵfac: i0.ɵɵFactoryDeclaration<TranslatePipe, never>;
-    static ɵpipe: i0.ɵɵPipeDeclaration<TranslatePipe, "translate", false>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<BizyTranslatePipe, never>;
+    static ɵpipe: i0.ɵɵPipeDeclaration<BizyTranslatePipe, "translate", false>;
 }

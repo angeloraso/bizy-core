@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
-import { TranslatePipe } from './translate.pipe';
+import { BizyTranslatePipe } from './translate.pipe';
 
 @NgModule({
-  declarations: [TranslatePipe],
-  exports: [TranslatePipe]
+  declarations: [BizyTranslatePipe],
+  exports: [BizyTranslatePipe]
 })
 
-export class TranslatePipeModule {}
+export class BizyTranslatePipeModule {}

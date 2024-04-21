@@ -10,7 +10,7 @@ import * as i1$1 from '@angular/cdk/dialog';
 import { DIALOG_DATA, DialogRef, Dialog, DialogModule } from '@angular/cdk/dialog';
 import { FormsModule } from '@angular/forms';
 import * as i1$3 from '@ngx-translate/core';
-import { TranslateService as TranslateService$1, TranslateModule as TranslateModule$1 } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 class BizyKeyboardService {
     document;
@@ -35,10 +35,13 @@ class BizyKeyboardService {
         return this.#shiftHolding.value;
     }
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyKeyboardService, deps: [{ token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyKeyboardService });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyKeyboardService, providedIn: 'root' });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyKeyboardService, decorators: [{
-            type: Injectable
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
         }], ctorParameters: function () { return [{ type: Document, decorators: [{
                     type: Inject,
                     args: [DOCUMENT]
@@ -114,10 +117,13 @@ class BizyExportToCSVService {
         this.#renderer.removeChild(this.document.body, downloadButton);
     }
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyExportToCSVService, deps: [{ token: DOCUMENT }, { token: RendererFactory2 }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyExportToCSVService });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyExportToCSVService, providedIn: 'root' });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyExportToCSVService, decorators: [{
-            type: Injectable
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
         }], ctorParameters: function () { return [{ type: Document, decorators: [{
                     type: Inject,
                     args: [DOCUMENT]
@@ -250,10 +256,13 @@ class BizyCacheService {
         });
     }
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyCacheService, deps: [{ token: BizyRouterService }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyCacheService });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyCacheService, providedIn: 'root' });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyCacheService, decorators: [{
-            type: Injectable
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
         }], ctorParameters: function () { return [{ type: BizyRouterService, decorators: [{
                     type: Inject,
                     args: [BizyRouterService]
@@ -466,7 +475,7 @@ async function overrideUserAgentUsingClientHints(hints) {
 }
 const exportedForTests = { getVersion, getWindowsPlatformVersion };
 
-class UserAgentService {
+class BizyUserAgentService {
     get() {
         return new Promise(resolve => {
             overrideUserAgentUsingClientHints([
@@ -485,10 +494,10 @@ class UserAgentService {
             });
         });
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: UserAgentService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: UserAgentService, providedIn: 'root' });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyUserAgentService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyUserAgentService, providedIn: 'root' });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: UserAgentService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyUserAgentService, decorators: [{
             type: Injectable,
             args: [{
                     providedIn: 'root'
@@ -925,7 +934,7 @@ var LANGUAGE;
     LANGUAGE["SPANISH"] = "es";
     LANGUAGE["ENGLISH"] = "en";
 })(LANGUAGE || (LANGUAGE = {}));
-class TranslateService {
+class BizyTranslateService {
     translate;
     constructor(translate) {
         this.translate = translate;
@@ -954,17 +963,20 @@ class TranslateService {
     get(translation) {
         return this.translate.instant(translation);
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslateService, deps: [{ token: TranslateService$1 }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslateService });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyTranslateService, deps: [{ token: TranslateService }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyTranslateService, providedIn: 'root' });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslateService, decorators: [{
-            type: Injectable
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyTranslateService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
         }], ctorParameters: function () { return [{ type: i1$3.TranslateService, decorators: [{
                     type: Inject,
-                    args: [TranslateService$1]
+                    args: [TranslateService]
                 }] }]; } });
 
-class TranslatePipe {
+class BizyTranslatePipe {
     translate;
     constructor(translate) {
         this.translate = translate;
@@ -972,42 +984,42 @@ class TranslatePipe {
     transform(label) {
         return this.translate.get(label);
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslatePipe, deps: [{ token: TranslateService }], target: i0.ɵɵFactoryTarget.Pipe });
-    static ɵpipe = i0.ɵɵngDeclarePipe({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: TranslatePipe, name: "translate" });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyTranslatePipe, deps: [{ token: BizyTranslateService }], target: i0.ɵɵFactoryTarget.Pipe });
+    static ɵpipe = i0.ɵɵngDeclarePipe({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BizyTranslatePipe, name: "translate" });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslatePipe, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyTranslatePipe, decorators: [{
             type: Pipe,
             args: [{
                     name: 'translate',
                 }]
-        }], ctorParameters: function () { return [{ type: TranslateService, decorators: [{
+        }], ctorParameters: function () { return [{ type: BizyTranslateService, decorators: [{
                     type: Inject,
-                    args: [TranslateService]
+                    args: [BizyTranslateService]
                 }] }]; } });
 
-class TranslatePipeModule {
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslatePipeModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: TranslatePipeModule, declarations: [TranslatePipe], exports: [TranslatePipe] });
-    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslatePipeModule });
+class BizyTranslatePipeModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyTranslatePipeModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BizyTranslatePipeModule, declarations: [BizyTranslatePipe], exports: [BizyTranslatePipe] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyTranslatePipeModule });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslatePipeModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyTranslatePipeModule, decorators: [{
             type: NgModule,
             args: [{
-                    declarations: [TranslatePipe],
-                    exports: [TranslatePipe]
+                    declarations: [BizyTranslatePipe],
+                    exports: [BizyTranslatePipe]
                 }]
         }] });
 
-class TranslateModule {
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslateModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: TranslateModule, imports: [i1$3.TranslateModule] });
-    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslateModule, providers: [TranslateService], imports: [TranslateModule$1.forRoot()] });
+class BizyTranslateModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyTranslateModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BizyTranslateModule, imports: [i1$3.TranslateModule] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyTranslateModule, providers: [BizyTranslateService], imports: [TranslateModule.forRoot()] });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: TranslateModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyTranslateModule, decorators: [{
             type: NgModule,
             args: [{
-                    imports: [TranslateModule$1.forRoot()],
-                    providers: [TranslateService]
+                    imports: [TranslateModule.forRoot()],
+                    providers: [BizyTranslateService]
                 }]
         }] });
 
@@ -1015,5 +1027,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
  * Generated bundle index. Do not edit.
  */
 
-export { BizyCacheService, BizyExportToCSVService, BizyKeyboardService, BizyLogService, BizyPopupModule, BizyPopupService, BizyRouterService, BizyStorageService, BizyToastModule, BizyToastService, BizyValidatorService, LANGUAGE, TranslateModule, TranslatePipe, TranslatePipeModule, TranslateService, UserAgentService };
+export { BizyCacheService, BizyExportToCSVService, BizyKeyboardService, BizyLogService, BizyPopupModule, BizyPopupService, BizyRouterService, BizyStorageService, BizyToastModule, BizyToastService, BizyTranslateModule, BizyTranslatePipe, BizyTranslatePipeModule, BizyTranslateService, BizyUserAgentService, BizyValidatorService, LANGUAGE };
 //# sourceMappingURL=bizy-services.mjs.map
