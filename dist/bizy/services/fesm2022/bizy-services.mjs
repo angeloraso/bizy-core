@@ -571,6 +571,9 @@ class BizyStorageService {
         else if (typeof value === 'string') {
             localStorage.setItem(key, value);
         }
+        else {
+            localStorage.setItem(key, String(value));
+        }
     }
     remove(key) {
         localStorage.removeItem(key);

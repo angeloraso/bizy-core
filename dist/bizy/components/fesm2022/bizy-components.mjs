@@ -973,40 +973,130 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 }]
         }] });
 
-class BizyTabsComponent {
-    customClass;
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyTabsComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyTabsComponent, selector: "bizy-tabs", inputs: { customClass: "customClass" }, ngImport: i0, template: "<div class=\"bizy-tabs {{customClass}}\">\n\n    <ng-content select=\"bizy-tab\"></ng-content>\n\n</div>", styles: [":host{font-size:1rem}.bizy-tabs{display:flex;align-items:center;column-gap:var(--bizy-tabs-column-gap);background-color:var(--bizy-tabs-background-color)}\n"], changeDetection: i0.ChangeDetectionStrategy.OnPush });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyTabsComponent, decorators: [{
-            type: Component,
-            args: [{ selector: 'bizy-tabs', changeDetection: ChangeDetectionStrategy.OnPush, template: "<div class=\"bizy-tabs {{customClass}}\">\n\n    <ng-content select=\"bizy-tab\"></ng-content>\n\n</div>", styles: [":host{font-size:1rem}.bizy-tabs{display:flex;align-items:center;column-gap:var(--bizy-tabs-column-gap);background-color:var(--bizy-tabs-background-color)}\n"] }]
-        }], propDecorators: { customClass: [{
-                type: Input
-            }] } });
-
 class BizyTabComponent {
-    id = `bizy-tab-${Math.random()}`;
-    selected = false;
+    ref;
+    id = String(Math.random());
+    disabled = false;
     linePosition = 'top';
-    customClass;
+    customClass = '';
+    selected = false;
+    selectedChange = new EventEmitter();
     onSelect = new EventEmitter();
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyTabComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyTabComponent, selector: "bizy-tab", inputs: { id: "id", selected: "selected", linePosition: "linePosition", customClass: "customClass" }, outputs: { onSelect: "onSelect" }, ngImport: i0, template: "<span class=\"bizy-tab__selected-line\" *ngIf=\"linePosition === 'top'\" [ngClass]=\"{'bizy-tab__selected-line--visible': selected}\"></span>\n\n<button \n  type=\"button\"\n  id=\"{{id}}\"\n  [ngClass]=\"{'bizy-tab--selected': selected}\"\n  class=\"bizy-tab {{customClass}}\"\n  (click)=\"onSelect.emit()\"\n  (keyup.enter)=\"onSelect.emit()\">\n\n  <ng-content select=\"[tab-icon]\"></ng-content>\n\n  <ng-content select=\"[tab-label]\"></ng-content>\n\n</button>\n\n<span class=\"bizy-tab__selected-line\" *ngIf=\"linePosition === 'bottom'\" [ngClass]=\"{'bizy-tab__selected-line--visible': selected}\"></span>\n", styles: [":host{font-size:1rem}.bizy-tab{width:100%;min-width:-moz-fit-content;min-width:fit-content;display:flex;flex-direction:column;align-items:center;border-top:var(--bizy-tab-border-top);border-right:var(--bizy-tab-border-right);border-bottom:var(--bizy-tab-border-bottom);border-left:var(--bizy-tab-border-left);border-radius:var(--bizy-tab-border-radius);padding:var(--bizy-tab-padding);background-color:var(--bizy-tab-background-color);color:var(--bizy-tab-color);cursor:pointer}.bizy-tab--selected{color:var(--bizy-tab-selected-color);background-color:var(--bizy-tab-selected-background-color)}@keyframes zoomIn{0%{opacity:0;transform:scale3d(.3,.3,.3)}50%{opacity:1}}.bizy-tab__selected-line{display:block;width:100%;height:.2rem;visibility:hidden;pointer-events:none;background-color:var(--bizy-tab-selected-color)}.bizy-tab__selected-line--visible{visibility:visible;animation-name:zoomIn;animation-duration:.3s;animation-fill-mode:both}\n"], dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+    constructor(ref) {
+        this.ref = ref;
+    }
+    _onSelect() {
+        if (this.disabled) {
+            return;
+        }
+        this.onSelect.emit();
+    }
+    setSelected = (selected) => {
+        this.selected = selected;
+        this.selectedChange.emit(selected);
+        this.ref.detectChanges();
+    };
+    getId = () => {
+        return this.id;
+    };
+    getSelected = () => {
+        return this.selected;
+    };
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyTabComponent, deps: [{ token: ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyTabComponent, selector: "bizy-tab", inputs: { id: "id", disabled: "disabled", linePosition: "linePosition", customClass: "customClass", selected: "selected" }, outputs: { selectedChange: "selectedChange", onSelect: "onSelect" }, ngImport: i0, template: "<span class=\"bizy-tab__selected-line\" *ngIf=\"linePosition === 'top'\" [ngClass]=\"{'bizy-tab__selected-line--visible': selected && !disabled}\"></span>\n\n<button \n  type=\"button\"\n  id=\"{{id}}\"\n  [ngClass]=\"{'bizy-tab--selected': selected, 'bizy-tab--disabled': disabled}\"\n  class=\"bizy-tab {{customClass}}\"\n  (click)=\"onSelect.emit()\"\n  (keyup.enter)=\"onSelect.emit()\">\n\n  <ng-content></ng-content>\n\n</button>\n\n<span class=\"bizy-tab__selected-line\" *ngIf=\"linePosition === 'bottom'\" [ngClass]=\"{'bizy-tab__selected-line--visible': selected && !disabled}\"></span>\n", styles: [":host{font-size:1rem}.bizy-tab{width:100%;min-width:-moz-fit-content;min-width:fit-content;display:flex;flex-direction:var(--bizy-tab-flex-direction);align-items:center;border-top:var(--bizy-tab-border-top);border-right:var(--bizy-tab-border-right);border-bottom:var(--bizy-tab-border-bottom);border-left:var(--bizy-tab-border-left);border-radius:var(--bizy-tab-border-radius);padding:var(--bizy-tab-padding);background-color:var(--bizy-tab-background-color);cursor:pointer}.bizy-tab--selected{color:var(--bizy-tab-selected-color);background-color:var(--bizy-tab-selected-background-color)}.bizy-tab--disabled{opacity:.5;cursor:not-allowed!important;pointer-events:none}@keyframes zoomIn{0%{opacity:0;transform:scale3d(.3,.3,.3)}50%{opacity:1}}.bizy-tab__selected-line{display:block;width:100%;height:.2rem;visibility:hidden;pointer-events:none;background-color:var(--bizy-tab-selected-color)}.bizy-tab__selected-line--visible{visibility:visible;animation-name:zoomIn;animation-duration:.3s;animation-fill-mode:both}\n"], dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyTabComponent, decorators: [{
             type: Component,
-            args: [{ selector: 'bizy-tab', changeDetection: ChangeDetectionStrategy.OnPush, template: "<span class=\"bizy-tab__selected-line\" *ngIf=\"linePosition === 'top'\" [ngClass]=\"{'bizy-tab__selected-line--visible': selected}\"></span>\n\n<button \n  type=\"button\"\n  id=\"{{id}}\"\n  [ngClass]=\"{'bizy-tab--selected': selected}\"\n  class=\"bizy-tab {{customClass}}\"\n  (click)=\"onSelect.emit()\"\n  (keyup.enter)=\"onSelect.emit()\">\n\n  <ng-content select=\"[tab-icon]\"></ng-content>\n\n  <ng-content select=\"[tab-label]\"></ng-content>\n\n</button>\n\n<span class=\"bizy-tab__selected-line\" *ngIf=\"linePosition === 'bottom'\" [ngClass]=\"{'bizy-tab__selected-line--visible': selected}\"></span>\n", styles: [":host{font-size:1rem}.bizy-tab{width:100%;min-width:-moz-fit-content;min-width:fit-content;display:flex;flex-direction:column;align-items:center;border-top:var(--bizy-tab-border-top);border-right:var(--bizy-tab-border-right);border-bottom:var(--bizy-tab-border-bottom);border-left:var(--bizy-tab-border-left);border-radius:var(--bizy-tab-border-radius);padding:var(--bizy-tab-padding);background-color:var(--bizy-tab-background-color);color:var(--bizy-tab-color);cursor:pointer}.bizy-tab--selected{color:var(--bizy-tab-selected-color);background-color:var(--bizy-tab-selected-background-color)}@keyframes zoomIn{0%{opacity:0;transform:scale3d(.3,.3,.3)}50%{opacity:1}}.bizy-tab__selected-line{display:block;width:100%;height:.2rem;visibility:hidden;pointer-events:none;background-color:var(--bizy-tab-selected-color)}.bizy-tab__selected-line--visible{visibility:visible;animation-name:zoomIn;animation-duration:.3s;animation-fill-mode:both}\n"] }]
-        }], propDecorators: { id: [{
+            args: [{ selector: 'bizy-tab', changeDetection: ChangeDetectionStrategy.OnPush, template: "<span class=\"bizy-tab__selected-line\" *ngIf=\"linePosition === 'top'\" [ngClass]=\"{'bizy-tab__selected-line--visible': selected && !disabled}\"></span>\n\n<button \n  type=\"button\"\n  id=\"{{id}}\"\n  [ngClass]=\"{'bizy-tab--selected': selected, 'bizy-tab--disabled': disabled}\"\n  class=\"bizy-tab {{customClass}}\"\n  (click)=\"onSelect.emit()\"\n  (keyup.enter)=\"onSelect.emit()\">\n\n  <ng-content></ng-content>\n\n</button>\n\n<span class=\"bizy-tab__selected-line\" *ngIf=\"linePosition === 'bottom'\" [ngClass]=\"{'bizy-tab__selected-line--visible': selected && !disabled}\"></span>\n", styles: [":host{font-size:1rem}.bizy-tab{width:100%;min-width:-moz-fit-content;min-width:fit-content;display:flex;flex-direction:var(--bizy-tab-flex-direction);align-items:center;border-top:var(--bizy-tab-border-top);border-right:var(--bizy-tab-border-right);border-bottom:var(--bizy-tab-border-bottom);border-left:var(--bizy-tab-border-left);border-radius:var(--bizy-tab-border-radius);padding:var(--bizy-tab-padding);background-color:var(--bizy-tab-background-color);cursor:pointer}.bizy-tab--selected{color:var(--bizy-tab-selected-color);background-color:var(--bizy-tab-selected-background-color)}.bizy-tab--disabled{opacity:.5;cursor:not-allowed!important;pointer-events:none}@keyframes zoomIn{0%{opacity:0;transform:scale3d(.3,.3,.3)}50%{opacity:1}}.bizy-tab__selected-line{display:block;width:100%;height:.2rem;visibility:hidden;pointer-events:none;background-color:var(--bizy-tab-selected-color)}.bizy-tab__selected-line--visible{visibility:visible;animation-name:zoomIn;animation-duration:.3s;animation-fill-mode:both}\n"] }]
+        }], ctorParameters: function () { return [{ type: i0.ChangeDetectorRef, decorators: [{
+                    type: Inject,
+                    args: [ChangeDetectorRef]
+                }] }]; }, propDecorators: { id: [{
                 type: Input
-            }], selected: [{
+            }], disabled: [{
                 type: Input
             }], linePosition: [{
                 type: Input
             }], customClass: [{
                 type: Input
+            }], selected: [{
+                type: Input
+            }], selectedChange: [{
+                type: Output
             }], onSelect: [{
                 type: Output
+            }] } });
+
+class BizyTabsComponent {
+    ref;
+    document;
+    tabs;
+    customClass;
+    #subscription = new Subscription();
+    #mutationObserver;
+    #tabs = [];
+    constructor(ref, document) {
+        this.ref = ref;
+        this.document = document;
+    }
+    ngOnInit() {
+        this.#mutationObserver = new MutationObserver(() => {
+            if (this.tabs && (this.#tabs.length !== 0 || this.tabs.length !== 0) && !this.#tabsAreEqual(this.#tabs, this.tabs.toArray())) {
+                this.#tabs = this.tabs.toArray();
+                this.#listenTabChanges(this.tabs.toArray());
+            }
+        });
+        this.#mutationObserver.observe(this.document.body, { childList: true, subtree: true });
+    }
+    #listenTabChanges = (tabs) => {
+        tabs.forEach(_tab => {
+            this.#subscription.add(_tab.onSelect.subscribe(() => {
+                this.tabs.toArray().forEach(_tab => {
+                    _tab.setSelected(false);
+                });
+                _tab.setSelected(true);
+                this.ref.detectChanges();
+            }));
+        });
+    };
+    #tabsAreEqual(arr1, arr2) {
+        if (arr1.length !== arr2.length) {
+            return false;
+        }
+        arr1.sort((a, b) => a.id.localeCompare(b.id));
+        arr2.sort((a, b) => a.id.localeCompare(b.id));
+        for (let i = 0; i < arr1.length; i++) {
+            for (let key in arr1[i]) {
+                if (arr1[i][key] !== arr2[i][key]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    ngOnDestroy() {
+        this.#subscription.unsubscribe();
+        if (this.#mutationObserver) {
+            this.#mutationObserver.disconnect();
+        }
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyTabsComponent, deps: [{ token: ChangeDetectorRef }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyTabsComponent, selector: "bizy-tabs", inputs: { customClass: "customClass" }, queries: [{ propertyName: "tabs", predicate: BizyTabComponent }], ngImport: i0, template: "<div class=\"bizy-tabs {{customClass}}\">\n\n    <ng-content select=\"bizy-tab\"></ng-content>\n\n</div>", styles: [":host{font-size:1rem}.bizy-tabs{display:flex;align-items:center;column-gap:var(--bizy-tabs-column-gap);background-color:var(--bizy-tabs-background-color)}\n"], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyTabsComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-tabs', changeDetection: ChangeDetectionStrategy.OnPush, template: "<div class=\"bizy-tabs {{customClass}}\">\n\n    <ng-content select=\"bizy-tab\"></ng-content>\n\n</div>", styles: [":host{font-size:1rem}.bizy-tabs{display:flex;align-items:center;column-gap:var(--bizy-tabs-column-gap);background-color:var(--bizy-tabs-background-color)}\n"] }]
+        }], ctorParameters: function () { return [{ type: i0.ChangeDetectorRef, decorators: [{
+                    type: Inject,
+                    args: [ChangeDetectorRef]
+                }] }, { type: Document, decorators: [{
+                    type: Inject,
+                    args: [DOCUMENT]
+                }] }]; }, propDecorators: { tabs: [{
+                type: ContentChildren,
+                args: [BizyTabComponent]
+            }], customClass: [{
+                type: Input
             }] } });
 
 const COMPONENTS$9 = [
@@ -1030,13 +1120,19 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
         }] });
 
 class BizyToolbarComponent {
+    id = `bizy-toolbar-${Math.random()}`;
+    customClass = '';
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyToolbarComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyToolbarComponent, selector: "bizy-toolbar", ngImport: i0, template: "<div class=\"bizy-toolbar\">\n\n    <span class=\"bizy-toolbar__start\">\n        \n        <ng-content select=\"[slot=start]\"></ng-content>\n\n    </span>\n\n    <span class=\"bizy-toolbar__end\">\n\n        <ng-content select=\"[slot=end]\"></ng-content>\n\n    </span>\n  \n\n</div>\n", styles: [":host{font-size:1rem}.bizy-toolbar{height:var(--bizy-toolbar-height);width:100%;background-color:var(--bizy-toolbar-background-color);display:flex;align-items:center;justify-content:space-between;column-gap:1rem;padding:var(--bizy-toolbar-padding)}.bizy-toolbar__start{height:100%;display:flex;align-items:center}.bizy-toolbar__end{height:100%;display:flex;align-items:center;justify-content:flex-end}\n"], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyToolbarComponent, selector: "bizy-toolbar", inputs: { id: "id", customClass: "customClass" }, ngImport: i0, template: "<div id=\"{{id}}\" class=\"bizy-toolbar {{customClass}}\">\n\n    <span class=\"bizy-toolbar__start\">\n        \n        <ng-content select=\"[slot=start]\"></ng-content>\n\n    </span>\n\n    <span class=\"bizy-toolbar__end\">\n\n        <ng-content select=\"[slot=end]\"></ng-content>\n\n    </span>\n  \n\n</div>\n", styles: [":host{font-size:1rem}.bizy-toolbar{height:var(--bizy-toolbar-height);width:100%;background-color:var(--bizy-toolbar-background-color);display:flex;align-items:center;justify-content:space-between;column-gap:1rem;padding:var(--bizy-toolbar-padding)}.bizy-toolbar__start{height:100%;display:flex;align-items:center;column-gap:.5rem}.bizy-toolbar__end{height:100%;display:flex;align-items:center;justify-content:flex-end;column-gap:.5rem}\n"], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyToolbarComponent, decorators: [{
             type: Component,
-            args: [{ selector: 'bizy-toolbar', changeDetection: ChangeDetectionStrategy.OnPush, template: "<div class=\"bizy-toolbar\">\n\n    <span class=\"bizy-toolbar__start\">\n        \n        <ng-content select=\"[slot=start]\"></ng-content>\n\n    </span>\n\n    <span class=\"bizy-toolbar__end\">\n\n        <ng-content select=\"[slot=end]\"></ng-content>\n\n    </span>\n  \n\n</div>\n", styles: [":host{font-size:1rem}.bizy-toolbar{height:var(--bizy-toolbar-height);width:100%;background-color:var(--bizy-toolbar-background-color);display:flex;align-items:center;justify-content:space-between;column-gap:1rem;padding:var(--bizy-toolbar-padding)}.bizy-toolbar__start{height:100%;display:flex;align-items:center}.bizy-toolbar__end{height:100%;display:flex;align-items:center;justify-content:flex-end}\n"] }]
-        }] });
+            args: [{ selector: 'bizy-toolbar', changeDetection: ChangeDetectionStrategy.OnPush, template: "<div id=\"{{id}}\" class=\"bizy-toolbar {{customClass}}\">\n\n    <span class=\"bizy-toolbar__start\">\n        \n        <ng-content select=\"[slot=start]\"></ng-content>\n\n    </span>\n\n    <span class=\"bizy-toolbar__end\">\n\n        <ng-content select=\"[slot=end]\"></ng-content>\n\n    </span>\n  \n\n</div>\n", styles: [":host{font-size:1rem}.bizy-toolbar{height:var(--bizy-toolbar-height);width:100%;background-color:var(--bizy-toolbar-background-color);display:flex;align-items:center;justify-content:space-between;column-gap:1rem;padding:var(--bizy-toolbar-padding)}.bizy-toolbar__start{height:100%;display:flex;align-items:center;column-gap:.5rem}.bizy-toolbar__end{height:100%;display:flex;align-items:center;justify-content:flex-end;column-gap:.5rem}\n"] }]
+        }], propDecorators: { id: [{
+                type: Input
+            }], customClass: [{
+                type: Input
+            }] } });
 
 const COMPONENTS$8 = [
     BizyToolbarComponent,
@@ -1092,6 +1188,7 @@ class BizySidebarOptionComponent {
     disabled = false;
     customClass = '';
     selected = false;
+    selectedChange = new EventEmitter();
     onSelect = new EventEmitter();
     constructor(ref) {
         this.ref = ref;
@@ -1104,6 +1201,7 @@ class BizySidebarOptionComponent {
     }
     setSelected = (selected) => {
         this.selected = selected;
+        this.selectedChange.emit(selected);
         this.ref.detectChanges();
     };
     getId = () => {
@@ -1113,11 +1211,11 @@ class BizySidebarOptionComponent {
         return this.selected;
     };
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizySidebarOptionComponent, deps: [{ token: ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizySidebarOptionComponent, selector: "bizy-sidebar-option", inputs: { id: "id", disabled: "disabled", customClass: "customClass", selected: "selected" }, outputs: { onSelect: "onSelect" }, queries: [{ propertyName: "options", predicate: BizySidebarOptionComponent }], ngImport: i0, template: "<bizy-accordion\n    class=\"{{customClass}}\"\n    customClass=\"bizy-sidebar-option {{selected ? 'bizy-sidebar-option--selected' : ''}}\"\n    [opened]=\"selected\"\n    (onOpen)=\"_onSelect()\">\n\n    <ng-content></ng-content>\n\n    <span accordion-option *ngIf=\"options && options.length > 0\">\n        <ng-content select=\"bizy-sidebar-option\"></ng-content>\n    </span>\n\n</bizy-accordion>", styles: [":host{font-size:1rem;direction:ltr}::ng-deep .bizy-sidebar-option:hover{--bizy-accordion-background-color: var(--bizy-sidebar-option-hover-color) }::ng-deep .bizy-sidebar-option--selected{--bizy-accordion-background-color: var(--bizy-sidebar-option-selected-color) !important}\n"], dependencies: [{ kind: "directive", type: i1.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "component", type: BizyAccordionComponent, selector: "bizy-accordion", inputs: ["customClass", "opened"], outputs: ["onOpen"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizySidebarOptionComponent, selector: "bizy-sidebar-option", inputs: { id: "id", disabled: "disabled", customClass: "customClass", selected: "selected" }, outputs: { selectedChange: "selectedChange", onSelect: "onSelect" }, queries: [{ propertyName: "options", predicate: BizySidebarOptionComponent }], ngImport: i0, template: "<bizy-accordion\n    class=\"{{customClass}}\"\n    customClass=\"bizy-sidebar-option {{selected ? 'bizy-sidebar-option--selected' : ''}} {{disabled ? 'bizy-sidebar-option--disabled' : ''}}\"\n    [opened]=\"selected\"\n    (onOpen)=\"_onSelect()\">\n\n    <ng-content></ng-content>\n\n    <span accordion-option *ngIf=\"options && options.length > 0\">\n        <ng-content select=\"bizy-sidebar-option\"></ng-content>\n    </span>\n\n</bizy-accordion>", styles: [":host{font-size:1rem;direction:ltr}:host:not(:has(.bizy-sidebar-option--disabled)) ::ng-deep .bizy-sidebar-option:hover{--bizy-accordion-background-color: var(--bizy-sidebar-option-hover-color) }::ng-deep .bizy-sidebar-option--selected{--bizy-accordion-background-color: var(--bizy-sidebar-option-selected-color) !important}::ng-deep .bizy-sidebar-option--disabled{cursor:default!important}\n"], dependencies: [{ kind: "directive", type: i1.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "component", type: BizyAccordionComponent, selector: "bizy-accordion", inputs: ["customClass", "opened"], outputs: ["onOpen"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizySidebarOptionComponent, decorators: [{
             type: Component,
-            args: [{ selector: 'bizy-sidebar-option', changeDetection: ChangeDetectionStrategy.OnPush, template: "<bizy-accordion\n    class=\"{{customClass}}\"\n    customClass=\"bizy-sidebar-option {{selected ? 'bizy-sidebar-option--selected' : ''}}\"\n    [opened]=\"selected\"\n    (onOpen)=\"_onSelect()\">\n\n    <ng-content></ng-content>\n\n    <span accordion-option *ngIf=\"options && options.length > 0\">\n        <ng-content select=\"bizy-sidebar-option\"></ng-content>\n    </span>\n\n</bizy-accordion>", styles: [":host{font-size:1rem;direction:ltr}::ng-deep .bizy-sidebar-option:hover{--bizy-accordion-background-color: var(--bizy-sidebar-option-hover-color) }::ng-deep .bizy-sidebar-option--selected{--bizy-accordion-background-color: var(--bizy-sidebar-option-selected-color) !important}\n"] }]
+            args: [{ selector: 'bizy-sidebar-option', changeDetection: ChangeDetectionStrategy.OnPush, template: "<bizy-accordion\n    class=\"{{customClass}}\"\n    customClass=\"bizy-sidebar-option {{selected ? 'bizy-sidebar-option--selected' : ''}} {{disabled ? 'bizy-sidebar-option--disabled' : ''}}\"\n    [opened]=\"selected\"\n    (onOpen)=\"_onSelect()\">\n\n    <ng-content></ng-content>\n\n    <span accordion-option *ngIf=\"options && options.length > 0\">\n        <ng-content select=\"bizy-sidebar-option\"></ng-content>\n    </span>\n\n</bizy-accordion>", styles: [":host{font-size:1rem;direction:ltr}:host:not(:has(.bizy-sidebar-option--disabled)) ::ng-deep .bizy-sidebar-option:hover{--bizy-accordion-background-color: var(--bizy-sidebar-option-hover-color) }::ng-deep .bizy-sidebar-option--selected{--bizy-accordion-background-color: var(--bizy-sidebar-option-selected-color) !important}::ng-deep .bizy-sidebar-option--disabled{cursor:default!important}\n"] }]
         }], ctorParameters: function () { return [{ type: i0.ChangeDetectorRef, decorators: [{
                     type: Inject,
                     args: [ChangeDetectorRef]
@@ -1132,6 +1230,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Input
             }], selected: [{
                 type: Input
+            }], selectedChange: [{
+                type: Output
             }], onSelect: [{
                 type: Output
             }] } });

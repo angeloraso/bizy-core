@@ -12,6 +12,7 @@ export class BizySidebarOptionComponent {
   @Input() disabled: boolean = false;
   @Input() customClass: string = '';
   @Input() selected: boolean = false;
+  @Output() selectedChange = new EventEmitter<boolean>();
   @Output() onSelect = new EventEmitter<void>();
 
   constructor(
@@ -28,6 +29,7 @@ export class BizySidebarOptionComponent {
 
   setSelected = (selected: boolean): void => {
     this.selected = selected;
+    this.selectedChange.emit(selected);
     this.ref.detectChanges();
   }
 

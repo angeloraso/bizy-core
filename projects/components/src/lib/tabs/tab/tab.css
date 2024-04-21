@@ -6,7 +6,7 @@
     width: 100%;
     min-width: fit-content;
     display: flex;
-    flex-direction: column;
+    flex-direction: var(--bizy-tab-flex-direction);;
     align-items: center;
     border-top: var(--bizy-tab-border-top);
     border-right: var(--bizy-tab-border-right);
@@ -15,13 +15,18 @@
     border-radius: var(--bizy-tab-border-radius);
     padding: var(--bizy-tab-padding);
     background-color: var(--bizy-tab-background-color);;
-    color: var(--bizy-tab-color);
     cursor: pointer;
 }
 
 .bizy-tab--selected {
     color: var(--bizy-tab-selected-color);
-    background-color: var(--bizy-tab-selected-background-color);;
+    background-color: var(--bizy-tab-selected-background-color);
+}
+
+.bizy-tab--disabled {
+    opacity: 0.5;
+    cursor: not-allowed !important;
+    pointer-events: none;
 }
 
 @keyframes zoomIn {

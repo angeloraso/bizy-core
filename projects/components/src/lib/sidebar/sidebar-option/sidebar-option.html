@@ -1,6 +1,6 @@
 <bizy-accordion
     class="{{customClass}}"
-    customClass="bizy-sidebar-option {{selected ? 'bizy-sidebar-option--selected' : ''}}"
+    customClass="bizy-sidebar-option {{selected ? 'bizy-sidebar-option--selected' : ''}} {{disabled ? 'bizy-sidebar-option--disabled' : ''}}"
     [opened]="selected"
     (onOpen)="_onSelect()">
 

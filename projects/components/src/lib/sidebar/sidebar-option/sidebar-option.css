@@ -3,10 +3,14 @@
     direction: ltr;
 }
 
-::ng-deep .bizy-sidebar-option:hover {
+:host:not(:has(.bizy-sidebar-option--disabled)) ::ng-deep .bizy-sidebar-option:hover {
     --bizy-accordion-background-color: var(--bizy-sidebar-option-hover-color) 
 }
 
 ::ng-deep .bizy-sidebar-option--selected {
     --bizy-accordion-background-color: var(--bizy-sidebar-option-selected-color) !important;
+}
+
+::ng-deep .bizy-sidebar-option--disabled {
+    cursor: default !important;
 }
