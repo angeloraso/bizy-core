@@ -7,8 +7,9 @@
     justify-content: space-between;
     align-items: center;
     column-gap: 0.5rem;
-    width: max-content;
-    padding: 0.5rem;
+    width: 100%;
+    height: 100%;
+    padding: var(--bizy-button-padding);
     border-radius: 0.3rem;
     border: none;
     cursor: pointer;

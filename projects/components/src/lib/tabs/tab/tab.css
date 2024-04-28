@@ -1,5 +1,6 @@
 :host {
     font-size: 1rem;
+    position: relative;
 }
 
 .bizy-tab {
@@ -42,7 +43,7 @@
 }
 
 .bizy-tab__selected-line {
-    display: block;
+    position: absolute;
     width: 100%;
     height: 0.2rem;
     visibility: hidden;

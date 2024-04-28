@@ -57,8 +57,8 @@ export class BizyExportToCSVService {
           }
         }
 
-        if (typeof value !== undefined || value !== null) {
-          toCopy += `${value},`;
+        if (typeof value !== undefined && value !== null) {
+          toCopy += `${String(value).replace(/\n/g, '')},`;
         } else {
           toCopy += ',';
         }

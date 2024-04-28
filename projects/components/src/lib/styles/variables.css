@@ -17,6 +17,7 @@
     
     --bizy-button-color: #fff;
     --bizy-button-background-color: #666;
+    --bizy-button-padding: 0.5rem;
 
     --bizy-checkbox-border-color: #043126;
     --bizy-checkbox-hover-color: #16aa8833;
@@ -115,6 +116,7 @@
     --bizy-tab-border-top: none;
     --bizy-tab-border-right: none;
     --bizy-tab-border-left: none;
+    --bizy-tab-border-bottom: none;
     --bizy-tab-border-radius: 0;
     --bizy-tab-padding: 0.5rem 1rem;
     --bizy-tab-color: #666;
