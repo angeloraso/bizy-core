@@ -1,11 +1,11 @@
-import * as i1$3 from '@angular/common';
-import { DOCUMENT, CommonModule } from '@angular/common';
 import * as i0 from '@angular/core';
 import { Injectable, Inject, RendererFactory2, ChangeDetectorRef, ViewContainerRef, Component, ChangeDetectionStrategy, ViewChild, NgModule, Pipe } from '@angular/core';
-import { BehaviorSubject, take } from 'rxjs';
+import { BehaviorSubject, fromEvent, take } from 'rxjs';
+import { debounceTime, map, filter, distinctUntilChanged } from 'rxjs/operators';
+import * as i1$3 from '@angular/common';
+import { DOCUMENT, CommonModule } from '@angular/common';
 import * as i1 from '@angular/router';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
-import { filter, map, distinctUntilChanged } from 'rxjs/operators';
 import * as i1$2 from '@angular/cdk/dialog';
 import { DIALOG_DATA, DialogRef, Dialog, DialogModule } from '@angular/cdk/dialog';
 import * as i1$1 from '@angular/cdk/drag-drop';
@@ -13,6 +13,46 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { FormsModule } from '@angular/forms';
 import * as i1$4 from '@ngx-translate/core';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
+
+class BizyViewportService {
+    window;
+    #viewportSizeChanged;
+    get sizeChange$() {
+        return this.#viewportSizeChanged.asObservable();
+    }
+    constructor(window) {
+        this.window = window;
+        this.#viewportSizeChanged = new BehaviorSubject({
+            width: this.window.innerWidth,
+            height: this.window.innerHeight
+        });
+        fromEvent(window, 'resize')
+            .pipe(debounceTime(200), map((event) => ({
+            width: event.currentTarget.innerWidth,
+            height: event.currentTarget.innerHeight
+        })))
+            .subscribe(windowSize => {
+            this.#viewportSizeChanged.next(windowSize);
+        });
+    }
+    width() {
+        return this.window.screen.availWidth;
+    }
+    height() {
+        return this.window.screen.availHeight;
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyViewportService, deps: [{ token: Window }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyViewportService, providedIn: 'root' });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyViewportService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
+        }], ctorParameters: function () { return [{ type: Window, decorators: [{
+                    type: Inject,
+                    args: [Window]
+                }] }]; } });
 
 class BizyKeyboardService {
     document;
@@ -1029,5 +1069,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
  * Generated bundle index. Do not edit.
  */
 
-export { BizyCacheService, BizyExportToCSVService, BizyKeyboardService, BizyLogService, BizyPopupModule, BizyPopupService, BizyRouterService, BizyStorageService, BizyToastModule, BizyToastService, BizyTranslateModule, BizyTranslatePipe, BizyTranslatePipeModule, BizyTranslateService, BizyUserAgentService, BizyValidatorService, LANGUAGE };
+export { BizyCacheService, BizyExportToCSVService, BizyKeyboardService, BizyLogService, BizyPopupModule, BizyPopupService, BizyRouterService, BizyStorageService, BizyToastModule, BizyToastService, BizyTranslateModule, BizyTranslatePipe, BizyTranslatePipeModule, BizyTranslateService, BizyUserAgentService, BizyValidatorService, BizyViewportService, LANGUAGE };
 //# sourceMappingURL=bizy-services.mjs.map
