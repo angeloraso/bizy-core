@@ -1,0 +1,31 @@
+import { ChangeDetectionStrategy, Component, ElementRef, Inject, Input, Renderer2 } from '@angular/core';
+import * as i0 from "@angular/core";
+export class BizyTagComponent {
+    elementRef;
+    renderer;
+    set type(type) {
+        if (!type || !this.elementRef || !this.elementRef.nativeElement) {
+            return;
+        }
+        this.renderer.setAttribute(this.elementRef.nativeElement, 'type', type);
+    }
+    constructor(elementRef, renderer) {
+        this.elementRef = elementRef;
+        this.renderer = renderer;
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyTagComponent, deps: [{ token: ElementRef }, { token: Renderer2 }], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyTagComponent, selector: "bizy-tag", inputs: { type: "type" }, ngImport: i0, template: "<ng-content></ng-content>", styles: [":host{font-size:1rem;padding:.1rem .3rem;border-radius:.3rem;cursor:inherit;display:flex;justify-content:center;align-items:center;width:-moz-fit-content;width:fit-content;background-color:var(--bizy-tag-background-color)}:host ::ng-deep *{color:var(--bizy-tag-color);fill:var(--bizy-tag-color)}:host[type=default]{background-color:var(--bizy-tag-default-background-color)}:host[type=default] ::ng-deep *{color:var(--bizy-tag-default-color);fill:var(--bizy-tag-default-color)}:host[type=success]{background-color:var(--bizy-tag-success-background-color)}:host[type=success] ::ng-deep *{color:var(--bizy-tag-success-color);fill:var(--bizy-tag-success-color)}:host[type=info]{background-color:var(--bizy-tag-info-background-color)}:host[type=info] ::ng-deep *{color:var(--bizy-tag-info-color);fill:var(--bizy-tag-info-color)}:host[type=warning]{background-color:var(--bizy-tag-warning-background-color)}:host[type=warning] ::ng-deep *{color:var(--bizy-tag-warning-color);fill:var(--bizy-tag-warning-color)}:host[type=danger]{background-color:var(--bizy-tag-danger-background-color)}:host[type=danger] ::ng-deep *{color:var(--bizy-tag-danger-color);fill:var(--bizy-tag-danger-color)}\n"], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyTagComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-tag', changeDetection: ChangeDetectionStrategy.OnPush, template: "<ng-content></ng-content>", styles: [":host{font-size:1rem;padding:.1rem .3rem;border-radius:.3rem;cursor:inherit;display:flex;justify-content:center;align-items:center;width:-moz-fit-content;width:fit-content;background-color:var(--bizy-tag-background-color)}:host ::ng-deep *{color:var(--bizy-tag-color);fill:var(--bizy-tag-color)}:host[type=default]{background-color:var(--bizy-tag-default-background-color)}:host[type=default] ::ng-deep *{color:var(--bizy-tag-default-color);fill:var(--bizy-tag-default-color)}:host[type=success]{background-color:var(--bizy-tag-success-background-color)}:host[type=success] ::ng-deep *{color:var(--bizy-tag-success-color);fill:var(--bizy-tag-success-color)}:host[type=info]{background-color:var(--bizy-tag-info-background-color)}:host[type=info] ::ng-deep *{color:var(--bizy-tag-info-color);fill:var(--bizy-tag-info-color)}:host[type=warning]{background-color:var(--bizy-tag-warning-background-color)}:host[type=warning] ::ng-deep *{color:var(--bizy-tag-warning-color);fill:var(--bizy-tag-warning-color)}:host[type=danger]{background-color:var(--bizy-tag-danger-background-color)}:host[type=danger] ::ng-deep *{color:var(--bizy-tag-danger-color);fill:var(--bizy-tag-danger-color)}\n"] }]
+        }], ctorParameters: function () { return [{ type: i0.ElementRef, decorators: [{
+                    type: Inject,
+                    args: [ElementRef]
+                }] }, { type: i0.Renderer2, decorators: [{
+                    type: Inject,
+                    args: [Renderer2]
+                }] }]; }, propDecorators: { type: [{
+                type: Input
+            }] } });
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidGFnLmNvbXBvbmVudC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uLy4uL3Byb2plY3RzL2NvbXBvbmVudHMvc3JjL2xpYi90YWcvdGFnLmNvbXBvbmVudC50cyIsIi4uLy4uLy4uLy4uLy4uLy4uL3Byb2plY3RzL2NvbXBvbmVudHMvc3JjL2xpYi90YWcvdGFnLmh0bWwiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxFQUFFLHVCQUF1QixFQUFFLFNBQVMsRUFBRSxVQUFVLEVBQUUsTUFBTSxFQUFFLEtBQUssRUFBRSxTQUFTLEVBQUUsTUFBTSxlQUFlLENBQUM7O0FBU3pHLE1BQU0sT0FBTyxnQkFBZ0I7SUFVRztJQUNEO0lBVjdCLElBQWEsSUFBSSxDQUFDLElBQWE7UUFDN0IsSUFBSSxDQUFDLElBQUksSUFBSSxDQUFDLElBQUksQ0FBQyxVQUFVLElBQUksQ0FBQyxJQUFJLENBQUMsVUFBVSxDQUFDLGFBQWEsRUFBRTtZQUMvRCxPQUFPO1NBQ1I7UUFFRCxJQUFJLENBQUMsUUFBUSxDQUFDLFlBQVksQ0FBQyxJQUFJLENBQUMsVUFBVSxDQUFDLGFBQWEsRUFBRSxNQUFNLEVBQUUsSUFBSSxDQUFDLENBQUM7SUFDMUUsQ0FBQztJQUVELFlBQzhCLFVBQXNCLEVBQ3ZCLFFBQW1CO1FBRGxCLGVBQVUsR0FBVixVQUFVLENBQVk7UUFDdkIsYUFBUSxHQUFSLFFBQVEsQ0FBVztJQUM3QyxDQUFDO3dHQVpPLGdCQUFnQixrQkFVakIsVUFBVSxhQUNWLFNBQVM7NEZBWFIsZ0JBQWdCLDBFQ1Q3QiwyQkFBeUI7OzRGRFNaLGdCQUFnQjtrQkFONUIsU0FBUzsrQkFDRSxVQUFVLG1CQUdILHVCQUF1QixDQUFDLE1BQU07OzBCQVk1QyxNQUFNOzJCQUFDLFVBQVU7OzBCQUNqQixNQUFNOzJCQUFDLFNBQVM7NENBVk4sSUFBSTtzQkFBaEIsS0FBSyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IENoYW5nZURldGVjdGlvblN0cmF0ZWd5LCBDb21wb25lbnQsIEVsZW1lbnRSZWYsIEluamVjdCwgSW5wdXQsIFJlbmRlcmVyMiB9IGZyb20gJ0Bhbmd1bGFyL2NvcmUnO1xuaW1wb3J0IHsgVGFnVHlwZSB9IGZyb20gJy4vdGFnLnR5cGVzJztcblxuQENvbXBvbmVudCh7XG4gIHNlbGVjdG9yOiAnYml6eS10YWcnLFxuICB0ZW1wbGF0ZVVybDogJy4vdGFnLmh0bWwnLFxuICBzdHlsZVVybHM6IFsnLi90YWcuY3NzJ10sXG4gIGNoYW5nZURldGVjdGlvbjogQ2hhbmdlRGV0ZWN0aW9uU3RyYXRlZ3kuT25QdXNoXG59KVxuZXhwb3J0IGNsYXNzIEJpenlUYWdDb21wb25lbnQge1xuICBASW5wdXQoKSBzZXQgdHlwZSh0eXBlOiBUYWdUeXBlKSB7XG4gICAgaWYgKCF0eXBlIHx8ICF0aGlzLmVsZW1lbnRSZWYgfHwgIXRoaXMuZWxlbWVudFJlZi5uYXRpdmVFbGVtZW50KSB7XG4gICAgICByZXR1cm47XG4gICAgfVxuXG4gICAgdGhpcy5yZW5kZXJlci5zZXRBdHRyaWJ1dGUodGhpcy5lbGVtZW50UmVmLm5hdGl2ZUVsZW1lbnQsICd0eXBlJywgdHlwZSk7XG4gIH0gXG5cbiAgY29uc3RydWN0b3IoXG4gICAgQEluamVjdChFbGVtZW50UmVmKSBwcml2YXRlIGVsZW1lbnRSZWY6IEVsZW1lbnRSZWYsXG4gICAgQEluamVjdChSZW5kZXJlcjIpIHByaXZhdGUgcmVuZGVyZXI6IFJlbmRlcmVyMlxuICApIHt9XG59XG4iLCI8bmctY29udGVudD48L25nLWNvbnRlbnQ+Il19
