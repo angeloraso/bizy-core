@@ -9,7 +9,6 @@ export declare class BizyInputComponent {
     id: string;
     disabled: boolean;
     readonly: boolean;
-    multiple: boolean;
     clear: boolean;
     autoFocus: boolean;
     autoCapitalize: boolean;
@@ -30,6 +29,8 @@ export declare class BizyInputComponent {
     onFocus: EventEmitter<void>;
     onEnter: EventEmitter<void>;
     onBlur: EventEmitter<void>;
+    valueChange: EventEmitter<string | number>;
+    onChange: EventEmitter<string | number>;
     constructor(ref: ChangeDetectorRef);
     onInput: (event: {
         target: {
@@ -41,5 +42,5 @@ export declare class BizyInputComponent {
     cancel(modal: IonModal, dateTime: IonDatetime): void;
     confirm(modal: IonModal, dateTime: IonDatetime): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyInputComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<BizyInputComponent, "bizy-input", never, { "id": { "alias": "id"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; "readonly": { "alias": "readonly"; "required": false; }; "multiple": { "alias": "multiple"; "required": false; }; "clear": { "alias": "clear"; "required": false; }; "autoFocus": { "alias": "autoFocus"; "required": false; }; "autoCapitalize": { "alias": "autoCapitalize"; "required": false; }; "autoCorrect": { "alias": "autoCorrect"; "required": false; }; "browserAutoComplete": { "alias": "browserAutoComplete"; "required": false; }; "type": { "alias": "type"; "required": false; }; "label": { "alias": "label"; "required": false; }; "max": { "alias": "max"; "required": false; }; "maxLength": { "alias": "maxLength"; "required": false; }; "min": { "alias": "min"; "required": false; }; "minLength": { "alias": "minLength"; "required": false; }; "control": { "alias": "control"; "required": false; }; "value": { "alias": "value"; "required": false; }; "placeholder": { "alias": "placeholder"; "required": false; }; "cancelLabel": { "alias": "cancelLabel"; "required": false; }; "confirmLabel": { "alias": "confirmLabel"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; }, { "onFocus": "onFocus"; "onEnter": "onEnter"; "onBlur": "onBlur"; }, never, ["[input-start]", "[input-label]", "[input-end]", "[input-start]", "[input-label]", "[input-end]", "[input-error]"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<BizyInputComponent, "bizy-input", never, { "id": { "alias": "id"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; "readonly": { "alias": "readonly"; "required": false; }; "clear": { "alias": "clear"; "required": false; }; "autoFocus": { "alias": "autoFocus"; "required": false; }; "autoCapitalize": { "alias": "autoCapitalize"; "required": false; }; "autoCorrect": { "alias": "autoCorrect"; "required": false; }; "browserAutoComplete": { "alias": "browserAutoComplete"; "required": false; }; "type": { "alias": "type"; "required": false; }; "label": { "alias": "label"; "required": false; }; "max": { "alias": "max"; "required": false; }; "maxLength": { "alias": "maxLength"; "required": false; }; "min": { "alias": "min"; "required": false; }; "minLength": { "alias": "minLength"; "required": false; }; "control": { "alias": "control"; "required": false; }; "value": { "alias": "value"; "required": false; }; "placeholder": { "alias": "placeholder"; "required": false; }; "cancelLabel": { "alias": "cancelLabel"; "required": false; }; "confirmLabel": { "alias": "confirmLabel"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; }, { "onFocus": "onFocus"; "onEnter": "onEnter"; "onBlur": "onBlur"; "valueChange": "valueChange"; "onChange": "onChange"; }, never, ["[input-start]", "[input-label]", "[input-end]", "[input-start]", "[input-label]", "[input-end]", "[input-error]"], false, never>;
 }

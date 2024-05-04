@@ -1,6 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { Subscription, debounceTime } from 'rxjs';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'bizy-filter-section-search-option',
@@ -8,32 +6,17 @@ import { Subscription, debounceTime } from 'rxjs';
   styleUrls: ['./filter-section-search-option.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BizyFilterSectionSearchOptionComponent implements OnInit, OnDestroy {
+export class BizyFilterSectionSearchOptionComponent {
   @Input() id: string = String(Math.random());
+  @Input() value: string | number = '';
   @Input() customClass: string = '';
   @Output() onChange = new EventEmitter<Array<string>>();
-  @Output() searchChange = new EventEmitter<Array<string>>();
+  @Output() valueChange = new EventEmitter<Array<string>>();
 
-  _control = new FormControl('');
 
-  #subscription = new Subscription();
-
-  ngOnInit() {
-    this.#subscription.add(this._control.valueChanges.pipe(debounceTime(250)).subscribe(value => {
-      this.searchChange.emit([value]);
-      this.onChange.emit([value]);
-    }));
-  }
-
-  @Input() set search(search: Array<string>) {
-    if (!search) {
-      return;
-    }
-
-    this._control.setValue('');
-    search.forEach(value => {
-      this._control.setValue(`${this._control.value}${this._control.value ? ` ${value}` : value}`);
-    })
+  setValue(value) {
+    this.valueChange.emit(value);
+    this.onChange.emit(value);
   }
 
   getId = (): string => {
@@ -41,10 +24,6 @@ export class BizyFilterSectionSearchOptionComponent implements OnInit, OnDestroy
   }
 
   isActivated = (): boolean => {
-    return Boolean(this._control.value);
-  }
-
-  ngOnDestroy() {
-    this.#subscription.unsubscribe();
+    return Boolean(this.value);
   }
 }

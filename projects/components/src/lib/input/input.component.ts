@@ -14,7 +14,6 @@ export class BizyInputComponent {
   @Input() id: string = `bizy-input-${Math.random()}`;
   @Input() disabled: boolean = false;
   @Input() readonly: boolean = false;
-  @Input() multiple: boolean = false;
   @Input() clear: boolean = true;
   @Input() autoFocus: boolean = true;
   @Input() autoCapitalize: boolean = false;
@@ -35,6 +34,8 @@ export class BizyInputComponent {
   @Output() onFocus = new EventEmitter<void>();
   @Output() onEnter = new EventEmitter<void>();
   @Output() onBlur = new EventEmitter<void>();
+  @Output() valueChange = new EventEmitter<string | number>();
+  @Output() onChange = new EventEmitter<string | number>();
 
   constructor(@Inject(ChangeDetectorRef) private ref: ChangeDetectorRef) {}
 
@@ -47,7 +48,8 @@ export class BizyInputComponent {
       this.control.markAsTouched();
       this.control.setValue(event.target.value ?? null);
     } else {
-      this.value = event.target.value;
+      this.valueChange.emit(event.target.value);
+      this.onChange.emit(event.target.value);
     }
     this.ref.detectChanges();
   }
