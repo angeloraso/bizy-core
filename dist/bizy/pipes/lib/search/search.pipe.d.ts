@@ -5,13 +5,11 @@ import * as i0 from "@angular/core";
 export declare class BizySearchPipe implements PipeTransform {
     fuseOptions: IFuseOptions;
     fuse: Fuse<any>;
-    elements: Array<unknown>;
-    searchIsText: boolean;
+    items: Array<unknown>;
     readonly perfectMatch: {
-        ignoreLocation: boolean;
         threshold: number;
     };
-    transform<T>(elements: Array<T>, search: Array<string>, keys?: Array<string>, options?: IFuseOptions): Array<T>;
+    transform<T>(items: Array<T>, search: string | number | Array<string | number>, keys?: string | Array<string>, options?: IFuseOptions): Array<T>;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizySearchPipe, never>;
     static ɵpipe: i0.ɵɵPipeDeclaration<BizySearchPipe, "bizySearch", false>;
 }

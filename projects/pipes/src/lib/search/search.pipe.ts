@@ -7,45 +7,46 @@ import Fuse from 'fuse.js';
 export class BizySearchPipe implements PipeTransform {
   fuseOptions: IFuseOptions;
   fuse: Fuse<any>;
-  elements: Array<unknown>;
-  searchIsText: boolean;
+  items: Array<unknown>;
 
   readonly perfectMatch = {
-    ignoreLocation: true,
     threshold: 0.0
   };
 
   transform<T>(
-    elements: Array<T>,
-    search: Array<string>,
-    keys?: Array<string>,
+    items: Array<T>,
+    search: string | number | Array<string | number>,
+    keys?: string | Array<string>,
     options?: IFuseOptions
   ): Array<T> {
-    if (!search || search.length === 0) {
-      return elements;
+    if (typeof search === 'undefined' || search === null || search === '' || (Array.isArray(search) && search.length === 0)) {
+      return items;
     }
 
-    if (typeof search === 'string' || search instanceof String) {
-      // @ts-ignore
+    if (!Array.isArray(keys)) {
+      keys = [keys];
+    }
+
+    if (!Array.isArray(search)) {
       search = [search];
     }
 
-    let output: Array<T> = elements;
-    // Remove empty elements
+    let output: Array<T> = items;
+    // Remove empty items
     search = search.filter(n => n);
     search.forEach(_keyword => {
       // Apply perfect match if "search" is a number or is an email
-      this.searchIsText = isNaN(Number(_keyword)) && !_keyword.includes('@');
+      const searchIsText = isNaN(Number(_keyword)) && !String(_keyword).includes('@');
 
-      if (!this.searchIsText) {
-        this.fuseOptions = new FuseOptions({...options, ...this.perfectMatch}, keys);
+      if (!searchIsText) {
+        this.fuseOptions = new FuseOptions({...options, ...this.perfectMatch}, keys as Array<string>);
         this.fuse = new Fuse(output, this.fuseOptions);
       } else {
-        this.fuseOptions = new FuseOptions(options!, keys);
+        this.fuseOptions = new FuseOptions(options!, keys as Array<string>);
         this.fuse = new Fuse(output, this.fuseOptions);
       }
 
-      const fuseResult = this.fuse.search(_keyword) as Array<IFuseResult>;
+      const fuseResult = this.fuse.search(String(_keyword)) as Array<IFuseResult>;
       // Get each fuse result item
       output = fuseResult.map(match => match.item);
     });

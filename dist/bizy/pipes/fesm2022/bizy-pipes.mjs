@@ -220,27 +220,27 @@ class FuseOptions {
 class BizySearchPipe {
     fuseOptions;
     fuse;
-    elements;
-    searchIsText;
+    items;
     perfectMatch = {
-        ignoreLocation: true,
         threshold: 0.0
     };
-    transform(elements, search, keys, options) {
-        if (!search || search.length === 0) {
-            return elements;
+    transform(items, search, keys, options) {
+        if (typeof search === 'undefined' || search === null || search === '' || (Array.isArray(search) && search.length === 0)) {
+            return items;
         }
-        if (typeof search === 'string' || search instanceof String) {
-            // @ts-ignore
+        if (!Array.isArray(keys)) {
+            keys = [keys];
+        }
+        if (!Array.isArray(search)) {
             search = [search];
         }
-        let output = elements;
-        // Remove empty elements
+        let output = items;
+        // Remove empty items
         search = search.filter(n => n);
         search.forEach(_keyword => {
             // Apply perfect match if "search" is a number or is an email
-            this.searchIsText = isNaN(Number(_keyword)) && !_keyword.includes('@');
-            if (!this.searchIsText) {
+            const searchIsText = isNaN(Number(_keyword)) && !String(_keyword).includes('@');
+            if (!searchIsText) {
                 this.fuseOptions = new FuseOptions({ ...options, ...this.perfectMatch }, keys);
                 this.fuse = new Fuse(output, this.fuseOptions);
             }
@@ -248,7 +248,7 @@ class BizySearchPipe {
                 this.fuseOptions = new FuseOptions(options, keys);
                 this.fuse = new Fuse(output, this.fuseOptions);
             }
-            const fuseResult = this.fuse.search(_keyword);
+            const fuseResult = this.fuse.search(String(_keyword));
             // Get each fuse result item
             output = fuseResult.map(match => match.item);
         });
