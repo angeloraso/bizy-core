@@ -22,4 +22,5 @@ export * from './bar-chart';
 export * from './pie-chart';
 export * from './accordion';
 export * from './slider';
+export * from './tag';
 export { BizyComponentsModule } from './components.module';
