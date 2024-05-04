@@ -1,2 +1,3 @@
+export { TagType } from './tag.types';
 export { BizyTagModule } from './tag.module';
 export { BizyTagComponent } from './tag.component';

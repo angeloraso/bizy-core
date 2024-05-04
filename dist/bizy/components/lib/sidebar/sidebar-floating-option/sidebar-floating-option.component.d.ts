@@ -1,8 +1,10 @@
-import { ChangeDetectorRef, EventEmitter, QueryList } from '@angular/core';
+import { ChangeDetectorRef, EventEmitter, OnInit, QueryList } from '@angular/core';
 import { BizySidebarOptionComponent } from '../sidebar-option/sidebar-option.component';
 import * as i0 from "@angular/core";
-export declare class BizySidebarFloatingOptionComponent {
+export declare class BizySidebarFloatingOptionComponent implements OnInit {
+    #private;
     private ref;
+    private document;
     options: QueryList<BizySidebarOptionComponent>;
     id: string;
     disabled: boolean;
@@ -11,7 +13,9 @@ export declare class BizySidebarFloatingOptionComponent {
     customClass: string;
     selected: boolean;
     onSelect: EventEmitter<PointerEvent>;
-    constructor(ref: ChangeDetectorRef);
+    _opened: boolean;
+    constructor(ref: ChangeDetectorRef, document: Document);
+    ngOnInit(): void;
     _onSelect(event: any): void;
     close: (event: PointerEvent & {
         target: {

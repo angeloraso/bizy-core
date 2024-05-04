@@ -10,6 +10,12 @@
 
   <input class="bizy-sidebar__toggle" id="bizy-sidebar-toggle" type="checkbox" [checked]="toggle"/>
 
+  <span class="bizy-sidebar__content bizy-sidebar__top" [ngClass]="{'bizy-sidebar__content--shrinked': toggle}">
+
+    <ng-content select="[slot=start]"></ng-content>
+
+  </span>
+
   <span class="bizy-sidebar__content" [ngClass]="{'bizy-sidebar__content--shrinked': toggle}">
 
     <ng-content select="[slot=start]"></ng-content>
@@ -18,7 +24,7 @@
 
   </span>
 
-  <span class="bizy-sidebar__content"  [ngClass]="{'bizy-sidebar__content--shrinked': toggle}">
+  <span class="bizy-sidebar__content bizy-sidebar__bottom"  [ngClass]="{'bizy-sidebar__content--shrinked': toggle}">
 
     <ng-content select="[slot=end]"></ng-content>
 

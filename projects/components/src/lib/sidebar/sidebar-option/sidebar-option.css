@@ -14,3 +14,7 @@
 ::ng-deep .bizy-sidebar-option--disabled {
     cursor: default !important;
 }
+
+::ng-deep .bizy-accordion__options--opened {
+    max-height: 100% !important;
+}

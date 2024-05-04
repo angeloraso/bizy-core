@@ -28,6 +28,6 @@
     column-gap: 0.5rem;
 }
 
-::ng-deep .anura-toolbar *[toolbar-option] {
+::ng-deep .bizy-toolbar *[toolbar-option] {
     height: 100%;
 }

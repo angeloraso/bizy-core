@@ -52,5 +52,5 @@
 }
 
 .bizy-accordion__options--opened {
-    max-height: 100vh !important;
+    max-height: 100vh;
 }

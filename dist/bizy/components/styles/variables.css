@@ -79,6 +79,7 @@
     --bizy-sidebar-tab-background-color: #fff;
     --bizy-sidebar-tab-color: #666;
     --bizy-sidebar-width: 8rem;
+    --anura-sidebar-section-min-height: 3rem;
     --bizy-sidebar-option-selected-color: #2484C6;
     --bizy-sidebar-option-hover-color: #355b7f;
     --bizy-sidebar-floating-option-title-background-color: transparent;
@@ -123,6 +124,19 @@
     --bizy-tab-background-color: transparent;
     --bizy-tab-selected-color: #16aa88;
     --bizy-tab-selected-background-color: #fff;
+
+    --bizy-tag-background-color: #eee;
+    --bizy-tag-color: #333;
+    --bizy-tag-default-background-color: #eee;
+    --bizy-tag-default-color: #333;
+    --bizy-tag-success-background-color: #dfeddd;
+    --bizy-tag-success-color: #3f8e3a;
+    --bizy-tag-info-background-color: #e2eefa;
+    --bizy-tag-info-color: #1a3d5d;
+    --bizy-tag-warning-background-color: #fde5c9;
+    --bizy-tag-warning-color: #c07b2d;
+    --bizy-tag-danger-background-color: #ffe0e0;
+    --bizy-tag-danger-color: #c34b4b;
 
     --bizy-toggle-off-color: #e76565;
     --bizy-toggle-off-background-color: #f3dada;

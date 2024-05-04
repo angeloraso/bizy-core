@@ -31,11 +31,23 @@ export class BizySidebarComponent implements OnInit {
       if (this.options && (this.#options.length !== 0 || this.options.length !== 0) && !this.#optionsAreEqual(this.#options, this.options.toArray())) {
         this.#options = this.options.toArray();
 
+        const option = this.#getSelected(this.options.toArray());
+        if (option) {
+          this.#unselect(this.options.toArray());
+          this.#select(this.options.toArray(), option);
+        }
+
         this.#listenOptionChanges(this.options.toArray());
       }
 
       if (this.floatingOptions && (this.#floatingOptions.length !== 0 || this.floatingOptions.length !== 0) && !this.#optionsAreEqual(this.#floatingOptions, this.floatingOptions.toArray())) {
         this.#floatingOptions = this.floatingOptions.toArray();
+
+        const option = this.#getSelected(this.floatingOptions.toArray());
+        if (option) {
+          this.#unselect(this.floatingOptions.toArray());
+          this.#select(this.floatingOptions.toArray(), option);
+        }
 
         this.#listenFloatingOptionChanges(this.floatingOptions.toArray());
       }
@@ -63,11 +75,11 @@ export class BizySidebarComponent implements OnInit {
     });
   }
 
-  #listenFloatingOptionChanges = (options: Array<BizySidebarFloatingOptionComponent> | Array<BizySidebarOptionComponent>) => {
+  #listenFloatingOptionChanges = (options: Array<BizySidebarOptionComponent> | Array<BizySidebarFloatingOptionComponent>) => {
     options.forEach(_option => {
       this.#subscription.add(_option.onSelect.subscribe(() => {
         if (_option.getSelected()) {
-          this.#select(this.floatingOptions.toArray(), _option);
+          this.#select(this.options.toArray(), _option);
         } else {
           this.#unselect(this.floatingOptions.toArray());
           this.#select(this.floatingOptions.toArray(), _option);
@@ -131,6 +143,29 @@ export class BizySidebarComponent implements OnInit {
     }
 
     return true;
+  }
+
+  #getSelected(options: Array<BizySidebarOptionComponent> | Array<BizySidebarFloatingOptionComponent>): BizySidebarOptionComponent | BizySidebarFloatingOptionComponent | null {
+    let selectedOption: BizySidebarOptionComponent | BizySidebarFloatingOptionComponent | null = null;
+    if (!options || options.length === 0) {
+      return null;
+    }
+
+    for (let i = 0; i < options.length; i++) {
+      if (options[i].selected) {
+        selectedOption = options[i];
+        break;
+      }
+
+      if (options[i].options) {
+        selectedOption = this.#getSelected(options[i].options.toArray());
+        if (selectedOption) {
+          break;
+        }
+      }
+    }
+
+    return selectedOption;
   }
 
   ngOnDestroy() {

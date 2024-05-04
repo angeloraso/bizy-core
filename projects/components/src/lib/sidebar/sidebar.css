@@ -9,12 +9,14 @@
 .bizy-sidebar {
     height: 100%;
     width: fit-content;
-    display: flex;
-    flex-direction: column;
+    height: 100%;
+    max-height: 100vh;
     background-color: var(--bizy-sidebar-background-color);
-    justify-content: space-between;
     position: relative;
     transition: width 0.3s ease;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: auto 1fr auto;
 }
 
 .bizy-sidebar input[type=checkbox] {
@@ -48,8 +50,19 @@
     fill: var(--bizy-sidebar-tab-color);
 }
 
+.bizy-sidebar__top {
+    overflow: hidden;
+    align-self: start;
+}
+
+.bizy-sidebar__bottom {
+    overflow: hidden;
+    align-self: end;
+}
+
 .bizy-sidebar__content {
     display: flex;
+    min-height: var(--bizy-sidebar-section-min-height);
     width: var(--bizy-sidebar-width);
     flex-direction: column;
     direction: rtl;

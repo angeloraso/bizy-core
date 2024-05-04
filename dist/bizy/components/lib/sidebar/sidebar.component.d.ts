@@ -14,5 +14,5 @@ export declare class BizySidebarComponent implements OnInit {
     ngOnInit(): void;
     ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizySidebarComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<BizySidebarComponent, "bizy-sidebar", never, { "toggle": { "alias": "toggle"; "required": false; }; }, { "onToggle": "onToggle"; }, ["options", "floatingOptions"], ["[slot=start]", "*", "[slot=end]"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<BizySidebarComponent, "bizy-sidebar", never, { "toggle": { "alias": "toggle"; "required": false; }; }, { "onToggle": "onToggle"; }, ["options", "floatingOptions"], ["[slot=start]", "[slot=start]", "*", "[slot=end]"], false, never>;
 }
