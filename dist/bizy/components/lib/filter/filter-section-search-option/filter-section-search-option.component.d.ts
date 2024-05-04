@@ -4,8 +4,8 @@ export declare class BizyFilterSectionSearchOptionComponent {
     id: string;
     value: string | number;
     customClass: string;
-    onChange: EventEmitter<string[]>;
-    valueChange: EventEmitter<string[]>;
+    onChange: EventEmitter<string | number>;
+    valueChange: EventEmitter<string | number>;
     setValue(value: any): void;
     getId: () => string;
     isActivated: () => boolean;

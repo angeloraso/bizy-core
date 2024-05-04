@@ -10,8 +10,8 @@ export class BizyFilterSectionSearchOptionComponent {
   @Input() id: string = String(Math.random());
   @Input() value: string | number = '';
   @Input() customClass: string = '';
-  @Output() onChange = new EventEmitter<Array<string>>();
-  @Output() valueChange = new EventEmitter<Array<string>>();
+  @Output() onChange = new EventEmitter<string | number>();
+  @Output() valueChange = new EventEmitter<string | number>();
 
 
   setValue(value) {
