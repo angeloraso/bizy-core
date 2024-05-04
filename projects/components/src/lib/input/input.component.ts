@@ -27,6 +27,7 @@ export class BizyInputComponent {
   @Input() min: number;
   @Input() minLength: number;
   @Input() control: FormControl;
+  @Input() value: string | number;
   @Input() placeholder: string = '';
   @Input() cancelLabel: string = 'Cancelar';
   @Input() confirmLabel: string = 'Confirmar';
@@ -42,13 +43,20 @@ export class BizyInputComponent {
       return;
     }
 
-    this.control.markAsTouched();
-    this.control.setValue(event.target.value ?? null);
+    if (this.control) {
+      this.control.markAsTouched();
+      this.control.setValue(event.target.value ?? null);
+    } else {
+      this.value = event.target.value;
+    }
     this.ref.detectChanges();
   }
 
   _onBlur() {
-    this.control.markAsTouched();
+    if (this.control) {
+      this.control.markAsTouched();
+    }
+
     this.onBlur.emit();
   }
 
