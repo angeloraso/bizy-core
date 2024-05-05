@@ -1,18 +1,96 @@
 import * as i0 from '@angular/core';
 import { Injectable, Inject, RendererFactory2, ChangeDetectorRef, ViewContainerRef, Component, ChangeDetectionStrategy, ViewChild, NgModule, Pipe } from '@angular/core';
+import * as i1 from '@angular/cdk/clipboard';
+import { Clipboard } from '@angular/cdk/clipboard';
 import { BehaviorSubject, fromEvent, take } from 'rxjs';
 import { debounceTime, map, filter, distinctUntilChanged } from 'rxjs/operators';
-import * as i1$3 from '@angular/common';
+import * as i1$4 from '@angular/common';
 import { DOCUMENT, CommonModule } from '@angular/common';
-import * as i1 from '@angular/router';
+import * as i1$1 from '@angular/router';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
-import * as i1$2 from '@angular/cdk/dialog';
+import * as i1$3 from '@angular/cdk/dialog';
 import { DIALOG_DATA, DialogRef, Dialog, DialogModule } from '@angular/cdk/dialog';
-import * as i1$1 from '@angular/cdk/drag-drop';
+import * as i1$2 from '@angular/cdk/drag-drop';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { FormsModule } from '@angular/forms';
-import * as i1$4 from '@ngx-translate/core';
+import * as i1$5 from '@ngx-translate/core';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
+
+class BizyCopyToClipboardService {
+    clipboard;
+    constructor(clipboard) {
+        this.clipboard = clipboard;
+    }
+    copy(data) {
+        return new Promise((resolve, reject) => {
+            try {
+                if (!data) {
+                    resolve();
+                    return;
+                }
+                setTimeout(() => {
+                    let toCopy = '';
+                    if (typeof data === 'string' || data instanceof String) {
+                        toCopy = data;
+                    }
+                    else if (data.items && data.items.length > 0 && data.model) {
+                        for (const key in data.model) {
+                            if (key) {
+                                toCopy += `${data.model[key]},`;
+                            }
+                        }
+                        data.items.forEach(_item => {
+                            // Remove the last character (',')
+                            toCopy = toCopy.slice(0, -2);
+                            toCopy += '\n';
+                            for (const key in data.model) {
+                                let value = _item;
+                                const nestedProperty = key.split('.');
+                                nestedProperty.forEach(_property => {
+                                    value = value[_property];
+                                });
+                                if (typeof value !== undefined && value !== null) {
+                                    toCopy += `${String(value).replace(/\n/g, '')},`;
+                                }
+                                else {
+                                    toCopy += ',';
+                                }
+                            }
+                        });
+                    }
+                    const pending = this.clipboard.beginCopy(toCopy);
+                    let remainingAttempts = 3;
+                    const attempt = () => {
+                        const result = pending.copy();
+                        if (!result && --remainingAttempts) {
+                            setTimeout(attempt);
+                        }
+                        else {
+                            // Remember to destroy when you're done!
+                            pending.destroy();
+                            resolve();
+                        }
+                    };
+                    attempt();
+                }, 100);
+            }
+            catch (error) {
+                reject(error);
+            }
+        });
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyCopyToClipboardService, deps: [{ token: Clipboard }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyCopyToClipboardService, providedIn: 'root' });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyCopyToClipboardService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
+        }], ctorParameters: function () { return [{ type: i1.Clipboard, decorators: [{
+                    type: Inject,
+                    args: [Clipboard]
+                }] }]; } });
 
 class BizyViewportService {
     window;
@@ -253,7 +331,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             args: [{
                     providedIn: 'root'
                 }]
-        }], ctorParameters: function () { return [{ type: i1.Router, decorators: [{
+        }], ctorParameters: function () { return [{ type: i1$1.Router, decorators: [{
                     type: Inject,
                     args: [Router]
                 }] }]; } });
@@ -763,7 +841,7 @@ class BizyPopupWrapperComponent {
         this.dialogRef.close();
     }
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyPopupWrapperComponent, deps: [{ token: DIALOG_DATA }, { token: DialogRef }, { token: ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyPopupWrapperComponent, selector: "bizy-popup-wrapper", viewQueries: [{ propertyName: "dynamicComponentContainer", first: true, predicate: ["dynamicComponentContainer"], descendants: true, read: ViewContainerRef }], ngImport: i0, template: "<div class=\"bizy-popup-wrapper\" cdkDrag>\n\n    <button (click)=\"close()\" (keyup.enter)=\"close()\" class=\"bizy-popup-wrapper__close-button\">\n\n        <svg \n            data-name=\"Cancel button\"\n            id=\"bizy-popup-wrapper-close-svg\" \n            viewBox=\"0 0 200 200\"\n            xmlns=\"http://www.w3.org/2000/svg\">\n            <path id=\"bizy-popup-wrapper-close-svg-content\" d=\"M114,100l49-49a9.9,9.9,0,0,0-14-14L100,86,51,37A9.9,9.9,0,0,0,37,51l49,49L37,149a9.9,9.9,0,0,0,14,14l49-49,49,49a9.9,9.9,0,0,0,14-14Z\"/>\n        </svg>\n\n    </button>\n\n    <ng-container #dynamicComponentContainer></ng-container>\n\n</div>", styles: [".bizy-popup-wrapper{position:relative;background-color:var(--bizy-popup-background-color);min-width:min(80vw,26rem);height:-moz-fit-content;height:fit-content}.bizy-popup-wrapper__close-button{position:absolute;right:.5rem;top:.5rem;border:none;cursor:pointer;background-color:transparent;transition:color .3s;z-index:1}.bizy-popup-wrapper__close-button #bizy-popup-wrapper-close-svg{height:1rem}.bizy-popup-wrapper__close-button #bizy-popup-wrapper-close-svg-content{fill:var(--bizy-popup-close-button-color)}.bizy-popup-wrapper__close-button:hover #bizy-popup-wrapper-close-svg-content{fill:var(--bizy-popup-close-button-hover-color)}\n"], dependencies: [{ kind: "directive", type: i1$1.CdkDrag, selector: "[cdkDrag]", inputs: ["cdkDragData", "cdkDragLockAxis", "cdkDragRootElement", "cdkDragBoundary", "cdkDragStartDelay", "cdkDragFreeDragPosition", "cdkDragDisabled", "cdkDragConstrainPosition", "cdkDragPreviewClass", "cdkDragPreviewContainer"], outputs: ["cdkDragStarted", "cdkDragReleased", "cdkDragEnded", "cdkDragEntered", "cdkDragExited", "cdkDragDropped", "cdkDragMoved"], exportAs: ["cdkDrag"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyPopupWrapperComponent, selector: "bizy-popup-wrapper", viewQueries: [{ propertyName: "dynamicComponentContainer", first: true, predicate: ["dynamicComponentContainer"], descendants: true, read: ViewContainerRef }], ngImport: i0, template: "<div class=\"bizy-popup-wrapper\" cdkDrag>\n\n    <button (click)=\"close()\" (keyup.enter)=\"close()\" class=\"bizy-popup-wrapper__close-button\">\n\n        <svg \n            data-name=\"Cancel button\"\n            id=\"bizy-popup-wrapper-close-svg\" \n            viewBox=\"0 0 200 200\"\n            xmlns=\"http://www.w3.org/2000/svg\">\n            <path id=\"bizy-popup-wrapper-close-svg-content\" d=\"M114,100l49-49a9.9,9.9,0,0,0-14-14L100,86,51,37A9.9,9.9,0,0,0,37,51l49,49L37,149a9.9,9.9,0,0,0,14,14l49-49,49,49a9.9,9.9,0,0,0,14-14Z\"/>\n        </svg>\n\n    </button>\n\n    <ng-container #dynamicComponentContainer></ng-container>\n\n</div>", styles: [".bizy-popup-wrapper{position:relative;background-color:var(--bizy-popup-background-color);min-width:min(80vw,26rem);height:-moz-fit-content;height:fit-content}.bizy-popup-wrapper__close-button{position:absolute;right:.5rem;top:.5rem;border:none;cursor:pointer;background-color:transparent;transition:color .3s;z-index:1}.bizy-popup-wrapper__close-button #bizy-popup-wrapper-close-svg{height:1rem}.bizy-popup-wrapper__close-button #bizy-popup-wrapper-close-svg-content{fill:var(--bizy-popup-close-button-color)}.bizy-popup-wrapper__close-button:hover #bizy-popup-wrapper-close-svg-content{fill:var(--bizy-popup-close-button-hover-color)}\n"], dependencies: [{ kind: "directive", type: i1$2.CdkDrag, selector: "[cdkDrag]", inputs: ["cdkDragData", "cdkDragLockAxis", "cdkDragRootElement", "cdkDragBoundary", "cdkDragStartDelay", "cdkDragFreeDragPosition", "cdkDragDisabled", "cdkDragConstrainPosition", "cdkDragPreviewClass", "cdkDragPreviewContainer"], outputs: ["cdkDragStarted", "cdkDragReleased", "cdkDragEnded", "cdkDragEntered", "cdkDragExited", "cdkDragDropped", "cdkDragMoved"], exportAs: ["cdkDrag"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyPopupWrapperComponent, decorators: [{
             type: Component,
@@ -771,7 +849,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
         }], ctorParameters: function () { return [{ type: undefined, decorators: [{
                     type: Inject,
                     args: [DIALOG_DATA]
-                }] }, { type: i1$2.DialogRef, decorators: [{
+                }] }, { type: i1$3.DialogRef, decorators: [{
                     type: Inject,
                     args: [DialogRef]
                 }] }, { type: i0.ChangeDetectorRef, decorators: [{
@@ -837,7 +915,7 @@ class BizyPopupService {
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyPopupService, decorators: [{
             type: Injectable
-        }], ctorParameters: function () { return [{ type: i1$2.Dialog, decorators: [{
+        }], ctorParameters: function () { return [{ type: i1$3.Dialog, decorators: [{
                     type: Inject,
                     args: [Dialog]
                 }] }]; } });
@@ -876,7 +954,7 @@ class BizyToastWrapperComponent {
         this.toast.close();
     }
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyToastWrapperComponent, deps: [{ token: DIALOG_DATA }, { token: BizyToastService }], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyToastWrapperComponent, selector: "bizy-toast-wrapper", ngImport: i0, template: "<div class=\"bizy-toast-wrapper bizy-toast-wrapper--{{type}}\">\n\n    <button (click)=\"close()\" (keyup.enter)=\"close()\" class=\"bizy-toast-wrapper__close-button\">\n\n        <svg \n            data-name=\"Cancel button\"\n            id=\"bizy-toast-wrapper-close-svg\" \n            viewBox=\"0 0 200 200\"\n            xmlns=\"http://www.w3.org/2000/svg\">\n            <path id=\"bizy-toast-wrapper-close-svg-content\" d=\"M114,100l49-49a9.9,9.9,0,0,0-14-14L100,86,51,37A9.9,9.9,0,0,0,37,51l49,49L37,149a9.9,9.9,0,0,0,14,14l49-49,49,49a9.9,9.9,0,0,0,14-14Z\"/>\n        </svg>\n\n    </button>\n\n\n    <h1 class=\"bizy-toast-wrapper__title bizy-toast-wrapper__title--{{type}}\" *ngIf=\"title\">{{title}}</h1>\n\n    <h5 class=\"bizy-toast-wrapper__msg\" *ngIf=\"msg\">{{msg}}</h5>\n\n\n    <span class=\"bizy-toast__progress bizy-toast__progress--{{type}}\"></span>\n    \n</div>", styles: [".bizy-toast-wrapper{position:relative;width:100%;min-width:20rem;height:-moz-fit-content;height:fit-content;min-height:3rem;border-left:.4rem solid #fff;border-top-left-radius:.5rem;border-bottom-left-radius:.5rem;display:flex;flex-direction:column;justify-content:center;row-gap:.5rem;padding:.5rem;box-shadow:0 18px 25px #32325d40,0 3px 6px #0000001a}.bizy-toast-wrapper__title{max-width:min(28rem,60vw)}.bizy-toast-wrapper__msg{max-width:min(30rem,70vw)}.bizy-toast-wrapper--default{background-color:var(--bizy-toast-default-background-color, #fff);border-left-color:var(--bizy-toast-default-color, #666666)}.bizy-toast-wrapper__title--default{color:var(--bizy-toast-default-color, #666666)}.bizy-toast-wrapper--info{background-color:var(--bizy-toast-info-background-color, #fff);border-left-color:var(--bizy-toast-info-color, #2b94f4)}.bizy-toast-wrapper__title--info{color:var(--bizy-toast-info-color, #2b94f4)}.bizy-toast-wrapper--success{background-color:var(--bizy-toast-success-background-color, #fff);border-left-color:var(--bizy-toast-success-color, #5fbc5a)}.bizy-toast-wrapper__title--success{color:var(--bizy-toast-success-color, #5fbc5a)}.bizy-toast-wrapper--warning{background-color:var(--bizy-toast-warning-background-color, #fff);border-left-color:var(--bizy-toast-warning-color, #f7a64c)}.bizy-toast-wrapper__title--warning{color:var(--bizy-toast-warning-color, #f7a64c)}.bizy-toast-wrapper--danger{background-color:var(--bizy-toast-danger-background-color, #fff);border-left-color:var(--bizy-toast-danger-color, #e76565)}.bizy-toast-wrapper__title--danger{color:var(--bizy-toast-danger-color, #e76565)}.bizy-toast-wrapper__close-button{position:absolute;right:.5rem;top:.5rem;border:none;cursor:pointer;background-color:transparent;transition:color .3s;z-index:1}.bizy-toast-wrapper__close-button #bizy-toast-wrapper-close-svg{height:1rem}.bizy-toast-wrapper__close-button #bizy-toast-wrapper-close-svg-content{fill:var(--bizy-toast-close-button-color, #666666)}.bizy-toast-wrapper__close-button:hover #bizy-toast-wrapper-close-svg-content{fill:var(--bizy-toast-close-button-hover-color, #333333)}.bizy-toast__progress{width:100%;height:.1rem;display:inline-block;position:absolute;bottom:0;left:0;right:0;overflow:hidden}.bizy-toast__progress--default{background-color:var(--bizy-toast-default-color, #666666)}.bizy-toast__progress--info{background-color:var(--bizy-toast-info-color, #2b94f4)}.bizy-toast__progress--success{background-color:var(--bizy-toast-success-color, #5fbc5a)}.bizy-toast__progress--warning{background-color:var(--bizy-toast-warning-color, #f7a64c)}.bizy-toast__progress--danger{background-color:var(--bizy-toast-danger-color, #e76565)}.bizy-toast__progress:after{content:\"\";box-sizing:border-box;width:0;height:.1rem;background-color:#fff;position:absolute;top:0;left:0;animation:progress 2.5s linear infinite}@keyframes progress{0%{width:0}to{width:100%}}\n"], dependencies: [{ kind: "directive", type: i1$3.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyToastWrapperComponent, selector: "bizy-toast-wrapper", ngImport: i0, template: "<div class=\"bizy-toast-wrapper bizy-toast-wrapper--{{type}}\">\n\n    <button (click)=\"close()\" (keyup.enter)=\"close()\" class=\"bizy-toast-wrapper__close-button\">\n\n        <svg \n            data-name=\"Cancel button\"\n            id=\"bizy-toast-wrapper-close-svg\" \n            viewBox=\"0 0 200 200\"\n            xmlns=\"http://www.w3.org/2000/svg\">\n            <path id=\"bizy-toast-wrapper-close-svg-content\" d=\"M114,100l49-49a9.9,9.9,0,0,0-14-14L100,86,51,37A9.9,9.9,0,0,0,37,51l49,49L37,149a9.9,9.9,0,0,0,14,14l49-49,49,49a9.9,9.9,0,0,0,14-14Z\"/>\n        </svg>\n\n    </button>\n\n\n    <h1 class=\"bizy-toast-wrapper__title bizy-toast-wrapper__title--{{type}}\" *ngIf=\"title\">{{title}}</h1>\n\n    <h5 class=\"bizy-toast-wrapper__msg\" *ngIf=\"msg\">{{msg}}</h5>\n\n\n    <span class=\"bizy-toast__progress bizy-toast__progress--{{type}}\"></span>\n    \n</div>", styles: [".bizy-toast-wrapper{position:relative;width:100%;min-width:20rem;height:-moz-fit-content;height:fit-content;min-height:3rem;border-left:.4rem solid #fff;border-top-left-radius:.5rem;border-bottom-left-radius:.5rem;display:flex;flex-direction:column;justify-content:center;row-gap:.5rem;padding:.5rem;box-shadow:0 18px 25px #32325d40,0 3px 6px #0000001a}.bizy-toast-wrapper__title{max-width:min(28rem,60vw)}.bizy-toast-wrapper__msg{max-width:min(30rem,70vw)}.bizy-toast-wrapper--default{background-color:var(--bizy-toast-default-background-color, #fff);border-left-color:var(--bizy-toast-default-color, #666666)}.bizy-toast-wrapper__title--default{color:var(--bizy-toast-default-color, #666666)}.bizy-toast-wrapper--info{background-color:var(--bizy-toast-info-background-color, #fff);border-left-color:var(--bizy-toast-info-color, #2b94f4)}.bizy-toast-wrapper__title--info{color:var(--bizy-toast-info-color, #2b94f4)}.bizy-toast-wrapper--success{background-color:var(--bizy-toast-success-background-color, #fff);border-left-color:var(--bizy-toast-success-color, #5fbc5a)}.bizy-toast-wrapper__title--success{color:var(--bizy-toast-success-color, #5fbc5a)}.bizy-toast-wrapper--warning{background-color:var(--bizy-toast-warning-background-color, #fff);border-left-color:var(--bizy-toast-warning-color, #f7a64c)}.bizy-toast-wrapper__title--warning{color:var(--bizy-toast-warning-color, #f7a64c)}.bizy-toast-wrapper--danger{background-color:var(--bizy-toast-danger-background-color, #fff);border-left-color:var(--bizy-toast-danger-color, #e76565)}.bizy-toast-wrapper__title--danger{color:var(--bizy-toast-danger-color, #e76565)}.bizy-toast-wrapper__close-button{position:absolute;right:.5rem;top:.5rem;border:none;cursor:pointer;background-color:transparent;transition:color .3s;z-index:1}.bizy-toast-wrapper__close-button #bizy-toast-wrapper-close-svg{height:1rem}.bizy-toast-wrapper__close-button #bizy-toast-wrapper-close-svg-content{fill:var(--bizy-toast-close-button-color, #666666)}.bizy-toast-wrapper__close-button:hover #bizy-toast-wrapper-close-svg-content{fill:var(--bizy-toast-close-button-hover-color, #333333)}.bizy-toast__progress{width:100%;height:.1rem;display:inline-block;position:absolute;bottom:0;left:0;right:0;overflow:hidden}.bizy-toast__progress--default{background-color:var(--bizy-toast-default-color, #666666)}.bizy-toast__progress--info{background-color:var(--bizy-toast-info-color, #2b94f4)}.bizy-toast__progress--success{background-color:var(--bizy-toast-success-color, #5fbc5a)}.bizy-toast__progress--warning{background-color:var(--bizy-toast-warning-color, #f7a64c)}.bizy-toast__progress--danger{background-color:var(--bizy-toast-danger-color, #e76565)}.bizy-toast__progress:after{content:\"\";box-sizing:border-box;width:0;height:.1rem;background-color:#fff;position:absolute;top:0;left:0;animation:progress 2.5s linear infinite}@keyframes progress{0%{width:0}to{width:100%}}\n"], dependencies: [{ kind: "directive", type: i1$4.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyToastWrapperComponent, decorators: [{
             type: Component,
@@ -906,7 +984,11 @@ class BizyToastService {
     }
     #open(data) {
         this.#toast = this.dialog.open(BizyToastWrapperComponent, {
-            data,
+            data: {
+                type: data.type,
+                title: typeof data.data === 'string' ? data.data : data.data.title,
+                msg: typeof data.data === 'string' ? '' : data.data.msg
+            },
             autoFocus: true,
             hasBackdrop: false,
             disableClose: false,
@@ -917,19 +999,19 @@ class BizyToastService {
         }, 3000);
     }
     default(data) {
-        this.#open({ type: TOAST.DEFAULT, ...data });
+        this.#open({ type: TOAST.DEFAULT, data });
     }
     info(data) {
-        this.#open({ type: TOAST.INFO, ...data });
+        this.#open({ type: TOAST.INFO, data });
     }
-    success(data) {
-        this.#open({ type: TOAST.SUCCESS, ...data });
+    success(data = 'Operación exitosa') {
+        this.#open({ type: TOAST.SUCCESS, data });
     }
     warning(data) {
-        this.#open({ type: TOAST.WARNING, ...data });
+        this.#open({ type: TOAST.WARNING, data });
     }
-    danger(data) {
-        this.#open({ type: TOAST.DANGER, ...data });
+    danger(data = 'Hubo un problema') {
+        this.#open({ type: TOAST.DANGER, data });
     }
     close = () => {
         if (!this.#toast || this.#closing) {
@@ -942,14 +1024,14 @@ class BizyToastService {
             this.#toast.close();
             this.#toast = null;
             this.#closing = false;
-        }, 500);
+        }, 400);
     };
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyToastService, deps: [{ token: Dialog }], target: i0.ɵɵFactoryTarget.Injectable });
     static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyToastService });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyToastService, decorators: [{
             type: Injectable
-        }], ctorParameters: function () { return [{ type: i1$2.Dialog, decorators: [{
+        }], ctorParameters: function () { return [{ type: i1$3.Dialog, decorators: [{
                     type: Inject,
                     args: [Dialog]
                 }] }]; } });
@@ -1013,7 +1095,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             args: [{
                     providedIn: 'root'
                 }]
-        }], ctorParameters: function () { return [{ type: i1$4.TranslateService, decorators: [{
+        }], ctorParameters: function () { return [{ type: i1$5.TranslateService, decorators: [{
                     type: Inject,
                     args: [TranslateService]
                 }] }]; } });
@@ -1054,7 +1136,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
 
 class BizyTranslateModule {
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyTranslateModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BizyTranslateModule, imports: [i1$4.TranslateModule] });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BizyTranslateModule, imports: [i1$5.TranslateModule] });
     static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyTranslateModule, providers: [BizyTranslateService], imports: [TranslateModule.forRoot()] });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyTranslateModule, decorators: [{
@@ -1069,5 +1151,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
  * Generated bundle index. Do not edit.
  */
 
-export { BizyCacheService, BizyExportToCSVService, BizyKeyboardService, BizyLogService, BizyPopupModule, BizyPopupService, BizyRouterService, BizyStorageService, BizyToastModule, BizyToastService, BizyTranslateModule, BizyTranslatePipe, BizyTranslatePipeModule, BizyTranslateService, BizyUserAgentService, BizyValidatorService, BizyViewportService, LANGUAGE };
+export { BizyCacheService, BizyCopyToClipboardService, BizyExportToCSVService, BizyKeyboardService, BizyLogService, BizyPopupModule, BizyPopupService, BizyRouterService, BizyStorageService, BizyToastModule, BizyToastService, BizyTranslateModule, BizyTranslatePipe, BizyTranslatePipeModule, BizyTranslateService, BizyUserAgentService, BizyValidatorService, BizyViewportService, LANGUAGE };
 //# sourceMappingURL=bizy-services.mjs.map

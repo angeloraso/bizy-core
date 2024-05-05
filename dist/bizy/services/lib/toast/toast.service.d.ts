@@ -11,24 +11,24 @@ export declare class BizyToastService {
     #private;
     private dialog;
     constructor(dialog: Dialog);
-    default(data: {
-        title?: string;
+    default(data: string | {
+        title: string;
         msg?: string;
     }): void;
-    info(data: {
-        title?: string;
+    info(data: string | {
+        title: string;
         msg?: string;
     }): void;
-    success(data: {
-        title?: string;
+    success(data?: string | {
+        title: string;
         msg?: string;
     }): void;
-    warning(data: {
-        title?: string;
+    warning(data: string | {
+        title: string;
         msg?: string;
     }): void;
-    danger(data: {
-        title?: string;
+    danger(data?: string | {
+        title: string;
         msg?: string;
     }): void;
     close: () => void;

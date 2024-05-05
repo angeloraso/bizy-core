@@ -1,21 +1,25 @@
 :host {
   font-size: 1rem;
-  padding: 0.1rem 0.3rem;
+  padding: 0.3rem;
   border-radius: 0.3rem;
   cursor: inherit;
   display: flex;
   justify-content: center;
   align-items: center;
+  text-wrap: nowrap;
   width: fit-content;
+  color: var(--bizy-tag-color);
   background-color: var(--bizy-tag-background-color);
 }
 
 :host ::ng-deep * {
+  text-wrap: nowrap;
   color: var(--bizy-tag-color);
   fill: var(--bizy-tag-color);
 }
 
 :host[type=default] {
+  color: var(--bizy-tag-default-color);
   background-color: var(--bizy-tag-default-background-color);
 }
 
@@ -25,6 +29,7 @@
 }
 
 :host[type=success] {
+  color: var(--bizy-tag-success-color);
   background-color: var(--bizy-tag-success-background-color);
 }
 
@@ -34,6 +39,7 @@
 }
 
 :host[type=info] {
+  color: var(--bizy-tag-info-color);
   background-color: var(--bizy-tag-info-background-color);
 }
 
@@ -43,6 +49,7 @@
 }
 
 :host[type=warning] {
+  color: var(--bizy-tag-warning-color);
   background-color: var(--bizy-tag-warning-background-color);
 }
 
@@ -52,6 +59,7 @@
 }
 
 :host[type=danger] {
+  color: var(--bizy-tag-danger-color);
   background-color: var(--bizy-tag-danger-background-color);
 }
 

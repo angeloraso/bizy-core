@@ -18,9 +18,14 @@ export class BizyToastService {
 
   constructor(@Inject(Dialog) private dialog: Dialog) { }
 
-  #open(data: {type: TOAST, title?: string, msg?: string }) {
+  #open(data: {type: TOAST, data: string | {title: string, msg?: string} }) {
+
     this.#toast = this.dialog.open<BizyToastWrapperComponent>(BizyToastWrapperComponent, ({
-      data,
+      data: {
+        type: data.type,
+        title: typeof data.data === 'string' ? data.data : data.data.title,
+        msg: typeof data.data === 'string' ? '' : data.data.msg
+      },
       autoFocus: true,
       hasBackdrop: false,
       disableClose: false,
@@ -32,24 +37,24 @@ export class BizyToastService {
     }, 3000);
   }
 
-  default(data: {title?: string, msg?: string}) {
-    this.#open({type: TOAST.DEFAULT, ...data});
+  default(data: string | {title: string, msg?: string}) {
+    this.#open({type: TOAST.DEFAULT, data});
   }
 
-  info(data: {title?: string, msg?: string}) {
-    this.#open({type: TOAST.INFO, ...data});
+  info(data: string | {title: string, msg?: string}) {
+    this.#open({type: TOAST.INFO, data});
   }
 
-  success(data: {title?: string, msg?: string}) {
-    this.#open({type: TOAST.SUCCESS, ...data});
+  success(data: string | {title: string, msg?: string} = 'Operación exitosa') {
+    this.#open({type: TOAST.SUCCESS, data});
   }
 
-  warning(data: {title?: string, msg?: string}) {
-    this.#open({type: TOAST.WARNING, ...data});
+  warning(data: string | {title: string, msg?: string}) {
+    this.#open({type: TOAST.WARNING, data});
   }
 
-  danger(data: {title?: string, msg?: string}) {
-    this.#open({type: TOAST.DANGER, ...data});
+  danger(data: string | {title: string, msg?: string} = 'Hubo un problema') {
+    this.#open({type: TOAST.DANGER, data});
   }
 
   close = () => {
@@ -66,6 +71,6 @@ export class BizyToastService {
       this.#toast.close();
       this.#toast = null;
       this.#closing = false;
-    }, 500);
+    }, 400);
   }
 }

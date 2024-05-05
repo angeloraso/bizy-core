@@ -1,0 +1,66 @@
+:host {
+    font-size: 1rem;
+    height: 100%;
+    width: 100%;
+}
+
+.bizy-card {
+    height: 100%;
+    width: 100%;
+    cursor: default;
+    border: none;
+    border-radius: 0.3rem;
+    overflow: hidden;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    row-gap: 0.3rem;
+    background-color: var(--bizy-card-background-color);
+    transition: transform 250ms ease-in-out;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.bizy-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+}
+
+.bizy-card--selected {
+    background-color: var(--bizy-card-selected-background-color);
+}
+
+.bizy-card--disabled {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed !important;
+}
+
+.bizy-card__header:has(.bizy-card__header__start:empty):has(.bizy-card__header__end:empty) {
+    display: none;
+}
+
+.bizy-card__header:not(:empty) {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    column-gap: 1rem;
+}
+
+.bizy-card__slot {
+    display: flex;
+    align-items: center;
+    column-gap: 0.5rem;
+}
+
+.bizy-card__footer:has(.bizy-card__footer__start:empty):has(.bizy-card__footer__end:empty) {
+    display: none;
+}
+
+.bizy-card__footer:not(:empty) {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    column-gap: 1rem;
+}
+

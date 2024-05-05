@@ -19,6 +19,9 @@
     --bizy-button-background-color: #666;
     --bizy-button-padding: 0.5rem;
 
+    --bizy-card-background-color: #fff;
+    --bizy-card-selected-background-color: #2484c644;
+
     --bizy-checkbox-border-color: #043126;
     --bizy-checkbox-hover-color: #16aa8833;
     --bizy-checkbox-selected-color: #16aa88;

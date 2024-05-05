@@ -1,0 +1,34 @@
+<button 
+    type="button"
+    (click)="_onSelect($event)"
+    (keyup.enter)="_onSelect($event)"
+    class="bizy-card {{customClass}}"
+    [ngClass]="{'bizy-card--selected': selected, 'bizy-card--disabled': disabled}">
+
+    <span class="bizy-card__header">
+
+        <span class="bizy-card__header__start bizy-card__slot">
+            <ng-content select="[card-header-start]"></ng-content>
+        </span>
+
+        <span class="bizy-card__header__end bizy-card__slot">
+            <ng-content select="[card-header-end]"></ng-content>
+        </span>
+
+    </span>
+
+    <ng-content></ng-content>
+
+    <span class="bizy-card__footer">
+
+        <span class="bizy-card__footer__start bizy-card__slot">
+            <ng-content select="[card-footer-start]"></ng-content>
+        </span>
+
+        <span class="bizy-card__footer__end bizy-card__slot">
+            <ng-content select="[card-footer-end]"></ng-content>
+        </span>
+
+    </span>
+
+</button>
