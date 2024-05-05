@@ -1,22 +1,21 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ChangeDetectorRef, Directive, Inject, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { BizyTableRowComponent } from '../table-row/table-row.component';
-import { IBizyTableRow } from '../table.types';
 
 @Directive({
   selector: '[tableFor]',
 })
 
-export class BizyTableScrollingDirective {
+export class BizyTableScrollingDirective<T> {
 
-  #items = new BehaviorSubject<Array<IBizyTableRow>>([]);
+  #items = new BehaviorSubject<Array<T>>([]);
 
-  get items$(): Observable<Array<IBizyTableRow>> {
+  get items$(): Observable<Array<T>> {
     return this.#items.asObservable();
   }
 
   @Input()
-  set tableForIn(value: Array<IBizyTableRow>) {
+  set tableForIn(value: Array<T>) {
     this.#items.next(value);
   }    
 

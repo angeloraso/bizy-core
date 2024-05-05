@@ -6,13 +6,13 @@ import { Subject } from 'rxjs';
 import { BizyTableScrollingComponent } from './table-scrolling/table-scrolling.component';
 import { BizyTableScrollingDirective } from './table-scrolling/table-scrolling.directive';
 import * as i0 from "@angular/core";
-export declare class BizyTableComponent implements AfterContentInit {
+export declare class BizyTableComponent<T> implements AfterContentInit {
     #private;
     private ref;
     private document;
     private elementRef;
-    viewport: BizyTableScrollingComponent;
-    virtualFor: BizyTableScrollingDirective;
+    viewport: BizyTableScrollingComponent<T>;
+    virtualFor: BizyTableScrollingDirective<T>;
     header: BizyTableHeaderComponent;
     rows: QueryList<BizyTableRowComponent>;
     footer: BizyTableFooterComponent;
@@ -22,6 +22,6 @@ export declare class BizyTableComponent implements AfterContentInit {
     constructor(ref: ChangeDetectorRef, document: Document, elementRef: ElementRef);
     ngAfterContentInit(): void;
     ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<BizyTableComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<BizyTableComponent, "bizy-table", never, { "selectable": { "alias": "selectable"; "required": false; }; }, {}, ["virtualFor", "header", "footer", "rows"], ["bizy-table-header", "bizy-table-row", "bizy-table-footer"], false, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<BizyTableComponent<any>, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<BizyTableComponent<any>, "bizy-table", never, { "selectable": { "alias": "selectable"; "required": false; }; }, {}, ["virtualFor", "header", "footer", "rows"], ["bizy-table-header", "bizy-table-row", "bizy-table-footer"], false, never>;
 }

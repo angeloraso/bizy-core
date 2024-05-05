@@ -13,9 +13,9 @@ import { BizyTableScrollingDirective } from './table-scrolling/table-scrolling.d
   styleUrls: ['./table.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BizyTableComponent implements AfterContentInit {
-  @ViewChild(BizyTableScrollingComponent) viewport: BizyTableScrollingComponent;
-  @ContentChild(BizyTableScrollingDirective) virtualFor: BizyTableScrollingDirective;
+export class BizyTableComponent<T> implements AfterContentInit {
+  @ViewChild(BizyTableScrollingComponent) viewport: BizyTableScrollingComponent<T>;
+  @ContentChild(BizyTableScrollingDirective) virtualFor: BizyTableScrollingDirective<T>;
   @ContentChild(BizyTableHeaderComponent) header: BizyTableHeaderComponent;
   @ContentChildren(BizyTableRowComponent) rows: QueryList<BizyTableRowComponent>;
   @ContentChild(BizyTableFooterComponent) footer: BizyTableFooterComponent;

@@ -1,5 +1,4 @@
 export { BizyTableRowExpandContentComponent } from './table-row-expand-content/table-row-expand-content.component';
-export { IBizyTableRow } from './table.types';
 export { BizyTableScrollingComponent } from './table-scrolling/table-scrolling.component';
 export { BizyTableScrollingDirective } from './table-scrolling/table-scrolling.directive';
 export { BizyTableColumnArrowsComponent } from './table-column-arrows/table-column-arrows.component';

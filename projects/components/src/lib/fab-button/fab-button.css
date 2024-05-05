@@ -1,5 +1,9 @@
 :host {
     font-size: 1rem;
+    z-index: 1;
+    position: sticky;
+    bottom: 0;
+    right: 0;
 }
 
 .bizy-fab-button {
@@ -12,8 +16,9 @@
     background-color: var(--bizy-fab-button-background-color);
     cursor: pointer;
     position: absolute;
-    bottom: 0.5rem;
-    right: 0.5rem;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
     padding: 1.2rem 1.3rem;
 }
 
