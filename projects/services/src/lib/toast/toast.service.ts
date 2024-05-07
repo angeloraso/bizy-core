@@ -12,29 +12,51 @@ export enum TOAST {
 
 @Injectable()
 export class BizyToastService {
-  #toast: DialogRef<BizyToastWrapperComponent> | null = null;
+  #toasts = new Set<DialogRef<BizyToastWrapperComponent>>();
   
-  #closing: boolean = false;
+  duration: number = 3000;
+  defaultSuccessTitle = 'Operación exitosa';
+  defaultDangerTitle = 'Hubo un problema';
 
   constructor(@Inject(Dialog) private dialog: Dialog) { }
 
   #open(data: {type: TOAST, data: string | {title: string, msg?: string} }) {
 
-    this.#toast = this.dialog.open<BizyToastWrapperComponent>(BizyToastWrapperComponent, ({
+    const id = `bizy-toast-${Math.random()}`;
+    const toastRef = this.dialog.open(BizyToastWrapperComponent, ({
+      id,
       data: {
         type: data.type,
+        duration: this.duration,
+        id,
         title: typeof data.data === 'string' ? data.data : data.data.title,
         msg: typeof data.data === 'string' ? '' : data.data.msg
       },
-      autoFocus: true,
+      autoFocus: false,
       hasBackdrop: false,
       disableClose: false,
       panelClass: ['bizy-toast', 'bizy-toast--in'] 
     } as DialogConfig<unknown, DialogRef<BizyToastWrapperComponent>>));
 
-    setTimeout(() => {
-      this.close();
-    }, 3000);
+    this.#toasts.add(toastRef);
+  }
+
+  config(data: {defaultSuccessTitle?: string, defaultDangerTitle?: string, duration?: number}) {
+    if (!data) {
+      return;
+    }
+
+    if (data.defaultSuccessTitle) {
+      this.defaultSuccessTitle = data.defaultSuccessTitle;
+    }
+
+    if (data.defaultDangerTitle) {
+      this.defaultDangerTitle = data.defaultDangerTitle;
+    }
+
+    if (data.duration) {
+      this.duration = data.duration;
+    }
   }
 
   default(data: string | {title: string, msg?: string}) {
@@ -45,7 +67,7 @@ export class BizyToastService {
     this.#open({type: TOAST.INFO, data});
   }
 
-  success(data: string | {title: string, msg?: string} = 'Operación exitosa') {
+  success(data: string | {title: string, msg?: string} = this.defaultSuccessTitle) {
     this.#open({type: TOAST.SUCCESS, data});
   }
 
@@ -53,24 +75,26 @@ export class BizyToastService {
     this.#open({type: TOAST.WARNING, data});
   }
 
-  danger(data: string | {title: string, msg?: string} = 'Hubo un problema') {
+  danger(data: string | {title: string, msg?: string} = this.defaultDangerTitle) {
     this.#open({type: TOAST.DANGER, data});
   }
 
-  close = () => {
-    if (!this.#toast || this.#closing) {
+  close = (id: string) => {
+    if ( !id) {
       return;
     }
 
-    this.#closing = true;
+    let toastRef: DialogRef<BizyToastWrapperComponent> | null = null;
+    toastRef = Array.from(this.#toasts).find(_toastRef => _toastRef.id === id);
 
-    this.#toast.removePanelClass('bizy-toast--in');
-    this.#toast.addPanelClass('bizy-toast--out');
+    if (toastRef) {
+      toastRef.removePanelClass('bizy-toast--in');
+      toastRef.addPanelClass('bizy-toast--out');
 
-    setTimeout(() => {
-      this.#toast.close();
-      this.#toast = null;
-      this.#closing = false;
-    }, 400);
+      setTimeout(() => {
+        toastRef.close();
+        this.#toasts.delete(toastRef);
+      }, 500);
+    }
   }
 }

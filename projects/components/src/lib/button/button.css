@@ -16,7 +16,7 @@
     background-color: var(--bizy-button-background-color);
 }
 
-.bizy-button * {
+.bizy-button ::ng-deep * {
     color: var(--bizy-button-color);
 }
 

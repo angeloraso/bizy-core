@@ -6,10 +6,12 @@ export declare class BizyToastWrapperComponent {
     type: TOAST;
     title: string;
     msg: string;
+    id: string;
     constructor(data: {
         type: TOAST;
         title: string;
         msg: string;
+        id: string;
     }, toast: BizyToastService);
     close(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyToastWrapperComponent, never>;

@@ -10,7 +10,15 @@ export declare enum TOAST {
 export declare class BizyToastService {
     #private;
     private dialog;
+    duration: number;
+    defaultSuccessTitle: string;
+    defaultDangerTitle: string;
     constructor(dialog: Dialog);
+    config(data: {
+        defaultSuccessTitle?: string;
+        defaultDangerTitle?: string;
+        duration?: number;
+    }): void;
     default(data: string | {
         title: string;
         msg?: string;
@@ -31,7 +39,7 @@ export declare class BizyToastService {
         title: string;
         msg?: string;
     }): void;
-    close: () => void;
+    close: (id: string) => void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyToastService, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<BizyToastService>;
 }
