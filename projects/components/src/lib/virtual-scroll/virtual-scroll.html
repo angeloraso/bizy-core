@@ -1,18 +1,13 @@
-<div>
-
-  <cdk-virtual-scroll-viewport 
-    *ngIf="virtualScrollItems.length !== 0"
-    class="bizy-virtual-scroll"
-    [itemSize]="_itemMinHeight"
-    [ngStyle]="{'height': viewportHeight}"
-    [minBufferPx]="_itemMinHeight + (_itemMinHeight * 8)"
-    [maxBufferPx]="_itemMinHeight + (_itemMinHeight * 12)">
-    <ng-content></ng-content>
-    <div *cdkVirtualFor="let item of virtualScrollItems">
-      <ng-container *ngTemplateOutlet="virtualFor.template; context: { $implicit: item }"></ng-container>
-    </div>
-  </cdk-virtual-scroll-viewport>
+<cdk-virtual-scroll-viewport 
+  class="bizy-virtual-scroll"
+  [ngClass]="{'bizy-virtual-scroll--hidden': !virtualScrollItems || virtualScrollItems.length === 0}"
+  [itemSize]="_itemMinHeight"
+  [ngStyle]="{'height': viewportHeight}"
+  [minBufferPx]="_itemMinHeight + (_itemMinHeight * 8)"
+  [maxBufferPx]="_itemMinHeight + (_itemMinHeight * 12)">
+  <ng-content></ng-content>
+  <div *cdkVirtualFor="let item of virtualScrollItems">
+    <ng-container *ngTemplateOutlet="virtualFor.template; context: { $implicit: item }"></ng-container>
+  </div>
+</cdk-virtual-scroll-viewport>
   
-  <span *ngIf="virtualScrollItems.length === 0" class="bizy-virtual-scroll--empty">{{emptyText}}</span>
-
-</div>
