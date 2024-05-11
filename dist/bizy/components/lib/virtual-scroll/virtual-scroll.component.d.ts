@@ -10,7 +10,6 @@ export declare class BizyVirtualScrollComponent implements OnInit {
     virtualFor: BizyVirtualScrollNgForDirective;
     itemMinHeight: number | string;
     itemMinWidth: number | string;
-    emptyText: string;
     viewportHeight: string;
     virtualScrollItems: Array<any>;
     itemsByRow: number;
@@ -22,5 +21,5 @@ export declare class BizyVirtualScrollComponent implements OnInit {
     ngOnInit(): void;
     ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyVirtualScrollComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<BizyVirtualScrollComponent, "bizy-virtual-scroll", never, { "itemMinHeight": { "alias": "itemMinHeight"; "required": false; }; "itemMinWidth": { "alias": "itemMinWidth"; "required": false; }; "emptyText": { "alias": "emptyText"; "required": false; }; "viewportHeight": { "alias": "viewportHeight"; "required": false; }; }, {}, ["virtualFor"], ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<BizyVirtualScrollComponent, "bizy-virtual-scroll", never, { "itemMinHeight": { "alias": "itemMinHeight"; "required": false; }; "itemMinWidth": { "alias": "itemMinWidth"; "required": false; }; "viewportHeight": { "alias": "viewportHeight"; "required": false; }; }, {}, ["virtualFor"], ["*"], false, never>;
 }

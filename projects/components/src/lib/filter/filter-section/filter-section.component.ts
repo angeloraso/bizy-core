@@ -22,7 +22,8 @@ export class BizyFilterSectionComponent {
 
   #subscription = new Subscription();
 
-  _options: Array<{id: string, selected: boolean}> = [];
+  #mutationObserver: MutationObserver;
+  #checkboxOptions: Array<BizyFilterSectionCheckboxOptionComponent> = [];
   _activated: boolean = false;
 
   constructor(
@@ -31,8 +32,10 @@ export class BizyFilterSectionComponent {
   ) {}
 
   ngAfterViewInit() {
-    const mutationObserver = new MutationObserver(() => {
-      if (this.checkboxOptions && this.checkboxOptions.length > 0) {
+    this.#mutationObserver = new MutationObserver(() => {
+      if (this.checkboxOptions && (this.#checkboxOptions.length !== 0 || this.checkboxOptions.length !== 0) && !this.#optionsAreEqual(this.#checkboxOptions, this.checkboxOptions.toArray())) {
+        
+        this.#checkboxOptions = this.checkboxOptions.toArray();
 
         const selectedOptions = this.checkboxOptions.filter(_option => _option.getSelected() === true);
         this._activated = selectedOptions.length !== this.checkboxOptions.length;
@@ -48,11 +51,7 @@ export class BizyFilterSectionComponent {
             this.ref.detectChanges();
           }));
         });
-
-        mutationObserver.disconnect();
-      }
-      
-      if (this.rangeOption) {
+      } else if (this.rangeOption) {
         this._activated = this.rangeOption.isActivated();
         this.ref.detectChanges();
 
@@ -61,10 +60,8 @@ export class BizyFilterSectionComponent {
           this.onSelect.emit(this._activated);
           this.ref.detectChanges();
         }));
-        mutationObserver.disconnect();
-      }
-
-      if (this.searchOption) {
+        this.#mutationObserver.disconnect();
+      } else if (this.searchOption) {
         this._activated = this.searchOption.isActivated();
         this.ref.detectChanges();
 
@@ -73,11 +70,11 @@ export class BizyFilterSectionComponent {
           this.onSelect.emit(this.searchOption.isActivated());
           this.ref.detectChanges();
         }));
-        mutationObserver.disconnect();
+        this.#mutationObserver.disconnect();
       }
     });
 
-    mutationObserver.observe(this.document.body, { childList: true, subtree: true });
+    this.#mutationObserver.observe(this.document.body, { childList: true, subtree: true });
   }
 
   _onSelect = (selected: boolean) => {
@@ -106,7 +103,27 @@ export class BizyFilterSectionComponent {
     return this.id;
   }
 
+  #optionsAreEqual(arr1: Array<BizyFilterSectionCheckboxOptionComponent>, arr2: Array<BizyFilterSectionCheckboxOptionComponent>) {
+    if (arr1.length !== arr2.length) {
+        return false;
+    }
+
+    arr1.sort((a, b) => String(a.id).localeCompare(String(b.id)));
+    arr2.sort((a, b) => String(a.id).localeCompare(String(b.id)));
+
+    for (let i = 0; i < arr1.length; i++) {
+        for (let key in arr1[i]) {
+            if (arr1[i][key] !== arr2[i][key]) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+  }
+
   ngOnDestroy() {
     this.#subscription.unsubscribe();
+    this.#mutationObserver.disconnect();
   }
 }

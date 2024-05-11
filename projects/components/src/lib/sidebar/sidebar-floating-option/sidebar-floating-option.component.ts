@@ -94,8 +94,8 @@ export class BizySidebarFloatingOptionComponent implements OnInit {
         return false;
     }
 
-    arr1.sort((a, b) => a.id.localeCompare(b.id));
-    arr2.sort((a, b) => a.id.localeCompare(b.id));
+    arr1.sort((a, b) => String(a.id).localeCompare(String(b.id)));
+    arr2.sort((a, b) => String(a.id).localeCompare(String(b.id)));
 
     for (let i = 0; i < arr1.length; i++) {
         for (let key in arr1[i]) {

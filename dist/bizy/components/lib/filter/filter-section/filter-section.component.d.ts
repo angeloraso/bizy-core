@@ -11,10 +11,6 @@ export declare class BizyFilterSectionComponent {
     disabled: boolean;
     customClass: string;
     onSelect: EventEmitter<boolean>;
-    _options: Array<{
-        id: string;
-        selected: boolean;
-    }>;
     _activated: boolean;
     constructor(document: Document, ref: ChangeDetectorRef);
     ngAfterViewInit(): void;
