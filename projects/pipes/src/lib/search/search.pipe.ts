@@ -28,7 +28,7 @@ export class BizySearchPipe implements PipeTransform {
     }
 
     if (!Array.isArray(search)) {
-      search = [search];
+      search = [String(search)];
     }
 
     let output: Array<T> = items;

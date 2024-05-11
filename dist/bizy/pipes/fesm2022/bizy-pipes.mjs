@@ -232,7 +232,7 @@ class BizySearchPipe {
             keys = [keys];
         }
         if (!Array.isArray(search)) {
-            search = [search];
+            search = [String(search)];
         }
         let output = items;
         // Remove empty items
