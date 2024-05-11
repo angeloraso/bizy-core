@@ -195,6 +195,9 @@ class BizyExportToCSVService {
     }
     #getCSV(items, model) {
         let toCopy = '';
+        function escapeCommas(str) {
+            return str.includes(',') ? `"${str}"` : str;
+        }
         for (const key in model) {
             if (key) {
                 toCopy += `${model[key]},`;
@@ -217,7 +220,7 @@ class BizyExportToCSVService {
                     }
                 }
                 if (typeof value !== undefined && value !== null) {
-                    toCopy += `${String(value).replace(/\n/g, '')},`;
+                    toCopy += `${escapeCommas(String(value).replace(/\n/g, ''))},`;
                 }
                 else {
                     toCopy += ',';
