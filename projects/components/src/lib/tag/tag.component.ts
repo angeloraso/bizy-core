@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Inject, Input, Renderer2 } from '@angular/core';
-import { TagType } from './tag.types';
+import { BIZY_TAG_TYPE } from './tag.types';
 
 @Component({
   selector: 'bizy-tag',
@@ -8,7 +8,7 @@ import { TagType } from './tag.types';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyTagComponent {
-  @Input() set type(type: TagType) {
+  @Input() set type(type: BIZY_TAG_TYPE) {
     if (!type || !this.elementRef || !this.elementRef.nativeElement) {
       return;
     }

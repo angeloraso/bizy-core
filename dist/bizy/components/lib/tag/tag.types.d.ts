@@ -1,1 +1,7 @@
-export type TagType = 'success' | 'default' | 'info' | 'warning' | 'danger';
+export declare enum BIZY_TAG_TYPE {
+    DEFAULT = "default",
+    SUCCESS = "success",
+    INFO = "info",
+    WARNING = "warning",
+    DANGER = "danger"
+}
