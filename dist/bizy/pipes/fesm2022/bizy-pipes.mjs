@@ -39,13 +39,16 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
         }] });
 
 class BizyOrderByPipe {
-    transform(items, order = 'asc', property = '', turnOff = false) {
+    transform(items, order = null, property = '', turnOff = false) {
         if (turnOff) {
             return items;
         }
         // No items
         if (!items) {
             return [];
+        }
+        if (!order) {
+            return items;
         }
         // Array with only one item
         if (items.length <= 1) {
