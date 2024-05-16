@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'bizyOrderBy'
 })
 export class BizyOrderByPipe implements PipeTransform {
-  transform<T>(items: Array<T>, order: 'asc' | 'desc' = 'asc', property: string = '', turnOff: boolean = false): Array<T> {
+  transform<T>(items: Array<T>, order: 'asc' | 'desc' | null = null, property: string = '', turnOff: boolean = false): Array<T> {
     if (turnOff) {
       return items;
     }
@@ -12,6 +12,10 @@ export class BizyOrderByPipe implements PipeTransform {
     // No items
     if (!items) {
       return [];
+    }
+
+    if (!order) {
+      return items;
     }
 
     // Array with only one item
