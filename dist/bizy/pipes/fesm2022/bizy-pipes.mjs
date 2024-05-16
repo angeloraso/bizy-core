@@ -4,6 +4,23 @@ import * as i1 from '@angular/platform-browser';
 import { DomSanitizer } from '@angular/platform-browser';
 import Fuse from 'fuse.js';
 
+class BizySetToArrayPipe {
+    transform(items) {
+        if (!items) {
+            return [];
+        }
+        return Array.from(items);
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizySetToArrayPipe, deps: [], target: i0.ɵɵFactoryTarget.Pipe });
+    static ɵpipe = i0.ɵɵngDeclarePipe({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BizySetToArrayPipe, name: "bizySetToArray" });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizySetToArrayPipe, decorators: [{
+            type: Pipe,
+            args: [{
+                    name: 'bizySetToArray'
+                }]
+        }] });
+
 class BizySelectedPipe {
     transform(items) {
         if (!items || items.length === 0) {
@@ -22,13 +39,13 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
         }] });
 
 class BizyOrderByPipe {
-    transform(items, order = null, property = '', turnOff = false) {
+    transform(items, order = 'asc', property = '', turnOff = false) {
         if (turnOff) {
             return items;
         }
         // No items
-        if (!items || !order) {
-            return items;
+        if (!items) {
+            return [];
         }
         // Array with only one item
         if (items.length <= 1) {
@@ -269,7 +286,8 @@ const PIPES = [
     BizyReducePipe,
     BizySafePipe,
     BizySearchPipe,
-    BizySelectedPipe
+    BizySelectedPipe,
+    BizySetToArrayPipe
 ];
 class BizyPipesModule {
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyPipesModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
@@ -277,11 +295,13 @@ class BizyPipesModule {
             BizyReducePipe,
             BizySafePipe,
             BizySearchPipe,
-            BizySelectedPipe], exports: [BizyOrderByPipe,
+            BizySelectedPipe,
+            BizySetToArrayPipe], exports: [BizyOrderByPipe,
             BizyReducePipe,
             BizySafePipe,
             BizySearchPipe,
-            BizySelectedPipe] });
+            BizySelectedPipe,
+            BizySetToArrayPipe] });
     static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyPipesModule, providers: PIPES });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyPipesModule, decorators: [{
@@ -297,5 +317,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
  * Generated bundle index. Do not edit.
  */
 
-export { BizyOrderByPipe, BizyPipesModule, BizyReducePipe, BizySafePipe, BizySearchPipe, BizySelectedPipe, FuseOptions };
+export { BizyOrderByPipe, BizyPipesModule, BizyReducePipe, BizySafePipe, BizySearchPipe, BizySelectedPipe, BizySetToArrayPipe, FuseOptions };
 //# sourceMappingURL=bizy-pipes.mjs.map

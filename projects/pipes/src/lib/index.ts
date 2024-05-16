@@ -1,3 +1,4 @@
+export { BizySetToArrayPipe } from "./setToArray.pipe";
 export { BizySelectedPipe } from "./selected.pipe";
 export { BizyOrderByPipe } from "./orderBy.pipe";
 export { BizyPipesModule } from "./pipes.module";

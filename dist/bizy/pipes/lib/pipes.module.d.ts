@@ -4,8 +4,9 @@ import * as i2 from "./reduce.pipe";
 import * as i3 from "./safe.pipe";
 import * as i4 from "./search/search.pipe";
 import * as i5 from "./selected.pipe";
+import * as i6 from "./setToArray.pipe";
 export declare class BizyPipesModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyPipesModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<BizyPipesModule, [typeof i1.BizyOrderByPipe, typeof i2.BizyReducePipe, typeof i3.BizySafePipe, typeof i4.BizySearchPipe, typeof i5.BizySelectedPipe], never, [typeof i1.BizyOrderByPipe, typeof i2.BizyReducePipe, typeof i3.BizySafePipe, typeof i4.BizySearchPipe, typeof i5.BizySelectedPipe]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<BizyPipesModule, [typeof i1.BizyOrderByPipe, typeof i2.BizyReducePipe, typeof i3.BizySafePipe, typeof i4.BizySearchPipe, typeof i5.BizySelectedPipe, typeof i6.BizySetToArrayPipe], never, [typeof i1.BizyOrderByPipe, typeof i2.BizyReducePipe, typeof i3.BizySafePipe, typeof i4.BizySearchPipe, typeof i5.BizySelectedPipe, typeof i6.BizySetToArrayPipe]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<BizyPipesModule>;
 }
