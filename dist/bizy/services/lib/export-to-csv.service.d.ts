@@ -10,10 +10,9 @@ export declare class BizyExportToCSVService {
         model: Record<string, string>;
         fileName: string;
     }): void;
-    getCSVurl(data: {
-        items: Array<unknown>;
+    getCSV(data: {
+        items: Array<any>;
         model: Record<string, string>;
-        fileName: string;
     }): string;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyExportToCSVService, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<BizyExportToCSVService>;

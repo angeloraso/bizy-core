@@ -183,7 +183,7 @@ class BizyExportToCSVService {
         }
         try {
             this.#loading = true;
-            const csv = this.#getCSV(data.items, data.model);
+            const csv = this.getCSV(data);
             if (!data.fileName) {
                 data.fileName = 'bizy-csv';
             }
@@ -193,35 +193,21 @@ class BizyExportToCSVService {
             this.#loading = false;
         }
     }
-    getCSVurl(data) {
-        if (this.#loading || !data.items || !Array.isArray(data.items) || !data.model) {
-            return;
-        }
-        try {
-            this.#loading = true;
-            const csv = this.#getCSV(data.items, data.model);
-            const csvData = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
-            return (csvData);
-        }
-        finally {
-            this.#loading = false;
-        }
-    }
-    #getCSV(items, model) {
+    getCSV(data) {
         let csv = '';
         function escapeCommas(str) {
             return str.includes(',') ? `"${str}"` : str;
         }
-        for (const key in model) {
+        for (const key in data.model) {
             if (key) {
-                csv += `${model[key]},`;
+                csv += `${data.model[key]},`;
             }
         }
-        items.forEach(_item => {
+        data.items.forEach(_item => {
             // Remove the last character (',')
             csv = csv.slice(0, -1);
             csv += '\n';
-            for (const key in model) {
+            for (const key in data.model) {
                 let value = _item;
                 const nestedProperty = key.split('.');
                 for (let i = 0; i < nestedProperty.length; i++) {
