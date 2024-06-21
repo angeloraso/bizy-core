@@ -5,7 +5,7 @@ export declare class BizyExportToCSVService {
     private document;
     private rendererFactory;
     constructor(document: Document, rendererFactory: RendererFactory2);
-    downloadCSV(data: {
+    download(data: {
         items: Array<unknown>;
         model: Record<string, string>;
         fileName: string;

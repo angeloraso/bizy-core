@@ -13,7 +13,7 @@ export class BizyExportToCSVService {
       this.#renderer = this.rendererFactory.createRenderer(null, null);
     }
 
-  downloadCSV(data: {items: Array<unknown>, model: Record<string, string>, fileName: string}) {
+  download(data: {items: Array<unknown>, model: Record<string, string>, fileName: string}) {
     if (this.#loading || !data.items || !Array.isArray(data.items) || !data.model) {
       return;
     }

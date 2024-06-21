@@ -177,7 +177,7 @@ class BizyExportToCSVService {
         this.rendererFactory = rendererFactory;
         this.#renderer = this.rendererFactory.createRenderer(null, null);
     }
-    downloadCSV(data) {
+    download(data) {
         if (this.#loading || !data.items || !Array.isArray(data.items) || !data.model) {
             return;
         }
