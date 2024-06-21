@@ -5,11 +5,16 @@ export declare class BizyExportToCSVService {
     private document;
     private rendererFactory;
     constructor(document: Document, rendererFactory: RendererFactory2);
-    toCSV(data: {
+    downloadCSV(data: {
         items: Array<unknown>;
         model: Record<string, string>;
         fileName: string;
     }): void;
+    getCSVurl(data: {
+        items: Array<unknown>;
+        model: Record<string, string>;
+        fileName: string;
+    }): string;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyExportToCSVService, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<BizyExportToCSVService>;
 }

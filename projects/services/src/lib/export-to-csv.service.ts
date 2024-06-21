@@ -13,7 +13,7 @@ export class BizyExportToCSVService {
       this.#renderer = this.rendererFactory.createRenderer(null, null);
     }
 
-  toCSV(data: {items: Array<unknown>, model: Record<string, string>, fileName: string}) {
+  downloadCSV(data: {items: Array<unknown>, model: Record<string, string>, fileName: string}) {
     if (this.#loading || !data.items || !Array.isArray(data.items) || !data.model) {
       return;
     }
@@ -31,8 +31,23 @@ export class BizyExportToCSVService {
     }
   }
 
+  getCSVurl(data: {items: Array<unknown>, model: Record<string, string>, fileName: string}): string {
+    if (this.#loading || !data.items || !Array.isArray(data.items) || !data.model) {
+      return;
+    }
+
+    try {
+      this.#loading = true;
+      const csv = this.#getCSV(data.items, data.model);
+      const csvData = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+      return(csvData);
+    } finally {
+      this.#loading = false;
+    }
+  }
+
   #getCSV(items: Array<any>, model: Record<string, string>): string {
-    let toCopy = '';
+    let csv = '';
 
     function escapeCommas(str) {
       return str.includes(',') ? `"${str}"` : str;
@@ -40,14 +55,14 @@ export class BizyExportToCSVService {
 
     for (const key in model) {
       if (key) {
-        toCopy += `${model[key]},`;
+        csv += `${model[key]},`;
       }
     }
 
     items.forEach(_item => {
       // Remove the last character (',')
-      toCopy = toCopy.slice(0, -1);
-      toCopy += '\n';
+      csv = csv.slice(0, -1);
+      csv += '\n';
 
       for (const key in model) {
         let value: any = _item;
@@ -62,14 +77,14 @@ export class BizyExportToCSVService {
         }
 
         if (typeof value !== undefined && value !== null) {
-          toCopy += `${escapeCommas(String(value).replace(/\n/g, ''))},`;
+          csv += `${escapeCommas(String(value).replace(/\n/g, ''))},`;
         } else {
-          toCopy += ',';
+          csv += ',';
         }
       }
     });
 
-    return toCopy;
+    return csv;
   }
 
   #downloadCSV(data: {csv: string, fileName: string}) {
