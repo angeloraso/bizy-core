@@ -23,8 +23,10 @@ export class BizySearchPipe implements PipeTransform {
       return items;
     }
 
-    if (!Array.isArray(keys)) {
+    if (keys && !Array.isArray(keys)) {
       keys = [keys];
+    } else if (!keys) {
+      keys = []
     }
 
     if (!Array.isArray(search)) {

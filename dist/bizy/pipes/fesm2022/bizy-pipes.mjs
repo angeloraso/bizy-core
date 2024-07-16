@@ -248,8 +248,11 @@ class BizySearchPipe {
         if (typeof search === 'undefined' || search === null || search === '' || (Array.isArray(search) && search.length === 0)) {
             return items;
         }
-        if (!Array.isArray(keys)) {
+        if (keys && !Array.isArray(keys)) {
             keys = [keys];
+        }
+        else if (!keys) {
+            keys = [];
         }
         if (!Array.isArray(search)) {
             search = [String(search)];
