@@ -1,5 +1,6 @@
 :host {
     width: var(--bizy-input-width);
+    min-width: var(--bizy-input-min-width);
     max-width: var(--bizy-input-max-width);
     display: flex;
     flex-direction: column;
@@ -80,6 +81,7 @@
 }
 
 .bizy-input__content__input {
+    width: 100%;
     background-color: var(--bizy-input-background-color);
     color: var(--bizy-input-color);
     flex: 1;
