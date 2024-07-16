@@ -1,14 +1,21 @@
-import { EventEmitter } from '@angular/core';
+import { EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Observable } from 'rxjs';
 import * as i0 from "@angular/core";
 export declare class BizyFilterSectionSearchOptionComponent {
+    #private;
+    private ref;
     id: string;
-    value: string | number;
     customClass: string;
-    onChange: EventEmitter<string | number>;
-    valueChange: EventEmitter<string | number>;
-    setValue(value: any): void;
+    valueChange: EventEmitter<string>;
+    onChange: EventEmitter<string>;
+    _value: string;
+    get activated$(): Observable<boolean>;
+    set value(value: string);
+    constructor(ref: ChangeDetectorRef);
+    _onChange(value: string): void;
     getId: () => string;
+    getValue: () => string;
     isActivated: () => boolean;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyFilterSectionSearchOptionComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<BizyFilterSectionSearchOptionComponent, "bizy-filter-section-search-option", never, { "id": { "alias": "id"; "required": false; }; "value": { "alias": "value"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; }, { "onChange": "onChange"; "valueChange": "valueChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<BizyFilterSectionSearchOptionComponent, "bizy-filter-section-search-option", never, { "id": { "alias": "id"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; "value": { "alias": "value"; "required": false; }; }, { "valueChange": "valueChange"; "onChange": "onChange"; }, never, ["[slot=prefix]", "[slot=suffix]"], false, never>;
 }

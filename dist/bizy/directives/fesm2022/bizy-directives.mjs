@@ -158,44 +158,87 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             }] } });
 
 class BizyOnlyNumbersDirective {
+    elementRef;
     onlyNumbers;
-    regexStr = '^[0-9]*$';
+    #regex = new RegExp(/^-?\d*[.,]?\d*$/);
+    #specialKeys = ['Backspace', 'backspace', 'delete', 'Delete', 'Tab', 'tab', 'Escape', 'escape', 'Enter', 'enter', 'Subtract', 'subtract'];
+    constructor(elementRef) {
+        this.elementRef = elementRef;
+    }
+    onInput(event) {
+        if (typeof this.onlyNumbers === 'undefined' || this.onlyNumbers === null || this.onlyNumbers === false) {
+            return;
+        }
+        const inputElement = this.elementRef.nativeElement;
+        const value = inputElement.value;
+        // Format and validate input value
+        const formattedValue = this.#formatValue(value);
+        if (formattedValue !== value) {
+            inputElement.value = formattedValue;
+            event.stopImmediatePropagation();
+        }
+    }
     onKeyDown(event) {
         if (typeof this.onlyNumbers === 'undefined' || this.onlyNumbers === null || this.onlyNumbers === false) {
             return;
         }
-        let e = event;
-        const ignore = ['Backspace', 'backspace', 'delete', 'Delete', 'Tab', 'tab', 'Escape', 'escape', 'Enter', 'enter', 'Subtract', 'subtract'];
-        if (ignore.indexOf(e.key) !== -1 ||
+        // Allow special keys
+        if (this.#specialKeys.indexOf(event.key) !== -1 ||
             // Allow: Ctrl+A
-            (e.key === 'a' && (e.ctrlKey || e.metaKey)) ||
+            (event.key === 'a' && (event.ctrlKey || event.metaKey)) ||
             // Allow: Ctrl+C
-            (e.key === 'c' && (e.ctrlKey || e.metaKey)) ||
+            (event.key === 'c' && (event.ctrlKey || event.metaKey)) ||
             // Allow: Ctrl+V
-            (e.key === 'v' && (e.ctrlKey || e.metaKey)) ||
+            (event.key === 'v' && (event.ctrlKey || event.metaKey)) ||
             // Allow: Ctrl+X
-            (e.key === 'x' && (e.ctrlKey || e.metaKey)) ||
+            (event.key === 'x' && (event.ctrlKey || event.metaKey)) ||
             // Allow: home, end, left, right
-            (e.keyCode >= 35 && e.keyCode <= 39)) {
+            (event.keyCode >= 35 && event.keyCode <= 39)) {
             // Let it happen, don't do anything
             return;
         }
-        let regEx = new RegExp(this.regexStr);
-        if (!regEx.test(e.key)) {
-            e.preventDefault();
+        // Allow numbers and decimals
+        let current = this.elementRef.nativeElement.value;
+        let next = current.concat(event.key);
+        if (next && !String(next).match(this.#regex)) {
+            event.preventDefault();
         }
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyOnlyNumbersDirective, deps: [], target: i0.ɵɵFactoryTarget.Directive });
-    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "16.2.12", type: BizyOnlyNumbersDirective, selector: "[bizyOnlyNumbers]", inputs: { onlyNumbers: ["bizyOnlyNumbers", "onlyNumbers"] }, host: { listeners: { "keydown": "onKeyDown($event)" } }, ngImport: i0 });
+    #formatValue(value) {
+        // Remove all non-numeric characters except . , and -
+        let newValue = value.replace(/[^0-9.,-]/g, '');
+        // Ensure that '-' is only at the beginning and only once
+        if (newValue.indexOf('-') !== newValue.lastIndexOf('-') || (newValue.indexOf('-') !== 0)) {
+            newValue = newValue.replace(/-+/g, ''); // Remove all '-' characters
+        }
+        // Ensure only one '-' at the beginning
+        if (newValue.startsWith('-') && newValue.indexOf('-') > 0) {
+            newValue = '-' + newValue.replace(/^-+/, ''); // Remove additional '-' characters
+        }
+        // Ensure only one decimal separator
+        const parts = newValue.split(/[,\.]/);
+        if (parts.length > 2) {
+            newValue = `${parts[0]}.${parts.slice(1).join('')}`;
+        }
+        return newValue;
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyOnlyNumbersDirective, deps: [{ token: ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
+    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "16.2.12", type: BizyOnlyNumbersDirective, selector: "[bizyOnlyNumbers]", inputs: { onlyNumbers: ["bizyOnlyNumbers", "onlyNumbers"] }, host: { listeners: { "input": "onInput($event)", "keydown": "onKeyDown($event)" } }, ngImport: i0 });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyOnlyNumbersDirective, decorators: [{
             type: Directive,
             args: [{
                     selector: '[bizyOnlyNumbers]'
                 }]
-        }], propDecorators: { onlyNumbers: [{
+        }], ctorParameters: function () { return [{ type: i0.ElementRef, decorators: [{
+                    type: Inject,
+                    args: [ElementRef]
+                }] }]; }, propDecorators: { onlyNumbers: [{
                 type: Input,
                 args: ['bizyOnlyNumbers']
+            }], onInput: [{
+                type: HostListener,
+                args: ['input', ['$event']]
             }], onKeyDown: [{
                 type: HostListener,
                 args: ['keydown', ['$event']]
@@ -341,11 +384,11 @@ class BizyLongPressDirective {
     #event;
     constructor(elementRef) {
         this.elementRef = elementRef;
-        const mousedown = fromEvent(elementRef.nativeElement, 'mousedown').pipe(filter((event) => event.button == 0), // Only allow left button (Primary button)
+        const mousedown = fromEvent(this.elementRef.nativeElement, 'mousedown').pipe(filter((event) => event.button == 0), // Only allow left button (Primary button)
         map(() => true) // turn on threshold counter
         );
-        const touchstart = fromEvent(elementRef.nativeElement, 'touchstart').pipe(map(() => true));
-        const touchEnd = fromEvent(elementRef.nativeElement, 'touchend').pipe(map(() => false));
+        const touchstart = fromEvent(this.elementRef.nativeElement, 'touchstart').pipe(map(() => true));
+        const touchEnd = fromEvent(this.elementRef.nativeElement, 'touchend').pipe(map(() => false));
         const mouseup = fromEvent(window, 'mouseup').pipe(filter((event) => event.button == 0), // Only allow left button (Primary button)
         map(() => false) // reset threshold counter
         );

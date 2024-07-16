@@ -1,12 +1,17 @@
-<div 
-    class="bizy-filter-section-search-option {{customClass}}"
-    id="{{id}}">
+<bizy-input
+    [id]="id" 
+    (onChange)="_onChange($event)"
+    [value]="_value"
+    class="bizy-filter-section-search-option {{customClass}}">
 
-    <bizy-input
-        class="bizy-filter-section-search-option__input"
-        [autoFocus]="true"
-        [value]="value"
-        (onChange)="setValue($event)">
-    </bizy-input>
+    <span slot="header"></span>
 
-</div>
+    <ng-container slot="prefix">
+        <ng-content select="[slot=prefix]"></ng-content>
+    </ng-container>
+
+    <ng-container slot="suffix">
+        <ng-content select="[slot=suffix]"></ng-content>
+    </ng-container>
+
+</bizy-input>

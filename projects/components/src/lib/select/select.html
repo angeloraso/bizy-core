@@ -1,37 +1,44 @@
-<button 
-    type="button"
+<bizy-input
+    #bizySelect
+    [readonly]="true"
+    [disabled]="disabled"
+    [id]="id"
+    [value]="_optionValue"
+    (onSelect)="_onOpen($event); touched = true"
+    (onEnter)="_onOpen($event); touched = true"
     class="bizy-select {{customClass}}"
-    [ngClass]="{'bizy-select--disabled': disabled}"
-    id="{{id}}"
-    (click)="_onOpen($event)"
-    (keyup.enter)="_onOpen($event)"
-    cdkOverlayOrigin 
+    cdkOverlayOrigin
     #bizySelectTrigger="cdkOverlayOrigin">
 
-    <span class="bizy-select__content">
-        <h4 class="bizy-select__content__label" *ngIf="label">{{label}}</h4>
-        <span>{{_optionValue}}</span>
-    </span>
-
     <svg 
+        slot="suffix"
+        id="bizy-select-arrow"
         class="bizy-select__arrow"
         [ngClass]="{'bizy-select__arrow--opened': opened}"
-        id="bizy-select-arrow"
-        version="1.1"
-        viewBox="0 0 512 512"
-        xml:space="preserve"
         xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink">
-        <path d="M98.9,184.7l1.8,2.1l136,156.5c4.6,5.3,11.5,8.6,19.2,8.6c7.7,0,14.6-3.4,19.2-8.6L411,187.1l2.3-2.6  c1.7-2.5,2.7-5.5,2.7-8.7c0-8.7-7.4-15.8-16.6-15.8v0H112.6v0c-9.2,0-16.6,7.1-16.6,15.8C96,179.1,97.1,182.2,98.9,184.7z"/>
+        viewBox="0 0 320 512">
+        <path d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z"/>
     </svg>
 
-</button>
+    <ng-container slot="header">
+        <ng-content select="[slot=header]"></ng-content>
+    </ng-container>
+
+    <ng-container slot="prefix">
+        <ng-content select="[slot=prefix]"></ng-content>
+    </ng-container>
+
+</bizy-input>
+
+<span class="bizy-select__errors">
+    <ng-content select="[slot=error]"></ng-content>
+</span>
 
 <ng-template
     cdkConnectedOverlay
-    [cdkConnectedOverlayMinWidth]="_selectWidth"
+    [cdkConnectedOverlayMinWidth]="bizySelect.getWidth()"
     [cdkConnectedOverlayOrigin]="bizySelectTrigger"
-    (overlayOutsideClick)="close($event)"
+    (overlayOutsideClick)="close($event, bizySelect)"
     [cdkConnectedOverlayOpen]="opened">
 
     <span class="bizy-select__options">
@@ -41,7 +48,7 @@
         </span>
 
         <ng-content select="bizy-select-option"></ng-content>
-
+    
     </span>
 
 </ng-template>

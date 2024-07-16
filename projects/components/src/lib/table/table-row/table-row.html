@@ -1,15 +1,15 @@
 <bizy-accordion 
     class="bizy-table-row__accordion"
     customClass="bizy-table-row__accordion {{disabled ? 'bizy-table-row--disabled' : ''}} {{selected ? 'bizy-table-row--selected' : ''}} {{opened ? 'bizy-table-row--opened' : ''}}"
-    [opened]="opened"
-    (onOpen)="onOpen.emit($event)">
+    [(opened)]="opened"
+    (onSelect)="_onOpen($event)">
 
     <button
         type="button"
-        id="{{id}}"
+        [id]="id"
         class="bizy-table-row {{customClass}}"
-        (click)="onSelect.emit(!selected)"
-        (keyup.enter)="onSelect.emit(!selected)"
+        (click)="selectedChange.emit(!selected)"
+        (keyup.enter)="selectedChange.emit(!selected)"
         [ngClass]="{'bizy-table-row--disabled': disabled, 'bizy-table-row--selected': selected}">
 
         <ng-content select="bizy-table-column"></ng-content>
@@ -21,8 +21,8 @@
             [ngClass]="{'bizy-table-row__checkbox--hidden': selectable === false, 'bizy-table-row__checkbox--shadow': marginRight > 0}"
             [selected]="selected"
             [disabled]="disabled"
-            (click)="$event.stopPropagation()"
-            (onSelect)="onSelect.emit($event)">
+            (selectedChange)="selectedChange.emit($event)"
+            (onSelect)="onSelect.emit($event); $event.stopPropagation()">
         </bizy-checkbox>
         
     </button>

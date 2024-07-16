@@ -1,1 +1,10 @@
-<ng-content></ng-content>
+<button 
+    type="button"
+    [id]="id"
+    class="bizy-tag bizy-tag--{{type}} {{customClass}}"
+    (click)="onSelect.emit($event)"
+    (keyup.enter)="onSelect.emit($event)">
+
+    <ng-content></ng-content>
+
+</button>

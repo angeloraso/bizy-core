@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, Inject, AfterViewInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, Inject, ChangeDetectorRef } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription, debounceTime } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
   selector: 'bizy-filter-section-range-option',
@@ -8,36 +8,43 @@ import { Subscription, debounceTime } from 'rxjs';
   styleUrls: ['./filter-section-range-option.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BizyFilterSectionRangeOptionComponent implements AfterViewInit {
-  @Input() id: string = String(Math.random());
+export class BizyFilterSectionRangeOptionComponent {
+  @Input() id: string = `bizy-filter-section-range-option-${Math.random()}`;
   @Input() disabled: boolean = false;
-  @Input() minLabel: string = 'Mayor o igual';
-  @Input() maxLabel: string = 'Menor o igual';
   @Input() customClass: string = '';
   @Output() onChange = new EventEmitter<{min: number | null, max: number | null}>();
 
   _minLimit: number;
   _maxLimit: number;
 
+  #activated = new BehaviorSubject<boolean>(false);
+
+  get activated$(): Observable<boolean> {
+    return this.#activated.asObservable();
+  }
+
   form: FormGroup;
-  #subscription = new Subscription();
 
   @Input() set min(min: number | null) {
     if (typeof min === 'undefined' || min === null) {
-      this.minValue.setValue('');
-      return;
+      this.minValue.setValue(null);
+    } else {
+      this.minValue.setValue(min);
     }
 
-    this.minValue.setValue(min);
+    this.#activated.next(Boolean(min));
+    this.ref.detectChanges();
   };
 
   @Input() set max(max: number | null) {
     if (typeof max === 'undefined' || max === null) {
-      this.maxValue.setValue('');
-      return;
+      this.maxValue.setValue(null);
+    } else {
+      this.maxValue.setValue(max);
     }
 
-    this.maxValue.setValue(max);
+    this.#activated.next(Boolean(max));
+    this.ref.detectChanges();
   };
 
   @Input() set minLimit(min: number | null) {
@@ -67,7 +74,8 @@ export class BizyFilterSectionRangeOptionComponent implements AfterViewInit {
   };
 
   constructor(
-    @Inject(FormBuilder) private fb: FormBuilder
+    @Inject(FormBuilder) private fb: FormBuilder,
+    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
   ) {
     this.form = this.fb.group({
       minValue: [null],
@@ -75,38 +83,39 @@ export class BizyFilterSectionRangeOptionComponent implements AfterViewInit {
     });
   }
 
-  ngAfterViewInit() {
-    this.#subscription.add(this.minValue.valueChanges.pipe(debounceTime(300)).subscribe(_value => {
-      const min = _value === '' ? null : Number(_value);
-      if (typeof this._minLimit !== 'undefined' && this._minLimit !== null && min && min < this._minLimit) {
-        this.minValue.setValue(this._minLimit);
-        return;
-      }
+  setMinValue(value: number | string) {
+    let min = value === '' ? null : Number(value);
+    const max = this.maxValue.value === null || this.maxValue.value === '' ? null : Number(this.maxValue.value);
 
-      const max = this.maxValue.value === null || this.maxValue.value === '' ? null : Number(this.maxValue.value);
+    if (min !== null && max !== null && max < min) {
+      return;
+    }
 
-      if (min !== null && max !== null && max < min) {
-        return;
-      }
+    if (typeof this._minLimit !== 'undefined' && this._minLimit !== null && min && min < this._minLimit) {
+      min = this._minLimit;
+    }
 
-      this.onChange.emit({min, max});
-    }));
+    this.onChange.emit({min, max});
+    this.#activated.next(Boolean(min) || Boolean(max));
+    this.ref.detectChanges();
+  }
+  
+  setMaxValue(value: number | string | null) {
+    let max = !Boolean(value) && value !== 0 ? null : Number(value);
 
-    this.#subscription.add(this.maxValue.valueChanges.pipe(debounceTime(300)).subscribe(_value => {
-      const max = _value === '' ? null : Number(_value);
-      if (typeof this._maxLimit !== 'undefined' && this._maxLimit !== null && max && max > this._maxLimit) {
-        this.maxValue.setValue(this._maxLimit);
-        return;
-      }
+    const min = this.minValue.value === null || this.minValue.value === '' ? null : Number(this.minValue.value);
 
-      const min = this.minValue.value === null || this.minValue.value === '' ? null : Number(this.minValue.value);
+    if (min !== null && max !== null && max < min) {
+      return;
+    }
 
-      if (min !== null && max !== null && max < min) {
-        return;
-      }
+    if (typeof this._maxLimit !== 'undefined' && this._maxLimit !== null && max && max > this._maxLimit) {
+      max = this._maxLimit;
+    }
 
-      this.onChange.emit({min, max});
-    }));
+    this.onChange.emit({min, max});
+    this.#activated.next(Boolean(min) || Boolean(max));
+    this.ref.detectChanges();
   }
 
   get minValue(): AbstractControl<number | string> {
@@ -117,10 +126,12 @@ export class BizyFilterSectionRangeOptionComponent implements AfterViewInit {
     return this.form.get('maxValue')!;
   }
 
-  onClear = () => {
-    this.minValue.setValue('');
-
-    this.maxValue.setValue('');
+  onClean = () => {
+    this.minValue.setValue(null);
+    this.maxValue.setValue(null);
+    this.onChange.emit({min: null, max: null});
+    this.#activated.next(false);
+    this.ref.detectChanges();
   }
 
   getId = () => {
@@ -128,6 +139,6 @@ export class BizyFilterSectionRangeOptionComponent implements AfterViewInit {
   }
 
   isActivated = () => {
-    return (this.minValue.value || this.minValue.value === 0 || this.maxValue.value || this.maxValue.value === 0 ) && (this.minValue.value !== this._minLimit || this.maxValue.value !== this._maxLimit);
+    return this.#activated.value;
   }
 }

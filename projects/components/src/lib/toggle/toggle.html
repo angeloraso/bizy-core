@@ -1,19 +1,24 @@
-<div class="bizy-toggle">
+<button type="button" class="bizy-toggle" [ngClass]="{'bizy-toggle--disabled': disabled}" (click)="_onSelect($event)" (keyup.enter)="_onSelect($event)">
 
-    <label class="bizy-toggle__label" for="{{id}}" *ngIf="labelPosition === 'before'">{{label}}</label>
+    <label class="bizy-toggle__label--before" for="{{id}}">
+        <ng-content select="[label-before]"></ng-content>
+    </label>
 
-    <div class="bizy-toggle__slide">
+    <div class="bizy-toggle__slide" [ngClass]="{'bizy-toggle__slide--disabled': disabled}">
         <input 
-            #bizyToggleInput
-            id="{{id}}"
+            [id]="id"
+            [disabled]="disabled"
+            [ngModel]="selected"
+            readonly
             type="checkbox"
-            (change)="checkedChange.emit(!checked); onSelect.emit(!_checked)"
             class="bizy-toggle__slide__checkbox"
             [ngClass]="{'bizy-toggle__slide__checkbox--disabled': disabled}">
         <div class="bizy-toggle__slide__knobs"></div>
         <div class="bizy-toggle__slide__layer"></div>
     </div>
 
-    <label class="bizy-toggle__label" for="{{id}}" *ngIf="labelPosition === 'after'">{{label}}</label>
+    <label class="bizy-toggle__label--after" for="{{id}}">
+        <ng-content select="[label-after]"></ng-content>
+    </label>
     
-</div>
+</button>

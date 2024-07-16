@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input, ContentChildren, QueryList, Inject, ChangeDetectorRef} from '@angular/core';
-import { Subscription } from 'rxjs';
-import { DOCUMENT } from '@angular/common';
+import { AfterContentInit, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, ElementRef, Inject, Input, QueryList, ViewChild } from '@angular/core';
+import { Subject, Subscription, debounceTime } from 'rxjs';
 import { BizyTabComponent } from './tab/tab.component';
 
 @Component({
@@ -9,66 +8,62 @@ import { BizyTabComponent } from './tab/tab.component';
   styleUrls: ['./tabs.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BizyTabsComponent {
+export class BizyTabsComponent implements AfterViewInit, AfterContentInit {
   @ContentChildren(BizyTabComponent) tabs!: QueryList<BizyTabComponent>;
+  @ViewChild('bizyTabs') private bizyTabs: ElementRef; 
+  @ViewChild('bizyTabsWrapper') private bizyTabsWrapper: ElementRef; 
   @Input() customClass: string
 
+  #SCROLL_STEP = 50;
+
+  showLeftButton: boolean = false; 
+  showRightButton: boolean = false; 
+
+  #resizeObserver: ResizeObserver | null = null;
   #subscription = new Subscription();
-  #mutationObserver: MutationObserver;
-  #tabs: Array<BizyTabComponent> = [];
+  #resize$ = new Subject<void>();
+  #initialScroll: number = 0;
 
   constructor(
-    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef,
-    @Inject(DOCUMENT) private document: Document
+    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
   ) {}
 
-  ngOnInit() {
-    this.#mutationObserver = new MutationObserver(() => {
-      if (this.tabs && (this.#tabs.length !== 0 || this.tabs.length !== 0) && !this.#tabsAreEqual(this.#tabs, this.tabs.toArray())) {
-        this.#tabs = this.tabs.toArray();
+  ngAfterViewInit(): void {
+    this.bizyTabsWrapper.nativeElement.scrollLeft = this.#initialScroll;
+    this.#resizeObserver = new ResizeObserver(() => this.#resize$.next());
+    this.#resizeObserver.observe(this.bizyTabs.nativeElement);
+    this.#subscription.add(this.#resize$.pipe(debounceTime(100)).subscribe(() => {
+      this.#checkButtons();
+    }));
+  }
 
-        this.#listenTabChanges(this.tabs.toArray());
+  ngAfterContentInit(): void {
+    for (let i = 0; i < this.tabs.length; i++) {
+      if (this.tabs.get(i).selected) {
+        this.#initialScroll = this.tabs.get(i).elementRef.nativeElement.offsetLeft;
+        break;
       }
-    });
-
-    this.#mutationObserver.observe(this.document.body, { childList: true, subtree: true });
+    }
   }
 
-  #listenTabChanges = (tabs: Array<BizyTabComponent>) => {
-    tabs.forEach(_tab => {
-      this.#subscription.add(_tab.onSelect.subscribe(() => {
-          this.tabs.toArray().forEach(_tab => {
-            _tab.setSelected(false);
-          });
-          _tab.setSelected(true);
-          this.ref.detectChanges();
-      }));
-    });
+  onScrollLeft() {
+    this.bizyTabsWrapper.nativeElement.scrollLeft = this.bizyTabsWrapper.nativeElement.scrollLeft - this.#SCROLL_STEP < 0 ? 0 : this.bizyTabsWrapper.nativeElement.scrollLeft - this.#SCROLL_STEP;
+    this.#checkButtons();
   }
 
-  #tabsAreEqual(arr1: Array<BizyTabComponent>, arr2: Array<BizyTabComponent>) {
-    if (arr1.length !== arr2.length) {
-        return false;
-    }
+  onScrollRight() {
+    this.bizyTabsWrapper.nativeElement.scrollLeft = (this.bizyTabsWrapper.nativeElement.scrollLeft + this.#SCROLL_STEP) > this.bizyTabsWrapper.nativeElement.scrollWidth  ? this.bizyTabsWrapper.nativeElement.scrollWidth : this.bizyTabsWrapper.nativeElement.scrollLeft + this.#SCROLL_STEP;
+    this.#checkButtons();
+  }
 
-    arr1.sort((a, b) => a.id.localeCompare(b.id));
-    arr2.sort((a, b) => a.id.localeCompare(b.id));
-
-    for (let i = 0; i < arr1.length; i++) {
-        for (let key in arr1[i]) {
-            if (arr1[i][key] !== arr2[i][key]) {
-                return false;
-            }
-        }
-    }
-
-    return true;
+  #checkButtons() {
+    this.showLeftButton = this.bizyTabsWrapper.nativeElement.scrollLeft > 0;
+    this.showRightButton = (this.bizyTabsWrapper.nativeElement.scrollWidth - this.bizyTabs.nativeElement.offsetWidth) > 0 && (this.bizyTabsWrapper.nativeElement.scrollLeft < (this.bizyTabsWrapper.nativeElement.scrollWidth - this.bizyTabs.nativeElement.offsetWidth));
+    this.ref.detectChanges();
   }
 
   ngOnDestroy() {
     this.#subscription.unsubscribe();
-    if (this.#mutationObserver) {
-      this.#mutationObserver.disconnect();
-    }
+    this.#resizeObserver.disconnect();
   }
 }

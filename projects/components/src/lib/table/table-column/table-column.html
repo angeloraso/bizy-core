@@ -1,6 +1,6 @@
 <button 
     type="button"
-    id="{{id}}"
+    [id]="id"
     (click)="onSelect.emit($event)"
     (keyup.enter)="onSelect.emit($event)"
     class="bizy-table-column {{customClass}}">

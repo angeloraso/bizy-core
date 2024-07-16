@@ -21,6 +21,7 @@
     background-color: transparent;
     display: flex;
     align-items: center;
+    justify-content: var(--bizy-table-column-justify-content);
     column-gap: 0.3rem;
     padding-right: 0.3rem;
 }

@@ -42,9 +42,12 @@
 
 .bizy-sidebar-floating-option__options {
     background-color: var(--bizy-sidebar-floating-option-background-color);
-    min-width: 10rem;
-    border-radius: 0.3rem;
-    width: 100%;
+    min-width: calc(100% + 2rem);
+    max-width: calc(100vw - 2rem);
+    border-radius: .3rem;
+    max-height: 30rem;
+    overflow-x: hidden;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);

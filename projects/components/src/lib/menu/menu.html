@@ -2,7 +2,7 @@
     type="button"
     class="bizy-menu {{customClass}}"
     [ngClass]="{'bizy-menu--disabled': disabled}"
-    id="{{id}}"
+    [id]="id"
     (click)="_onSelect($event)"
     (keyup.enter)="_onSelect($event)"
     cdkOverlayOrigin 

@@ -7,22 +7,21 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyCheckboxComponent {
-  @Input() id: string = String(Math.random());
+  @Input() id: string = `bizy-checkbox-${Math.random()}`;
   @Input() name: string;
   @Input() selected: boolean = false;
   @Input() disabled: boolean = false;
   @Output() selectedChange = new EventEmitter<boolean>();
-  @Output() onSelect = new EventEmitter<boolean>();
+  @Output() onSelect = new EventEmitter<PointerEvent>();
 
-  _checkboxId = String(Math.random());
+  _checkboxId = `bizy-input-checkbox-${Math.random()}`;
 
-  setSelected() {
+  _onSelect(event: PointerEvent) {
     if (this.disabled) {
       return;
     }
 
-    this.selected = !this.selected;
-    this.selectedChange.emit(this.selected);
-    this.onSelect.emit(this.selected)
+    this.selectedChange.emit(!this.selected);
+    this.onSelect.emit(event)
   }
 }

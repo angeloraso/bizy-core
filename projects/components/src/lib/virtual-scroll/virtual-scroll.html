@@ -1,7 +1,7 @@
 <div>
 
   <cdk-virtual-scroll-viewport 
-    [ngClass]="{'bizy-virtual-scroll--hidden': !virtualScrollItems || virtualScrollItems.length === 0}"
+    *ngIf="virtualScrollItems && virtualScrollItems.length > 0"
     class="bizy-virtual-scroll"
     [ngStyle]="{'height': viewportHeight}"
     [itemSize]="_itemMinHeight"

@@ -2,7 +2,7 @@
     type="button"
     class="bizy-filter {{customClass}}"
     [ngClass]="{'bizy-filter--disabled': disabled}"
-    id="{{id}}"
+    [id]="id"
     (click)="_onOpen($event)"
     (keyup.enter)="_onOpen($event)"
     cdkOverlayOrigin 

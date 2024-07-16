@@ -5,6 +5,7 @@ import { BizySafePipe } from './safe.pipe';
 import { BizySearchPipe } from './search';
 import { BizySelectedPipe } from './selected.pipe';
 import { BizySetToArrayPipe } from './setToArray.pipe';
+import { BizyFormatSecondsPipe } from './formatSeconds.pipe';
 
 const PIPES = [
   BizyOrderByPipe,
@@ -12,7 +13,8 @@ const PIPES = [
   BizySafePipe,
   BizySearchPipe,
   BizySelectedPipe,
-  BizySetToArrayPipe
+  BizySetToArrayPipe,
+  BizyFormatSecondsPipe
 ];
 @NgModule({
   declarations: PIPES,

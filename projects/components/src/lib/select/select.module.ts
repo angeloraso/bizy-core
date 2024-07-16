@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { BizySelectComponent } from './select.component';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { BizySelectOptionComponent } from './select-option/select-option.component';
+import { BizyInputModule } from '../input';
 
 const COMPONENTS = [
   BizySelectComponent,
@@ -11,7 +12,7 @@ const COMPONENTS = [
 ];
 
 @NgModule({
-  imports: [CommonModule, FormsModule, OverlayModule],
+  imports: [CommonModule, FormsModule, BizyInputModule, OverlayModule],
   declarations: COMPONENTS,
   exports: COMPONENTS
 })

@@ -1,21 +1,24 @@
 :host {
     font-size: 1rem;
-    position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .bizy-tab {
     width: 100%;
     min-width: fit-content;
     display: flex;
-    flex-direction: var(--bizy-tab-flex-direction);;
+    flex-direction: column;
     align-items: center;
+    text-wrap: nowrap;
     border-top: var(--bizy-tab-border-top);
     border-right: var(--bizy-tab-border-right);
     border-bottom: var(--bizy-tab-border-bottom);
     border-left: var(--bizy-tab-border-left);
     border-radius: var(--bizy-tab-border-radius);
     padding: var(--bizy-tab-padding);
-    background-color: var(--bizy-tab-background-color);;
+    background-color: var(--bizy-tab-background-color);
+    color: var(--bizy-tab-color);
     cursor: pointer;
 }
 
@@ -25,9 +28,9 @@
 }
 
 .bizy-tab--disabled {
+    pointer-events: none;
     opacity: 0.5;
     cursor: not-allowed !important;
-    pointer-events: none;
 }
 
 @keyframes zoomIn {
@@ -43,17 +46,16 @@
 }
 
 .bizy-tab__selected-line {
-    position: absolute;
     width: 100%;
-    height: 0.2rem;
+    height: var(--bizy-tab-selected-bar-height);
     visibility: hidden;
     pointer-events: none;
-    background-color: var(--bizy-tab-selected-color);
+    background-color: var(--bizy-tab-selected-bar-color);
 }
 
 .bizy-tab__selected-line--visible {
     visibility: visible;
     animation-name: zoomIn;
-    animation-duration: 0.3s;
+    animation-duration: 0.2s;
     animation-fill-mode: both;
 }

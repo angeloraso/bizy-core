@@ -7,5 +7,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizySidebarFloatingOptionTitleComponent {
+  @Input() id: string = `bizy-sidebar-floating-option-title-${Math.random()}`;
   @Input() customClass: string = '';
 }

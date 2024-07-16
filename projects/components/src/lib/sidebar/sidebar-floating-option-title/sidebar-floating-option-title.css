@@ -1,9 +1,13 @@
 :host {
     font-size: 1rem;
+    background-color: var(--bizy-sidebar-floating-option-title-background-color);
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 
 .bizy-sidebar-floating-option-title {
-    background-color: var(--bizy-sidebar-floating-option-title-background-color);
+    background-color: inherit;
     color: var(--bizy-sidebar-floating-option-title-color);
     padding: 0.5rem;
     cursor: default;

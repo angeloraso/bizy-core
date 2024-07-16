@@ -16,8 +16,9 @@
     background-color: var(--bizy-button-background-color);
 }
 
-.bizy-button ::ng-deep * {
+::ng-deep .bizy-button * {
     color: var(--bizy-button-color);
+    text-wrap: nowrap;
 }
 
 .bizy-button:hover {

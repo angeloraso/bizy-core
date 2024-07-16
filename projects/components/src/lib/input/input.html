@@ -1,86 +1,76 @@
-<ion-input 
-    #bizyInput
-    *ngIf="type !== 'date' && type !== 'date-time' && type !== 'time' && type !== 'month-year' && type !== 'year' && type !== 'month' && type !== 'search'"
+<button
+    #bizyInputWrapper
+    type="button"
+    (click)="onSelect.emit($event); onOpen()"
+    (keyup)="onSelect.emit($event); onOpen()"
+    (focus)="bizyInput.nativeElement.focus()"
     class="bizy-input {{customClass}}"
-    [ngClass]="{'bizy-input--error': control && control.touched && control.invalid}"
-    [type]="type"
-    [inputmode]="type"
-    id="{{id}}"
-    [disabled]="disabled"
-    [readonly]="readonly"
-    [value]="control ? control.value : value"
-    [spellcheck]="true"
-    [autocapitalize]="autoCapitalize ? 'on' : 'off'"
-    [autocorrect]="autoCorrect ? 'on' : 'off'"
-    [autocomplete]="browserAutoComplete ? 'on' : 'off'"
-    [autofocus]="autoFocus"
-    fill="solid"
-    [max]="max"
-    [maxlength]="maxLength"
-    [min]="min"
-    [minlength]="minLength"
-    [debounce]="300"
-    (ionBlur)="_onBlur()"
-    (ionInput)="onInput($event)"
-    (keyup.enter)="onEnter.emit()"
-    [clearInput]="clear"
-    [placeholder]="placeholder"
-    labelPlacement="stacked">
-    <div slot="start"><ng-content select="[input-start]"></ng-content></div>
-    <h4 slot="label">{{label}} <ng-content select="[input-label]"></ng-content></h4>
-    <div slot="end"><ng-content select="[input-end]"></ng-content></div>
-</ion-input>
+    cdkOverlayOrigin
+    #bizyInputTrigger="cdkOverlayOrigin"
+    [ngClass]="{'bizy-input--disabled': disabled}">
 
-<ion-input 
-    *ngIf="type === 'date' || type === 'date-time' || type === 'time' || type === 'month-year' || type === 'year' || type === 'month'"
-    class="bizy-input {{customClass}}"
-    [ngClass]="{'bizy-input--error': control && control.touched && control.invalid}"
-    type="text"
-    id="{{id}}"
-    [disabled]="disabled"
-    [readonly]="true"
-    [value]="(control ? control.value : value) | date : (type === 'date' ? 'dd/MM/yyyy' : type === 'date-time' ? 'dd/MM/yyyy hh:mm' : type === 'time' ? 'hh:mm' : type === 'month-year' ? 'MMMM yyyy' : type === 'year' ? 'yyyy' : 'MMMM')"
-    fill="solid"
-    (ionBlur)="_onBlur()"
-    [clearInput]="clear"
-    [placeholder]="placeholder"
-    labelPlacement="stacked">
-    <div slot="start"><ng-content select="[input-start]"></ng-content></div>
-    <h4 slot="label">{{label}} <ng-content select="[input-label]"></ng-content></h4>
-    <div slot="end"><ng-content select="[input-end]"></ng-content></div>
-</ion-input>
+    <span class="bizy-input__header">
+        <ng-content select="[slot=header]"></ng-content>
+    </span>
 
-<span class="bizy-input__errors" *ngIf="control && control.touched && control.invalid">
-    <ng-content select="[input-error]"></ng-content>
+    <span class="bizy-input__content" [ngClass]="{'bizy-input__content--readonly': readonly}">
+        
+        <span class="bizy-input__content__prefix">
+            <ng-content select="[slot=prefix]"></ng-content>
+        </span>
+        
+        <input
+            #bizyInput
+            *ngIf="type !== 'textarea'"
+            class="bizy-input__content__input"
+            [type]="type"
+            [readonly]="readonly"
+            (blur)="focused = false; touched = true; onBlur.emit($event);"
+            (focus)="focused = true; onFocus.emit($event)"
+            (keyup.enter)="onEnter.emit($event)"
+            (keyup.backspace)="_onBackspace($event)"
+            [ngModel]="value"
+            (ngModelChange)="_onchange($event)"/>
+
+        <textarea
+            #bizyInput
+            *ngIf="type === 'textarea'"
+            [rows]="rows"
+            [readonly]="readonly"
+            class="bizy-input__content__input"
+            (blur)="focused = false; touched = true; onBlur.emit($event);"
+            (focus)="focused = true; onFocus.emit($event)"
+            (keyup.enter)="onEnter.emit($event)"
+            (keyup.backspace)="_onBackspace($event)"
+            [ngModel]="value"
+            (ngModelChange)="_onchange($event)">
+        </textarea>
+
+        <span class="bizy-input__content__suffix">
+            <ng-content select="[slot=suffix]"></ng-content>
+        </span>
+
+    </span>
+
+    <span class="bizy-input__bottom-line" [ngClass]="{'bizy-input__bottom-line--visible': focused}"></span>
+
+</button>
+
+<ng-template
+    cdkConnectedOverlay
+    [cdkConnectedOverlayMinWidth]="bizyInputWrapper?.offsetWidth"
+    [cdkConnectedOverlayOrigin]="bizyInputTrigger"
+    (overlayOutsideClick)="close($event, bizyInputWrapper)"
+    [cdkConnectedOverlayOpen]="opened">
+
+    <span class="bizy-input__options">
+
+        <ng-content select="bizy-input-option"></ng-content>
+    
+    </span>
+
+</ng-template>
+
+<span class="bizy-input__errors">
+    <ng-content select="[slot=error]"></ng-content>
 </span>
-
-<ion-modal 
-    #bizyInputDateTimeModal
-    trigger="{{id}}"
-    class="bizy-date-input"
-    *ngIf="type === 'date' || type === 'date-time' || type === 'time' || type === 'month-year' || type === 'year' || type === 'month'">
-    <ng-template>
-
-        <ion-datetime 
-            #bizyInputDateTime
-            [presentation]="type" 
-            [firstDayOfWeek]="1"
-            [min]="min"
-            [max]="max"
-            locale="es-AR"
-            hourCycle="h24"
-            [showDefaultButtons]="true"
-            [cancelText]="cancelLabel"
-            [doneText]="confirmLabel"
-            [value]="control ? control.value : value">
-
-            <bizy-confirm-buttons
-                slot="buttons"
-                (cancel)="cancel(bizyInputDateTimeModal, bizyInputDateTime)"
-                (confirm)="confirm(bizyInputDateTimeModal, bizyInputDateTime)">
-            </bizy-confirm-buttons>
-        </ion-datetime>
-
-    </ng-template>
-</ion-modal>
-

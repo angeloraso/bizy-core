@@ -1,69 +1,56 @@
 :host {
   font-size: 1rem;
+}
+
+.bizy-tag {
+  border: none;
   padding: 0.3rem;
   border-radius: 0.3rem;
-  cursor: inherit;
   display: flex;
   justify-content: center;
+  cursor: pointer;
+  column-gap: 0.5rem;
   align-items: center;
   text-wrap: nowrap;
   width: fit-content;
-  color: var(--bizy-tag-color);
-  background-color: var(--bizy-tag-background-color);
 }
 
-:host ::ng-deep * {
-  text-wrap: nowrap;
-  color: var(--bizy-tag-color);
-  fill: var(--bizy-tag-color);
-}
-
-:host[type=default] {
-  color: var(--bizy-tag-default-color);
+.bizy-tag--default {
   background-color: var(--bizy-tag-default-background-color);
 }
 
-:host[type=default] ::ng-deep * {
-  color: var(--bizy-tag-default-color);
-  fill: var(--bizy-tag-default-color);
+::ng-deep .bizy-tag--default * {
+  color: var(--bizy-tag-default-color) !important;
 }
 
-:host[type=success] {
-  color: var(--bizy-tag-success-color);
-  background-color: var(--bizy-tag-success-background-color);
-}
-
-:host[type=success] ::ng-deep * {
-  color: var(--bizy-tag-success-color);
-  fill: var(--bizy-tag-success-color);
-}
-
-:host[type=info] {
-  color: var(--bizy-tag-info-color);
+.bizy-tag--info {
   background-color: var(--bizy-tag-info-background-color);
 }
 
-:host[type=info] ::ng-deep * {
-  color: var(--bizy-tag-info-color);
-  fill: var(--bizy-tag-info-color);
+::ng-deep .bizy-tag--info * {
+  color: var(--bizy-tag-info-color) !important;
 }
 
-:host[type=warning] {
-  color: var(--bizy-tag-warning-color);
+.bizy-tag--success {
+  background-color: var(--bizy-tag-success-background-color);
+}
+
+::ng-deep .bizy-tag--success * {
+  color: var(--bizy-tag-success-color) !important;
+}
+
+.bizy-tag--warning {
   background-color: var(--bizy-tag-warning-background-color);
 }
 
-:host[type=warning] ::ng-deep * {
-  color: var(--bizy-tag-warning-color);
-  fill: var(--bizy-tag-warning-color);
+::ng-deep .bizy-tag--warning * {
+  color: var(--bizy-tag-warning-color) !important;
 }
 
-:host[type=danger] {
-  color: var(--bizy-tag-danger-color);
+.bizy-tag--danger {
   background-color: var(--bizy-tag-danger-background-color);
 }
 
-:host[type=danger] ::ng-deep * {
-  color: var(--bizy-tag-danger-color);
-  fill: var(--bizy-tag-danger-color);
+::ng-deep .bizy-tag--danger * {
+  color: var(--bizy-tag-danger-color) !important;
 }

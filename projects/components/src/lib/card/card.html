@@ -8,11 +8,11 @@
     <span class="bizy-card__header">
 
         <span class="bizy-card__header__start bizy-card__slot">
-            <ng-content select="[card-header-start]"></ng-content>
+            <ng-content select="[slot=header-start]"></ng-content>
         </span>
 
         <span class="bizy-card__header__end bizy-card__slot">
-            <ng-content select="[card-header-end]"></ng-content>
+            <ng-content select="[slot=header-end]"></ng-content>
         </span>
 
     </span>
@@ -26,11 +26,11 @@
     <span class="bizy-card__footer">
 
         <span class="bizy-card__footer__start bizy-card__slot">
-            <ng-content select="[card-footer-start]"></ng-content>
+            <ng-content select="[slot=footer-start]"></ng-content>
         </span>
 
         <span class="bizy-card__footer__end bizy-card__slot">
-            <ng-content select="[card-footer-end]"></ng-content>
+            <ng-content select="[slot=footer-end]"></ng-content>
         </span>
 
     </span>

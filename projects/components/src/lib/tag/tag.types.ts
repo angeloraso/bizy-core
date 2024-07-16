@@ -3,5 +3,5 @@ export enum BIZY_TAG_TYPE {
     SUCCESS = 'success',
     INFO = 'info',
     WARNING = 'warning',
-    DANGER = 'danger'
-}
+    DANGER = 'danger',
+};

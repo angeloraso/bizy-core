@@ -7,7 +7,3 @@
   font-size: 1rem;
   height: var(--bizy-virtual-scroll-height);
 }
-
-.bizy-virtual-scroll--hidden {
-  height: 0 !important;
-}

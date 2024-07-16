@@ -8,12 +8,12 @@
 
 .bizy-sidebar {
     height: 100%;
-    width: fit-content;
+    min-width: fit-content;
     height: 100%;
     max-height: 100vh;
     background-color: var(--bizy-sidebar-background-color);
     position: relative;
-    transition: width 0.3s ease;
+    transition: width 0.2s ease;
     display: grid;
     grid-template-columns: 100%;
     grid-template-rows: auto 1fr auto;
@@ -66,9 +66,9 @@
     width: var(--bizy-sidebar-width);
     flex-direction: column;
     direction: rtl;
-    padding-left: 0.5rem;
+    padding: var(--bizy-sidebar-padding);
     overflow-x: hidden;
-    transition: width 0.3s ease;
+    transition: width 0.2s ease;
 }
 
 .bizy-sidebar__content--shrinked {
@@ -82,7 +82,7 @@
 
 .bizy-sidebar__content::-webkit-scrollbar-thumb {
     border-radius: 1rem;
-    background-color: var(--bizy-sidebar-option-selected-color);
+    background-color: var(--bizy-sidebar-scroll-bar-color);
 }
 
 .bizy-sidebar__content::-webkit-scrollbar-button {

@@ -1,6 +1,6 @@
 <button 
     type="button"
-    id="{{id}}"
+    [id]="id"
     (click)="_onSelect()"
     (keyup.enter)="_onSelect()"
     [ngClass]="{'bizy-select-option--selected': selected, 'bizy-select-option--disabled': disabled}"

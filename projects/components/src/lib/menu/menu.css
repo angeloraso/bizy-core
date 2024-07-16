@@ -27,10 +27,10 @@
 }
 
 .bizy-menu__arrow {
-    height: 1rem;
+    height: var(--bizy-menu-arrow-height);;
     pointer-events: none;
     display: block;
-    transition: transform 0.3s ease;
+    transition: transform 0.2s ease;
     fill: var(--bizy-menu-color);
 }
 

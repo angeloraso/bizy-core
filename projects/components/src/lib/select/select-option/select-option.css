@@ -2,10 +2,6 @@
     font-size: 1rem;
 }
 
-:host:has(> .bizy-select-option__select:not(:empty)) .bizy-select-option {
-    display: none !important;
-}
-
 .bizy-select-option {
     font-size: 1rem;
     width: 100%;
@@ -25,8 +21,11 @@
 }
 
 .bizy-select-option--selected {
+    background-color: var(--bizy-select-option-selected-background-color) !important;
+}
+
+.bizy-select-option--selected ::ng-deep .bizy-select-option__content * {
     color: var(--bizy-select-option-selected-color);
-    background-color: var(--bizy-select-option-selected-background-color);
 }
 
 .bizy-select-option--disabled {
@@ -42,3 +41,4 @@
     column-gap: 0.3rem;
     text-align: start;
 }
+

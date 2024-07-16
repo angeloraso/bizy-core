@@ -1,12 +1,8 @@
 export * from './toggle';
-export * from './audio-player';
 export * from './breadcrumb';
 export * from './button';
-export * from './fab-button';
-export * from './confirm-buttons';
 export * from './virtual-scroll';
 export * from './input';
-export * from './error';
 export * from './tabs';
 export * from './toolbar';
 export * from './sidebar';
@@ -23,4 +19,3 @@ export * from './accordion';
 export * from './slider';
 export * from './tag';
 export * from './card';
-export { BizyComponentsModule } from './components.module';

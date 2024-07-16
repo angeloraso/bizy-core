@@ -1,0 +1,22 @@
+
+:host {
+    font-size: 1rem;
+    width: var(--bizy-input-width);
+    max-width: var(--bizy-input-max-width);
+}
+
+.bizy-date-picker {
+    --bizy-input-cursor: pointer;
+}
+
+.bizy-date-picker__arrow {
+    height: 1rem;
+    pointer-events: none;
+    display: block;
+    transition: transform 0.2s ease;
+    fill: var(--bizy-input-color);
+}
+
+.bizy-date-picker__arrow--opened {
+    transform: rotate(180deg);
+}

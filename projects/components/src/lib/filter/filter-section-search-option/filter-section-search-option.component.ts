@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, Inject, ChangeDetectorRef } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
   selector: 'bizy-filter-section-search-option',
@@ -7,23 +8,53 @@ import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from 
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyFilterSectionSearchOptionComponent {
-  @Input() id: string = String(Math.random());
-  @Input() value: string | number = '';
+  @Input() id: string = `bizy-filter-section-search-option-${Math.random()}`;
   @Input() customClass: string = '';
-  @Output() onChange = new EventEmitter<string | number>();
-  @Output() valueChange = new EventEmitter<string | number>();
+  @Output() valueChange = new EventEmitter<string>();
+  @Output() onChange = new EventEmitter<string>();
 
+  _value: string = '';
 
-  setValue(value) {
-    this.valueChange.emit(value);
-    this.onChange.emit(value);
+  #activated = new BehaviorSubject<boolean>(false);
+
+  get activated$(): Observable<boolean> {
+    return this.#activated.asObservable();
   }
 
-  getId = (): string => {
+  @Input() set value(value: string) {
+    if (typeof value === 'undefined' || value === null) {
+      return;
+    }
+
+    if (Array.isArray(value)) {
+      value = '';
+    } 
+
+    this._value = value;
+    this.#activated.next(Boolean(value));
+    this.ref.detectChanges();
+  }
+
+  constructor(
+    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
+  ) {}
+
+  _onChange(value: string) {
+    this.valueChange.emit(value);
+    this.onChange.emit(value);
+    this.#activated.next(Boolean(value));
+    this.ref.detectChanges();
+  }
+
+  getId = () => {
     return this.id;
   }
 
-  isActivated = (): boolean => {
-    return Boolean(this.value);
+  getValue = () => {
+    return this._value;
+  }
+
+  isActivated = () => {
+    return this.#activated.value;
   }
 }

@@ -7,7 +7,7 @@ import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from 
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyMenuOptionComponent {
-  @Input() id: string = String(Math.random());
+  @Input() id: string = `bizy-menu-option-${Math.random()}`;
   @Input() disabled: boolean = false;
   @Input() customClass: string = '';
   @Input() selected: boolean = false;

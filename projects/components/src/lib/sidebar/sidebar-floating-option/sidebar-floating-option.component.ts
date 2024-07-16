@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, EventEmitter, Inject, Input, OnInit, Output, QueryList } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, EventEmitter, Inject, Input, OnInit, Output, QueryList } from '@angular/core';
 import { BizySidebarOptionComponent } from '../sidebar-option/sidebar-option.component';
-import { Subscription } from 'rxjs';
-import { DOCUMENT } from '@angular/common';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 @Component({
   selector: 'bizy-sidebar-floating-option',
@@ -9,47 +8,61 @@ import { DOCUMENT } from '@angular/common';
   styleUrls: ['./sidebar-floating-option.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BizySidebarFloatingOptionComponent implements OnInit {
+export class BizySidebarFloatingOptionComponent implements AfterContentInit {
   @ContentChildren(BizySidebarOptionComponent) options!: QueryList<BizySidebarOptionComponent>;
-  @Input() id: string = String(Math.random());
+  @Input() id: string = `bizy-sidebar-floating-option-${Math.random()}`;
   @Input() disabled: boolean = false;
   @Input() offsetX: number = 0;
   @Input() offsetY: number = 0;
   @Input() customClass: string = '';
-  @Input() selected: boolean = false;
+  @Output() selectedChange = new EventEmitter<boolean>();
   @Output() onSelect = new EventEmitter<PointerEvent>();
 
+  _turnOn$ = new BehaviorSubject<boolean>(false);
+  _selected: boolean = false;
   _opened: boolean = false;
 
-  #mutationObserver: MutationObserver;
-  #subscription = new Subscription();
-  #options: Array<BizySidebarOptionComponent> = [];
+  @Input() set selected(selected: boolean) {
+    if (typeof selected === 'undefined' || selected === null) {
+      return;
+    }
 
-  constructor(
-    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef,
-    @Inject(DOCUMENT) private document: Document
-  ) {}
-
-  ngOnInit() {
-    this.#mutationObserver = new MutationObserver(() => {
-      if (this.options && (this.#options.length !== 0 || this.options.length !== 0) && !this.#optionsAreEqual(this.#options, this.options.toArray())) {
-        this.#options = this.options.toArray();
-
-        this.#listenOptionChanges(this.options.toArray());
-      }
-    });
-
-    this.#mutationObserver.observe(this.document.body, { childList: true, subtree: true });
+    const turnOn = selected && selected !== this._selected;
+    this._turnOn$.next(turnOn);
+    this._opened = turnOn;
+    this._selected = selected;
+    this.ref.detectChanges();
   }
 
-  _onSelect(event: any) {
+  #subscription = new Subscription();
+  #optionSubscription = new Subscription();
+
+  constructor(
+    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
+  ) {}
+
+  ngAfterContentInit() {
+    if (this.options && this.options.length > 0) {
+      this.#listenOptionChanges(this.options.toArray());
+      this.#subscription.add(this.options.changes.subscribe(() => {
+        this.#optionSubscription.unsubscribe();
+        this.#optionSubscription = new Subscription();
+        this.#listenOptionChanges(this.options.toArray());
+      }))
+    }
+  }
+
+  _onSelect(event: PointerEvent) {
     if (this.disabled) {
       return;
     }
 
     this._opened = !this._opened;
-    this.selected = true;
-    this.onSelect.emit(event);
+    this.ref.detectChanges();
+    setTimeout(() => {
+      this.selectedChange.emit(this._opened);
+      this.onSelect.emit(event);
+    }, 50)
   }
 
   close = (event: PointerEvent & {target: {id: string}}) => {
@@ -58,11 +71,6 @@ export class BizySidebarFloatingOptionComponent implements OnInit {
     }
 
     this._opened = false;
-    this.ref.detectChanges();
-  }
-
-  setSelected = (selected: boolean): void => {
-    this.selected = selected;
     this.ref.detectChanges();
   }
 
@@ -76,10 +84,14 @@ export class BizySidebarFloatingOptionComponent implements OnInit {
 
   #listenOptionChanges = (options: Array<BizySidebarOptionComponent>) => {
     options.forEach(_option => {
-      this.#subscription.add(_option.onSelect.subscribe(() => {
-        if (!_option.options || _option.options.length === 0) {
-          this._opened = false;
-          this.ref.detectChanges();
+      this.#optionSubscription.add(_option._turnOn$.subscribe(turnOn => {
+        if (turnOn) {
+          if (!_option.options || _option.options.length === 0) {
+            this._opened = false;
+            this.ref.detectChanges();
+          }
+
+          this.#selectParents(this.options.toArray(), _option);
         }
       }));
 
@@ -89,22 +101,36 @@ export class BizySidebarFloatingOptionComponent implements OnInit {
     });
   }
 
-  #optionsAreEqual(arr1: Array<BizySidebarOptionComponent>, arr2: Array<BizySidebarOptionComponent>) {
-    if (arr1.length !== arr2.length) {
-        return false;
-    }
-
-    arr1.sort((a, b) => String(a.id).localeCompare(String(b.id)));
-    arr2.sort((a, b) => String(a.id).localeCompare(String(b.id)));
-
-    for (let i = 0; i < arr1.length; i++) {
-        for (let key in arr1[i]) {
-            if (arr1[i][key] !== arr2[i][key]) {
-                return false;
-            }
+  #selectParents = (options: Array<BizySidebarOptionComponent>, option: BizySidebarOptionComponent): boolean => {
+    let founded: boolean = false;
+    for (let i = 0; i < options.length; i++) {
+      if (options[i].getId() === option.getId()) {
+        founded = true;
+      } else if (options[i].options && options[i].options.length > 0) {
+        const _founded = this.#selectParents(options[i].options.toArray(), option);
+        if (_founded) {
+          founded = true;
+          setTimeout(() => {
+            options[i].selectedChange.emit(true);
+          }, 50)
+        } else {
+          setTimeout(() => {
+            options[i].selectedChange.emit(false);
+          }, 50)
         }
+        
+      } else {
+        setTimeout(() => {
+          options[i].selectedChange.emit(false);
+        }, 50)
+      }
     }
 
-    return true;
+    return founded;
+  };
+
+  ngOnDestroy() {
+    this.#subscription.unsubscribe();
+    this.#optionSubscription.unsubscribe();
   }
 }

@@ -42,7 +42,7 @@
     -webkit-appearance: none;
     appearance: none;
     height: 0.2rem;
-    width: calc(100% - 0.2rem);;
+    width: calc(100% - 0.2rem);
     position: absolute;
     background-color: var(--bizy-slider-color);
     pointer-events: none;

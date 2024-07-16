@@ -1,0 +1,13 @@
+<button 
+    type="button"
+    [id]="id"
+    (click)="_onSelect($event)"
+    (keyup.enter)="_onSelect($event)"
+    [ngClass]="{'bizy-input-option--selected': selected, 'bizy-input-option--disabled': disabled}"
+    class="bizy-input-option {{customClass}}">
+
+    <span class="bizy-input-option__content">
+        <ng-content></ng-content>
+    </span>
+    
+</button>

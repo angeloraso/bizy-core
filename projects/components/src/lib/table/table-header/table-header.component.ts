@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, Inject, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Inject, ChangeDetectorRef, Output, EventEmitter, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'bizy-table-header',
@@ -7,16 +7,18 @@ import { ChangeDetectionStrategy, Component, Input, Inject, ChangeDetectorRef, O
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyTableHeaderComponent {
-  @Input() id: string = String(Math.random());
+  @Input() id: string = `bizy-table-header-${Math.random()}`;
   @Input() customClass: string = '';
   @Input() selected: boolean = false;
   @Input() selectable: boolean | null = null;
-  @Output() onSelect = new EventEmitter<boolean>();
+  @Output() selectedChange = new EventEmitter<boolean>();
+  @Output() onSelect = new EventEmitter<PointerEvent>();
 
   marginRight = 0;
 
   constructor(
-    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
+    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef,
+    @Inject(ElementRef) public elementRef: ElementRef
   ) {}
 
   getId = (): string => {

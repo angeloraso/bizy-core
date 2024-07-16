@@ -1,21 +1,31 @@
 <div 
     class="bizy-filter-section-range-option {{customClass}}"
-    id="{{id}}">
+    [id]="id">
 
     <span class="bizy-filter-section-range-option__inputs">
 
         <bizy-input
             class="bizy-filter-section-range-option__input"
-            [title]="minLabel"
             type="number"
-            [control]="minValue">
+            [value]="minValue.value"
+            (onChange)="setMinValue($event)">
+
+            <ng-container slot="header">
+                <ng-content select="[slot=min-header]"></ng-content>
+            </ng-container>
+
         </bizy-input>
 
         <bizy-input
             class="bizy-filter-section-range-option__input"
-            [title]="maxLabel"
             type="number"
-            [control]="maxValue">
+            [value]="maxValue.value"
+            (onChange)="setMaxValue($event)">
+
+            <ng-container slot="header">
+                <ng-content select="[slot=max-header]"></ng-content>
+            </ng-container>
+
         </bizy-input>
 
     </span>

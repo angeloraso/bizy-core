@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs';
 })
 export class BizyMenuComponent {
   @ContentChildren(BizyMenuOptionComponent) options!: QueryList<BizyMenuOptionComponent>;
-  @Input() id: string = String(Math.random());
+  @Input() id: string = `bizy-menu-${Math.random()}`;
   @Input() disabled: boolean = false;
   @Input() offsetX: number = 0;
   @Input() offsetY: number = 0;

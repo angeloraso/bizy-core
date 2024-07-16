@@ -7,9 +7,9 @@ import { BizyFilterSectionComponent } from './filter-section/filter-section.comp
 import { BizyCheckboxModule } from '../checkbox';
 import { BizyFilterPipe, BizyRangeFilterPipe } from './pipes';
 import { BizyFilterSectionRangeOptionComponent } from './filter-section-range-option/filter-section-range-option.component';
+import { BizyInputModule } from '../input';
 import { BizyFilterSectionCheckboxOptionComponent } from './filter-section-checkbox-option/filter-section-checkbox-option.component';
 import { BizyFilterSectionSearchOptionComponent } from './filter-section-search-option/filter-section-search-option.component';
-import { BizyInputModule } from '../input';
 
 const COMPONENTS = [
   BizyFilterComponent,

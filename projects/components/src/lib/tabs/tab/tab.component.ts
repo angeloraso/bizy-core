@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, ContentChildren, QueryList, Inject, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'bizy-tab',
@@ -7,37 +7,22 @@ import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, Conten
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyTabComponent {
-  @Input() id: string = String(Math.random());
+  @Input() id: string = `bizy-tab-${Math.random()}`;
   @Input() disabled: boolean = false;
-  @Input() linePosition: 'bottom' | 'top' = 'top';
-  @Input() customClass: string = '';
   @Input() selected: boolean = false;
+  @Input() linePosition: 'bottom' | 'top' = 'bottom';
+  @Input() customClass: string;
   @Output() selectedChange = new EventEmitter<boolean>();
-  @Output() onSelect = new EventEmitter<void>();
+  @Output() onSelect = new EventEmitter<PointerEvent>();
 
-  constructor(
-    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
-  ) {}
+  constructor(@Inject(ElementRef) public elementRef: ElementRef) {}
 
-  _onSelect(): void {
+  _onSelect(event: PointerEvent) {
     if (this.disabled) {
       return;
     }
 
-    this.onSelect.emit();
-  }
-
-  setSelected = (selected: boolean): void => {
-    this.selected = selected;
-    this.selectedChange.emit(selected);
-    this.ref.detectChanges();
-  }
-
-  getId = (): string  => {
-    return this.id;
-  }
-
-  getSelected = (): boolean  => {
-    return this.selected;
+    this.selectedChange.emit(true);
+    this.onSelect.emit(event);
   }
 }

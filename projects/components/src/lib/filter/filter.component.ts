@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 })
 export class BizyFilterComponent {
   @ContentChildren(BizyFilterSectionComponent) private sections: QueryList<BizyFilterSectionComponent>;
-  @Input() id: string = String(Math.random());
+  @Input() id: string = `bizy-filter-${Math.random()}`;
   @Input() disabled: boolean = false;
   @Input() customClass: string = '';
   @Input() opened: boolean = false;

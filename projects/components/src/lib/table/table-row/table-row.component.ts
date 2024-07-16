@@ -7,20 +7,31 @@ import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, Change
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyTableRowComponent {
-  @Input() id: string = String(Math.random());
+  @Input() id: string = `bizy-table-row-${Math.random()}`;
   @Input() customClass: string = '';
   @Input() disabled: boolean = false;
   @Input() selected: boolean = false;
   @Input() opened: boolean = false;
   @Input() selectable: boolean | null = null;
-  @Output() onSelect = new EventEmitter<boolean>();
-  @Output() onOpen = new EventEmitter<boolean>();
+  @Output() selectedChange = new EventEmitter<boolean>();
+  @Output() onSelect = new EventEmitter<PointerEvent>();
+  @Output() openedChange = new EventEmitter<boolean>();
+  @Output() onOpen = new EventEmitter<PointerEvent>();
 
   marginRight = 0;
 
   constructor(
     @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
   ) {}
+
+  _onOpen(event: PointerEvent) {
+    if (this.disabled) {
+      return;
+    }
+
+    this.openedChange.emit(!this.opened);
+    this.onOpen.emit(event);
+  }
 
   getId = (): string => {
     return this.id;
@@ -45,7 +56,7 @@ export class BizyTableRowComponent {
     }
     
     this.selected = selected;
-    this.onSelect.emit(selected);
+    this.selectedChange.emit(selected);
     this.ref.detectChanges();
   }
 

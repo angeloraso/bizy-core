@@ -7,7 +7,7 @@ import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, Inject
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyFilterSectionCheckboxOptionComponent {
-  @Input() id: string | number | boolean = `bizy-filter-section-checkbox-option-${Math.random()}`;
+  @Input() id: string = `bizy-filter-section-checkbox-option-${Math.random()}`;
   @Input() disabled: boolean = false;
   @Input() customClass: string = '';
   @Output() onChange = new EventEmitter<boolean>();

@@ -1,9 +1,10 @@
 <button 
   type="button"
-  [ngClass]="{'bizy-accordion--opened': opened}"
+  [id]="id"
+  [ngClass]="{'bizy-accordion--disabled': disabled}"
   class="bizy-accordion {{customClass}}"
-  (click)="opened = !opened; onOpen.emit(opened)"
-  (keyup.enter)="opened = !opened; onOpen.emit(opened)">
+  (click)="_onSelect($event)"
+  (keyup.enter)="_onSelect($event)">
 
   <span class="bizy-accordion__content">
     <ng-content></ng-content>

@@ -1,5 +1,5 @@
 <div 
-    id="{{id}}"
+    [id]="id"
     class="bizy-table-header {{customClass}}">
 
     <ng-content select="bizy-table-column"></ng-content>
@@ -12,6 +12,7 @@
         
         <bizy-checkbox 
             [selected]="selected"
+            (selectedChange)="selectedChange.emit($event)"
             (onSelect)="onSelect.emit($event)"
             [ngClass]="{'bizy-table-header__checkbox--hidden': selectable === false}">
         </bizy-checkbox>

@@ -4,4 +4,5 @@ export { BizyOrderByPipe } from "./orderBy.pipe";
 export { BizyPipesModule } from "./pipes.module";
 export { BizyReducePipe } from "./reduce.pipe";
 export { BizySafePipe } from "./safe.pipe";
+export { BizyFormatSecondsPipe } from './formatSeconds.pipe';
 export * from './search';

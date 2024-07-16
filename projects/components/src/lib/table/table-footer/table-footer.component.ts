@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inject, Input } from '@angular/core';
 
 @Component({
   selector: 'bizy-table-footer',
@@ -7,7 +7,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input } 
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyTableFooterComponent {
-  @Input() id: string = String(Math.random());
+  @Input() id: string = `bizy-table-footer-${Math.random()}`;
   @Input() customClass: string = '';
 
   marginRight = 0;
@@ -15,7 +15,8 @@ export class BizyTableFooterComponent {
   _selectable: boolean = false;
 
   constructor(
-    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
+    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef,
+    @Inject(ElementRef) public elementRef: ElementRef
   ) {}
 
   getId = (): string => {

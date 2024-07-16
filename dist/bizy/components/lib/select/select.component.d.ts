@@ -1,5 +1,6 @@
 import { BizySelectOptionComponent } from './select-option/select-option.component';
 import { ChangeDetectorRef, EventEmitter, QueryList, AfterViewInit } from '@angular/core';
+import { BizyInputComponent } from '../input';
 import * as i0 from "@angular/core";
 export declare class BizySelectComponent implements AfterViewInit {
     #private;
@@ -8,21 +9,22 @@ export declare class BizySelectComponent implements AfterViewInit {
     options: QueryList<BizySelectOptionComponent>;
     id: string;
     disabled: boolean;
-    label: string;
     customClass: string;
     opened: boolean;
-    onOpen: EventEmitter<PointerEvent>;
-    _selectWidth: number;
+    openedChange: EventEmitter<boolean>;
+    onSelect: EventEmitter<PointerEvent>;
+    onOpen: EventEmitter<boolean>;
     _optionValue: string;
+    touched: boolean;
     constructor(ref: ChangeDetectorRef, document: Document);
     ngAfterViewInit(): void;
-    _onOpen(event: any): void;
-    close: (event: PointerEvent & {
+    _onOpen(event: PointerEvent): void;
+    close: (event?: PointerEvent & {
         target: {
             id: string;
         };
-    }) => void;
+    }, select?: BizyInputComponent) => void;
     ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizySelectComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<BizySelectComponent, "bizy-select", never, { "id": { "alias": "id"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; "label": { "alias": "label"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; "opened": { "alias": "opened"; "required": false; }; }, { "onOpen": "onOpen"; }, ["options"], ["bizy-input", "bizy-select-option"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<BizySelectComponent, "bizy-select", never, { "id": { "alias": "id"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; "opened": { "alias": "opened"; "required": false; }; }, { "openedChange": "openedChange"; "onSelect": "onSelect"; "onOpen": "onOpen"; }, ["options"], ["[slot=header]", "[slot=prefix]", "[slot=error]", "bizy-input", "bizy-select-option"], false, never>;
 }

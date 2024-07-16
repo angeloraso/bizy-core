@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, ContentChildren, QueryList, Inject, ChangeDetectorRef, OnInit} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, ContentChildren, QueryList, AfterContentInit} from '@angular/core';
 import { BizySidebarOptionComponent } from './sidebar-option/sidebar-option.component';
 import { Subscription } from 'rxjs';
-import { DOCUMENT } from '@angular/common';
 import { BizySidebarFloatingOptionComponent } from './sidebar-floating-option/sidebar-floating-option.component';
 
 @Component({
@@ -10,63 +9,43 @@ import { BizySidebarFloatingOptionComponent } from './sidebar-floating-option/si
   styleUrls: ['./sidebar.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BizySidebarComponent implements OnInit {
+export class BizySidebarComponent implements AfterContentInit {
+  @Input() id: string = `bizy-sidebar-${Math.random()}`;
   @ContentChildren(BizySidebarOptionComponent) options!: QueryList<BizySidebarOptionComponent>;
   @ContentChildren(BizySidebarFloatingOptionComponent) floatingOptions!: QueryList<BizySidebarFloatingOptionComponent>;
   @Input() toggle: boolean = false;
   @Output() onToggle = new EventEmitter<boolean>(); 
 
   #subscription = new Subscription();
-  #mutationObserver: MutationObserver;
-  #options: Array<BizySidebarOptionComponent> = [];
-  #floatingOptions: Array<BizySidebarFloatingOptionComponent> = [];
+  #optionSubscription = new Subscription();
+  #floatingOptionSubscription = new Subscription();
 
-  constructor(
-    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef,
-    @Inject(DOCUMENT) private document: Document
-  ) {}
-
-  ngOnInit() {
-    this.#mutationObserver = new MutationObserver(() => {
-      if (this.options && (this.#options.length !== 0 || this.options.length !== 0) && !this.#optionsAreEqual(this.#options, this.options.toArray())) {
-        this.#options = this.options.toArray();
-
-        const option = this.#getSelected(this.options.toArray());
-        if (option) {
-          this.#unselect(this.options.toArray());
-          this.#select(this.options.toArray(), option);
-        }
-
+  ngAfterContentInit() {
+    if (this.options && this.options.length > 0) {
+      this.#listenOptionChanges(this.options.toArray());
+      this.#subscription.add(this.options.changes.subscribe(() => {
+        this.#optionSubscription.unsubscribe();
+        this.#optionSubscription = new Subscription();
         this.#listenOptionChanges(this.options.toArray());
-      }
+      }))
+    }
 
-      if (this.floatingOptions && (this.#floatingOptions.length !== 0 || this.floatingOptions.length !== 0) && !this.#optionsAreEqual(this.#floatingOptions, this.floatingOptions.toArray())) {
-        this.#floatingOptions = this.floatingOptions.toArray();
-
-        const option = this.#getSelected(this.floatingOptions.toArray());
-        if (option) {
-          this.#unselect(this.floatingOptions.toArray());
-          this.#select(this.floatingOptions.toArray(), option);
-        }
-
+    if (this.floatingOptions && this.floatingOptions.length > 0) {
+      this.#listenFloatingOptionChanges(this.floatingOptions.toArray());
+      this.#subscription.add(this.floatingOptions.changes.subscribe(() => {
+        this.#floatingOptionSubscription.unsubscribe();
+        this.#floatingOptionSubscription = new Subscription();
         this.#listenFloatingOptionChanges(this.floatingOptions.toArray());
-      }
-
-    });
-
-    this.#mutationObserver.observe(this.document.body, { childList: true, subtree: true });
+      }))
+    }
   }
 
   #listenOptionChanges = (options: Array<BizySidebarOptionComponent>) => {
     options.forEach(_option => {
-      this.#subscription.add(_option.onSelect.subscribe(() => {
-        if (_option.getSelected()) {
-          this.#select(this.options.toArray(), _option);
-        } else {
-          this.#unselect(this.options.toArray());
-          this.#select(this.options.toArray(), _option);
+      this.#optionSubscription.add(_option._turnOn$.subscribe(turnOn => {
+        if (turnOn) {
+          this.#selectParents(this.options.toArray(), _option);
         }
-        this.ref.detectChanges();
       }));
 
       if (_option.options && _option.options.length > 0) {
@@ -75,103 +54,53 @@ export class BizySidebarComponent implements OnInit {
     });
   }
 
-  #listenFloatingOptionChanges = (options: Array<BizySidebarOptionComponent> | Array<BizySidebarFloatingOptionComponent>) => {
+  #listenFloatingOptionChanges = (options: Array<BizySidebarFloatingOptionComponent>) => {
     options.forEach(_option => {
-      this.#subscription.add(_option.onSelect.subscribe(() => {
-        if (_option.getSelected()) {
-          this.#select(this.options.toArray(), _option);
-        } else {
-          this.#unselect(this.floatingOptions.toArray());
-          this.#select(this.floatingOptions.toArray(), _option);
-        }
-        this.ref.detectChanges();
-      }));
-
-      if (_option.options && _option.options.length > 0) {
-        this.#listenFloatingOptionChanges(_option.options.toArray());
-      }
-    });
-  }
-
-  #select = (options: Array<BizySidebarOptionComponent> | Array<BizySidebarFloatingOptionComponent>, option: BizySidebarOptionComponent | BizySidebarFloatingOptionComponent): boolean => {
-    let optionSelected: boolean = false;
-    options.forEach(_option => {
-      if (_option.getId() === option.getId()) {
-        if (_option.options && _option.options.length > 0) {
-          option.setSelected(!_option.getSelected());
-        } else {
-          option.setSelected(true);
-        }
-        optionSelected = true;
-        return;
-      } else if (_option.options && _option.options.length > 0) {
-        const _optionSelected = this.#select(_option.options.toArray(), option);
-        if (_optionSelected) {
-          optionSelected = true;
-          _option.setSelected(true);
-          return;
-        }
-      }
-    });
-
-    return optionSelected;
-  };
-
-  #unselect = (options: Array<BizySidebarOptionComponent> | Array<BizySidebarFloatingOptionComponent>) => {
-    options.forEach(_option => {
-      _option.setSelected(false);
-      if (_option.options && _option.options.length > 0) {
-        this.#unselect(_option.options.toArray());
-      }
-    });
-  };
-
-  #optionsAreEqual(arr1: Array<BizySidebarOptionComponent> | Array<BizySidebarFloatingOptionComponent>, arr2: Array<BizySidebarOptionComponent> | Array<BizySidebarFloatingOptionComponent>) {
-    if (arr1.length !== arr2.length) {
-        return false;
-    }
-
-    arr1.sort((a, b) => String(a.id).localeCompare(String(b.id)));
-    arr2.sort((a, b) => String(a.id).localeCompare(String(b.id)));
-
-    for (let i = 0; i < arr1.length; i++) {
-        for (let key in arr1[i]) {
-            if (arr1[i][key] !== arr2[i][key]) {
-                return false;
+      this.#floatingOptionSubscription.add(_option._turnOn$.subscribe(turnOn => {
+        if (turnOn) {
+          this.floatingOptions.forEach(__option => {
+            if (__option.getId() !== _option.getId()) {
+              setTimeout(() => {
+                __option.selectedChange.emit(false);
+              }, 50);
             }
+          })
         }
-    }
-
-    return true;
+      }));
+    });
   }
 
-  #getSelected(options: Array<BizySidebarOptionComponent> | Array<BizySidebarFloatingOptionComponent>): BizySidebarOptionComponent | BizySidebarFloatingOptionComponent | null {
-    let selectedOption: BizySidebarOptionComponent | BizySidebarFloatingOptionComponent | null = null;
-    if (!options || options.length === 0) {
-      return null;
-    }
-
+  #selectParents = (options: Array<BizySidebarOptionComponent>, option: BizySidebarOptionComponent): boolean => {
+    let founded: boolean = false;
     for (let i = 0; i < options.length; i++) {
-      if (options[i].selected) {
-        selectedOption = options[i];
-        break;
-      }
-
-      if (options[i].options) {
-        selectedOption = this.#getSelected(options[i].options.toArray());
-        if (selectedOption) {
-          break;
+      if (options[i].getId() === option.getId()) {
+        founded = true;
+      } else if (options[i].options && options[i].options.length > 0) {
+        const _founded = this.#selectParents(options[i].options.toArray(), option);
+        if (_founded) {
+          founded = true;
+          setTimeout(() => {
+            options[i].selectedChange.emit(true);
+          }, 50)
+        } else {
+          setTimeout(() => {
+            options[i].selectedChange.emit(false);
+          }, 50)
         }
+        
+      } else {
+        setTimeout(() => {
+          options[i].selectedChange.emit(false);
+        }, 50)
       }
     }
 
-    return selectedOption;
-  }
+    return founded;
+  };
 
   ngOnDestroy() {
     this.#subscription.unsubscribe();
-    if (this.#mutationObserver) {
-      this.#mutationObserver.disconnect();
-    }
+    this.#optionSubscription.unsubscribe();
+    this.#floatingOptionSubscription.unsubscribe();
   }
 }

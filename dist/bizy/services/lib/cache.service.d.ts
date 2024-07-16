@@ -5,7 +5,7 @@ export declare class BizyCacheService {
     readonly CACHE_PREFIX = "BIZY-CACHE";
     constructor(router: BizyRouterService);
     getData<T>(key?: string): T;
-    setData<T>(value: T, key?: string): void;
+    setData<T>(value: T, key?: string, expiresAt?: number): void;
     remove(key?: string): void;
     removeAll(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyCacheService, never>;

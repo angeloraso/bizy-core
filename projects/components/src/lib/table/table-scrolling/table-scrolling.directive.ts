@@ -6,16 +6,16 @@ import { BizyTableRowComponent } from '../table-row/table-row.component';
   selector: '[tableFor]',
 })
 
-export class BizyTableScrollingDirective<T> {
+export class BizyTableScrollingDirective {
 
-  #items = new BehaviorSubject<Array<T>>([]);
+  #items = new BehaviorSubject<Array<unknown>>([]);
 
-  get items$(): Observable<Array<T>> {
+  get items$(): Observable<Array<unknown>> {
     return this.#items.asObservable();
   }
 
   @Input()
-  set tableForIn(value: Array<T>) {
+  set tableForIn(value: Array<unknown>) {
     this.#items.next(value);
   }    
 

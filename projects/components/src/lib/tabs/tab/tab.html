@@ -1,15 +1,15 @@
-<span class="bizy-tab__selected-line" *ngIf="linePosition === 'top'" [ngClass]="{'bizy-tab__selected-line--visible': selected && !disabled}"></span>
+<span class="bizy-tab__selected-line" *ngIf="linePosition === 'top'" [ngClass]="{'bizy-tab__selected-line--visible': selected}"></span>
 
 <button 
   type="button"
-  id="{{id}}"
+  [id]="id"
   [ngClass]="{'bizy-tab--selected': selected, 'bizy-tab--disabled': disabled}"
   class="bizy-tab {{customClass}}"
-  (click)="onSelect.emit()"
-  (keyup.enter)="onSelect.emit()">
+  (click)="_onSelect($event)"
+  (keyup.enter)="_onSelect($event)">
 
   <ng-content></ng-content>
 
 </button>
 
-<span class="bizy-tab__selected-line" *ngIf="linePosition === 'bottom'" [ngClass]="{'bizy-tab__selected-line--visible': selected && !disabled}"></span>
+<span class="bizy-tab__selected-line" *ngIf="linePosition === 'bottom'" [ngClass]="{'bizy-tab__selected-line--visible': selected}"></span>

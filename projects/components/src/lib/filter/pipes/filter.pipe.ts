@@ -36,7 +36,11 @@ export class BizyFilterPipe implements PipeTransform {
           _state = _state[_property];
         });
 
-        return String(_state) === String(state.id);
+        if (typeof state.id === 'boolean') {
+          return Boolean(_state) === state.id;
+        }
+
+        return _state === state.id;
       });
       output = output.concat(res);
     });

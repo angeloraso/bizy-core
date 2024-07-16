@@ -2,27 +2,33 @@
     font-size: 1rem;
 }
 
-.bizy-checkbox .bizy-checkbox__checkbox {
-    user-select: none;
+.bizy-checkbox {
+    border: none;
+    background-color: transparent;
     cursor: pointer;
+}
+
+.bizy-checkbox__checkbox {
+    user-select: none;
     padding: 0.1rem;
     border-radius: 0.5rem;
     overflow: hidden;
     transition: all 0.2s ease;
     display: inline-block;
+    pointer-events: none;
 }
 
-.bizy-checkbox .bizy-checkbox__checkbox:hover {
+.bizy-checkbox__checkbox:hover {
     background: var(--bizy-checkbox-hover-color);
 }
 
-.bizy-checkbox .bizy-checkbox__checkbox span {
+.bizy-checkbox__checkbox span {
     float: left;
     vertical-align: middle;
     transform: translate3d(0, 0, 0);
 }
 
-.bizy-checkbox .bizy-checkbox__checkbox span:first-child {
+.bizy-checkbox__checkbox span:first-child {
     position: relative;
     width: 1.1rem;
     height: 1.1rem;
@@ -33,7 +39,7 @@
     box-shadow: 0 1px 1px rgba(0, 16, 75, 0.05);
 }
 
-.bizy-checkbox .bizy-checkbox__checkbox span:first-child svg {
+.bizy-checkbox__checkbox span:first-child svg {
     position: absolute;
     top: 0.2rem;
     left: 0.15rem;
@@ -44,18 +50,19 @@
     stroke-linejoin: round;
     stroke-dasharray: 1.1rem;
     stroke-dashoffset: 1.1rem;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     transition-delay: 0.1s;
     transform: translate3d(0, 0, 0);
 }
 
-.bizy-checkbox .bizy-checkbox__checkbox:hover span:first-child {
+.bizy-checkbox__checkbox:hover span:first-child {
     border-color: var(--bizy-checkbox-selected-color);
 }
 
-.bizy-checkbox .bizy-checkbox__input {
+.bizy-checkbox__input {
     position: absolute;
     visibility: hidden;
+    pointer-events: none;
 }
 
 .bizy-checkbox__input--disabled {
@@ -64,17 +71,17 @@
     cursor: not-allowed !important;
 }
 
-.bizy-checkbox .bizy-checkbox__input:checked+.bizy-checkbox__checkbox span:first-child {
+.bizy-checkbox__input:checked+.bizy-checkbox__checkbox span:first-child {
     background-color: var(--bizy-checkbox-selected-color);
     border-color: var(--bizy-checkbox-selected-color);
     animation: bizy-checkbox-wave 0.4s ease;
 }
 
-.bizy-checkbox .bizy-checkbox__input:checked+.bizy-checkbox__checkbox span:first-child svg {
+.bizy-checkbox__input:checked+.bizy-checkbox__checkbox span:first-child svg {
     stroke-dashoffset: 0;
 }
 
-.bizy-checkbox .inline-svg {
+.bizy-checkbox__inline-svg {
     position: absolute;
     width: 0;
     height: 0;

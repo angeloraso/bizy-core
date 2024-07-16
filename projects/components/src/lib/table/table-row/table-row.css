@@ -53,7 +53,7 @@
 
 ::ng-deep .bizy-table-row--selected * {
     font-weight: bold !important;
-    color: var(--bizy-table-row-selected-color) !important;;
+    color: var(--bizy-table-row-selected-color) !important
 }
 
 .bizy-table-row__checkbox {

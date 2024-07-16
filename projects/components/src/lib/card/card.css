@@ -26,6 +26,10 @@
     box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
 }
 
+.bizy-card:has(.bizy-card__content:empty) .bizy-card__content {
+    display: none;
+}
+
 .bizy-card--selected {
     background-color: var(--bizy-card-selected-background-color);
 }
@@ -36,7 +40,7 @@
     cursor: not-allowed !important;
 }
 
-.bizy-card__content {
+.bizy-card__content:not(:empty) {
     display: flex;
     align-items: center;
     column-gap: 0.5rem;
@@ -50,6 +54,7 @@
 
 .bizy-card__header:not(:empty) {
     width: 100%;
+    height: 100%;
     display: grid;
     grid-template-columns: auto auto;
     align-items: center;
@@ -80,6 +85,7 @@
 
 .bizy-card__footer:not(:empty) {
     width: 100%;
+    height: 100%;
     display: grid;
     grid-template-columns: auto auto;
     align-items: center;

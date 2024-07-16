@@ -1,4 +1,8 @@
 :root {
+    --bizy-copy-to-clipboard-default-color: #2484c6;
+    --bizy-copy-to-clipboard-success-color: #5fbc5a;
+    --bizy-copy-to-clipboard-danger-color: #e76565;
+
     --bizy-popup-background-color: #fff;
     --bizy-popup-close-button-color: #666;
     --bizy-popup-close-button-hover-color: #e76565;

@@ -7,14 +7,31 @@
     --bizy-accordion-background-color: var(--bizy-sidebar-option-hover-color) 
 }
 
+::ng-deep .bizy-accordion__options {
+    position: sticky;
+}
+
+:host ::ng-deep .bizy-accordion__options::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: #000;
+    opacity: 0.3;
+}
+
 ::ng-deep .bizy-sidebar-option--selected {
     --bizy-accordion-background-color: var(--bizy-sidebar-option-selected-color) !important;
 }
 
 ::ng-deep .bizy-sidebar-option--disabled {
     cursor: default !important;
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed !important;
+
 }
 
 ::ng-deep .bizy-accordion__options--opened {
     max-height: 100% !important;
 }
+

@@ -1,7 +1,21 @@
 ::ng-deep .cdk-virtual-scrollable {
   height: 100%;
   width: 100%;
-  overflow-y: scroll !important;
+  overflow-y: auto !important;
   overflow-x: hidden !important;
   contain: inline-size !important;
+}
+
+::ng-deep .cdk-virtual-scrollable::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+::ng-deep .cdk-virtual-scrollable::-webkit-scrollbar-thumb {
+  border-radius: 1rem;
+  background-color: var(--bizy-table-scroll-bar-color);
+}
+
+::ng-deep .cdk-virtual-scrollable::-webkit-scrollbar-button {
+  height: 1rem;
 }

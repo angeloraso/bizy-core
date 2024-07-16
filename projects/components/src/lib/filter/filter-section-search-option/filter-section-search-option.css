@@ -1,13 +1,8 @@
 :host {
     font-size: 1rem;
+    width: 100%;
 }
 
 .bizy-filter-section-search-option {
-    display: flex;
-    flex-direction: column;
-    row-gap: 1rem;
-}
-
-.bizy-filter-section-search-option__input {
     --bizy-input-background-color: #f3f3f3 !important;
 }

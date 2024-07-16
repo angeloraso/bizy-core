@@ -1,8 +1,8 @@
 <button 
     type="button"
     class="bizy-sidebar-floating-option {{customClass}}"
-    [ngClass]="{'bizy-sidebar-floating-option--disabled': disabled, 'bizy-sidebar-floating-option--selected': selected}"
-    id="{{id}}"
+    [ngClass]="{'bizy-sidebar-floating-option--disabled': disabled, 'bizy-sidebar-floating-option--selected': _selected}"
+    [id]="id"
     (click)="_onSelect($event)"
     (keyup.enter)="_onSelect($event)"
     cdkOverlayOrigin 
@@ -20,7 +20,7 @@
     [cdkConnectedOverlayOffsetY]="offsetY"
     [cdkConnectedOverlayOrigin]="bizySidebarFloatingOptionTrigger"
     (overlayOutsideClick)="close($event)"
-    [cdkConnectedOverlayOpen]="_opened">
+    [cdkConnectedOverlayOpen]="_opened && options && options.length > 0">
 
     <span class="bizy-sidebar-floating-option__options">
 

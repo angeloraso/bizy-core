@@ -20,7 +20,7 @@
 }
 
 :host:has(.bizy-filter-section-checkbox-option) .bizy-filter-section__options {
-    overflow-y: scroll !important;
+    overflow-y: auto !important;
     min-height: 6rem !important;
 }
 
@@ -30,7 +30,7 @@
     background-color: transparent;
     display: flex;
     flex-direction: column;
-    row-gap: 0.9rem;
+    row-gap: 0.5rem;
 }
 
 .bizy-filter-section__header {

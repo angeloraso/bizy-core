@@ -14,8 +14,8 @@ import { BizyFilterSectionSearchOptionComponent } from '../filter-section-search
 export class BizyFilterSectionComponent {
   @ContentChildren(BizyFilterSectionCheckboxOptionComponent) private checkboxOptions: QueryList<BizyFilterSectionCheckboxOptionComponent>;
   @ContentChild(BizyFilterSectionRangeOptionComponent) private rangeOption: BizyFilterSectionRangeOptionComponent;
-  @ContentChild(BizyFilterSectionSearchOptionComponent) private searchOption:BizyFilterSectionSearchOptionComponent;
-  @Input() id: string = String(Math.random());
+  @ContentChild(BizyFilterSectionSearchOptionComponent) private searchOption: BizyFilterSectionSearchOptionComponent;
+  @Input() id: string = `bizy-filter-section-${Math.random()}`;
   @Input() disabled: boolean = false;
   @Input() customClass: string = '';
   @Output() onSelect = new EventEmitter<boolean>();
@@ -52,23 +52,21 @@ export class BizyFilterSectionComponent {
           }));
         });
       } else if (this.rangeOption) {
-        this._activated = this.rangeOption.isActivated();
-        this.ref.detectChanges();
-
-        this.#subscription.add(this.rangeOption.onChange.subscribe(() => {
-          this._activated = this.rangeOption.isActivated();
-          this.onSelect.emit(this._activated);
-          this.ref.detectChanges();
+        this.#subscription.add(this.rangeOption.activated$.subscribe(value => {
+          setTimeout(() => {
+            this._activated = value;
+            this.onSelect.emit(value);
+            this.ref.detectChanges();
+          })
         }));
         this.#mutationObserver.disconnect();
       } else if (this.searchOption) {
-        this._activated = this.searchOption.isActivated();
-        this.ref.detectChanges();
-
-        this.#subscription.add(this.searchOption.onChange.subscribe(() => {
-          this._activated = this.searchOption.isActivated();
-          this.onSelect.emit(this.searchOption.isActivated());
-          this.ref.detectChanges();
+        this.#subscription.add(this.searchOption.activated$.subscribe(value => {
+          setTimeout(() => {  
+            this._activated = value;
+            this.onSelect.emit(value);
+            this.ref.detectChanges();
+          });
         }));
         this.#mutationObserver.disconnect();
       }
@@ -87,12 +85,12 @@ export class BizyFilterSectionComponent {
     })
   }
 
-  onClear = () => {
+  onClean = () => {
     if (!this.rangeOption) {
       return;
     }
 
-    this.rangeOption.onClear();
+    this.rangeOption.onClean();
   }
 
   isActivated = () => {

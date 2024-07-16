@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, ContentChildren, QueryList, Inject, ChangeDetectorRef } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'bizy-sidebar-option',
@@ -8,29 +9,41 @@ import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, Conten
 })
 export class BizySidebarOptionComponent {
   @ContentChildren(BizySidebarOptionComponent) options: QueryList<BizySidebarOptionComponent>;
-  @Input() id: string = String(Math.random());
+  @Input() id: string = `bizy-sidebar-option-${Math.random()}`;
   @Input() disabled: boolean = false;
   @Input() customClass: string = '';
-  @Input() selected: boolean = false;
   @Output() selectedChange = new EventEmitter<boolean>();
-  @Output() onSelect = new EventEmitter<void>();
+  @Output() onSelect = new EventEmitter<PointerEvent>();
+
+  _turnOn$ = new BehaviorSubject<boolean>(false);
+  _selected: boolean = false;
+
+  @Input() set selected(selected: boolean) {
+    if (typeof selected === 'undefined' || selected === null) {
+      return;
+    }
+
+    const turnOn = selected && selected !== this._selected;
+    this._turnOn$.next(turnOn);
+    this._selected = selected;
+    this.ref.detectChanges();
+  }
 
   constructor(
     @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
   ) {}
 
-  _onSelect(): void {
+  _onSelect(event: PointerEvent): void {
     if (this.disabled) {
       return;
     }
 
-    this.onSelect.emit();
+    this.selectedChange.emit(!this._selected);
+    this.onSelect.emit(event);
   }
 
-  setSelected = (selected: boolean): void => {
-    this.selected = selected;
-    this.selectedChange.emit(selected);
-    this.ref.detectChanges();
+  _setSelected(selected: boolean) {
+    this._selected = selected;
   }
 
   getId = (): string  => {
@@ -38,6 +51,6 @@ export class BizySidebarOptionComponent {
   }
 
   getSelected = (): boolean  => {
-    return this.selected;
+    return this._selected;
   }
 }

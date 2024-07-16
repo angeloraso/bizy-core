@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Inject, Input, Renderer2 } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Inject, Input, Output, Renderer2 } from '@angular/core';
 import { BIZY_TAG_TYPE } from './tag.types';
 
 @Component({
@@ -8,16 +8,8 @@ import { BIZY_TAG_TYPE } from './tag.types';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyTagComponent {
-  @Input() set type(type: BIZY_TAG_TYPE) {
-    if (!type || !this.elementRef || !this.elementRef.nativeElement) {
-      return;
-    }
-
-    this.renderer.setAttribute(this.elementRef.nativeElement, 'type', type);
-  } 
-
-  constructor(
-    @Inject(ElementRef) private elementRef: ElementRef,
-    @Inject(Renderer2) private renderer: Renderer2
-  ) {}
+  @Input() id: string = `bizy-tag-${Math.random()}`;
+  @Input() customClass: string = '';
+  @Input() type: BIZY_TAG_TYPE = BIZY_TAG_TYPE.DEFAULT;
+  @Output() onSelect = new EventEmitter<PointerEvent>();
 }

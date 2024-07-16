@@ -1,4 +1,5 @@
 import { EventEmitter, QueryList, ChangeDetectorRef } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import * as i0 from "@angular/core";
 export declare class BizySidebarOptionComponent {
     private ref;
@@ -6,12 +7,14 @@ export declare class BizySidebarOptionComponent {
     id: string;
     disabled: boolean;
     customClass: string;
-    selected: boolean;
     selectedChange: EventEmitter<boolean>;
-    onSelect: EventEmitter<void>;
+    onSelect: EventEmitter<PointerEvent>;
+    _turnOn$: BehaviorSubject<boolean>;
+    _selected: boolean;
+    set selected(selected: boolean);
     constructor(ref: ChangeDetectorRef);
-    _onSelect(): void;
-    setSelected: (selected: boolean) => void;
+    _onSelect(event: PointerEvent): void;
+    _setSelected(selected: boolean): void;
     getId: () => string;
     getSelected: () => boolean;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizySidebarOptionComponent, never>;

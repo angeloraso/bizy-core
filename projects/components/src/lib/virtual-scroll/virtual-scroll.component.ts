@@ -60,7 +60,7 @@ export class BizyVirtualScrollComponent implements OnInit {
 
           if (!this.#resizeObserver) {
             this.#resizeObserver = new ResizeObserver(() => this.notifier$.next());
-            this.#resizeObserver.observe(this.elementRef.nativeElement as HTMLElement);
+            this.#resizeObserver.observe(this.elementRef.nativeElement.parentElement?.parentElement as HTMLElement);
             this.#subscription.add(this.notifier$.pipe(skip(1), debounceTime(100)).subscribe(() => {
               if (this.elementRef.nativeElement?.firstChild?.firstChild?.clientWidth) {
                 this.bizyVirtualScrollWidth = this.elementRef.nativeElement.firstChild.firstChild.clientWidth;

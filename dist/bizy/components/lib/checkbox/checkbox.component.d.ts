@@ -6,9 +6,9 @@ export declare class BizyCheckboxComponent {
     selected: boolean;
     disabled: boolean;
     selectedChange: EventEmitter<boolean>;
-    onSelect: EventEmitter<boolean>;
+    onSelect: EventEmitter<PointerEvent>;
     _checkboxId: string;
-    setSelected(): void;
+    _onSelect(event: PointerEvent): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyCheckboxComponent, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<BizyCheckboxComponent, "bizy-checkbox", never, { "id": { "alias": "id"; "required": false; }; "name": { "alias": "name"; "required": false; }; "selected": { "alias": "selected"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; }, { "selectedChange": "selectedChange"; "onSelect": "onSelect"; }, never, never, false, never>;
 }

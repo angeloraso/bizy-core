@@ -1,37 +1,25 @@
 
 :host {
     font-size: 1rem;
+    width: var(--bizy-select-width);
+    min-width: var(--bizy-select-min-width);
+    max-width: var(--bizy-select-max-width);
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.3rem;
 }
 
 .bizy-select {
-    font-size: 1rem;
-    width: 100%;
-    border: none;
-    background-color: var(--bizy-select-background-color);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    column-gap: 0.5rem;
-    color: var(--bizy-select-color);
-    padding: .25rem .5rem 0;
-    cursor: pointer;
-    min-height: 3.3rem;
-    border-top-left-radius: 0.3rem;
-    border-top-right-radius: 0.3rem;
-    border-bottom: 0.1rem solid var(--bizy-select-border-color);
-}
-
-.bizy-select--disabled {
-    pointer-events: none;
-    opacity: 0.5;
-    cursor: not-allowed !important;
+    --bizy-input-cursor: pointer;
+    --bizy-input-background-color: var(--bizy-select-background-color);
+    --bizy-input-color: var(--bizy-select-color);
 }
 
 .bizy-select__arrow {
-    height: 1rem;
+    height: var(--bizy-select-arrow-height);;
     pointer-events: none;
     display: block;
-    transition: transform 0.3s ease;
+    transition: transform 0.2s ease;
     fill: var(--bizy-select-color);
 }
 
@@ -39,46 +27,36 @@
     transform: rotate(180deg);
 }
 
-.bizy-select__content {
-    font-size: 1rem;
-    background-color: transparent;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    row-gap: 0.5rem;
-    pointer-events: none;
-    align-self: flex-start;
-    text-align: start;
-}
-
-.bizy-select__content__label {
-    font-weight: bold;
-    color: var(--bizy-select-label-color);
-}
-
-.bizy-select__hidden-options {
-    visibility: hidden;
-    height: 0;
-    width: 0;
-    display: block;
-    pointer-events: none;
-}
-
-
 .bizy-select__options {
     background-color: var(--bizy-select-background-color);
     display: flex;
-    min-width: 100%;
+    min-width: fit-content;
+    width: 100%;
     flex-direction: column;
     box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
-    max-height: 20rem;
-    overflow-y: scroll;
+    max-height: var(--bizy-select-height);
+    overflow-y: auto;
+    overflow-x: hidden;
     position: relative;
-    max-width: min(75%, 25rem);
 }
 
 .bizy-select__options__search {
     position: sticky;
     z-index: 1;
     top: 0;
+}
+
+::ng-deep .bizy-select__options__search {
+    --bizy-input-width: var(--bizy-select-width);
+    --bizy-input-min-width: var(--bizy-select-min-width);
+    --bizy-input-max-width: var(--bizy-select-max-width);
+}
+
+
+.bizy-select__errors:empty {
+    display: none !important;
+}
+
+::ng-deep .bizy-select__errors * {
+    color: var(--bizy-input-invalid-color) !important;
 }
