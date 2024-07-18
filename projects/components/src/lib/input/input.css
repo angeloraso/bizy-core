@@ -70,7 +70,7 @@
     display: none !important;
 }
 
-.bizy-input__content__suffix{
+.bizy-input__content__suffix {
     display: flex;
     align-items: center;
     column-gap: 0.3rem;
