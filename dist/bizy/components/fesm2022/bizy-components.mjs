@@ -2259,6 +2259,9 @@ class BizyFilterPipe {
                 if (typeof state.id === 'boolean') {
                     return Boolean(_state) === state.id;
                 }
+                if (Array.isArray(_state)) {
+                    return _state.includes(state.id);
+                }
                 return _state === state.id;
             });
             output = output.concat(res);
