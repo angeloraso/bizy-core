@@ -2265,9 +2265,9 @@ class BizyFilterPipe {
                 return _state === state.id;
             });
             output = output.concat(res);
-            // Filter out duplicates by serializing objects to JSON
-            output = output.filter((obj, index, self) => index === self.findIndex((t) => JSON.stringify(t) === JSON.stringify(obj)));
         });
+        // Filter out duplicates by serializing objects to JSON
+        output = output.filter((obj, index, self) => index === self.findIndex((t) => JSON.stringify(t) === JSON.stringify(obj)));
         return output;
     }
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyFilterPipe, deps: [], target: i0.ɵɵFactoryTarget.Pipe });
