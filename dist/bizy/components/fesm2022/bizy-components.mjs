@@ -2265,6 +2265,8 @@ class BizyFilterPipe {
                 return _state === state.id;
             });
             output = output.concat(res);
+            // Filter out duplicates by serializing objects to JSON
+            output = output.filter((obj, index, self) => index === self.findIndex((t) => JSON.stringify(t) === JSON.stringify(obj)));
         });
         return output;
     }
