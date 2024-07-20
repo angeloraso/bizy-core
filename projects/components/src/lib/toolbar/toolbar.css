@@ -9,7 +9,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    column-gap: var(--bizy-toolbar-column-gap);;
+    column-gap: var(--bizy-toolbar-column-gap);
     padding: var(--bizy-toolbar-padding);
 }
 
@@ -17,6 +17,7 @@
     height: 100%;
     display: flex;
     align-items: center;
+    column-gap: var(--bizy-toolbar-column-gap);
 }
 
 .bizy-toolbar__end {
@@ -24,6 +25,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    column-gap: var(--bizy-toolbar-column-gap);
 }
 
 ::ng-deep .bizy-toolbar *[toolbar-option] {
