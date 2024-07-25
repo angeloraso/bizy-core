@@ -1,7 +1,7 @@
 :host {
     font-size: 1rem;
     flex: 1;
-    height: 100%;
+    height: var(--bizy-table-row-height);
     display: flex;
     -webkit-user-select: text;
     -moz-user-select: text;
@@ -17,8 +17,8 @@
     font-size: 1rem;
     min-width: var(--bizy-table-column-min-width);
     width: 100%;
-    border: none;
-    background-color: transparent;
+    border: var(--bizy-table-column-border);
+    background-color: var(--bizy-table-column-background-color);
     display: flex;
     align-items: center;
     justify-content: var(--bizy-table-column-justify-content);
