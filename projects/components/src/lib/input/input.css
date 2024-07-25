@@ -97,8 +97,8 @@
     border: none;
 }
 
-.anura-input__content input[type=number]::-webkit-inner-spin-button, 
-.anura-input__content input[type=number]::-webkit-outer-spin-button { 
+.bizy-input__content input[type=number]::-webkit-inner-spin-button, 
+.bizy-input__content input[type=number]::-webkit-outer-spin-button { 
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
