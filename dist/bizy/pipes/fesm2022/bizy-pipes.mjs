@@ -155,12 +155,16 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
         }] });
 
 class BizyReducePipe {
-    transform(items, key) {
-        if (!items) {
+    transform(items, key, fixedTo = 2) {
+        if (!items || items.length === 0) {
             return 0;
         }
+        if (!key) {
+            const reduce = items.reduce((acc, value) => acc + value, 0);
+            return Number(reduce.toFixed(fixedTo));
+        }
         const reduce = items.map(_d => _d[key]).reduce((acc, value) => acc + value, 0);
-        return reduce.toFixed(2);
+        return Number(reduce.toFixed(fixedTo));
     }
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyReducePipe, deps: [], target: i0.ɵɵFactoryTarget.Pipe });
     static ɵpipe = i0.ɵɵngDeclarePipe({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BizyReducePipe, name: "bizyReduce" });
@@ -337,6 +341,28 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 }]
         }] });
 
+class BizyAveragePipe {
+    transform(items, key, fixedTo = 2) {
+        if (!items || items.length === 0) {
+            return 0;
+        }
+        if (!key) {
+            const reduce = items.reduce((acc, value) => acc + value, 0);
+            return Number((reduce / items.length).toFixed(fixedTo));
+        }
+        const reduce = items.map(_d => _d[key]).reduce((acc, value) => acc + value, 0);
+        return Number((reduce / items.length).toFixed(fixedTo));
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyAveragePipe, deps: [], target: i0.ɵɵFactoryTarget.Pipe });
+    static ɵpipe = i0.ɵɵngDeclarePipe({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BizyAveragePipe, name: "bizyAverage" });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyAveragePipe, decorators: [{
+            type: Pipe,
+            args: [{
+                    name: 'bizyAverage'
+                }]
+        }] });
+
 const PIPES = [
     BizyOrderByPipe,
     BizyReducePipe,
@@ -344,7 +370,8 @@ const PIPES = [
     BizySearchPipe,
     BizySelectedPipe,
     BizySetToArrayPipe,
-    BizyFormatSecondsPipe
+    BizyFormatSecondsPipe,
+    BizyAveragePipe
 ];
 class BizyPipesModule {
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyPipesModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
@@ -354,13 +381,15 @@ class BizyPipesModule {
             BizySearchPipe,
             BizySelectedPipe,
             BizySetToArrayPipe,
-            BizyFormatSecondsPipe], exports: [BizyOrderByPipe,
+            BizyFormatSecondsPipe,
+            BizyAveragePipe], exports: [BizyOrderByPipe,
             BizyReducePipe,
             BizySafePipe,
             BizySearchPipe,
             BizySelectedPipe,
             BizySetToArrayPipe,
-            BizyFormatSecondsPipe] });
+            BizyFormatSecondsPipe,
+            BizyAveragePipe] });
     static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyPipesModule, providers: PIPES });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyPipesModule, decorators: [{
@@ -376,5 +405,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
  * Generated bundle index. Do not edit.
  */
 
-export { BizyFormatSecondsPipe, BizyOrderByPipe, BizyPipesModule, BizyReducePipe, BizySafePipe, BizySearchPipe, BizySelectedPipe, BizySetToArrayPipe, FuseOptions };
+export { BizyAveragePipe, BizyFormatSecondsPipe, BizyOrderByPipe, BizyPipesModule, BizyReducePipe, BizySafePipe, BizySearchPipe, BizySelectedPipe, BizySetToArrayPipe, FuseOptions };
 //# sourceMappingURL=bizy-pipes.mjs.map
