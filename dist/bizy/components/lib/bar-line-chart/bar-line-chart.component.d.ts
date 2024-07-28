@@ -7,7 +7,7 @@ export declare class BizyBarLineChartComponent implements OnDestroy, AfterViewIn
     private document;
     private ref;
     private renderer;
-    resizeRef: ElementRef;
+    resizeRef: HTMLElement;
     downloadLabel: string;
     name: string;
     axisPointer: 'line' | 'cross';

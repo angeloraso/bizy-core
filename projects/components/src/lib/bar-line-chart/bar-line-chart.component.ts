@@ -25,7 +25,7 @@ const Y_AXIS_OFFSET = 80;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyBarLineChartComponent implements OnDestroy, AfterViewInit {
-  @Input() resizeRef: ElementRef = null;
+  @Input() resizeRef: HTMLElement = null;
   @Input() downloadLabel: string = 'Descargar';
   @Input() name: string = 'Bizy';
   @Input() axisPointer: 'line' | 'cross' = 'line';
