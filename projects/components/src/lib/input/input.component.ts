@@ -72,6 +72,10 @@ export class BizyInputComponent implements OnDestroy, AfterContentInit {
   }
 
   _onFocus(event: PointerEvent) {
+    if (this.disabled || this.readonly) {
+      return;
+    }
+
     this.focused = true;
     this.onFocus.emit(event);
   }
