@@ -1,7 +1,7 @@
 import * as i0 from '@angular/core';
 import { EventEmitter, Component, ChangeDetectionStrategy, Input, Output, NgModule, ChangeDetectorRef, Inject, ElementRef, Renderer2, Directive, TemplateRef, ContentChild, ContentChildren, ViewChild, ViewContainerRef, Pipe } from '@angular/core';
 import * as i1 from '@angular/common';
-import { CommonModule, DOCUMENT, DecimalPipe } from '@angular/common';
+import { CommonModule, DOCUMENT, DatePipe, DecimalPipe } from '@angular/common';
 import * as i2 from '@angular/forms';
 import { FormsModule, Validators, FormBuilder } from '@angular/forms';
 import { takeUntil, skip, debounceTime } from 'rxjs/operators';
@@ -10,6 +10,8 @@ import * as i2$1 from '@angular/cdk/scrolling';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import * as i2$2 from '@angular/cdk/overlay';
 import { OverlayModule } from '@angular/cdk/overlay';
+import flatpickr from 'flatpickr';
+import { Spanish } from 'flatpickr/dist/l10n/es.js';
 import * as echarts from 'echarts';
 
 class BizyToggleComponent {
@@ -43,7 +45,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS$f = [
+const COMPONENTS$g = [
     BizyToggleComponent,
 ];
 class BizyToggleModule {
@@ -55,8 +57,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$f,
-                    exports: COMPONENTS$f
+                    declarations: COMPONENTS$g,
+                    exports: COMPONENTS$g
                 }]
         }] });
 
@@ -117,7 +119,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Input
             }] } });
 
-const COMPONENTS$e = [BizyBreadcrumbComponent];
+const COMPONENTS$f = [BizyBreadcrumbComponent];
 class BizyBreadcrumbModule {
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyBreadcrumbModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
     static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BizyBreadcrumbModule, declarations: [BizyBreadcrumbComponent], imports: [CommonModule,
@@ -132,8 +134,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                         CommonModule,
                         FormsModule
                     ],
-                    declarations: COMPONENTS$e,
-                    exports: COMPONENTS$e,
+                    declarations: COMPONENTS$f,
+                    exports: COMPONENTS$f,
                 }]
         }] });
 
@@ -167,7 +169,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS$d = [
+const COMPONENTS$e = [
     BizyButtonComponent,
 ];
 class BizyButtonModule {
@@ -179,8 +181,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$d,
-                    exports: COMPONENTS$d
+                    declarations: COMPONENTS$e,
+                    exports: COMPONENTS$e
                 }]
         }] });
 
@@ -664,7 +666,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS$c = [BizyInputComponent, BizyInputOptionComponent];
+const COMPONENTS$d = [BizyInputComponent, BizyInputOptionComponent];
 class BizyInputModule {
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyInputModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
     static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BizyInputModule, declarations: [BizyInputComponent, BizyInputOptionComponent], imports: [CommonModule,
@@ -682,8 +684,201 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                         FormsModule,
                         OverlayModule
                     ],
+                    declarations: COMPONENTS$d,
+                    exports: COMPONENTS$d
+                }]
+        }] });
+
+class BizyDatePickerComponent {
+    datePipe;
+    bizyDatePicker;
+    id = `bizy-date-picker-${Math.random()}`;
+    disabled = false;
+    customClass = '';
+    opened = false;
+    dateChange = new EventEmitter();
+    rangeChange = new EventEmitter();
+    onChange = new EventEmitter();
+    openedChange = new EventEmitter();
+    onOpen = new EventEmitter();
+    onSelect = new EventEmitter();
+    dateFormat = 'Y-m-d';
+    datePipeFormat = 'yyyy-MM-dd';
+    enableTime = false;
+    mode = 'single';
+    dates = [Date.now()];
+    time = Date.now();
+    set date(date) {
+        if (typeof date === 'undefined' || date === null) {
+            return;
+        }
+        this.mode = 'single';
+        this.dates = [date];
+        this.time = date;
+        this.value = this.datePipe.transform(date, this.datePipeFormat, undefined, 'es-AR');
+        this.#start();
+    }
+    set range(range) {
+        if (!range) {
+            return;
+        }
+        this.mode = 'range';
+        this.dates = [range.from, range.to];
+        this.time = range.from;
+        this.value = `${this.datePipe.transform(range.from, this.datePipeFormat, undefined, 'es-AR')} - ${this.datePipe.transform(range.to, this.datePipeFormat, undefined, 'es-AR')}`;
+        this.#start();
+    }
+    value = '';
+    set type(type) {
+        if (!type) {
+            return;
+        }
+        switch (type) {
+            case 'date':
+                this.dateFormat = 'Y-m-d';
+                this.datePipeFormat = 'yyyy-MM-dd';
+                this.enableTime = false;
+                break;
+            case 'date-time':
+                this.dateFormat = 'Y-m-d H:i';
+                this.datePipeFormat = 'yyyy-MM-dd HH:mm';
+                this.enableTime = true;
+                break;
+            case 'time':
+                this.dateFormat = 'H:i';
+                this.datePipeFormat = 'HH:mm';
+                this.enableTime = true;
+                break;
+            case 'year':
+                this.dateFormat = 'Y';
+                this.datePipeFormat = 'yyyy';
+                this.enableTime = false;
+                break;
+            case 'month':
+                this.dateFormat = 'm';
+                this.datePipeFormat = 'MMMM';
+                this.enableTime = false;
+                break;
+            case 'year-month':
+                this.dateFormat = 'Y-M';
+                this.datePipeFormat = 'yyyy-MMMM';
+                this.enableTime = false;
+                break;
+            default:
+                this.dateFormat = 'Y-m-d';
+                this.datePipeFormat = 'yyyy-MM-dd';
+                this.enableTime = false;
+        }
+    }
+    constructor(datePipe) {
+        this.datePipe = datePipe;
+    }
+    ngAfterViewInit() {
+        this.#start();
+    }
+    #start() {
+        if (this.bizyDatePicker && this.bizyDatePicker.bizyInputWrapper && this.bizyDatePicker.bizyInputWrapper.nativeElement) {
+            flatpickr(this.bizyDatePicker.bizyInputWrapper.nativeElement, {
+                locale: Spanish,
+                mode: this.mode,
+                dateFormat: this.dateFormat,
+                enableTime: this.enableTime,
+                defaultDate: this.dates.map(_date => {
+                    const date = new Date(_date);
+                    return date.toISOString();
+                }),
+                defaultHour: this.#getHour(this.time),
+                defaultMinute: this.#getMinute(this.time),
+                onChange: (selectedDates) => {
+                    if (this.mode === 'single' && selectedDates[0]) {
+                        const date = new Date(selectedDates[0]);
+                        this.dateChange.emit(date.getTime());
+                        this.onChange.emit(date.getTime());
+                    }
+                    else if (selectedDates[0] && selectedDates[1]) {
+                        const from = new Date(selectedDates[0]);
+                        const to = new Date(selectedDates[1]);
+                        const range = { from: from.getTime(), to: to.getTime() };
+                        this.rangeChange.emit(range);
+                        this.onChange.emit(range);
+                    }
+                },
+                onOpen: () => {
+                    this.opened = true;
+                    this.openedChange.emit(this.opened);
+                    this.onOpen.emit(this.opened);
+                },
+                onClose: () => {
+                    this.opened = false;
+                    this.openedChange.emit(this.opened);
+                    this.onOpen.emit(this.opened);
+                }
+            });
+        }
+    }
+    #getHour(time) {
+        const date = new Date(time);
+        return date.getHours();
+    }
+    #getMinute(time) {
+        const date = new Date(time);
+        return date.getMinutes();
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyDatePickerComponent, deps: [{ token: DatePipe }], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyDatePickerComponent, selector: "bizy-date-picker", inputs: { id: "id", disabled: "disabled", customClass: "customClass", opened: "opened", date: "date", range: "range", type: "type" }, outputs: { dateChange: "dateChange", rangeChange: "rangeChange", onChange: "onChange", openedChange: "openedChange", onOpen: "onOpen", onSelect: "onSelect" }, viewQueries: [{ propertyName: "bizyDatePicker", first: true, predicate: ["bizyDatePicker"], descendants: true }], ngImport: i0, template: "<bizy-input\n    #bizyDatePicker\n    [readonly]=\"true\"\n    [disabled]=\"disabled\"\n    (onSelect)=\"onSelect.emit($event)\"\n    [value]=\"value\"\n    [id]=\"id\"\n    class=\"bizy-date-picker {{customClass}}\">\n\n    <svg \n        slot=\"suffix\"\n        id=\"bizy-date-picker-arrow\"\n        class=\"bizy-date-picker__arrow\"\n        [ngClass]=\"{'bizy-date-picker__arrow--opened': opened}\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        viewBox=\"0 0 320 512\">\n        <path d=\"M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z\"/>\n    </svg>\n\n    <ng-container slot=\"header\">\n        <ng-content select=\"[slot=header]\"></ng-content>\n    </ng-container>\n\n    <ng-container slot=\"suffix\">\n        <ng-content select=\"[slot=prefix]\"></ng-content>\n    </ng-container>\n\n    <ng-container slot=\"error\">\n        <ng-content select=\"[slot=error]\"></ng-content>\n    </ng-container>\n\n</bizy-input>\n", styles: [":host{font-size:1rem;width:var(--bizy-input-width);max-width:var(--bizy-input-max-width)}.bizy-date-picker{--bizy-input-cursor: pointer}.bizy-date-picker__arrow{height:1rem;pointer-events:none;display:block;transition:transform .2s ease;fill:var(--bizy-input-color)}.bizy-date-picker__arrow--opened{transform:rotate(180deg)}\n"], dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: BizyInputComponent, selector: "bizy-input", inputs: ["id", "name", "type", "customClass", "debounceTime", "rows", "disabled", "readonly", "autofocus", "value"], outputs: ["valueChange", "onChange", "onEnter", "onBackspace", "onSelect", "onBlur", "onFocus"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyDatePickerComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-date-picker', changeDetection: ChangeDetectionStrategy.OnPush, template: "<bizy-input\n    #bizyDatePicker\n    [readonly]=\"true\"\n    [disabled]=\"disabled\"\n    (onSelect)=\"onSelect.emit($event)\"\n    [value]=\"value\"\n    [id]=\"id\"\n    class=\"bizy-date-picker {{customClass}}\">\n\n    <svg \n        slot=\"suffix\"\n        id=\"bizy-date-picker-arrow\"\n        class=\"bizy-date-picker__arrow\"\n        [ngClass]=\"{'bizy-date-picker__arrow--opened': opened}\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        viewBox=\"0 0 320 512\">\n        <path d=\"M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z\"/>\n    </svg>\n\n    <ng-container slot=\"header\">\n        <ng-content select=\"[slot=header]\"></ng-content>\n    </ng-container>\n\n    <ng-container slot=\"suffix\">\n        <ng-content select=\"[slot=prefix]\"></ng-content>\n    </ng-container>\n\n    <ng-container slot=\"error\">\n        <ng-content select=\"[slot=error]\"></ng-content>\n    </ng-container>\n\n</bizy-input>\n", styles: [":host{font-size:1rem;width:var(--bizy-input-width);max-width:var(--bizy-input-max-width)}.bizy-date-picker{--bizy-input-cursor: pointer}.bizy-date-picker__arrow{height:1rem;pointer-events:none;display:block;transition:transform .2s ease;fill:var(--bizy-input-color)}.bizy-date-picker__arrow--opened{transform:rotate(180deg)}\n"] }]
+        }], ctorParameters: function () { return [{ type: i1.DatePipe, decorators: [{
+                    type: Inject,
+                    args: [DatePipe]
+                }] }]; }, propDecorators: { bizyDatePicker: [{
+                type: ViewChild,
+                args: ['bizyDatePicker']
+            }], id: [{
+                type: Input
+            }], disabled: [{
+                type: Input
+            }], customClass: [{
+                type: Input
+            }], opened: [{
+                type: Input
+            }], dateChange: [{
+                type: Output
+            }], rangeChange: [{
+                type: Output
+            }], onChange: [{
+                type: Output
+            }], openedChange: [{
+                type: Output
+            }], onOpen: [{
+                type: Output
+            }], onSelect: [{
+                type: Output
+            }], date: [{
+                type: Input
+            }], range: [{
+                type: Input
+            }], type: [{
+                type: Input
+            }] } });
+
+const COMPONENTS$c = [
+    BizyDatePickerComponent,
+];
+class BizyDatePickerModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyDatePickerModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BizyDatePickerModule, declarations: [BizyDatePickerComponent], imports: [CommonModule, FormsModule, BizyInputModule], exports: [BizyDatePickerComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyDatePickerModule, providers: [DatePipe], imports: [CommonModule, FormsModule, BizyInputModule] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyDatePickerModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: [CommonModule, FormsModule, BizyInputModule],
                     declarations: COMPONENTS$c,
-                    exports: COMPONENTS$c
+                    exports: COMPONENTS$c,
+                    providers: [DatePipe]
                 }]
         }] });
 
@@ -2831,202 +3026,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 }]
         }] });
 
-class BizyLineChartComponent {
-    renderer;
-    elementRef;
-    document;
-    decimalPipe;
-    saveAsImageButtonLabel = 'Descargar';
-    xLabelPrefix = '';
-    xLabelSuffix = '';
-    yLabelPrefix = '';
-    yLabelSuffix = '';
-    labelsX = [];
-    height;
-    width;
-    tooltip = true;
-    chartContainer = null;
-    set data(data) {
-        if (data && data.length > 0) {
-            this.#setChartData(data);
-        }
-    }
-    constructor(renderer, elementRef, document, decimalPipe) {
-        this.renderer = renderer;
-        this.elementRef = elementRef;
-        this.document = document;
-        this.decimalPipe = decimalPipe;
-    }
-    async #setChartData(data) {
-        let size = { width: this.width, height: this.height };
-        if (!this.width || !this.height) {
-            size = await this.#getChartSize();
-        }
-        if (!this.chartContainer) {
-            this.chartContainer = this.renderer.createElement('div');
-            this.renderer.setStyle(this.chartContainer, 'width', `${size.width}px`);
-            this.renderer.setStyle(this.chartContainer, 'height', `${size.height}px`);
-            this.renderer.appendChild(this.elementRef.nativeElement, this.chartContainer);
-        }
-        const color = [];
-        const _data = [];
-        const legendData = [];
-        data.forEach(_d => {
-            if (_d.color) {
-                color.push(_d.color);
-            }
-            legendData.push(_d.name);
-            _data.push({
-                type: 'line',
-                id: _d.id ?? String(Math.random()),
-                name: _d.name,
-                smooth: true,
-                data: !_d.values || _d.values.length === 0 ? [0] : _d.values
-            });
-        });
-        const option = {
-            tooltip: {
-                show: this.tooltip,
-                trigger: 'axis',
-                appendToBody: true,
-                formatter: this.#tooltipFormatter
-            },
-            legend: {
-                y: 'bottom',
-                padding: [0, 0, 0, 0],
-                data: legendData
-            },
-            toolbox: {
-                show: true,
-                feature: {
-                    saveAsImage: {
-                        show: true,
-                        title: this.saveAsImageButtonLabel
-                    }
-                },
-                iconStyle: {
-                    emphasis: {
-                        textAlign: 'right'
-                    }
-                }
-            },
-            xAxis: [
-                {
-                    type: 'category',
-                    data: this.labelsX,
-                    axisLabel: {
-                        formatter: `${this.xLabelPrefix}{value}${this.xLabelSuffix}`,
-                        fontSize: 10,
-                    }
-                }
-            ],
-            yAxis: [
-                {
-                    type: 'value',
-                    axisLabel: {
-                        formatter: `${this.yLabelPrefix}{value}${this.yLabelSuffix}`,
-                        fontSize: 10
-                    }
-                }
-            ],
-            series: _data
-        };
-        option.grid = {
-            bottom: `${Math.max(legendData.length * 2.4, 10)}%`,
-            containLabel: true,
-            left: '3%',
-            right: '3%'
-        };
-        if (color.length > 0) {
-            option.color = color;
-        }
-        if ((legendData.length / 18) > 1) {
-            this.renderer.setStyle(this.chartContainer, 'height', `${this.height * (legendData.length / 18)}px`);
-        }
-        echarts.init(this.chartContainer).setOption(option);
-    }
-    #tooltipFormatter = (params) => {
-        let tooltip = `${params[0].name}`;
-        const lineParam = params.filter(_param => _param.componentSubType === 'line');
-        lineParam.forEach(_param => {
-            const line = `<span style="color: ${_param.color}; font-size: 2rem; position: relative; top: 0.3rem;">-</span>`;
-            tooltip += `<br/>${line} ${_param.seriesName} : ${this.yLabelPrefix}${this.decimalPipe.transform(_param.value, '1.2-2')}${this.yLabelSuffix}`;
-        });
-        return tooltip;
-    };
-    #getChartSize() {
-        return new Promise(resolve => {
-            const mutationObserver = new MutationObserver(() => {
-                const parentRef = this.renderer.parentNode(this.elementRef.nativeElement);
-                if (parentRef && parentRef.offsetWidth && parentRef.offsetHeight) {
-                    let width = (this.width || parentRef.offsetWidth);
-                    let height = (this.height || parentRef.offsetHeight);
-                    mutationObserver.disconnect();
-                    resolve({ width, height });
-                }
-            });
-            mutationObserver.observe(this.document.body, { childList: true, subtree: true });
-        });
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyLineChartComponent, deps: [{ token: Renderer2 }, { token: ElementRef }, { token: DOCUMENT }, { token: DecimalPipe }], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyLineChartComponent, selector: "bizy-line-chart", inputs: { saveAsImageButtonLabel: "saveAsImageButtonLabel", xLabelPrefix: "xLabelPrefix", xLabelSuffix: "xLabelSuffix", yLabelPrefix: "yLabelPrefix", yLabelSuffix: "yLabelSuffix", labelsX: "labelsX", height: "height", width: "width", tooltip: "tooltip", data: "data" }, ngImport: i0, template: '', isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyLineChartComponent, decorators: [{
-            type: Component,
-            args: [{
-                    selector: 'bizy-line-chart',
-                    template: '',
-                    changeDetection: ChangeDetectionStrategy.OnPush
-                }]
-        }], ctorParameters: function () { return [{ type: i0.Renderer2, decorators: [{
-                    type: Inject,
-                    args: [Renderer2]
-                }] }, { type: i0.ElementRef, decorators: [{
-                    type: Inject,
-                    args: [ElementRef]
-                }] }, { type: Document, decorators: [{
-                    type: Inject,
-                    args: [DOCUMENT]
-                }] }, { type: i1.DecimalPipe, decorators: [{
-                    type: Inject,
-                    args: [DecimalPipe]
-                }] }]; }, propDecorators: { saveAsImageButtonLabel: [{
-                type: Input
-            }], xLabelPrefix: [{
-                type: Input
-            }], xLabelSuffix: [{
-                type: Input
-            }], yLabelPrefix: [{
-                type: Input
-            }], yLabelSuffix: [{
-                type: Input
-            }], labelsX: [{
-                type: Input
-            }], height: [{
-                type: Input
-            }], width: [{
-                type: Input
-            }], tooltip: [{
-                type: Input
-            }], data: [{
-                type: Input
-            }] } });
-
-class BizyLineChartModule {
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyLineChartModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BizyLineChartModule, declarations: [BizyLineChartComponent], imports: [CommonModule], exports: [BizyLineChartComponent] });
-    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyLineChartModule, providers: [DecimalPipe], imports: [CommonModule] });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyLineChartModule, decorators: [{
-            type: NgModule,
-            args: [{
-                    imports: [CommonModule],
-                    declarations: [BizyLineChartComponent],
-                    exports: [BizyLineChartComponent],
-                    providers: [DecimalPipe]
-                }]
-        }] });
-
 const EMPTY_CHART$1 = [0];
 const MIN_CHART_SIZE$1 = 350; // px;
 const Y_AXIS_OFFSET = 80;
@@ -3694,5 +3693,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
  * Generated bundle index. Do not edit.
  */
 
-export { BIZY_TAG_TYPE, BizyAccordionComponent, BizyAccordionModule, BizyBarLineChartComponent, BizyBarLineChartModule, BizyBreadcrumbComponent, BizyBreadcrumbModule, BizyButtonComponent, BizyButtonModule, BizyCardComponent, BizyCardModule, BizyCheckboxComponent, BizyCheckboxModule, BizyFilterComponent, BizyFilterModule, BizyFilterPipe, BizyFilterSectionCheckboxOptionComponent, BizyFilterSectionComponent, BizyFilterSectionRangeOptionComponent, BizyFilterSectionSearchOptionComponent, BizyInputComponent, BizyInputModule, BizyInputOptionComponent, BizyLineChartComponent, BizyLineChartModule, BizyMenuComponent, BizyMenuModule, BizyMenuOptionComponent, BizyMenuTitleComponent, BizyPieChartComponent, BizyPieChartModule, BizyRangeFilterPipe, BizySelectComponent, BizySelectModule, BizySelectOptionComponent, BizySidebarComponent, BizySidebarFloatingOptionComponent, BizySidebarFloatingOptionTitleComponent, BizySidebarModule, BizySidebarOptionComponent, BizySliderComponent, BizySliderModule, BizyTabComponent, BizyTableColumnArrowsComponent, BizyTableColumnComponent, BizyTableComponent, BizyTableFooterComponent, BizyTableHeaderComponent, BizyTableModule, BizyTableRowComponent, BizyTableRowExpandContentComponent, BizyTableScrollingComponent, BizyTableScrollingDirective, BizyTabsComponent, BizyTabsModule, BizyTagComponent, BizyTagModule, BizyToggleComponent, BizyToggleModule, BizyToolbarComponent, BizyToolbarModule, BizyVirtualScrollComponent, BizyVirtualScrollGridDirective, BizyVirtualScrollModule, BizyVirtualScrollNgForDirective };
+export { BIZY_TAG_TYPE, BizyAccordionComponent, BizyAccordionModule, BizyBarLineChartComponent, BizyBarLineChartModule, BizyBreadcrumbComponent, BizyBreadcrumbModule, BizyButtonComponent, BizyButtonModule, BizyCardComponent, BizyCardModule, BizyCheckboxComponent, BizyCheckboxModule, BizyDatePickerComponent, BizyDatePickerModule, BizyFilterComponent, BizyFilterModule, BizyFilterPipe, BizyFilterSectionCheckboxOptionComponent, BizyFilterSectionComponent, BizyFilterSectionRangeOptionComponent, BizyFilterSectionSearchOptionComponent, BizyInputComponent, BizyInputModule, BizyInputOptionComponent, BizyMenuComponent, BizyMenuModule, BizyMenuOptionComponent, BizyMenuTitleComponent, BizyPieChartComponent, BizyPieChartModule, BizyRangeFilterPipe, BizySelectComponent, BizySelectModule, BizySelectOptionComponent, BizySidebarComponent, BizySidebarFloatingOptionComponent, BizySidebarFloatingOptionTitleComponent, BizySidebarModule, BizySidebarOptionComponent, BizySliderComponent, BizySliderModule, BizyTabComponent, BizyTableColumnArrowsComponent, BizyTableColumnComponent, BizyTableComponent, BizyTableFooterComponent, BizyTableHeaderComponent, BizyTableModule, BizyTableRowComponent, BizyTableRowExpandContentComponent, BizyTableScrollingComponent, BizyTableScrollingDirective, BizyTabsComponent, BizyTabsModule, BizyTagComponent, BizyTagModule, BizyToggleComponent, BizyToggleModule, BizyToolbarComponent, BizyToolbarModule, BizyVirtualScrollComponent, BizyVirtualScrollGridDirective, BizyVirtualScrollModule, BizyVirtualScrollNgForDirective };
 //# sourceMappingURL=bizy-components.mjs.map
