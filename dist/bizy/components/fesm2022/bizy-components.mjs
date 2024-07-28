@@ -3037,8 +3037,9 @@ class BizyBarLineChartComponent {
     resizeRef = null;
     downloadLabel = 'Descargar';
     name = 'Bizy';
+    tooltip = true;
     axisPointer = 'line';
-    xAxisLabels = (Array);
+    xAxisLabels = [];
     onTooltipFormatter;
     onXAxisLabelFormatter;
     onSelect = new EventEmitter();
@@ -3167,6 +3168,7 @@ class BizyBarLineChartComponent {
                 });
             });
             const tooltip = {
+                show: this.tooltip,
                 trigger: 'axis',
                 appendToBody: true,
                 axisPointer: {
@@ -3299,7 +3301,7 @@ class BizyBarLineChartComponent {
         }
     }
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyBarLineChartComponent, deps: [{ token: ElementRef }, { token: DOCUMENT }, { token: ChangeDetectorRef }, { token: Renderer2 }], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyBarLineChartComponent, selector: "bizy-bar-line-chart", inputs: { resizeRef: "resizeRef", downloadLabel: "downloadLabel", name: "name", axisPointer: "axisPointer", xAxisLabels: "xAxisLabels", onTooltipFormatter: "onTooltipFormatter", onXAxisLabelFormatter: "onXAxisLabelFormatter", data: "data" }, outputs: { onSelect: "onSelect" }, ngImport: i0, template: '', isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyBarLineChartComponent, selector: "bizy-bar-line-chart", inputs: { resizeRef: "resizeRef", downloadLabel: "downloadLabel", name: "name", tooltip: "tooltip", axisPointer: "axisPointer", xAxisLabels: "xAxisLabels", onTooltipFormatter: "onTooltipFormatter", onXAxisLabelFormatter: "onXAxisLabelFormatter", data: "data" }, outputs: { onSelect: "onSelect" }, ngImport: i0, template: '', isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyBarLineChartComponent, decorators: [{
             type: Component,
@@ -3325,6 +3327,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             }], downloadLabel: [{
                 type: Input
             }], name: [{
+                type: Input
+            }], tooltip: [{
                 type: Input
             }], axisPointer: [{
                 type: Input

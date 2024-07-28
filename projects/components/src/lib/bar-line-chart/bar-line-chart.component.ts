@@ -28,8 +28,9 @@ export class BizyBarLineChartComponent implements OnDestroy, AfterViewInit {
   @Input() resizeRef: HTMLElement = null;
   @Input() downloadLabel: string = 'Descargar';
   @Input() name: string = 'Bizy';
+  @Input() tooltip: boolean = true;
   @Input() axisPointer: 'line' | 'cross' = 'line';
-  @Input() xAxisLabels = Array<string>;
+  @Input() xAxisLabels: Array<string> = [];
   @Input() onTooltipFormatter: (item: any ) => string;
   @Input() onXAxisLabelFormatter: (item: any ) => string;
   @Output() onSelect = new EventEmitter<string>();
@@ -179,6 +180,7 @@ export class BizyBarLineChartComponent implements OnDestroy, AfterViewInit {
       });
 
       const tooltip = {
+        show: this.tooltip,
         trigger: 'axis',
         appendToBody: true,
         axisPointer: {
