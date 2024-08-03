@@ -2,10 +2,9 @@ export interface IBizyBarLineChartData {
   values?: Array<number>;
   type?: 'bar' | 'line';
   label?: string;
-  xLabel?: string;
-  yLabel?: string;
+  discrete?: boolean;
   color?: string;
-  group?: string;
-  hideYAxi?: boolean;
-  onYAxisLabelFormatter?: (item: any ) => string;
+  stack?: string;
+  xAxi?: {name: string}
+  yAxi?: {name?: string, hide?: boolean, position?: 'left' | 'right', onValueFormatter?: (item: any ) => string}
 }
