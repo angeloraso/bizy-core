@@ -129,6 +129,7 @@ export class BizyDatePickerComponent {
           } else if (selectedDates[0] && selectedDates[1]) {
             const from = new Date(selectedDates[0]);
             const to = new Date(selectedDates[1]);
+            to.setHours(23, 59, 59, 999);
             const range = {from: from.getTime(), to: to.getTime()};
             this.rangeChange.emit(range);
             this.onChange.emit(range);

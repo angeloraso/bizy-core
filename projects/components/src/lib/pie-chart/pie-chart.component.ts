@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import * as echarts from 'echarts';
 import { IBizyPieChartData } from './pie-chart.types';
-import { DOCUMENT, DecimalPipe,  } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { BehaviorSubject, Subject, Subscription, auditTime, filter, skip, take, throttleTime } from 'rxjs';
 
 const EMPTY_CHART = [0];
@@ -23,15 +23,12 @@ const MIN_CHART_SIZE = 350 // px;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyPieChartComponent {
-  @Input() prefix = '';
-  @Input() suffix = '';
-  @Input() fixedTo = 2;
-  @Input() resizeRef: ElementRef = null;
+  @Input() resizeRef: HTMLElement | null = null;
+  @Input() tooltip: boolean = true;
+  @Input() name: string = 'Bizy';
   @Input() downloadLabel: string = 'Descargar';
+  @Input() onTooltipFormatter: (item: any ) => string;
   @Output() onSelect = new EventEmitter<string>();
-  @Input() onFormatter: (item: any ) => string = (item: any) => {
-    return `${item.name}: ${this.prefix}${this.decimalPipe.transform(item.value, `1.${this.fixedTo}-${this.fixedTo}`)}${this.suffix} (${item.percent.toFixed(this.fixedTo).replaceAll('.', ',')}%)`;
-  }
 
   #echarts: echarts.ECharts | null = null
 
@@ -41,14 +38,13 @@ export class BizyPieChartComponent {
   #chartContainer: HTMLDivElement | null = null;
   #afterViewInit = new BehaviorSubject<boolean>(false);
   #resize$ = new Subject<void>();
-  #data:  Array<IBizyPieChartData> | typeof EMPTY_CHART = EMPTY_CHART;
+  #data:  Array<{name: string, value: number, itemStyle: {color?: string}}> | typeof EMPTY_CHART = EMPTY_CHART;
 
   constructor(
     @Inject(ElementRef) private elementRef: ElementRef,
     @Inject(DOCUMENT) private document: Document,
     @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef,
-    @Inject(Renderer2) private renderer: Renderer2,
-    @Inject(DecimalPipe) private decimalPipe: DecimalPipe
+    @Inject(Renderer2) private renderer: Renderer2
   ) {}
 
   ngAfterViewInit() {
@@ -77,72 +73,88 @@ export class BizyPieChartComponent {
   }
 
   async #setChartData(data: Array<IBizyPieChartData> | typeof EMPTY_CHART) {
-    this.#data = data;
     this.#subscription.add(this.#afterViewInit.pipe(filter(value => value === true), take(1)).subscribe(() => {
-
       this.#createChartContainer()
 
       if (!this.#chartContainer) {
         return;
       }
 
-      const color: Array<string> = [];
-      let total = 0;
-      data.forEach(_d => {
-        total += (_d as IBizyPieChartData).value;
-        if ((_d as IBizyPieChartData).color) {
-          color.push((_d as IBizyPieChartData).color as string);
-        }
-      });
+      if (data && data.length > 0 && data[0] !== 0) {
+        this.#data = [];
+        (<Array<IBizyPieChartData>>data).forEach(_d => {
+          if (!_d.value) {
+            _d.value = 0;
+          }
 
-      const option: any = {
-        tooltip: {
-          trigger: 'item',
-          formatter: this.onFormatter
-        },
-        toolbox: {
-          show: true,
-          feature: {
-            saveAsImage: {
-              show: true,
-              title: this.downloadLabel
-            }
+          if (!_d.name) {
+            _d.name = '---'
+          }
+
+          const itemStyle = _d.color ? {color: _d.color} : {};
+          
+          (<Array<{name: string, value: number, itemStyle: {color?: string}}>>this.#data).push({
+              name: _d.name,
+              value: _d.value,
+              itemStyle
+            })
+        });
+      } else {
+        this.#data = EMPTY_CHART;
+      }
+
+      const series = [{
+        type: 'pie',
+        radius: '50%',
+        center: ['50%', '50%'],
+        data: this.#data,
+        normal: {
+          label: {
+            position: 'outer',
+            formatter: this.onTooltipFormatter
           },
-          iconStyle: {
-            emphasis: {
-              textAlign: 'right'
-            }
+          labelLine: {
+            show: true
+          }
+        }
+      }];
+
+      const textColor = getComputedStyle(this.document.documentElement).getPropertyValue('--bizy-tooltip-color') ?? '#000';
+      const textBackgroundColor = getComputedStyle(this.document.documentElement).getPropertyValue('--bizy-tooltip-background-color') ?? '#fff';
+      const borderColor = getComputedStyle(this.document.documentElement).getPropertyValue('--bizy-tooltip-border-color') ?? '#fff';
+
+      const toolbox = {
+        show: true,
+        feature: {
+          saveAsImage: {
+            show: true,
+            name: this.name,
+            title: this.downloadLabel
           }
         },
-        series: [
-          {
-            type: 'pie',
-            radius: '50%',
-            center: ['50%', '50%'],
-            data,
-            itemStyle: {
-              emphasis: {
-                label: {
-                  show: true
-                }
-              },
-              normal: {
-                label: {
-                  position: 'outer',
-                  formatter: this.onFormatter
-                },
-                labelLine: {
-                  show: true
-                }
-              }
-            }
+        emphasis: {
+          iconStyle: {
+            color: textColor,
+            borderColor,
+            borderWidth: 1,
+            textBackgroundColor,
+            textPadding: 5,
           }
-        ]
+        }
       };
 
-      if (color.length > 0 && color.length === data.length) {
-        option.color = color;
+      const tooltip = {
+        show: this.tooltip,
+        trigger: 'item',
+        appendToBody: true,
+        formatter: this.onTooltipFormatter
       }
+
+      const option: any = {
+        tooltip,
+        toolbox,
+        series
+      };
       
       this.#echarts = echarts.init(this.#chartContainer);
       this.#echarts.setOption(option);
@@ -180,10 +192,10 @@ export class BizyPieChartComponent {
 
     let minWidth = MIN_CHART_SIZE;
     let minHeight = MIN_CHART_SIZE;
-    const pieChartMinWidth = getComputedStyle(this.document.body).getPropertyValue('--bizy-pie-chart-min-width');
-    const pieChartMinHeight = getComputedStyle(this.document.body).getPropertyValue('--bizy-pie-chart-min-height');
-    if (Number(pieChartMinWidth)) {
-      minWidth = Number(pieChartMinWidth);
+    const chartMinWidth = getComputedStyle(this.document.body).getPropertyValue('--bizy-chart-min-width');
+    const pieChartMinHeight = getComputedStyle(this.document.body).getPropertyValue('--bizy-chart-min-height');
+    if (Number(chartMinWidth)) {
+      minWidth = Number(chartMinWidth);
     }
     if (Number(pieChartMinHeight)) {
       minHeight = Number(pieChartMinHeight);
@@ -204,6 +216,7 @@ export class BizyPieChartComponent {
       return;
     }
 
+    this.#echarts.clear();
     this.renderer.removeChild(this.elementRef.nativeElement, this.#chartContainer);
     this.#chartContainer = null;
     this.ref.detectChanges();
@@ -223,4 +236,5 @@ export class BizyPieChartComponent {
       this.#echarts.clear();
     }
   }
+
 }

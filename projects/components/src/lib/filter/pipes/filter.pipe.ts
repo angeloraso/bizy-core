@@ -49,8 +49,10 @@ export class BizyFilterPipe implements PipeTransform {
       output = output.concat(res);
     });
 
-    // Filter out duplicates by serializing objects to JSON
-    output = output.filter((obj, index, self) => index === self.findIndex((t) => JSON.stringify(t) === JSON.stringify(obj)));
-    return output;
+    let map = new Map();
+    output.forEach(obj => map.set(JSON.stringify(obj), obj));
+    const uniqueArray = Array.from(map.values());
+
+    return uniqueArray;
   }
 }

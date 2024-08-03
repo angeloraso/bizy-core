@@ -7,6 +7,7 @@ export declare class BizySelectComponent implements AfterViewInit {
     private ref;
     private document;
     options: QueryList<BizySelectOptionComponent>;
+    bizyInput: BizyInputComponent;
     id: string;
     disabled: boolean;
     customClass: string;
@@ -26,5 +27,5 @@ export declare class BizySelectComponent implements AfterViewInit {
     }, select?: BizyInputComponent) => void;
     ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizySelectComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<BizySelectComponent, "bizy-select", never, { "id": { "alias": "id"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; "opened": { "alias": "opened"; "required": false; }; }, { "openedChange": "openedChange"; "onSelect": "onSelect"; "onOpen": "onOpen"; }, ["options"], ["[slot=header]", "[slot=prefix]", "[slot=error]", "bizy-input", "bizy-select-option"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<BizySelectComponent, "bizy-select", never, { "id": { "alias": "id"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; "opened": { "alias": "opened"; "required": false; }; }, { "openedChange": "openedChange"; "onSelect": "onSelect"; "onOpen": "onOpen"; }, ["bizyInput", "options"], ["[slot=header]", "[slot=prefix]", "[slot=error]", "bizy-input", "bizy-select-option"], false, never>;
 }

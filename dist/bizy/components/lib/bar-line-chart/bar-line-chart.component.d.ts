@@ -7,10 +7,10 @@ export declare class BizyBarLineChartComponent implements OnDestroy, AfterViewIn
     private document;
     private ref;
     private renderer;
-    resizeRef: HTMLElement;
+    resizeRef: HTMLElement | null;
+    tooltip: boolean;
     downloadLabel: string;
     name: string;
-    tooltip: boolean;
     axisPointer: 'line' | 'cross';
     xAxisLabels: Array<string>;
     onTooltipFormatter: (item: any) => string;
@@ -21,5 +21,5 @@ export declare class BizyBarLineChartComponent implements OnDestroy, AfterViewIn
     set data(data: Array<IBizyBarLineChartData>);
     ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyBarLineChartComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<BizyBarLineChartComponent, "bizy-bar-line-chart", never, { "resizeRef": { "alias": "resizeRef"; "required": false; }; "downloadLabel": { "alias": "downloadLabel"; "required": false; }; "name": { "alias": "name"; "required": false; }; "tooltip": { "alias": "tooltip"; "required": false; }; "axisPointer": { "alias": "axisPointer"; "required": false; }; "xAxisLabels": { "alias": "xAxisLabels"; "required": false; }; "onTooltipFormatter": { "alias": "onTooltipFormatter"; "required": false; }; "onXAxisLabelFormatter": { "alias": "onXAxisLabelFormatter"; "required": false; }; "data": { "alias": "data"; "required": false; }; }, { "onSelect": "onSelect"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<BizyBarLineChartComponent, "bizy-bar-line-chart", never, { "resizeRef": { "alias": "resizeRef"; "required": false; }; "tooltip": { "alias": "tooltip"; "required": false; }; "downloadLabel": { "alias": "downloadLabel"; "required": false; }; "name": { "alias": "name"; "required": false; }; "axisPointer": { "alias": "axisPointer"; "required": false; }; "xAxisLabels": { "alias": "xAxisLabels"; "required": false; }; "onTooltipFormatter": { "alias": "onTooltipFormatter"; "required": false; }; "onXAxisLabelFormatter": { "alias": "onXAxisLabelFormatter"; "required": false; }; "data": { "alias": "data"; "required": false; }; }, { "onSelect": "onSelect"; }, never, never, false, never>;
 }

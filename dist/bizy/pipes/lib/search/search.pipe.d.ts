@@ -3,6 +3,7 @@ import { PipeTransform } from '@angular/core';
 import Fuse from 'fuse.js';
 import * as i0 from "@angular/core";
 export declare class BizySearchPipe implements PipeTransform {
+    #private;
     fuseOptions: IFuseOptions;
     fuse: Fuse<any>;
     items: Array<unknown>;

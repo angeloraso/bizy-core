@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, ElementRef, Renderer2, EventEmitter } from '@angular/core';
 import { IBizyPieChartData } from './pie-chart.types';
-import { DecimalPipe } from '@angular/common';
 import * as i0 from "@angular/core";
 export declare class BizyPieChartComponent {
     #private;
@@ -8,18 +7,16 @@ export declare class BizyPieChartComponent {
     private document;
     private ref;
     private renderer;
-    private decimalPipe;
-    prefix: string;
-    suffix: string;
-    fixedTo: number;
-    resizeRef: ElementRef;
+    resizeRef: HTMLElement | null;
+    tooltip: boolean;
+    name: string;
     downloadLabel: string;
+    onTooltipFormatter: (item: any) => string;
     onSelect: EventEmitter<string>;
-    onFormatter: (item: any) => string;
-    constructor(elementRef: ElementRef, document: Document, ref: ChangeDetectorRef, renderer: Renderer2, decimalPipe: DecimalPipe);
+    constructor(elementRef: ElementRef, document: Document, ref: ChangeDetectorRef, renderer: Renderer2);
     ngAfterViewInit(): void;
     set data(data: Array<IBizyPieChartData>);
     ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyPieChartComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<BizyPieChartComponent, "bizy-pie-chart", never, { "prefix": { "alias": "prefix"; "required": false; }; "suffix": { "alias": "suffix"; "required": false; }; "fixedTo": { "alias": "fixedTo"; "required": false; }; "resizeRef": { "alias": "resizeRef"; "required": false; }; "downloadLabel": { "alias": "downloadLabel"; "required": false; }; "onFormatter": { "alias": "onFormatter"; "required": false; }; "data": { "alias": "data"; "required": false; }; }, { "onSelect": "onSelect"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<BizyPieChartComponent, "bizy-pie-chart", never, { "resizeRef": { "alias": "resizeRef"; "required": false; }; "tooltip": { "alias": "tooltip"; "required": false; }; "name": { "alias": "name"; "required": false; }; "downloadLabel": { "alias": "downloadLabel"; "required": false; }; "onTooltipFormatter": { "alias": "onTooltipFormatter"; "required": false; }; "data": { "alias": "data"; "required": false; }; }, { "onSelect": "onSelect"; }, never, never, false, never>;
 }

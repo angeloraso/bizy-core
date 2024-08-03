@@ -30,7 +30,9 @@ export class BizySearchPipe implements PipeTransform {
     }
 
     if (!Array.isArray(search)) {
-      search = [String(search)];
+      search = [this.#removeAccentsAndDiacritics(String(search))];
+    } else {
+      search = search.map(_search => this.#removeAccentsAndDiacritics(String(_search)))
     }
 
     let output: Array<T> = items;
@@ -53,5 +55,13 @@ export class BizySearchPipe implements PipeTransform {
       output = fuseResult.map(match => match.item);
     });
     return output;
+  }
+
+  #removeAccentsAndDiacritics(search: string): string {
+    if (!search) {
+      return '';
+    }
+
+    return search.normalize('NFD')!.replace(/[\u0300-\u036f]/g, '');
   }
 }

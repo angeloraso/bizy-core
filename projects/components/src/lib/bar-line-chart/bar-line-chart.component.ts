@@ -25,10 +25,10 @@ const Y_AXIS_OFFSET = 80;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyBarLineChartComponent implements OnDestroy, AfterViewInit {
-  @Input() resizeRef: HTMLElement = null;
+  @Input() resizeRef: HTMLElement | null = null;
+  @Input() tooltip: boolean = true;
   @Input() downloadLabel: string = 'Descargar';
   @Input() name: string = 'Bizy';
-  @Input() tooltip: boolean = true;
   @Input() axisPointer: 'line' | 'cross' = 'line';
   @Input() xAxisLabels: Array<string> = [];
   @Input() onTooltipFormatter: (item: any ) => string;
@@ -45,9 +45,10 @@ export class BizyBarLineChartComponent implements OnDestroy, AfterViewInit {
   #resize$ = new Subject<void>();
   #data:  Array<IBizyBarLineChartData> | typeof EMPTY_CHART = EMPTY_CHART;
 
-  #barCharts: number = 0;
-  #lineCharts: number = 0;
-  #chartGroups: Array<string> = []
+  #rightYAxis: number = 0;
+  #leftYAxis: number = 0;
+  #chartStacks: Array<string> = [];
+  #chartNames: Array<string> = [];
 
   constructor(
     @Inject(ElementRef) private elementRef: ElementRef,
@@ -83,17 +84,16 @@ export class BizyBarLineChartComponent implements OnDestroy, AfterViewInit {
 
   async #setChartData(data: Array<IBizyBarLineChartData> | typeof EMPTY_CHART) {
     this.#data = data;
-    this.#barCharts = 0;
-    this.#lineCharts = 0;
-    this.#chartGroups = [];
+    this.#rightYAxis = 0;
+    this.#leftYAxis = 0;
+    this.#chartStacks = [];
+    this.#chartNames = [];
     this.#subscription.add(this.#afterViewInit.pipe(filter(value => value === true), take(1)).subscribe(() => {
       this.#createChartContainer()
 
       if (!this.#chartContainer) {
         return;
       }
-
-      const color: Array<string> = [];
 
       const series: Array<any> = [];
       const legends: Array<string> = [];
@@ -113,70 +113,90 @@ export class BizyBarLineChartComponent implements OnDestroy, AfterViewInit {
           lineStyle: {}
         };
 
+        const color = {
+          lineStyle: {
+            color: ''
+          },
+          itemStyle: {
+              color: ''
+          }
+        };
+
         if (_d.color) {
-          color.push(_d.color);
           axisLine.lineStyle = {
             color: _d.color
           }
+
+          color.lineStyle.color = _d.color;
+          color.itemStyle.color = _d.color;
         }
 
         let position = 'right';
         let offset = 0;
+        let formatter = ''
+        const xName = _d.xAxi &&  _d.xAxi.name ?  _d.xAxi.name : _d.label;
+        let yName = _d.label;
 
-        if (!_d.hideYAxi) {
-          if (_d.type === 'bar') {
-            offset = this.#barCharts * Y_AXIS_OFFSET;
-            this.#barCharts++;
-          } else {
-            offset = this.#lineCharts * Y_AXIS_OFFSET;
-            this.#lineCharts++;
-            position = 'left';
+        if (_d.yAxi) {
+          formatter = _d.yAxi.onValueFormatter;
+          position = _d.yAxi.position ? _d.yAxi.position : _d.type === 'bar' ? 'right' : 'left';
+          if (_d.yAxi.name) {
+            yName = _d.yAxi.name;
           }
-          
 
-          yAxis.push({
-            type: 'value',
-            name: _d.yLabel || _d.label || '',
-            position,
-            axisLine,
-            alignTicks: true,
-            offset,
-            axisLabel: {
-              formatter: _d.onYAxisLabelFormatter
-            }
-          });
-        } else {
-          yAxis.push({
-            type: 'value',
-            position: 'right',
-            alignTicks: true,
-            offset: 0,
-            axisLabel: {
-              formatter: ''
-            }
-          });
-        }
-  
-        legends.push(_d.xLabel || _d.label);
-
-        let index = _i;
-        if (_d.group) {
-          const _index = this.#chartGroups.findIndex(_group => _group === _d.group);
-          if (_index !== -1) {
-            index = _index;
-          } else {
-            this.#chartGroups.push(_d.group);
+          if (_d.yAxi.hide) {
+            axisLine.show = false;
+            formatter = '';
           }
         }
-  
-        series.push({
-          type: _d.type,
-          name: _d.xLabel || _d.label,
-          yAxisIndex: index,
-          smooth: true,
-          stack: _d.group,
-          data: _d.values
+
+        if (!_d.yAxi || !_d.yAxi.hide) {
+          if (position === 'right') {
+            offset = this.#rightYAxis * Y_AXIS_OFFSET;
+            this.#rightYAxis++;
+          } else {
+            offset = this.#leftYAxis * Y_AXIS_OFFSET;
+            this.#leftYAxis++;
+          }
+        }
+
+        yAxis.push({
+          type: 'value',
+          name: _d.yAxi && _d.yAxi.hide ? '' : yName,
+          position,
+          alignTicks: true,
+          offset,
+          axisLine,
+          axisLabel: { formatter }
         });
+  
+        legends.push(xName);
+
+        let yAxisIndex = _i;
+        if (_d.stack) {
+          const _index = this.#chartStacks.findIndex(_stack => _stack === _d.stack);
+          if (_index !== -1) {
+            yAxisIndex = _index;
+          } else {
+            this.#chartStacks.push(_d.stack);
+          }
+        }
+
+        const _index = this.#chartNames.findIndex(_name => _name === yName);
+        if (_index !== -1) {
+          yAxisIndex = _index;
+        } else {
+          this.#chartNames.push(yName);
+        }
+  
+        series.push({...{
+          type: _d.type,
+          name: xName,
+          yAxisIndex,
+          smooth: !_d.discrete,
+          stack: _d.stack,
+          data: _d.values
+        }, ...color});
       });
 
       const tooltip = {
@@ -190,8 +210,8 @@ export class BizyBarLineChartComponent implements OnDestroy, AfterViewInit {
       }
 
       const grid = {
-        left: this.#lineCharts > 2 ? (this.#lineCharts - 2) * Y_AXIS_OFFSET : 10,
-        right: this.#barCharts > 2 ? (this.#barCharts - 2) * Y_AXIS_OFFSET : 10,
+        left: this.#leftYAxis > 2 ? (this.#leftYAxis - 2) * Y_AXIS_OFFSET : 10,
+        right: this.#rightYAxis > 2 ? (this.#rightYAxis - 2) * Y_AXIS_OFFSET : 10,
         bottom: 30,
         containLabel: true
       };
@@ -248,10 +268,6 @@ export class BizyBarLineChartComponent implements OnDestroy, AfterViewInit {
         toolbox,
         series
       };
-
-      if (color && color.length > 0) {
-        option.color = color;
-      }
 
       this.#echarts = echarts.init(this.#chartContainer);
       this.#echarts.setOption(option);

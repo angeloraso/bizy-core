@@ -48,6 +48,7 @@
 
 ::ng-deep .bizy-select__options__search {
     --bizy-input-width: auto;
+    --bizy-input-background-color: #fff;
     --bizy-input-min-width: var(--bizy-select-min-width);
     --bizy-input-max-width: auto;
 }

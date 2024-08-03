@@ -259,7 +259,10 @@ class BizySearchPipe {
             keys = [];
         }
         if (!Array.isArray(search)) {
-            search = [String(search)];
+            search = [this.#removeAccentsAndDiacritics(String(search))];
+        }
+        else {
+            search = search.map(_search => this.#removeAccentsAndDiacritics(String(_search)));
         }
         let output = items;
         // Remove empty items
@@ -280,6 +283,12 @@ class BizySearchPipe {
             output = fuseResult.map(match => match.item);
         });
         return output;
+    }
+    #removeAccentsAndDiacritics(search) {
+        if (!search) {
+            return '';
+        }
+        return search.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     }
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizySearchPipe, deps: [], target: i0.ɵɵFactoryTarget.Pipe });
     static ɵpipe = i0.ɵɵngDeclarePipe({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BizySearchPipe, name: "bizySearch" });

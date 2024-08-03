@@ -1,5 +1,5 @@
 import { BizySelectOptionComponent } from './select-option/select-option.component';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Inject, Input, Output, QueryList, ContentChildren, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Inject, Input, Output, QueryList, ContentChildren, AfterViewInit, ElementRef, ViewChild, ContentChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import { BizyInputComponent } from '../input';
@@ -12,6 +12,7 @@ import { BizyInputComponent } from '../input';
 })
 export class BizySelectComponent implements AfterViewInit {
   @ContentChildren(BizySelectOptionComponent) options: QueryList<BizySelectOptionComponent>;
+  @ContentChild(BizyInputComponent) bizyInput: BizyInputComponent;
   @Input() id: string = `bizy-select-${Math.random()}`;
   @Input() disabled: boolean = false;
   @Input() customClass: string = '';
@@ -65,6 +66,11 @@ export class BizySelectComponent implements AfterViewInit {
     this.onSelect.emit(event);
     this.openedChange.emit(this.opened);
     this.onOpen.emit(this.opened);
+
+    if (this.bizyInput) {
+      this.bizyInput.setFocus(true);
+    }
+
     this.ref.detectChanges();
   }
 

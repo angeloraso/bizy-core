@@ -1,6 +1,6 @@
 import { takeUntil } from 'rxjs/operators';
 import { DOCUMENT } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, Input, OnDestroy, Output, ViewChild, AfterContentInit, ContentChildren, QueryList } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, Input, OnDestroy, Output, ViewChild, ContentChildren, QueryList } from '@angular/core';
 import { Subject, Subscription, debounceTime, filter, take, interval, fromEvent } from 'rxjs';
 import { BizyInputOptionComponent } from './input-option/input-option.component';
 
@@ -10,7 +10,7 @@ import { BizyInputOptionComponent } from './input-option/input-option.component'
   styleUrls: ['./input.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BizyInputComponent implements OnDestroy, AfterContentInit {
+export class BizyInputComponent implements OnDestroy {
   @ContentChildren(BizyInputOptionComponent) options: QueryList<BizyInputOptionComponent>;
   @ViewChild('bizyInputWrapper') bizyInputWrapper: ElementRef;
   @ViewChild('bizyInput') bizyInput: ElementRef;
@@ -22,7 +22,6 @@ export class BizyInputComponent implements OnDestroy, AfterContentInit {
   @Input() rows: number = 4;
   @Input() disabled: boolean = false;
   @Input() readonly: boolean = false;
-  @Input() autofocus: boolean = false;
   @Input() value: string | number = '';
   @Output() valueChange = new EventEmitter<string | number>();
   @Output() onChange = new EventEmitter<string | number>();
@@ -31,6 +30,14 @@ export class BizyInputComponent implements OnDestroy, AfterContentInit {
   @Output() onSelect = new EventEmitter<PointerEvent>();
   @Output() onBlur = new EventEmitter<PointerEvent>();
   @Output() onFocus = new EventEmitter<PointerEvent>();
+
+  @Input() set autofocus(autofocus: boolean) {
+    if (typeof autofocus === 'undefined' || autofocus === null) {
+      return;
+    }
+
+    this.setFocus(autofocus);
+  }
 
   focused: boolean = false;
   touched: boolean = false;
@@ -80,23 +87,6 @@ export class BizyInputComponent implements OnDestroy, AfterContentInit {
     this.onFocus.emit(event);
   }
 
-  ngAfterContentInit() {
-    if (this.autofocus) {
-      const interval$ = interval(300);
-      const finish$ = new Subject<void>();
-      this.#subscription.add(interval$.pipe(takeUntil(finish$)).subscribe(() => {
-        if (this.bizyInput && this.bizyInput.nativeElement) {
-          this.bizyInput.nativeElement.focus();
-          this.focused = true;
-          finish$.next();
-          finish$.complete();
-          this.ref.detectChanges();
-        }
-      }))
-    }
-  } 
-
-
   ngAfterViewInit() {
     const submit$ = fromEvent(this.document, 'click');
     this.#subscription.add(submit$.pipe(
@@ -140,6 +130,26 @@ export class BizyInputComponent implements OnDestroy, AfterContentInit {
         this.#optionSubscription.unsubscribe();
       }));
     });
+  }
+
+  setFocus(focus: boolean) {
+    const interval$ = interval(300);
+    const finish$ = new Subject<void>();
+    this.#subscription.add(interval$.pipe(takeUntil(finish$)).subscribe(() => {
+      if (this.bizyInput && this.bizyInput.nativeElement) {
+        if (focus) {
+          this.bizyInput.nativeElement.focus();
+          this.focused = true;
+        } else {
+          this.bizyInput.nativeElement.blur();
+          this.focused = false;
+        }
+        
+        finish$.next();
+        finish$.complete();
+        this.ref.detectChanges();
+      }
+    }))
   }
 
   close = (event?: PointerEvent & {target: {id: string}}, button?: HTMLButtonElement) => {
