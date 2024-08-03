@@ -3018,7 +3018,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 }]
         }] });
 
-const EMPTY_CHART$1 = [0];
 const MIN_CHART_SIZE$1 = 350; // px;
 const Y_AXIS_OFFSET = 80;
 class BizyBarLineChartComponent {
@@ -3042,7 +3041,7 @@ class BizyBarLineChartComponent {
     #chartContainer = null;
     #afterViewInit = new BehaviorSubject(false);
     #resize$ = new Subject();
-    #data = EMPTY_CHART$1;
+    #data = [];
     #rightYAxis = 0;
     #leftYAxis = 0;
     #chartStacks = [];
@@ -3071,7 +3070,6 @@ class BizyBarLineChartComponent {
         }
         else {
             this.#deleteChartContainer();
-            this.#setChartData(EMPTY_CHART$1);
         }
     }
     async #setChartData(data) {
@@ -3088,101 +3086,94 @@ class BizyBarLineChartComponent {
             const series = [];
             const legends = [];
             const yAxis = [];
-            if (this.#data && this.#data.length > 0 && this.#data[0] !== 0) {
-                this.#data.forEach((_d, _i) => {
-                    if (!_d.type) {
-                        _d.type = 'bar';
+            this.#data.forEach((_d, _i) => {
+                if (!_d.type) {
+                    _d.type = 'bar';
+                }
+                if (!_d.values) {
+                    _d.values = [];
+                }
+                const axisLine = {
+                    show: true,
+                    lineStyle: {}
+                };
+                const color = {
+                    lineStyle: {
+                        color: null
+                    },
+                    itemStyle: {
+                        color: null
                     }
-                    if (!_d.values) {
-                        _d.values = [];
-                    }
-                    const axisLine = {
-                        show: true,
-                        lineStyle: {}
+                };
+                if (_d.color) {
+                    axisLine.lineStyle = {
+                        color: _d.color
                     };
-                    const color = {
-                        lineStyle: {
-                            color: null
-                        },
-                        itemStyle: {
-                            color: null
-                        }
-                    };
-                    if (_d.color) {
-                        axisLine.lineStyle = {
-                            color: _d.color
-                        };
-                        color.lineStyle.color = _d.color;
-                        color.itemStyle.color = _d.color;
+                    color.lineStyle.color = _d.color;
+                    color.itemStyle.color = _d.color;
+                }
+                let position = 'right';
+                let offset = 0;
+                let formatter = null;
+                const xName = _d.xAxi && _d.xAxi.name ? _d.xAxi.name : _d.label;
+                let yName = _d.label;
+                if (_d.yAxi) {
+                    formatter = _d.yAxi.onValueFormatter;
+                    position = _d.yAxi.position ? _d.yAxi.position : _d.type === 'bar' ? 'right' : 'left';
+                    if (_d.yAxi.name) {
+                        yName = _d.yAxi.name;
                     }
-                    let position = 'right';
-                    let offset = 0;
-                    let formatter = '';
-                    const xName = _d.xAxi && _d.xAxi.name ? _d.xAxi.name : _d.label;
-                    let yName = _d.label;
-                    if (_d.yAxi) {
-                        formatter = _d.yAxi.onValueFormatter;
-                        position = _d.yAxi.position ? _d.yAxi.position : _d.type === 'bar' ? 'right' : 'left';
-                        if (_d.yAxi.name) {
-                            yName = _d.yAxi.name;
-                        }
-                        if (_d.yAxi.hide) {
-                            axisLine.show = false;
-                            formatter = '';
-                        }
+                    if (_d.yAxi.hide) {
+                        axisLine.show = false;
+                        formatter = null;
                     }
-                    if (!_d.yAxi || !_d.yAxi.hide) {
-                        if (position === 'right') {
-                            offset = this.#rightYAxis * Y_AXIS_OFFSET;
-                            this.#rightYAxis++;
-                        }
-                        else {
-                            offset = this.#leftYAxis * Y_AXIS_OFFSET;
-                            this.#leftYAxis++;
-                        }
+                }
+                if (!_d.yAxi || !_d.yAxi.hide) {
+                    if (position === 'right') {
+                        offset = this.#rightYAxis * Y_AXIS_OFFSET;
+                        this.#rightYAxis++;
                     }
-                    yAxis.push({
-                        type: 'value',
-                        name: _d.yAxi && _d.yAxi.hide ? '' : yName,
-                        position,
-                        alignTicks: true,
-                        offset,
-                        axisLine,
-                        axisLabel: { formatter }
-                    });
-                    legends.push(xName);
-                    let yAxisIndex = _i;
-                    if (_d.stack) {
-                        const _index = this.#chartStacks.findIndex(_stack => _stack === _d.stack);
-                        if (_index !== -1) {
-                            yAxisIndex = _index;
-                        }
-                        else {
-                            this.#chartStacks.push(_d.stack);
-                        }
+                    else {
+                        offset = this.#leftYAxis * Y_AXIS_OFFSET;
+                        this.#leftYAxis++;
                     }
-                    const _index = this.#chartNames.findIndex(_name => _name === yName);
+                }
+                yAxis.push({
+                    type: 'value',
+                    name: _d.yAxi && _d.yAxi.hide ? '' : yName,
+                    position,
+                    alignTicks: true,
+                    offset,
+                    axisLine,
+                    axisLabel: { formatter }
+                });
+                legends.push(xName);
+                let yAxisIndex = _i;
+                if (_d.stack) {
+                    const _index = this.#chartStacks.findIndex(_stack => _stack === _d.stack);
                     if (_index !== -1) {
                         yAxisIndex = _index;
                     }
                     else {
-                        this.#chartNames.push(yName);
+                        this.#chartStacks.push(_d.stack);
                     }
-                    series.push({ ...{
-                            type: _d.type,
-                            name: xName,
-                            yAxisIndex,
-                            smooth: !_d.discrete,
-                            stack: _d.stack,
-                            data: _d.values
-                        }, ...color });
-                });
-            }
-            else {
-                series.push({
-                    data: EMPTY_CHART$1
-                });
-            }
+                }
+                const _index = this.#chartNames.findIndex(_name => _name === yName);
+                if (_index !== -1) {
+                    yAxisIndex = _index;
+                }
+                else {
+                    this.#chartNames.push(yName);
+                }
+                series.push({ ...{
+                        type: _d.type,
+                        name: xName,
+                        yAxisIndex,
+                        smooth: !_d.discrete,
+                        stack: _d.stack,
+                        data: _d.values
+                    }, ...color });
+            });
             const tooltip = {
                 show: this.tooltip,
                 trigger: 'axis',
