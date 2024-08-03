@@ -115,10 +115,10 @@ export class BizyBarLineChartComponent implements OnDestroy, AfterViewInit {
 
         const color = {
           lineStyle: {
-            color: ''
+            color: null
           },
           itemStyle: {
-              color: ''
+              color: null
           }
         };
 
