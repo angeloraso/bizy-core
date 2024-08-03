@@ -3178,6 +3178,11 @@ class BizyBarLineChartComponent {
                         }, ...color });
                 });
             }
+            else {
+                series.push({
+                    data: EMPTY_CHART$1
+                });
+            }
             const tooltip = {
                 show: this.tooltip,
                 trigger: 'axis',

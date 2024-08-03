@@ -199,6 +199,10 @@ export class BizyBarLineChartComponent implements OnDestroy, AfterViewInit {
             data: _d.values
           }, ...color});
         });
+      } else {
+        series.push({
+          data: EMPTY_CHART
+        })
       }
 
       const tooltip = {
