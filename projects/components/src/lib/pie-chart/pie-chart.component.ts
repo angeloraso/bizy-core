@@ -12,6 +12,7 @@ import {
 import * as echarts from 'echarts';
 import { IBizyPieChartData } from './pie-chart.types';
 import { DOCUMENT } from '@angular/common';
+import html2canvas from 'html2canvas';
 import { BehaviorSubject, Subject, Subscription, auditTime, filter, skip, take, throttleTime } from 'rxjs';
 
 const EMPTY_CHART = [0];
@@ -25,10 +26,11 @@ const MIN_CHART_SIZE = 350 // px;
 export class BizyPieChartComponent {
   @Input() resizeRef: HTMLElement | null = null;
   @Input() tooltip: boolean = true;
-  @Input() name: string = 'Bizy';
-  @Input() downloadLabel: string = 'Descargar';
+  @Input() download: {hide?: boolean, label: string, name: string} = {hide: false, label: 'Descargar', name: 'Bizy'};
+  @Input() onLabelFormatter: (item: any ) => string;
   @Input() onTooltipFormatter: (item: any ) => string;
   @Output() onSelect = new EventEmitter<string>();
+  @Output() onDownload = new EventEmitter<void>();
 
   #echarts: echarts.ECharts | null = null
 
@@ -108,13 +110,20 @@ export class BizyPieChartComponent {
         radius: '50%',
         center: ['50%', '50%'],
         data: this.#data,
-        normal: {
-          label: {
-            position: 'outer',
-            formatter: this.onTooltipFormatter
+        itemStyle: {
+          emphasis: {
+            label: {
+              show: true
+            }
           },
-          labelLine: {
-            show: true
+          normal: {
+            label: {
+              position: 'outer',
+              formatter: this.onLabelFormatter
+            },
+            labelLine: {
+              show: true
+            }
           }
         }
       }];
@@ -126,10 +135,23 @@ export class BizyPieChartComponent {
       const toolbox = {
         show: true,
         feature: {
-          saveAsImage: {
-            show: true,
-            name: this.name,
-            title: this.downloadLabel
+          mySaveAsImage: {
+            show: !this.download.hide,
+            icon: 'path://M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 242.7-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7 288 32zM64 352c-35.3 0-64 28.7-64 64l0 32c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-32c0-35.3-28.7-64-64-64l-101.5 0-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352 64 352zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z',
+            title: this.download.label,
+            onclick: () => {
+              setTimeout(() => {
+                  html2canvas(this.#chartContainer).then(canvas => {
+                      var link = document.createElement('a');
+                      link.href = canvas.toDataURL('image/png');
+                      link.download = `${this.download.name}.png`;
+                      this.renderer.appendChild(this.document.body, link);
+                      link.click();
+                      this.renderer.removeChild(this.document.body, link);
+                      this.onDownload.emit();
+                  });
+              }, 500);
+            }
           }
         },
         emphasis: {

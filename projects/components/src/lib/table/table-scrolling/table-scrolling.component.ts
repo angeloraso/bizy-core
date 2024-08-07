@@ -3,10 +3,9 @@ import {
   Component,
   TemplateRef,
   ViewChild,
-  ChangeDetectionStrategy,
   ViewContainerRef,
   Inject,
-  ElementRef
+  ElementRef,
 } from '@angular/core';
 import { BizyTableRowComponent } from '../table-row/table-row.component';
 import { BizyTableScrollingDirective } from './table-scrolling.directive';
@@ -15,8 +14,7 @@ import { DOCUMENT } from '@angular/common';
 @Component({
   selector: 'bizy-table-scrolling',
   templateUrl: './table-scrolling.html',
-  styleUrls: ['./table-scrolling.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrls: ['./table-scrolling.css']
 })
 
 // FIX: This components fixes the bug with Angular CDK virtual scrolling not supporting content projection.
