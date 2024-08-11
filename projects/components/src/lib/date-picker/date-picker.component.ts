@@ -86,19 +86,19 @@ export class BizyDatePickerComponent {
         this.dateFormat = 'Y';
         this.datePipeFormat = 'yyyy';
         this.enableTime = false;
-        this.noCalendar = false;
+        this.noCalendar = true;
         break;
       case 'month':
         this.dateFormat = 'm';
         this.datePipeFormat = 'MMMM';
         this.enableTime = false;
-        this.noCalendar = false;
+        this.noCalendar = true;
         break;
       case 'year-month':
           this.dateFormat = 'Y-M';
           this.datePipeFormat = 'yyyy-MMMM';
           this.enableTime = false;
-          this.noCalendar = false;
+          this.noCalendar = true;
           break;
       default:
         this.dateFormat = 'Y-m-d';
