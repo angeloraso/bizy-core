@@ -7,8 +7,10 @@ import {
   Renderer2,
 } from '@angular/core';
 
-type LoadingType = 'spinner' | 'card' | 'item';
-
+export enum LOADING_TYPE {
+  SPINNER = 'spinner',
+  BAR = 'bar'
+}
 @Directive({
   selector: '[bizyLoading]'
 })
@@ -31,7 +33,7 @@ export class BizyLoadingDirective {
     }
   }
 
-  @Input() type: LoadingType = 'spinner';
+  @Input() bizyLoadingType: LOADING_TYPE = LOADING_TYPE.SPINNER;
 
   #loadingElement: any;
   #originalElement: HTMLElement;
@@ -55,12 +57,18 @@ export class BizyLoadingDirective {
       this.renderer.setStyle(loadingWrapper, 'pointer-events', 'none');
       
       const loading = this.renderer.createElement('span');
-      this.renderer.addClass(loading, `bizy-loading--${this.type}`);
-      const minSize = Math.min(this.elementRef.nativeElement.offsetWidth, this.elementRef.nativeElement.offsetHeight);
-      this.renderer.setStyle(loading, 'width', `${minSize * 0.8}px`);
-      this.renderer.setStyle(loading, 'height', `${minSize * 0.8}px`);
-      this.renderer.setStyle(loading, 'maxWidth', '15vmax');
-      this.renderer.setStyle(loading, 'maxHeight', '15vmax');
+      this.renderer.addClass(loading, `bizy-loading--${this.bizyLoadingType}`);
+      if (this.bizyLoadingType === LOADING_TYPE.SPINNER) {
+        const minSize = Math.min(this.elementRef.nativeElement.offsetWidth, this.elementRef.nativeElement.offsetHeight);
+        this.renderer.setStyle(loading, 'width', `${minSize * 0.8}px`);
+        this.renderer.setStyle(loading, 'height', `${minSize * 0.8}px`);
+        this.renderer.setStyle(loading, 'minWidth', '1rem');
+        this.renderer.setStyle(loading, 'minHeight', '1rem');
+        this.renderer.setStyle(loading, 'maxWidth', '15vmax');
+        this.renderer.setStyle(loading, 'maxHeight', '15vmax');
+      } else if (this.bizyLoadingType === LOADING_TYPE.BAR) {
+        this.renderer.setStyle(loading, 'height', `${this.elementRef.nativeElement.offsetHeight}px`);
+      }
 
       this.renderer.appendChild(loadingWrapper, loading);
 

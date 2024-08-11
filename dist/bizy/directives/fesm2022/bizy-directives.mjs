@@ -244,6 +244,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 args: ['keydown', ['$event']]
             }] } });
 
+var LOADING_TYPE;
+(function (LOADING_TYPE) {
+    LOADING_TYPE["SPINNER"] = "spinner";
+    LOADING_TYPE["BAR"] = "bar";
+})(LOADING_TYPE || (LOADING_TYPE = {}));
 class BizyLoadingDirective {
     elementRef;
     renderer;
@@ -263,7 +268,7 @@ class BizyLoadingDirective {
             this.#setLoading(value);
         }
     }
-    type = 'spinner';
+    bizyLoadingType = LOADING_TYPE.SPINNER;
     #loadingElement;
     #originalElement;
     constructor(elementRef, renderer, document) {
@@ -283,12 +288,19 @@ class BizyLoadingDirective {
             this.renderer.setStyle(loadingWrapper, 'backgroundColor', backgroundColor);
             this.renderer.setStyle(loadingWrapper, 'pointer-events', 'none');
             const loading = this.renderer.createElement('span');
-            this.renderer.addClass(loading, `bizy-loading--${this.type}`);
-            const minSize = Math.min(this.elementRef.nativeElement.offsetWidth, this.elementRef.nativeElement.offsetHeight);
-            this.renderer.setStyle(loading, 'width', `${minSize * 0.8}px`);
-            this.renderer.setStyle(loading, 'height', `${minSize * 0.8}px`);
-            this.renderer.setStyle(loading, 'maxWidth', '15vmax');
-            this.renderer.setStyle(loading, 'maxHeight', '15vmax');
+            this.renderer.addClass(loading, `bizy-loading--${this.bizyLoadingType}`);
+            if (this.bizyLoadingType === LOADING_TYPE.SPINNER) {
+                const minSize = Math.min(this.elementRef.nativeElement.offsetWidth, this.elementRef.nativeElement.offsetHeight);
+                this.renderer.setStyle(loading, 'width', `${minSize * 0.8}px`);
+                this.renderer.setStyle(loading, 'height', `${minSize * 0.8}px`);
+                this.renderer.setStyle(loading, 'minWidth', '1rem');
+                this.renderer.setStyle(loading, 'minHeight', '1rem');
+                this.renderer.setStyle(loading, 'maxWidth', '15vmax');
+                this.renderer.setStyle(loading, 'maxHeight', '15vmax');
+            }
+            else if (this.bizyLoadingType === LOADING_TYPE.BAR) {
+                this.renderer.setStyle(loading, 'height', `${this.elementRef.nativeElement.offsetHeight}px`);
+            }
             this.renderer.appendChild(loadingWrapper, loading);
             this.#loadingElement = loadingWrapper;
             this.renderer.insertBefore(this.#originalElement.parentNode, this.#loadingElement, this.#originalElement);
@@ -300,7 +312,7 @@ class BizyLoadingDirective {
         }
     }
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyLoadingDirective, deps: [{ token: ElementRef }, { token: Renderer2 }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Directive });
-    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "16.2.12", type: BizyLoadingDirective, selector: "[bizyLoading]", inputs: { bizyLoading: "bizyLoading", type: "type" }, ngImport: i0 });
+    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "16.2.12", type: BizyLoadingDirective, selector: "[bizyLoading]", inputs: { bizyLoading: "bizyLoading", bizyLoadingType: "bizyLoadingType" }, ngImport: i0 });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyLoadingDirective, decorators: [{
             type: Directive,
@@ -318,7 +330,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                     args: [DOCUMENT]
                 }] }]; }, propDecorators: { bizyLoading: [{
                 type: Input
-            }], type: [{
+            }], bizyLoadingType: [{
                 type: Input
             }] } });
 

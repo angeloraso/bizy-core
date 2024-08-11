@@ -17,7 +17,10 @@
     font-size: 1rem;
     min-width: var(--bizy-table-column-min-width);
     width: 100%;
-    border: var(--bizy-table-column-border);
+    border-top: var(--bizy-table-column-border-top);
+    border-right: var(--bizy-table-column-border-right);
+    border-bottom: var(--bizy-table-column-border-bottom);
+    border-left: var(--bizy-table-column-border-left);
     background-color: var(--bizy-table-column-background-color);
     display: flex;
     align-items: center;

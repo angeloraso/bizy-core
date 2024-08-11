@@ -113,7 +113,10 @@
     --bizy-table-background-color: #f3f3f3;
     --bizy-table-footer-height: 2.4rem;
     --bizy-table-footer-background-color: #fff;
-    --bizy-table-column-border: none;
+    --bizy-table-column-border-top: none;
+    --bizy-table-column-border-right: none;
+    --bizy-table-column-border-bottom: none;
+    --bizy-table-column-border-left: none;
     --bizy-table-column-background-color: transparent;
     --bizy-table-column-min-width: 2rem;
     --bizy-table-column-justify-content: flex-start;

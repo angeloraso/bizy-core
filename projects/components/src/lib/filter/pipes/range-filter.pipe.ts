@@ -20,12 +20,20 @@ export class BizyRangeFilterPipe implements PipeTransform {
     const min = range.min ?? null;
     const max = range.max ?? null;
 
+    let itemsWithoutProperty: Array<T> = [];
+
     const output = items.filter(_item => {
       let _value: any = _item;
       const nestedProperty = property.split('.');
-      nestedProperty.forEach(_property => {
+      for (let i = 0; i < nestedProperty.length; i++) {
+        const _property = nestedProperty[i];
+        if (typeof _value[_property] === 'undefined' || _value[_property] === null) {
+          itemsWithoutProperty.push(_item);
+          return false;
+        }
+
         _value = _value[_property];
-      });
+      }
 
       if (isNaN(_value)) {
         return false;
@@ -34,6 +42,6 @@ export class BizyRangeFilterPipe implements PipeTransform {
       return (min === null || _value >= min) && (max === null || _value <= max);
     });
 
-    return output;
+    return itemsWithoutProperty.length === items.length ? items : output;
   }
 }
