@@ -3,7 +3,7 @@
     display: inline-block;
     position: relative;
     border: 3px solid;
-    border-color: var(--bizy-loading-color-3rd-line) var(--bizy-loading-color-3rd-line) transparent transparent;
+    border-color: var(--bizy-loading-spinner-color-3rd-line) var(--bizy-loading-spinner-color-3rd-line) transparent transparent;
     box-sizing: border-box;
     animation: rotation 1s linear infinite;
 }
@@ -28,13 +28,13 @@
 }
 
 .bizy-loading--spinner::after {
-    border-color: transparent transparent var(--bizy-loading-color-2nd-line) var(--bizy-loading-color-2nd-line);
+    border-color: transparent transparent var(--bizy-loading-spinner-color-2nd-line) var(--bizy-loading-spinner-color-2nd-line);
 }
 
 .bizy-loading--spinner::before {
     width: calc(100% * 0.67);
     height: calc(100% * 0.67);
-    border-color: var(--bizy-loading-color-1st-line) var(--bizy-loading-color-1st-line) transparent transparent;
+    border-color: var(--bizy-loading-spinner-color-1st-line) var(--bizy-loading-spinner-color-1st-line) transparent transparent;
     animation: rotation 1.5s linear infinite;
 }
 
