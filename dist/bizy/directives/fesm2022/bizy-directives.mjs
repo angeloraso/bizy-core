@@ -465,5 +465,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
  * Generated bundle index. Do not edit.
  */
 
-export { BizyDirectivesModule, BizyLoadingDirective, BizyLongPressDirective, BizyNgForTrackByIdDirective, BizyOnlyNumbersDirective, BizyOnlyPhoneDigitsDirective, BizyTooltipDirective };
+export { BizyDirectivesModule, BizyLoadingDirective, BizyLongPressDirective, BizyNgForTrackByIdDirective, BizyOnlyNumbersDirective, BizyOnlyPhoneDigitsDirective, BizyTooltipDirective, LOADING_TYPE };
 //# sourceMappingURL=bizy-directives.mjs.map
