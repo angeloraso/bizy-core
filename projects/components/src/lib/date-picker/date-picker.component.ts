@@ -27,6 +27,7 @@ export class BizyDatePickerComponent {
   dateFormat: string = 'Y-m-d';
   datePipeFormat: string = 'yyyy-MM-dd'
   enableTime: boolean = false;
+  noCalendar: boolean = true;
   mode: 'single' | 'range' = 'single';
   dates: Array<number> = [Date.now()];
   time: number = Date.now();
@@ -67,36 +68,43 @@ export class BizyDatePickerComponent {
         this.dateFormat = 'Y-m-d';
         this.datePipeFormat = 'yyyy-MM-dd';
         this.enableTime = false;
+        this.noCalendar = false;
         break;
       case 'date-time':
         this.dateFormat = 'Y-m-d H:i';
         this.datePipeFormat = 'yyyy-MM-dd HH:mm';
         this.enableTime = true;
+        this.noCalendar = false;
         break;
       case 'time':
         this.dateFormat = 'H:i';
         this.datePipeFormat = 'HH:mm';
         this.enableTime = true;
+        this.noCalendar = true;
         break;
       case 'year':
         this.dateFormat = 'Y';
         this.datePipeFormat = 'yyyy';
         this.enableTime = false;
+        this.noCalendar = false;
         break;
       case 'month':
         this.dateFormat = 'm';
         this.datePipeFormat = 'MMMM';
         this.enableTime = false;
+        this.noCalendar = false;
         break;
       case 'year-month':
           this.dateFormat = 'Y-M';
           this.datePipeFormat = 'yyyy-MMMM';
           this.enableTime = false;
+          this.noCalendar = false;
           break;
       default:
         this.dateFormat = 'Y-m-d';
         this.datePipeFormat = 'yyyy-MM-dd';
         this.enableTime = false;
+        this.noCalendar = false;
     }
   }
 
@@ -115,6 +123,8 @@ export class BizyDatePickerComponent {
         mode: this.mode,
         dateFormat: this.dateFormat,
         enableTime: this.enableTime,
+        noCalendar: this.noCalendar,
+        time_24hr: true,
         defaultDate: this.dates.map(_date => {
           const date = new Date(_date);
           return date.toISOString();

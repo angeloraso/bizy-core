@@ -2,7 +2,9 @@
 :host {
     font-size: 1rem;
     width: var(--bizy-input-width);
+    min-width: var(--bizy-input-min-width);
     max-width: var(--bizy-input-max-width);
+    display: flex;
 }
 
 .bizy-date-picker {

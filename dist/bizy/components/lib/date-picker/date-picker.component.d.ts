@@ -24,6 +24,7 @@ export declare class BizyDatePickerComponent {
     dateFormat: string;
     datePipeFormat: string;
     enableTime: boolean;
+    noCalendar: boolean;
     mode: 'single' | 'range';
     dates: Array<number>;
     time: number;
