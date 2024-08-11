@@ -125,10 +125,7 @@ export class BizyDatePickerComponent {
         enableTime: this.enableTime,
         noCalendar: this.noCalendar,
         time_24hr: true,
-        defaultDate: this.dates.map(_date => {
-          const date = new Date(_date);
-          return date.toISOString();
-        }),
+        defaultDate: this.mode === 'single' ? new Date(this.dates[0]) : this.dates.map(_date => new Date(_date)),
         defaultHour: this.#getHour(this.time),
         defaultMinute: this.#getMinute(this.time),
         onChange: (selectedDates: Array<Date>) => {
