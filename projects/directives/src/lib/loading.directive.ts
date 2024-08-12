@@ -5,6 +5,7 @@ import {
   ElementRef,
   Inject,
   Renderer2,
+  ChangeDetectorRef,
 } from '@angular/core';
 
 export enum LOADING_TYPE {
@@ -16,20 +17,20 @@ export enum LOADING_TYPE {
 })
 export class BizyLoadingDirective {
   @Input() set bizyLoading(value: boolean) {
+    this.#value = value;
     if ((this.elementRef.nativeElement && (this.elementRef.nativeElement.offsetWidth === 0 || this.elementRef.nativeElement.offsetHeight === 0) && !this.#originalElement)) {
       const mutationObserver = new MutationObserver(() => {
         if ((this.elementRef.nativeElement && (this.elementRef.nativeElement.offsetWidth === 0 || this.elementRef.nativeElement.offsetHeight === 0) && !this.#originalElement)) {
           return;
         }
 
-        this.#setLoading(value);
-
+        this.#setLoading(this.#value);
         mutationObserver.disconnect();
       });
 
       mutationObserver.observe(this.document.body, { childList: true, subtree: true });
     } else {
-      this.#setLoading(value);
+      this.#setLoading(this.#value);
     }
   }
 
@@ -37,6 +38,7 @@ export class BizyLoadingDirective {
 
   #loadingElement: any;
   #originalElement: HTMLElement;
+  #value: boolean = false;
 
   constructor(
     @Inject(ElementRef) private elementRef: ElementRef,

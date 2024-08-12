@@ -254,23 +254,25 @@ class BizyLoadingDirective {
     renderer;
     document;
     set bizyLoading(value) {
+        this.#value = value;
         if ((this.elementRef.nativeElement && (this.elementRef.nativeElement.offsetWidth === 0 || this.elementRef.nativeElement.offsetHeight === 0) && !this.#originalElement)) {
             const mutationObserver = new MutationObserver(() => {
                 if ((this.elementRef.nativeElement && (this.elementRef.nativeElement.offsetWidth === 0 || this.elementRef.nativeElement.offsetHeight === 0) && !this.#originalElement)) {
                     return;
                 }
-                this.#setLoading(value);
+                this.#setLoading(this.#value);
                 mutationObserver.disconnect();
             });
             mutationObserver.observe(this.document.body, { childList: true, subtree: true });
         }
         else {
-            this.#setLoading(value);
+            this.#setLoading(this.#value);
         }
     }
     bizyLoadingType = LOADING_TYPE.SPINNER;
     #loadingElement;
     #originalElement;
+    #value = false;
     constructor(elementRef, renderer, document) {
         this.elementRef = elementRef;
         this.renderer = renderer;
