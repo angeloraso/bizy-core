@@ -5,7 +5,6 @@ import {
   ElementRef,
   Inject,
   Renderer2,
-  ChangeDetectorRef,
 } from '@angular/core';
 
 export enum LOADING_TYPE {
