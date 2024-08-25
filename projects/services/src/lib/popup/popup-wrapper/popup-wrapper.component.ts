@@ -1,6 +1,6 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { ComponentType } from '@angular/cdk/portal';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Inject, Output, ViewChild, ViewContainerRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, ViewChild, ViewContainerRef } from '@angular/core';
 
 @Component({
   selector: 'bizy-popup-wrapper',

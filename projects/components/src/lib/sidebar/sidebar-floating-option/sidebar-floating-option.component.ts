@@ -59,10 +59,8 @@ export class BizySidebarFloatingOptionComponent implements AfterContentInit {
 
     this._opened = !this._opened;
     this.ref.detectChanges();
-    setTimeout(() => {
-      this.selectedChange.emit(this._opened);
-      this.onSelect.emit(event);
-    }, 50)
+    this.selectedChange.emit(this._opened);
+    this.onSelect.emit(event);
   }
 
   close = (event: PointerEvent & {target: {id: string}}) => {
@@ -110,19 +108,13 @@ export class BizySidebarFloatingOptionComponent implements AfterContentInit {
         const _founded = this.#selectParents(options[i].options.toArray(), option);
         if (_founded) {
           founded = true;
-          setTimeout(() => {
-            options[i].selectedChange.emit(true);
-          }, 50)
+          options[i].selectedChange.emit(true);
         } else {
-          setTimeout(() => {
-            options[i].selectedChange.emit(false);
-          }, 50)
+          options[i].selectedChange.emit(false);
         }
         
       } else {
-        setTimeout(() => {
-          options[i].selectedChange.emit(false);
-        }, 50)
+        options[i].selectedChange.emit(false);
       }
     }
 

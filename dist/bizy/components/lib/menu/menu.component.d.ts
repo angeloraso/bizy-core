@@ -24,5 +24,5 @@ export declare class BizyMenuComponent {
     }) => void;
     ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyMenuComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<BizyMenuComponent, "bizy-menu", never, { "id": { "alias": "id"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; "offsetX": { "alias": "offsetX"; "required": false; }; "offsetY": { "alias": "offsetY"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; "hideArrow": { "alias": "hideArrow"; "required": false; }; "opened": { "alias": "opened"; "required": false; }; }, { "onSelect": "onSelect"; }, ["options"], ["*", "bizy-menu-title", "bizy-menu-option"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<BizyMenuComponent, "bizy-menu", never, { "id": { "alias": "id"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; "offsetX": { "alias": "offsetX"; "required": false; }; "offsetY": { "alias": "offsetY"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; "hideArrow": { "alias": "hideArrow"; "required": false; }; "opened": { "alias": "opened"; "required": false; }; }, { "onSelect": "onSelect"; }, ["options"], ["*", "bizy-menu-title", "bizy-input", "bizy-menu-option"], false, never>;
 }

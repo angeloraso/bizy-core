@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { EventEmitter, Component, ChangeDetectionStrategy, Input, Output, NgModule, ChangeDetectorRef, Inject, TemplateRef, Directive, ElementRef, Renderer2, ContentChild, ViewChild, ContentChildren, ViewContainerRef, Pipe } from '@angular/core';
+import { EventEmitter, Component, ChangeDetectionStrategy, Input, Output, NgModule, ChangeDetectorRef, Inject, TemplateRef, Directive, ElementRef, Renderer2, ContentChild, ViewChild, ContentChildren, ViewContainerRef, Pipe, Injectable } from '@angular/core';
 import * as i1 from '@angular/common';
 import { CommonModule, DOCUMENT, DatePipe, DecimalPipe } from '@angular/common';
 import * as i2 from '@angular/forms';
@@ -14,6 +14,11 @@ import flatpickr from 'flatpickr';
 import { Spanish } from 'flatpickr/dist/l10n/es.js';
 import * as echarts from 'echarts';
 import html2canvas from 'html2canvas';
+import Uppy from '@uppy/core';
+import es_ES from '@uppy/locales/lib/es_ES';
+import en_US from '@uppy/locales/lib/en_US';
+import Dashboard from '@uppy/dashboard';
+import XHRUpload from '@uppy/xhr-upload';
 
 class BizyToggleComponent {
     id = `bizy-toggle-${Math.random()}`;
@@ -46,7 +51,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS$g = [
+const COMPONENTS$h = [
     BizyToggleComponent,
 ];
 class BizyToggleModule {
@@ -58,8 +63,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$g,
-                    exports: COMPONENTS$g
+                    declarations: COMPONENTS$h,
+                    exports: COMPONENTS$h
                 }]
         }] });
 
@@ -120,7 +125,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Input
             }] } });
 
-const COMPONENTS$f = [BizyBreadcrumbComponent];
+const COMPONENTS$g = [BizyBreadcrumbComponent];
 class BizyBreadcrumbModule {
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyBreadcrumbModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
     static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BizyBreadcrumbModule, declarations: [BizyBreadcrumbComponent], imports: [CommonModule,
@@ -135,8 +140,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                         CommonModule,
                         FormsModule
                     ],
-                    declarations: COMPONENTS$f,
-                    exports: COMPONENTS$f,
+                    declarations: COMPONENTS$g,
+                    exports: COMPONENTS$g,
                 }]
         }] });
 
@@ -153,11 +158,11 @@ class BizyButtonComponent {
         this.onSelect.emit(event);
     }
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyButtonComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyButtonComponent, selector: "bizy-button", inputs: { id: "id", disabled: "disabled", type: "type", customClass: "customClass" }, outputs: { onSelect: "onSelect" }, ngImport: i0, template: "<button \n    [type]=\"type\"\n    [id]=\"id\"\n    class=\"bizy-button {{customClass}}\"\n    [ngClass]=\"{'bizy-button--disabled': disabled}\"\n    (click)=\"_onSelect($event)\"\n    (keyup.enter)=\"_onSelect($event)\">\n    <span class=\"bizy-button__content\">\n        <ng-content></ng-content>\n    </span>\n    \n</button>\n\n", styles: [":host{font-size:1rem}.bizy-button{display:flex;justify-content:space-between;align-items:center;column-gap:.5rem;width:100%;height:100%;padding:var(--bizy-button-padding);border-radius:.3rem;border:none;cursor:pointer;background-color:var(--bizy-button-background-color)}::ng-deep .bizy-button *{color:var(--bizy-button-color);text-wrap:nowrap}.bizy-button:hover{filter:brightness(95%)}.bizy-button__content{width:100%;display:flex;align-items:center;justify-content:center;column-gap:.3rem}.bizy-button--disabled{opacity:.5;cursor:not-allowed!important;pointer-events:none}\n"], dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyButtonComponent, selector: "bizy-button", inputs: { id: "id", disabled: "disabled", type: "type", customClass: "customClass" }, outputs: { onSelect: "onSelect" }, ngImport: i0, template: "<button \n    [type]=\"type\"\n    [id]=\"id\"\n    class=\"bizy-button {{customClass}}\"\n    [ngClass]=\"{'bizy-button--disabled': disabled}\"\n    (click)=\"_onSelect($event)\"\n    (keyup.enter)=\"_onSelect($event)\">\n    <span class=\"bizy-button__content\">\n        <ng-content></ng-content>\n    </span>\n    \n</button>\n\n", styles: [":host{font-size:1rem}.bizy-button{display:flex;justify-content:space-between;align-items:center;column-gap:.5rem;width:100%;height:100%;padding:var(--bizy-button-padding);border-radius:.3rem;border:var(--bizy-button-border);cursor:pointer;background-color:var(--bizy-button-background-color)}::ng-deep .bizy-button *{color:var(--bizy-button-color);text-wrap:nowrap}.bizy-button:hover{filter:brightness(95%)}.bizy-button__content{width:100%;display:flex;align-items:center;justify-content:center;column-gap:.3rem}.bizy-button--disabled{opacity:.5;cursor:not-allowed!important;pointer-events:none}\n"], dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyButtonComponent, decorators: [{
             type: Component,
-            args: [{ selector: 'bizy-button', changeDetection: ChangeDetectionStrategy.OnPush, template: "<button \n    [type]=\"type\"\n    [id]=\"id\"\n    class=\"bizy-button {{customClass}}\"\n    [ngClass]=\"{'bizy-button--disabled': disabled}\"\n    (click)=\"_onSelect($event)\"\n    (keyup.enter)=\"_onSelect($event)\">\n    <span class=\"bizy-button__content\">\n        <ng-content></ng-content>\n    </span>\n    \n</button>\n\n", styles: [":host{font-size:1rem}.bizy-button{display:flex;justify-content:space-between;align-items:center;column-gap:.5rem;width:100%;height:100%;padding:var(--bizy-button-padding);border-radius:.3rem;border:none;cursor:pointer;background-color:var(--bizy-button-background-color)}::ng-deep .bizy-button *{color:var(--bizy-button-color);text-wrap:nowrap}.bizy-button:hover{filter:brightness(95%)}.bizy-button__content{width:100%;display:flex;align-items:center;justify-content:center;column-gap:.3rem}.bizy-button--disabled{opacity:.5;cursor:not-allowed!important;pointer-events:none}\n"] }]
+            args: [{ selector: 'bizy-button', changeDetection: ChangeDetectionStrategy.OnPush, template: "<button \n    [type]=\"type\"\n    [id]=\"id\"\n    class=\"bizy-button {{customClass}}\"\n    [ngClass]=\"{'bizy-button--disabled': disabled}\"\n    (click)=\"_onSelect($event)\"\n    (keyup.enter)=\"_onSelect($event)\">\n    <span class=\"bizy-button__content\">\n        <ng-content></ng-content>\n    </span>\n    \n</button>\n\n", styles: [":host{font-size:1rem}.bizy-button{display:flex;justify-content:space-between;align-items:center;column-gap:.5rem;width:100%;height:100%;padding:var(--bizy-button-padding);border-radius:.3rem;border:var(--bizy-button-border);cursor:pointer;background-color:var(--bizy-button-background-color)}::ng-deep .bizy-button *{color:var(--bizy-button-color);text-wrap:nowrap}.bizy-button:hover{filter:brightness(95%)}.bizy-button__content{width:100%;display:flex;align-items:center;justify-content:center;column-gap:.3rem}.bizy-button--disabled{opacity:.5;cursor:not-allowed!important;pointer-events:none}\n"] }]
         }], propDecorators: { id: [{
                 type: Input
             }], disabled: [{
@@ -170,7 +175,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS$e = [
+const COMPONENTS$f = [
     BizyButtonComponent,
 ];
 class BizyButtonModule {
@@ -182,8 +187,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$e,
-                    exports: COMPONENTS$e
+                    declarations: COMPONENTS$f,
+                    exports: COMPONENTS$f
                 }]
         }] });
 
@@ -650,7 +655,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Input
             }] } });
 
-const COMPONENTS$d = [BizyInputComponent, BizyInputOptionComponent];
+const COMPONENTS$e = [BizyInputComponent, BizyInputOptionComponent];
 class BizyInputModule {
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyInputModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
     static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BizyInputModule, declarations: [BizyInputComponent, BizyInputOptionComponent], imports: [CommonModule,
@@ -668,8 +673,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                         FormsModule,
                         OverlayModule
                     ],
-                    declarations: COMPONENTS$d,
-                    exports: COMPONENTS$d
+                    declarations: COMPONENTS$e,
+                    exports: COMPONENTS$e
                 }]
         }] });
 
@@ -857,7 +862,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Input
             }] } });
 
-const COMPONENTS$c = [
+const COMPONENTS$d = [
     BizyDatePickerComponent,
 ];
 class BizyDatePickerModule {
@@ -869,8 +874,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, BizyInputModule],
-                    declarations: COMPONENTS$c,
-                    exports: COMPONENTS$c,
+                    declarations: COMPONENTS$d,
+                    exports: COMPONENTS$d,
                     providers: [DatePipe]
                 }]
         }] });
@@ -990,7 +995,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Input
             }] } });
 
-const COMPONENTS$b = [
+const COMPONENTS$c = [
     BizyTabsComponent,
     BizyTabComponent
 ];
@@ -1005,8 +1010,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$b,
-                    exports: COMPONENTS$b
+                    declarations: COMPONENTS$c,
+                    exports: COMPONENTS$c
                 }]
         }] });
 
@@ -1019,7 +1024,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             args: [{ selector: 'bizy-toolbar', changeDetection: ChangeDetectionStrategy.OnPush, template: "<div class=\"bizy-toolbar\">\n\n    <span class=\"bizy-toolbar__start\">\n        \n        <ng-content select=\"[slot=start]\"></ng-content>\n\n    </span>\n\n    <span class=\"bizy-toolbar__end\">\n\n        <ng-content select=\"[slot=end]\"></ng-content>\n\n    </span>\n\n</div>\n", styles: [":host{font-size:1rem}.bizy-toolbar{height:var(--bizy-toolbar-height);width:100%;background-color:var(--bizy-toolbar-background-color);display:flex;align-items:center;justify-content:space-between;column-gap:var(--bizy-toolbar-column-gap);padding:var(--bizy-toolbar-padding)}.bizy-toolbar__start{height:100%;display:flex;align-items:center;column-gap:var(--bizy-toolbar-column-gap)}.bizy-toolbar__end{height:100%;display:flex;align-items:center;justify-content:flex-end;column-gap:var(--bizy-toolbar-column-gap)}::ng-deep .bizy-toolbar *[toolbar-option]{height:100%}\n"] }]
         }] });
 
-const COMPONENTS$a = [
+const COMPONENTS$b = [
     BizyToolbarComponent,
 ];
 class BizyToolbarModule {
@@ -1031,8 +1036,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$a,
-                    exports: COMPONENTS$a
+                    declarations: COMPONENTS$b,
+                    exports: COMPONENTS$b
                 }]
         }] });
 
@@ -1201,10 +1206,8 @@ class BizySidebarFloatingOptionComponent {
         }
         this._opened = !this._opened;
         this.ref.detectChanges();
-        setTimeout(() => {
-            this.selectedChange.emit(this._opened);
-            this.onSelect.emit(event);
-        }, 50);
+        this.selectedChange.emit(this._opened);
+        this.onSelect.emit(event);
     }
     close = (event) => {
         if (event && event.target && event.target.id && event.target.id === this.id) {
@@ -1245,20 +1248,14 @@ class BizySidebarFloatingOptionComponent {
                 const _founded = this.#selectParents(options[i].options.toArray(), option);
                 if (_founded) {
                     founded = true;
-                    setTimeout(() => {
-                        options[i].selectedChange.emit(true);
-                    }, 50);
+                    options[i].selectedChange.emit(true);
                 }
                 else {
-                    setTimeout(() => {
-                        options[i].selectedChange.emit(false);
-                    }, 50);
+                    options[i].selectedChange.emit(false);
                 }
             }
             else {
-                setTimeout(() => {
-                    options[i].selectedChange.emit(false);
-                }, 50);
+                options[i].selectedChange.emit(false);
             }
         }
         return founded;
@@ -1344,7 +1341,7 @@ class BizySidebarComponent {
                         if (__option.getId() !== _option.getId()) {
                             setTimeout(() => {
                                 __option.selectedChange.emit(false);
-                            }, 50);
+                            }, 100);
                         }
                     });
                 }
@@ -1363,18 +1360,18 @@ class BizySidebarComponent {
                     founded = true;
                     setTimeout(() => {
                         options[i].selectedChange.emit(true);
-                    }, 50);
+                    }, 100);
                 }
                 else {
                     setTimeout(() => {
                         options[i].selectedChange.emit(false);
-                    }, 50);
+                    }, 100);
                 }
             }
             else {
                 setTimeout(() => {
                     options[i].selectedChange.emit(false);
-                }, 50);
+                }, 100);
             }
         }
         return founded;
@@ -1404,7 +1401,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS$9 = [
+const COMPONENTS$a = [
     BizyAccordionComponent,
 ];
 class BizyAccordionModule {
@@ -1416,12 +1413,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$9,
-                    exports: COMPONENTS$9
+                    declarations: COMPONENTS$a,
+                    exports: COMPONENTS$a
                 }]
         }] });
 
-const COMPONENTS$8 = [
+const COMPONENTS$9 = [
     BizySidebarComponent,
     BizySidebarOptionComponent,
     BizySidebarFloatingOptionComponent,
@@ -1442,8 +1439,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, BizyAccordionModule, OverlayModule],
-                    declarations: COMPONENTS$8,
-                    exports: COMPONENTS$8
+                    declarations: COMPONENTS$9,
+                    exports: COMPONENTS$9
                 }]
         }] });
 
@@ -1600,11 +1597,11 @@ class BizyCheckboxComponent {
         this.onSelect.emit(event);
     }
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyCheckboxComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyCheckboxComponent, selector: "bizy-checkbox", inputs: { id: "id", name: "name", selected: "selected", disabled: "disabled" }, outputs: { selectedChange: "selectedChange", onSelect: "onSelect" }, ngImport: i0, template: "<button type=\"button\" (click)=\"_onSelect($event)\" (keyup.enter)=\"_onSelect($event)\" class=\"bizy-checkbox\" [ngClass]=\"{'bizy-checkbox--disabled': disabled}\">\n    <input \n        class=\"bizy-checkbox__input\"\n        [id]=\"id\"\n        [disabled]=\"disabled\"\n        type=\"checkbox\"\n        [ngModel]=\"selected\"/>\n    <label class=\"bizy-checkbox__checkbox\" for=\"{{id}}\">\n        <span>\n            <svg width=\"12px\" height=\"10px\">\n            <use attr.xlink:href=\"#{{_checkboxId}}\"></use>\n            </svg>\n        </span>\n    </label>\n    <svg class=\"bizy-checkbox__inline-svg\">\n      <symbol id=\"{{_checkboxId}}\" viewbox=\"0 0 12 10\">\n        <polyline points=\"1.5 6 4.5 9 10.5 1\"></polyline>\n      </symbol>\n    </svg>\n</button>\n", styles: [":host{font-size:1rem}.bizy-checkbox{border:none;background-color:transparent;cursor:pointer}.bizy-checkbox__checkbox{-webkit-user-select:none;user-select:none;padding:.1rem;border-radius:.5rem;overflow:hidden;transition:all .2s ease;display:inline-block;pointer-events:none}.bizy-checkbox__checkbox:hover{background:var(--bizy-checkbox-hover-color)}.bizy-checkbox__checkbox span{float:left;vertical-align:middle;transform:translateZ(0)}.bizy-checkbox__checkbox span:first-child{position:relative;width:1.1rem;height:1.1rem;border-radius:.25rem;transform:scale(1);border:.1rem solid var(--bizy-checkbox-border-color);transition:all .2s ease;box-shadow:0 1px 1px #00104b0d}.bizy-checkbox__checkbox span:first-child svg{position:absolute;top:.2rem;left:.15rem;fill:none!important;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1.1rem;stroke-dashoffset:1.1rem;transition:all .2s ease;transition-delay:.1s;transform:translateZ(0)}.bizy-checkbox__checkbox:hover span:first-child{border-color:var(--bizy-checkbox-selected-color)}.bizy-checkbox__input{position:absolute;visibility:hidden;pointer-events:none}.bizy-checkbox__input--disabled{opacity:.5;pointer-events:none;cursor:not-allowed!important}.bizy-checkbox__input:checked+.bizy-checkbox__checkbox span:first-child{background-color:var(--bizy-checkbox-selected-color);border-color:var(--bizy-checkbox-selected-color);animation:bizy-checkbox-wave .4s ease}.bizy-checkbox__input:checked+.bizy-checkbox__checkbox span:first-child svg{stroke-dashoffset:0}.bizy-checkbox__inline-svg{position:absolute;width:0;height:0;pointer-events:none;-webkit-user-select:none;user-select:none}@keyframes bizy-checkbox-wave{50%{transform:scale(.9)}}\n"], dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i2.CheckboxControlValueAccessor, selector: "input[type=checkbox][formControlName],input[type=checkbox][formControl],input[type=checkbox][ngModel]" }, { kind: "directive", type: i2.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i2.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyCheckboxComponent, selector: "bizy-checkbox", inputs: { id: "id", name: "name", selected: "selected", disabled: "disabled" }, outputs: { selectedChange: "selectedChange", onSelect: "onSelect" }, ngImport: i0, template: "<button type=\"button\" (click)=\"_onSelect($event)\" (keyup.enter)=\"_onSelect($event)\" class=\"bizy-checkbox\" [ngClass]=\"{'bizy-checkbox--disabled': disabled}\">\n    <input \n        class=\"bizy-checkbox__input\"\n        [id]=\"id\"\n        [name]=\"name\"\n        [disabled]=\"disabled\"\n        type=\"checkbox\"\n        [ngModel]=\"selected\"/>\n    <label class=\"bizy-checkbox__checkbox\" for=\"{{id}}\">\n        <span>\n            <svg width=\"12px\" height=\"10px\">\n            <use attr.xlink:href=\"#{{_checkboxId}}\"></use>\n            </svg>\n        </span>\n    </label>\n    <svg class=\"bizy-checkbox__inline-svg\">\n      <symbol id=\"{{_checkboxId}}\" viewbox=\"0 0 12 10\">\n        <polyline points=\"1.5 6 4.5 9 10.5 1\"></polyline>\n      </symbol>\n    </svg>\n</button>\n", styles: [":host{font-size:1rem}.bizy-checkbox{border:none;background-color:transparent;cursor:pointer}.bizy-checkbox__checkbox{-webkit-user-select:none;user-select:none;padding:.1rem;border-radius:.5rem;overflow:hidden;transition:all .2s ease;display:inline-block;pointer-events:none}.bizy-checkbox__checkbox:hover{background:var(--bizy-checkbox-hover-color)}.bizy-checkbox__checkbox span{float:left;vertical-align:middle;transform:translateZ(0)}.bizy-checkbox__checkbox span:first-child{position:relative;width:1.1rem;height:1.1rem;border-radius:.25rem;transform:scale(1);border:.1rem solid var(--bizy-checkbox-border-color);transition:all .2s ease;box-shadow:0 1px 1px #00104b0d}.bizy-checkbox__checkbox span:first-child svg{position:absolute;top:.2rem;left:.15rem;fill:none!important;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1.1rem;stroke-dashoffset:1.1rem;transition:all .2s ease;transition-delay:.1s;transform:translateZ(0)}.bizy-checkbox__checkbox:hover span:first-child{border-color:var(--bizy-checkbox-selected-color)}.bizy-checkbox__input{position:absolute;visibility:hidden;pointer-events:none}.bizy-checkbox__input--disabled{opacity:.5;pointer-events:none;cursor:not-allowed!important}.bizy-checkbox__input:checked+.bizy-checkbox__checkbox span:first-child{background-color:var(--bizy-checkbox-selected-color);border-color:var(--bizy-checkbox-selected-color);animation:bizy-checkbox-wave .4s ease}.bizy-checkbox__input:checked+.bizy-checkbox__checkbox span:first-child svg{stroke-dashoffset:0}.bizy-checkbox__inline-svg{position:absolute;width:0;height:0;pointer-events:none;-webkit-user-select:none;user-select:none}@keyframes bizy-checkbox-wave{50%{transform:scale(.9)}}\n"], dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i2.CheckboxControlValueAccessor, selector: "input[type=checkbox][formControlName],input[type=checkbox][formControl],input[type=checkbox][ngModel]" }, { kind: "directive", type: i2.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i2.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyCheckboxComponent, decorators: [{
             type: Component,
-            args: [{ selector: 'bizy-checkbox', changeDetection: ChangeDetectionStrategy.OnPush, template: "<button type=\"button\" (click)=\"_onSelect($event)\" (keyup.enter)=\"_onSelect($event)\" class=\"bizy-checkbox\" [ngClass]=\"{'bizy-checkbox--disabled': disabled}\">\n    <input \n        class=\"bizy-checkbox__input\"\n        [id]=\"id\"\n        [disabled]=\"disabled\"\n        type=\"checkbox\"\n        [ngModel]=\"selected\"/>\n    <label class=\"bizy-checkbox__checkbox\" for=\"{{id}}\">\n        <span>\n            <svg width=\"12px\" height=\"10px\">\n            <use attr.xlink:href=\"#{{_checkboxId}}\"></use>\n            </svg>\n        </span>\n    </label>\n    <svg class=\"bizy-checkbox__inline-svg\">\n      <symbol id=\"{{_checkboxId}}\" viewbox=\"0 0 12 10\">\n        <polyline points=\"1.5 6 4.5 9 10.5 1\"></polyline>\n      </symbol>\n    </svg>\n</button>\n", styles: [":host{font-size:1rem}.bizy-checkbox{border:none;background-color:transparent;cursor:pointer}.bizy-checkbox__checkbox{-webkit-user-select:none;user-select:none;padding:.1rem;border-radius:.5rem;overflow:hidden;transition:all .2s ease;display:inline-block;pointer-events:none}.bizy-checkbox__checkbox:hover{background:var(--bizy-checkbox-hover-color)}.bizy-checkbox__checkbox span{float:left;vertical-align:middle;transform:translateZ(0)}.bizy-checkbox__checkbox span:first-child{position:relative;width:1.1rem;height:1.1rem;border-radius:.25rem;transform:scale(1);border:.1rem solid var(--bizy-checkbox-border-color);transition:all .2s ease;box-shadow:0 1px 1px #00104b0d}.bizy-checkbox__checkbox span:first-child svg{position:absolute;top:.2rem;left:.15rem;fill:none!important;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1.1rem;stroke-dashoffset:1.1rem;transition:all .2s ease;transition-delay:.1s;transform:translateZ(0)}.bizy-checkbox__checkbox:hover span:first-child{border-color:var(--bizy-checkbox-selected-color)}.bizy-checkbox__input{position:absolute;visibility:hidden;pointer-events:none}.bizy-checkbox__input--disabled{opacity:.5;pointer-events:none;cursor:not-allowed!important}.bizy-checkbox__input:checked+.bizy-checkbox__checkbox span:first-child{background-color:var(--bizy-checkbox-selected-color);border-color:var(--bizy-checkbox-selected-color);animation:bizy-checkbox-wave .4s ease}.bizy-checkbox__input:checked+.bizy-checkbox__checkbox span:first-child svg{stroke-dashoffset:0}.bizy-checkbox__inline-svg{position:absolute;width:0;height:0;pointer-events:none;-webkit-user-select:none;user-select:none}@keyframes bizy-checkbox-wave{50%{transform:scale(.9)}}\n"] }]
+            args: [{ selector: 'bizy-checkbox', changeDetection: ChangeDetectionStrategy.OnPush, template: "<button type=\"button\" (click)=\"_onSelect($event)\" (keyup.enter)=\"_onSelect($event)\" class=\"bizy-checkbox\" [ngClass]=\"{'bizy-checkbox--disabled': disabled}\">\n    <input \n        class=\"bizy-checkbox__input\"\n        [id]=\"id\"\n        [name]=\"name\"\n        [disabled]=\"disabled\"\n        type=\"checkbox\"\n        [ngModel]=\"selected\"/>\n    <label class=\"bizy-checkbox__checkbox\" for=\"{{id}}\">\n        <span>\n            <svg width=\"12px\" height=\"10px\">\n            <use attr.xlink:href=\"#{{_checkboxId}}\"></use>\n            </svg>\n        </span>\n    </label>\n    <svg class=\"bizy-checkbox__inline-svg\">\n      <symbol id=\"{{_checkboxId}}\" viewbox=\"0 0 12 10\">\n        <polyline points=\"1.5 6 4.5 9 10.5 1\"></polyline>\n      </symbol>\n    </svg>\n</button>\n", styles: [":host{font-size:1rem}.bizy-checkbox{border:none;background-color:transparent;cursor:pointer}.bizy-checkbox__checkbox{-webkit-user-select:none;user-select:none;padding:.1rem;border-radius:.5rem;overflow:hidden;transition:all .2s ease;display:inline-block;pointer-events:none}.bizy-checkbox__checkbox:hover{background:var(--bizy-checkbox-hover-color)}.bizy-checkbox__checkbox span{float:left;vertical-align:middle;transform:translateZ(0)}.bizy-checkbox__checkbox span:first-child{position:relative;width:1.1rem;height:1.1rem;border-radius:.25rem;transform:scale(1);border:.1rem solid var(--bizy-checkbox-border-color);transition:all .2s ease;box-shadow:0 1px 1px #00104b0d}.bizy-checkbox__checkbox span:first-child svg{position:absolute;top:.2rem;left:.15rem;fill:none!important;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1.1rem;stroke-dashoffset:1.1rem;transition:all .2s ease;transition-delay:.1s;transform:translateZ(0)}.bizy-checkbox__checkbox:hover span:first-child{border-color:var(--bizy-checkbox-selected-color)}.bizy-checkbox__input{position:absolute;visibility:hidden;pointer-events:none}.bizy-checkbox__input--disabled{opacity:.5;pointer-events:none;cursor:not-allowed!important}.bizy-checkbox__input:checked+.bizy-checkbox__checkbox span:first-child{background-color:var(--bizy-checkbox-selected-color);border-color:var(--bizy-checkbox-selected-color);animation:bizy-checkbox-wave .4s ease}.bizy-checkbox__input:checked+.bizy-checkbox__checkbox span:first-child svg{stroke-dashoffset:0}.bizy-checkbox__inline-svg{position:absolute;width:0;height:0;pointer-events:none;-webkit-user-select:none;user-select:none}@keyframes bizy-checkbox-wave{50%{transform:scale(.9)}}\n"] }]
         }], propDecorators: { id: [{
                 type: Input
             }], name: [{
@@ -1960,7 +1957,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Input
             }] } });
 
-const COMPONENTS$7 = [
+const COMPONENTS$8 = [
     BizyCheckboxComponent,
 ];
 class BizyCheckboxModule {
@@ -1972,12 +1969,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$7,
-                    exports: COMPONENTS$7
+                    declarations: COMPONENTS$8,
+                    exports: COMPONENTS$8
                 }]
         }] });
 
-const COMPONENTS$6 = [
+const COMPONENTS$7 = [
     BizyTableComponent,
     BizyTableHeaderComponent,
     BizyTableFooterComponent,
@@ -2013,8 +2010,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, ScrollingModule, BizyCheckboxModule, BizyAccordionModule],
-                    declarations: COMPONENTS$6,
-                    exports: COMPONENTS$6
+                    declarations: COMPONENTS$7,
+                    exports: COMPONENTS$7
                 }]
         }] });
 
@@ -2043,11 +2040,11 @@ class BizyMenuOptionComponent {
         this.onSelect.emit(event);
     }
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyMenuOptionComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyMenuOptionComponent, selector: "bizy-menu-option", inputs: { id: "id", disabled: "disabled", customClass: "customClass", selected: "selected" }, outputs: { onSelect: "onSelect" }, ngImport: i0, template: "<button \n    type=\"button\"\n    [id]=\"id\"\n    (click)=\"_onSelect($event)\"\n    (keyup.enter)=\"_onSelect($event)\"\n    [ngClass]=\"{'bizy-menu-option--selected': selected, 'bizy-menu-option--disabled': disabled}\"\n    class=\"bizy-menu-option {{customClass}}\">\n\n    <span class=\"bizy-menu-option__content\">\n        <ng-content></ng-content>\n    </span>\n    \n</button>\n\n<span class=\"bizy-menu-option__menu\">\n    <ng-content select=\"bizy-menu\"></ng-content>\n</span>\n", styles: [":host{font-size:1rem}:host:has(>.bizy-menu-option__menu:not(:empty)) .bizy-menu-option{display:none!important}.bizy-menu-option{font-size:1rem;width:100%;border:none;background-color:var(--bizy-menu-option-background-color);display:flex;align-items:center;justify-content:space-between;column-gap:.5rem;padding:.5rem;color:var(--bizy-menu-option-color);cursor:pointer}.bizy-menu-option:hover{background-color:var(--bizy-menu-option-hover-background-color)}.bizy-menu-option--selected{color:var(--bizy-menu-option-selected-color)!important;background-color:var(--bizy-menu-option-selected-background-color)!important}.bizy-menu-option--disabled{opacity:.5;pointer-events:none;cursor:not-allowed!important}.bizy-menu-option__content{font-size:1rem;display:flex;align-items:center;column-gap:.3rem;width:100%}::ng-deep .bizy-menu-option__menu *{color:var(--bizy-menu-option-color);fill:var(--bizy-menu-option-color)}\n"], dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyMenuOptionComponent, selector: "bizy-menu-option", inputs: { id: "id", disabled: "disabled", customClass: "customClass", selected: "selected" }, outputs: { onSelect: "onSelect" }, ngImport: i0, template: "<button \n    type=\"button\"\n    [id]=\"id\"\n    (click)=\"_onSelect($event)\"\n    (keyup.enter)=\"_onSelect($event)\"\n    [ngClass]=\"{'bizy-menu-option--selected': selected, 'bizy-menu-option--disabled': disabled}\"\n    class=\"bizy-menu-option {{customClass}}\">\n\n    <span class=\"bizy-menu-option__content\">\n        <ng-content></ng-content>\n    </span>\n    \n</button>\n\n<span class=\"bizy-menu-option__menu\">\n    <ng-content select=\"bizy-menu\"></ng-content>\n</span>\n", styles: [":host{font-size:1rem}:host:has(>.bizy-menu-option__menu:not(:empty)) .bizy-menu-option{display:none!important}.bizy-menu-option{font-size:1rem;width:100%;border:none;background-color:var(--bizy-menu-option-background-color);display:flex;align-items:center;justify-content:space-between;column-gap:.5rem;padding:.5rem;color:var(--bizy-menu-option-color);cursor:pointer}.bizy-menu-option:hover{background-color:var(--bizy-menu-option-hover-background-color)}.bizy-menu-option--selected{color:var(--bizy-menu-option-selected-color)!important;background-color:var(--bizy-menu-option-selected-background-color)!important}::ng-deep .bizy-menu-option--selected *{color:var(--bizy-menu-option-selected-color)!important}.bizy-menu-option--disabled{opacity:.5;pointer-events:none;cursor:not-allowed!important}.bizy-menu-option__content{font-size:1rem;display:flex;align-items:center;column-gap:.3rem;width:100%}::ng-deep .bizy-menu-option__menu *{color:var(--bizy-menu-option-color);fill:var(--bizy-menu-option-color)}\n"], dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyMenuOptionComponent, decorators: [{
             type: Component,
-            args: [{ selector: 'bizy-menu-option', changeDetection: ChangeDetectionStrategy.OnPush, template: "<button \n    type=\"button\"\n    [id]=\"id\"\n    (click)=\"_onSelect($event)\"\n    (keyup.enter)=\"_onSelect($event)\"\n    [ngClass]=\"{'bizy-menu-option--selected': selected, 'bizy-menu-option--disabled': disabled}\"\n    class=\"bizy-menu-option {{customClass}}\">\n\n    <span class=\"bizy-menu-option__content\">\n        <ng-content></ng-content>\n    </span>\n    \n</button>\n\n<span class=\"bizy-menu-option__menu\">\n    <ng-content select=\"bizy-menu\"></ng-content>\n</span>\n", styles: [":host{font-size:1rem}:host:has(>.bizy-menu-option__menu:not(:empty)) .bizy-menu-option{display:none!important}.bizy-menu-option{font-size:1rem;width:100%;border:none;background-color:var(--bizy-menu-option-background-color);display:flex;align-items:center;justify-content:space-between;column-gap:.5rem;padding:.5rem;color:var(--bizy-menu-option-color);cursor:pointer}.bizy-menu-option:hover{background-color:var(--bizy-menu-option-hover-background-color)}.bizy-menu-option--selected{color:var(--bizy-menu-option-selected-color)!important;background-color:var(--bizy-menu-option-selected-background-color)!important}.bizy-menu-option--disabled{opacity:.5;pointer-events:none;cursor:not-allowed!important}.bizy-menu-option__content{font-size:1rem;display:flex;align-items:center;column-gap:.3rem;width:100%}::ng-deep .bizy-menu-option__menu *{color:var(--bizy-menu-option-color);fill:var(--bizy-menu-option-color)}\n"] }]
+            args: [{ selector: 'bizy-menu-option', changeDetection: ChangeDetectionStrategy.OnPush, template: "<button \n    type=\"button\"\n    [id]=\"id\"\n    (click)=\"_onSelect($event)\"\n    (keyup.enter)=\"_onSelect($event)\"\n    [ngClass]=\"{'bizy-menu-option--selected': selected, 'bizy-menu-option--disabled': disabled}\"\n    class=\"bizy-menu-option {{customClass}}\">\n\n    <span class=\"bizy-menu-option__content\">\n        <ng-content></ng-content>\n    </span>\n    \n</button>\n\n<span class=\"bizy-menu-option__menu\">\n    <ng-content select=\"bizy-menu\"></ng-content>\n</span>\n", styles: [":host{font-size:1rem}:host:has(>.bizy-menu-option__menu:not(:empty)) .bizy-menu-option{display:none!important}.bizy-menu-option{font-size:1rem;width:100%;border:none;background-color:var(--bizy-menu-option-background-color);display:flex;align-items:center;justify-content:space-between;column-gap:.5rem;padding:.5rem;color:var(--bizy-menu-option-color);cursor:pointer}.bizy-menu-option:hover{background-color:var(--bizy-menu-option-hover-background-color)}.bizy-menu-option--selected{color:var(--bizy-menu-option-selected-color)!important;background-color:var(--bizy-menu-option-selected-background-color)!important}::ng-deep .bizy-menu-option--selected *{color:var(--bizy-menu-option-selected-color)!important}.bizy-menu-option--disabled{opacity:.5;pointer-events:none;cursor:not-allowed!important}.bizy-menu-option__content{font-size:1rem;display:flex;align-items:center;column-gap:.3rem;width:100%}::ng-deep .bizy-menu-option__menu *{color:var(--bizy-menu-option-color);fill:var(--bizy-menu-option-color)}\n"] }]
         }], propDecorators: { id: [{
                 type: Input
             }], disabled: [{
@@ -2114,11 +2111,11 @@ class BizyMenuComponent {
         this.#subscription.unsubscribe();
     }
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyMenuComponent, deps: [{ token: ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyMenuComponent, selector: "bizy-menu", inputs: { id: "id", disabled: "disabled", offsetX: "offsetX", offsetY: "offsetY", customClass: "customClass", hideArrow: "hideArrow", opened: "opened" }, outputs: { onSelect: "onSelect" }, queries: [{ propertyName: "options", predicate: BizyMenuOptionComponent }], ngImport: i0, template: "<button \n    type=\"button\"\n    class=\"bizy-menu {{customClass}}\"\n    [ngClass]=\"{'bizy-menu--disabled': disabled}\"\n    [id]=\"id\"\n    (click)=\"_onSelect($event)\"\n    (keyup.enter)=\"_onSelect($event)\"\n    cdkOverlayOrigin \n    #bizyMenuTrigger=\"cdkOverlayOrigin\">\n\n    <span class=\"bizy-menu__content\">\n        <ng-content></ng-content>\n    </span>\n    \n    <svg \n        class=\"bizy-menu__arrow\"\n        *ngIf=\"!hideArrow\" \n        viewBox=\"0 0 96 96\" \n        [ngClass]=\"{'bizy-menu__arrow--opened': opened}\"\n        xmlns=\"http://www.w3.org/2000/svg\">\n        <path d=\"M81.8457,25.3876a6.0239,6.0239,0,0,0-8.45.7676L48,56.6257l-25.396-30.47a5.999,5.999,0,1,0-9.2114,7.6879L43.3943,69.8452a5.9969,5.9969,0,0,0,9.2114,0L82.6074,33.8431A6.0076,6.0076,0,0,0,81.8457,25.3876Z\"/>\n    </svg>\n</button>\n\n<ng-template\n    cdkConnectedOverlay\n    [cdkConnectedOverlayOffsetX]=\"offsetX\"\n    [cdkConnectedOverlayOffsetY]=\"offsetY\"\n    [cdkConnectedOverlayMinWidth]=\"_menuWidth\"\n    [cdkConnectedOverlayOrigin]=\"bizyMenuTrigger\"\n    (overlayOutsideClick)=\"close($event)\"\n    [cdkConnectedOverlayOpen]=\"opened\">\n\n    <span class=\"bizy-menu__options\">\n\n        <ng-content select=\"bizy-menu-title\"></ng-content>\n\n        <ng-content select=\"bizy-menu-option\"></ng-content>\n\n    </span>\n\n</ng-template>\n", styles: [":host{font-size:1rem}:host:has(>.bizy-menu__options:empty) .bizy-menu>.bizy-menu__arrow{display:none!important}.bizy-menu{font-size:1rem;width:100%;border:none;background-color:transparent;display:flex;align-items:center;justify-content:space-between;column-gap:.5rem;padding:var(--bizy-menu-padding);color:var(--bizy-menu-color);cursor:pointer}.bizy-menu--disabled{pointer-events:none;opacity:.5;cursor:not-allowed!important}.bizy-menu__arrow{height:var(--bizy-menu-arrow-height);pointer-events:none;display:block;transition:transform .2s ease;fill:var(--bizy-menu-color)}.bizy-menu__arrow--opened{transform:rotate(180deg)}.bizy-menu__content{font-size:1rem;display:flex;align-items:center;column-gap:.3rem;pointer-events:none}.bizy-menu__options{background-color:var(--bizy-menu-background-color);min-width:10rem;width:100%;display:flex;flex-direction:column;box-shadow:0 7px 14px #32325d1a,0 3px 6px #00000014}\n"], dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: i2$2.CdkConnectedOverlay, selector: "[cdk-connected-overlay], [connected-overlay], [cdkConnectedOverlay]", inputs: ["cdkConnectedOverlayOrigin", "cdkConnectedOverlayPositions", "cdkConnectedOverlayPositionStrategy", "cdkConnectedOverlayOffsetX", "cdkConnectedOverlayOffsetY", "cdkConnectedOverlayWidth", "cdkConnectedOverlayHeight", "cdkConnectedOverlayMinWidth", "cdkConnectedOverlayMinHeight", "cdkConnectedOverlayBackdropClass", "cdkConnectedOverlayPanelClass", "cdkConnectedOverlayViewportMargin", "cdkConnectedOverlayScrollStrategy", "cdkConnectedOverlayOpen", "cdkConnectedOverlayDisableClose", "cdkConnectedOverlayTransformOriginOn", "cdkConnectedOverlayHasBackdrop", "cdkConnectedOverlayLockPosition", "cdkConnectedOverlayFlexibleDimensions", "cdkConnectedOverlayGrowAfterOpen", "cdkConnectedOverlayPush"], outputs: ["backdropClick", "positionChange", "attach", "detach", "overlayKeydown", "overlayOutsideClick"], exportAs: ["cdkConnectedOverlay"] }, { kind: "directive", type: i2$2.CdkOverlayOrigin, selector: "[cdk-overlay-origin], [overlay-origin], [cdkOverlayOrigin]", exportAs: ["cdkOverlayOrigin"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyMenuComponent, selector: "bizy-menu", inputs: { id: "id", disabled: "disabled", offsetX: "offsetX", offsetY: "offsetY", customClass: "customClass", hideArrow: "hideArrow", opened: "opened" }, outputs: { onSelect: "onSelect" }, queries: [{ propertyName: "options", predicate: BizyMenuOptionComponent }], ngImport: i0, template: "<button \n    type=\"button\"\n    class=\"bizy-menu {{customClass}}\"\n    [ngClass]=\"{'bizy-menu--disabled': disabled}\"\n    [id]=\"id\"\n    (click)=\"_onSelect($event)\"\n    (keyup.enter)=\"_onSelect($event)\"\n    cdkOverlayOrigin \n    #bizyMenuTrigger=\"cdkOverlayOrigin\">\n\n    <span class=\"bizy-menu__content\">\n        <ng-content></ng-content>\n    </span>\n    \n    <svg \n        class=\"bizy-menu__arrow\"\n        *ngIf=\"!hideArrow\" \n        viewBox=\"0 0 96 96\" \n        [ngClass]=\"{'bizy-menu__arrow--opened': opened}\"\n        xmlns=\"http://www.w3.org/2000/svg\">\n        <path d=\"M81.8457,25.3876a6.0239,6.0239,0,0,0-8.45.7676L48,56.6257l-25.396-30.47a5.999,5.999,0,1,0-9.2114,7.6879L43.3943,69.8452a5.9969,5.9969,0,0,0,9.2114,0L82.6074,33.8431A6.0076,6.0076,0,0,0,81.8457,25.3876Z\"/>\n    </svg>\n</button>\n\n<ng-template\n    cdkConnectedOverlay\n    [cdkConnectedOverlayOffsetX]=\"offsetX\"\n    [cdkConnectedOverlayOffsetY]=\"offsetY\"\n    [cdkConnectedOverlayMinWidth]=\"_menuWidth\"\n    [cdkConnectedOverlayOrigin]=\"bizyMenuTrigger\"\n    (overlayOutsideClick)=\"close($event)\"\n    [cdkConnectedOverlayOpen]=\"opened\">\n\n    <span class=\"bizy-menu__options\">\n\n        <span class=\"bizy-menu__options__header\">\n            <ng-content select=\"bizy-menu-title\"></ng-content>\n            <ng-content select=\"bizy-input\"></ng-content>\n        </span>\n\n        <ng-content select=\"bizy-menu-option\"></ng-content>\n\n    </span>\n\n</ng-template>\n", styles: [":host{font-size:1rem}:host:has(>.bizy-menu__options:empty) .bizy-menu>.bizy-menu__arrow{display:none!important}.bizy-menu{font-size:1rem;width:100%;border:none;background-color:transparent;display:flex;align-items:center;justify-content:space-between;column-gap:.5rem;padding:var(--bizy-menu-padding);color:var(--bizy-menu-color);cursor:pointer}.bizy-menu--disabled{pointer-events:none;opacity:.5;cursor:not-allowed!important}.bizy-menu__arrow{height:var(--bizy-menu-arrow-height);pointer-events:none;display:block;transition:transform .2s ease;fill:var(--bizy-menu-color)}.bizy-menu__arrow--opened{transform:rotate(180deg)}.bizy-menu__content{font-size:1rem;display:flex;align-items:center;column-gap:.3rem;pointer-events:none}.bizy-menu__options{background-color:var(--bizy-menu-background-color);min-width:-moz-fit-content;min-width:fit-content;max-height:var(--bizy-menu-height);overflow-y:auto;overflow-x:hidden;width:100%;display:flex;flex-direction:column;position:relative;box-shadow:0 7px 14px #32325d1a,0 3px 6px #00000014}.bizy-menu__options__header{position:sticky;z-index:1;top:0;display:flex;flex-direction:column;row-gap:.3rem;background-color:#fff}::ng-deep .bizy-menu__options__header{--bizy-input-width: auto;--bizy-input-background-color: #fff;--bizy-input-min-width: var(--bizy-select-min-width);--bizy-input-max-width: auto}\n"], dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: i2$2.CdkConnectedOverlay, selector: "[cdk-connected-overlay], [connected-overlay], [cdkConnectedOverlay]", inputs: ["cdkConnectedOverlayOrigin", "cdkConnectedOverlayPositions", "cdkConnectedOverlayPositionStrategy", "cdkConnectedOverlayOffsetX", "cdkConnectedOverlayOffsetY", "cdkConnectedOverlayWidth", "cdkConnectedOverlayHeight", "cdkConnectedOverlayMinWidth", "cdkConnectedOverlayMinHeight", "cdkConnectedOverlayBackdropClass", "cdkConnectedOverlayPanelClass", "cdkConnectedOverlayViewportMargin", "cdkConnectedOverlayScrollStrategy", "cdkConnectedOverlayOpen", "cdkConnectedOverlayDisableClose", "cdkConnectedOverlayTransformOriginOn", "cdkConnectedOverlayHasBackdrop", "cdkConnectedOverlayLockPosition", "cdkConnectedOverlayFlexibleDimensions", "cdkConnectedOverlayGrowAfterOpen", "cdkConnectedOverlayPush"], outputs: ["backdropClick", "positionChange", "attach", "detach", "overlayKeydown", "overlayOutsideClick"], exportAs: ["cdkConnectedOverlay"] }, { kind: "directive", type: i2$2.CdkOverlayOrigin, selector: "[cdk-overlay-origin], [overlay-origin], [cdkOverlayOrigin]", exportAs: ["cdkOverlayOrigin"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyMenuComponent, decorators: [{
             type: Component,
-            args: [{ selector: 'bizy-menu', changeDetection: ChangeDetectionStrategy.OnPush, template: "<button \n    type=\"button\"\n    class=\"bizy-menu {{customClass}}\"\n    [ngClass]=\"{'bizy-menu--disabled': disabled}\"\n    [id]=\"id\"\n    (click)=\"_onSelect($event)\"\n    (keyup.enter)=\"_onSelect($event)\"\n    cdkOverlayOrigin \n    #bizyMenuTrigger=\"cdkOverlayOrigin\">\n\n    <span class=\"bizy-menu__content\">\n        <ng-content></ng-content>\n    </span>\n    \n    <svg \n        class=\"bizy-menu__arrow\"\n        *ngIf=\"!hideArrow\" \n        viewBox=\"0 0 96 96\" \n        [ngClass]=\"{'bizy-menu__arrow--opened': opened}\"\n        xmlns=\"http://www.w3.org/2000/svg\">\n        <path d=\"M81.8457,25.3876a6.0239,6.0239,0,0,0-8.45.7676L48,56.6257l-25.396-30.47a5.999,5.999,0,1,0-9.2114,7.6879L43.3943,69.8452a5.9969,5.9969,0,0,0,9.2114,0L82.6074,33.8431A6.0076,6.0076,0,0,0,81.8457,25.3876Z\"/>\n    </svg>\n</button>\n\n<ng-template\n    cdkConnectedOverlay\n    [cdkConnectedOverlayOffsetX]=\"offsetX\"\n    [cdkConnectedOverlayOffsetY]=\"offsetY\"\n    [cdkConnectedOverlayMinWidth]=\"_menuWidth\"\n    [cdkConnectedOverlayOrigin]=\"bizyMenuTrigger\"\n    (overlayOutsideClick)=\"close($event)\"\n    [cdkConnectedOverlayOpen]=\"opened\">\n\n    <span class=\"bizy-menu__options\">\n\n        <ng-content select=\"bizy-menu-title\"></ng-content>\n\n        <ng-content select=\"bizy-menu-option\"></ng-content>\n\n    </span>\n\n</ng-template>\n", styles: [":host{font-size:1rem}:host:has(>.bizy-menu__options:empty) .bizy-menu>.bizy-menu__arrow{display:none!important}.bizy-menu{font-size:1rem;width:100%;border:none;background-color:transparent;display:flex;align-items:center;justify-content:space-between;column-gap:.5rem;padding:var(--bizy-menu-padding);color:var(--bizy-menu-color);cursor:pointer}.bizy-menu--disabled{pointer-events:none;opacity:.5;cursor:not-allowed!important}.bizy-menu__arrow{height:var(--bizy-menu-arrow-height);pointer-events:none;display:block;transition:transform .2s ease;fill:var(--bizy-menu-color)}.bizy-menu__arrow--opened{transform:rotate(180deg)}.bizy-menu__content{font-size:1rem;display:flex;align-items:center;column-gap:.3rem;pointer-events:none}.bizy-menu__options{background-color:var(--bizy-menu-background-color);min-width:10rem;width:100%;display:flex;flex-direction:column;box-shadow:0 7px 14px #32325d1a,0 3px 6px #00000014}\n"] }]
+            args: [{ selector: 'bizy-menu', changeDetection: ChangeDetectionStrategy.OnPush, template: "<button \n    type=\"button\"\n    class=\"bizy-menu {{customClass}}\"\n    [ngClass]=\"{'bizy-menu--disabled': disabled}\"\n    [id]=\"id\"\n    (click)=\"_onSelect($event)\"\n    (keyup.enter)=\"_onSelect($event)\"\n    cdkOverlayOrigin \n    #bizyMenuTrigger=\"cdkOverlayOrigin\">\n\n    <span class=\"bizy-menu__content\">\n        <ng-content></ng-content>\n    </span>\n    \n    <svg \n        class=\"bizy-menu__arrow\"\n        *ngIf=\"!hideArrow\" \n        viewBox=\"0 0 96 96\" \n        [ngClass]=\"{'bizy-menu__arrow--opened': opened}\"\n        xmlns=\"http://www.w3.org/2000/svg\">\n        <path d=\"M81.8457,25.3876a6.0239,6.0239,0,0,0-8.45.7676L48,56.6257l-25.396-30.47a5.999,5.999,0,1,0-9.2114,7.6879L43.3943,69.8452a5.9969,5.9969,0,0,0,9.2114,0L82.6074,33.8431A6.0076,6.0076,0,0,0,81.8457,25.3876Z\"/>\n    </svg>\n</button>\n\n<ng-template\n    cdkConnectedOverlay\n    [cdkConnectedOverlayOffsetX]=\"offsetX\"\n    [cdkConnectedOverlayOffsetY]=\"offsetY\"\n    [cdkConnectedOverlayMinWidth]=\"_menuWidth\"\n    [cdkConnectedOverlayOrigin]=\"bizyMenuTrigger\"\n    (overlayOutsideClick)=\"close($event)\"\n    [cdkConnectedOverlayOpen]=\"opened\">\n\n    <span class=\"bizy-menu__options\">\n\n        <span class=\"bizy-menu__options__header\">\n            <ng-content select=\"bizy-menu-title\"></ng-content>\n            <ng-content select=\"bizy-input\"></ng-content>\n        </span>\n\n        <ng-content select=\"bizy-menu-option\"></ng-content>\n\n    </span>\n\n</ng-template>\n", styles: [":host{font-size:1rem}:host:has(>.bizy-menu__options:empty) .bizy-menu>.bizy-menu__arrow{display:none!important}.bizy-menu{font-size:1rem;width:100%;border:none;background-color:transparent;display:flex;align-items:center;justify-content:space-between;column-gap:.5rem;padding:var(--bizy-menu-padding);color:var(--bizy-menu-color);cursor:pointer}.bizy-menu--disabled{pointer-events:none;opacity:.5;cursor:not-allowed!important}.bizy-menu__arrow{height:var(--bizy-menu-arrow-height);pointer-events:none;display:block;transition:transform .2s ease;fill:var(--bizy-menu-color)}.bizy-menu__arrow--opened{transform:rotate(180deg)}.bizy-menu__content{font-size:1rem;display:flex;align-items:center;column-gap:.3rem;pointer-events:none}.bizy-menu__options{background-color:var(--bizy-menu-background-color);min-width:-moz-fit-content;min-width:fit-content;max-height:var(--bizy-menu-height);overflow-y:auto;overflow-x:hidden;width:100%;display:flex;flex-direction:column;position:relative;box-shadow:0 7px 14px #32325d1a,0 3px 6px #00000014}.bizy-menu__options__header{position:sticky;z-index:1;top:0;display:flex;flex-direction:column;row-gap:.3rem;background-color:#fff}::ng-deep .bizy-menu__options__header{--bizy-input-width: auto;--bizy-input-background-color: #fff;--bizy-input-min-width: var(--bizy-select-min-width);--bizy-input-max-width: auto}\n"] }]
         }], ctorParameters: function () { return [{ type: i0.ChangeDetectorRef, decorators: [{
                     type: Inject,
                     args: [ChangeDetectorRef]
@@ -2143,7 +2140,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS$5 = [
+const COMPONENTS$6 = [
     BizyMenuComponent,
     BizyMenuOptionComponent,
     BizyMenuTitleComponent
@@ -2161,8 +2158,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, OverlayModule],
-                    declarations: COMPONENTS$5,
-                    exports: COMPONENTS$5
+                    declarations: COMPONENTS$6,
+                    exports: COMPONENTS$6
                 }]
         }] });
 
@@ -2731,7 +2728,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS$4 = [
+const COMPONENTS$5 = [
     BizyFilterComponent,
     BizyFilterSectionComponent,
     BizyFilterSectionCheckboxOptionComponent,
@@ -2761,8 +2758,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, OverlayModule, BizyCheckboxModule, BizyInputModule],
-                    declarations: COMPONENTS$4,
-                    exports: COMPONENTS$4,
+                    declarations: COMPONENTS$5,
+                    exports: COMPONENTS$5,
                     providers: [BizyFilterPipe, BizyRangeFilterPipe]
                 }]
         }] });
@@ -2930,7 +2927,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS$3 = [
+const COMPONENTS$4 = [
     BizySelectComponent,
     BizySelectOptionComponent
 ];
@@ -2945,8 +2942,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, BizyInputModule, OverlayModule],
-                    declarations: COMPONENTS$3,
-                    exports: COMPONENTS$3
+                    declarations: COMPONENTS$4,
+                    exports: COMPONENTS$4
                 }]
         }] });
 
@@ -3016,7 +3013,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Input
             }] } });
 
-const COMPONENTS$2 = [
+const COMPONENTS$3 = [
     BizySliderComponent,
 ];
 class BizySliderModule {
@@ -3028,8 +3025,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$2,
-                    exports: COMPONENTS$2
+                    declarations: COMPONENTS$3,
+                    exports: COMPONENTS$3
                 }]
         }] });
 
@@ -3712,7 +3709,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS$1 = [
+const COMPONENTS$2 = [
     BizyTagComponent,
 ];
 class BizyTagModule {
@@ -3724,8 +3721,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$1,
-                    exports: COMPONENTS$1
+                    declarations: COMPONENTS$2,
+                    exports: COMPONENTS$2
                 }]
         }] });
 
@@ -3759,7 +3756,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS = [
+const COMPONENTS$1 = [
     BizyCardComponent,
 ];
 class BizyCardModule {
@@ -3768,6 +3765,326 @@ class BizyCardModule {
     static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyCardModule, imports: [CommonModule, FormsModule] });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyCardModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: [CommonModule, FormsModule],
+                    declarations: COMPONENTS$1,
+                    exports: COMPONENTS$1
+                }]
+        }] });
+
+const ES = {
+    ...es_ES,
+    strings: {
+        ...es_ES.strings,
+        noDuplicates: 'Archivo duplicado: \'%{fileName}\'',
+        browseFiles: 'buscar archivo',
+        dropPasteFiles: 'Soltar archivo aquí, pegar o %{browse}'
+    }
+};
+const EN = {
+    ...en_US,
+    strings: {
+        ...en_US.strings,
+        noDuplicates: 'Duplicated file: \'%{fileName}\'',
+        browseFiles: 'browse file',
+        dropPasteFiles: 'Drop a file here or %{browse}'
+    }
+};
+class BizyFileUploaderService {
+    #fileLoaded = new Subject();
+    #fileRemoved = new Subject();
+    #upload = new Subject();
+    #uploadSuccess = new Subject();
+    #error = new Subject();
+    #cancelAll = new Subject();
+    #complete = new Subject();
+    #uppy;
+    get fileLoaded$() {
+        return this.#fileLoaded.asObservable();
+    }
+    get fileRemoved$() {
+        return this.#fileRemoved.asObservable();
+    }
+    get upload$() {
+        return this.#upload.asObservable();
+    }
+    get uploadSuccess$() {
+        return this.#uploadSuccess.asObservable();
+    }
+    get error$() {
+        return this.#error.asObservable();
+    }
+    get cancelAll$() {
+        return this.#cancelAll.asObservable();
+    }
+    get complete$() {
+        return this.#complete.asObservable();
+    }
+    createFileUploader(data) {
+        const locale = data.language === 'es' ? ES : EN;
+        this.#uppy = new Uppy({
+            locale,
+            infoTimeout: 2500,
+            restrictions: {
+                maxFileSize: data.maxFileSize,
+                minFileSize: data.minFileSize,
+                maxTotalFileSize: data.maxTotalFileSize,
+                maxNumberOfFiles: data.maxNumberOfFiles,
+                minNumberOfFiles: data.minNumberOfFiles,
+                allowedFileTypes: data.allowedFileTypes
+            }
+        })
+            .use(Dashboard, {
+            inline: true,
+            target: `#${data.templateId}`,
+            width: data.dragDropAreaWidth,
+            height: data.dragDropAreaHeight,
+            hideUploadButton: true,
+            hidePauseResumeButton: true
+        })
+            .use(XHRUpload, {
+            endpoint: '',
+            headers: {
+                'Bizy-TenantId': data.tenantId
+            },
+            getResponseData: (responseText, response) => {
+                return {
+                    fileId: responseText,
+                    response
+                };
+            }
+        })
+            .on('file-added', file => {
+            this.#fileLoaded.next(file);
+        })
+            .on('file-removed', file => {
+            this.#fileRemoved.next(file);
+        })
+            .on('upload', data => {
+            this.#upload.next();
+        })
+            .on('upload-success', (file, response) => {
+            if (file) {
+                this.#uploadSuccess.next({ file, response });
+            }
+        })
+            .on('upload-error', (file, error, response) => {
+            this.#error.next({ file, error, response });
+        })
+            .on('restriction-failed', (file, error) => {
+            this.#error.next({ file, error });
+        })
+            .on('error', error => {
+            this.#error.next({ error });
+        })
+            .on('cancel-all', () => {
+            this.#cancelAll.next();
+        })
+            .on('complete', result => {
+            this.#complete.next(result);
+        });
+    }
+    load(data) {
+        this.#uppy.addFile({
+            name: data.file.name,
+            type: data.file.type,
+            data: data.file,
+            meta: {
+                // Optional, store the directory path of a file so Uppy can tell identical files in different directories apart.
+                relativePath: data.file.webkitRelativePath,
+                referenceId: data.id
+            },
+            source: 'Local',
+            isRemote: false // Optional, set to true if actual file is not in the browser, but on some remote server, for example,
+            // when using companion in combination with Instagram.
+        });
+    }
+    upload(data) {
+        this.#uppy.getPlugin('XHRUpload').setOptions({
+            endpoint: data.url,
+            headers: {
+                authorization: `Bearer ${data.token}`
+            }
+        });
+        this.#uppy.upload();
+    }
+    cleanAllFiles() {
+        this.#uppy.cancelAll();
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyFileUploaderService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyFileUploaderService });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyFileUploaderService, decorators: [{
+            type: Injectable
+        }] });
+
+class BizyFileUploaderComponent {
+    fileUploader;
+    tenantId = null;
+    dragDropAreaWidth = '100%';
+    dragDropAreaHeight = '16rem';
+    language = 'es';
+    maxFileSize = null;
+    minFileSize = null;
+    maxTotalFileSize = 31458000; // 30MB
+    maxNumberOfFiles = null;
+    minNumberOfFiles = null;
+    allowedFileTypes = ['.wav'];
+    upload;
+    completed = new EventEmitter();
+    loadedFiles = new EventEmitter();
+    #subscription = new Subscription();
+    #files = new Set();
+    TEMPLATE_ID = 'bizy-file-uploader-template';
+    constructor(fileUploader) {
+        this.fileUploader = fileUploader;
+    }
+    ngAfterViewInit() {
+        if (!this.tenantId) {
+            return;
+        }
+        this.fileUploader.createFileUploader({
+            maxFileSize: this.maxFileSize,
+            minFileSize: this.minFileSize,
+            maxTotalFileSize: this.maxTotalFileSize,
+            maxNumberOfFiles: this.maxNumberOfFiles,
+            minNumberOfFiles: this.minNumberOfFiles,
+            dragDropAreaWidth: this.dragDropAreaWidth,
+            dragDropAreaHeight: this.dragDropAreaHeight,
+            allowedFileTypes: this.allowedFileTypes,
+            tenantId: String(this.tenantId),
+            language: this.language,
+            templateId: this.TEMPLATE_ID
+        });
+        this.#subscription.add(this.upload.subscribe(data => {
+            if (this.#files.size === 0 || (this.minNumberOfFiles && this.#files.size < this.minNumberOfFiles)) {
+                this.completed.emit({ successful: [], failed: [] });
+                return;
+            }
+            this.fileUploader.upload(data);
+        }));
+        this.#subscription.add(this.fileUploader.complete$.subscribe(res => {
+            const successful = [];
+            const failed = [];
+            res.successful.forEach(_file => {
+                if (_file.response && _file.response.body && _file.response.body.fileId) {
+                    successful.push(_file.response.body.fileId);
+                }
+            });
+            res.failed.forEach(_file => {
+                if (_file.response && _file.response.body && _file.response.body.fileId) {
+                    successful.push(_file.response.body.fileId);
+                }
+            });
+            this.completed.emit({ successful, failed });
+        }));
+        this.#subscription.add(this.fileUploader.fileLoaded$.subscribe(file => {
+            this.#files.add(file);
+            this.loadedFiles.emit(Array.from(this.#files));
+        }));
+        this.#subscription.add(this.fileUploader.fileRemoved$.subscribe(file => {
+            this.#files.delete(file);
+            this.loadedFiles.emit(Array.from(this.#files));
+        }));
+    }
+    ngOnDestroy() {
+        this.fileUploader.cleanAllFiles();
+        this.#subscription.unsubscribe();
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyFileUploaderComponent, deps: [{ token: BizyFileUploaderService }], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyFileUploaderComponent, selector: "bizy-file-uploader", inputs: { tenantId: "tenantId", dragDropAreaWidth: "dragDropAreaWidth", dragDropAreaHeight: "dragDropAreaHeight", language: "language", maxFileSize: "maxFileSize", minFileSize: "minFileSize", maxTotalFileSize: "maxTotalFileSize", maxNumberOfFiles: "maxNumberOfFiles", minNumberOfFiles: "minNumberOfFiles", allowedFileTypes: "allowedFileTypes", upload: "upload" }, outputs: { completed: "completed", loadedFiles: "loadedFiles" }, providers: [BizyFileUploaderService], ngImport: i0, template: "<div [id]=\"TEMPLATE_ID\"></div>", changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyFileUploaderComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-file-uploader', providers: [BizyFileUploaderService], changeDetection: ChangeDetectionStrategy.OnPush, template: "<div [id]=\"TEMPLATE_ID\"></div>" }]
+        }], ctorParameters: function () { return [{ type: BizyFileUploaderService, decorators: [{
+                    type: Inject,
+                    args: [BizyFileUploaderService]
+                }] }]; }, propDecorators: { tenantId: [{
+                type: Input
+            }], dragDropAreaWidth: [{
+                type: Input
+            }], dragDropAreaHeight: [{
+                type: Input
+            }], language: [{
+                type: Input
+            }], maxFileSize: [{
+                type: Input
+            }], minFileSize: [{
+                type: Input
+            }], maxTotalFileSize: [{
+                type: Input
+            }], maxNumberOfFiles: [{
+                type: Input
+            }], minNumberOfFiles: [{
+                type: Input
+            }], allowedFileTypes: [{
+                type: Input
+            }], upload: [{
+                type: Input
+            }], completed: [{
+                type: Output
+            }], loadedFiles: [{
+                type: Output
+            }] } });
+
+class BizyFileUploaderModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyFileUploaderModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BizyFileUploaderModule, declarations: [BizyFileUploaderComponent], exports: [BizyFileUploaderComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyFileUploaderModule });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyFileUploaderModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    declarations: [BizyFileUploaderComponent],
+                    exports: [BizyFileUploaderComponent]
+                }]
+        }] });
+
+class BizyRadioComponent {
+    id = `bizy-radio-${Math.random()}`;
+    name;
+    selected = false;
+    disabled = false;
+    selectedChange = new EventEmitter();
+    onSelect = new EventEmitter();
+    _onSelect(event) {
+        if (this.disabled) {
+            return;
+        }
+        this.selectedChange.emit(!this.selected);
+        this.onSelect.emit(event);
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyRadioComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyRadioComponent, selector: "bizy-radio", inputs: { id: "id", name: "name", selected: "selected", disabled: "disabled" }, outputs: { selectedChange: "selectedChange", onSelect: "onSelect" }, ngImport: i0, template: "<button type=\"button\" (click)=\"_onSelect($event)\" (keyup.enter)=\"_onSelect($event)\" class=\"bizy-radio\" [ngClass]=\"{'bizy-radio--disabled': disabled}\">\n    <input \n        class=\"bizy-radio__input\"\n        [id]=\"id\"\n        [disabled]=\"disabled\"\n        type=\"radio\"\n        [name]=\"name\"\n        [checked]=\"selected\"/>\n\n    <ng-content select=\"[slot=start]\"></ng-content>\n\n    <span class=\"bizy-radio__radio\"></span>\n    \n    <ng-content select=\"[slot=end]\"></ng-content>\n</button>\n", styles: [":host{font-size:1rem}.bizy-radio{border:none;background-color:transparent;cursor:pointer;position:relative;width:-moz-fit-content;width:fit-content;display:flex;column-gap:.5rem;align-items:center}.bizy-radio__input{position:absolute;visibility:hidden;pointer-events:none}.bizy-radio__input:checked+.bizy-radio__radio:before{box-shadow:inset 0 0 0 .3rem var(--bizy-radio-color)}.bizy-radio__radio{display:flex;align-items:center;transition:.25s ease}.bizy-radio__radio:before{display:flex;flex-shrink:0;content:\"\";background-color:#fff;min-width:1rem;min-height:1rem;border-radius:50%;transition:.25s ease;box-shadow:inset 0 0 0 .1rem var(--bizy-radio-color)}.bizy-radio__input--disabled{opacity:.5;pointer-events:none;cursor:not-allowed!important}\n"], dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyRadioComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-radio', changeDetection: ChangeDetectionStrategy.OnPush, template: "<button type=\"button\" (click)=\"_onSelect($event)\" (keyup.enter)=\"_onSelect($event)\" class=\"bizy-radio\" [ngClass]=\"{'bizy-radio--disabled': disabled}\">\n    <input \n        class=\"bizy-radio__input\"\n        [id]=\"id\"\n        [disabled]=\"disabled\"\n        type=\"radio\"\n        [name]=\"name\"\n        [checked]=\"selected\"/>\n\n    <ng-content select=\"[slot=start]\"></ng-content>\n\n    <span class=\"bizy-radio__radio\"></span>\n    \n    <ng-content select=\"[slot=end]\"></ng-content>\n</button>\n", styles: [":host{font-size:1rem}.bizy-radio{border:none;background-color:transparent;cursor:pointer;position:relative;width:-moz-fit-content;width:fit-content;display:flex;column-gap:.5rem;align-items:center}.bizy-radio__input{position:absolute;visibility:hidden;pointer-events:none}.bizy-radio__input:checked+.bizy-radio__radio:before{box-shadow:inset 0 0 0 .3rem var(--bizy-radio-color)}.bizy-radio__radio{display:flex;align-items:center;transition:.25s ease}.bizy-radio__radio:before{display:flex;flex-shrink:0;content:\"\";background-color:#fff;min-width:1rem;min-height:1rem;border-radius:50%;transition:.25s ease;box-shadow:inset 0 0 0 .1rem var(--bizy-radio-color)}.bizy-radio__input--disabled{opacity:.5;pointer-events:none;cursor:not-allowed!important}\n"] }]
+        }], propDecorators: { id: [{
+                type: Input
+            }], name: [{
+                type: Input
+            }], selected: [{
+                type: Input
+            }], disabled: [{
+                type: Input
+            }], selectedChange: [{
+                type: Output
+            }], onSelect: [{
+                type: Output
+            }] } });
+
+const COMPONENTS = [
+    BizyRadioComponent,
+];
+class BizyRadioModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyRadioModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BizyRadioModule, declarations: [BizyRadioComponent], imports: [CommonModule, FormsModule], exports: [BizyRadioComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyRadioModule, imports: [CommonModule, FormsModule] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyRadioModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
@@ -3780,5 +4097,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
  * Generated bundle index. Do not edit.
  */
 
-export { BIZY_TAG_TYPE, BizyAccordionComponent, BizyAccordionModule, BizyBarLineChartComponent, BizyBarLineChartModule, BizyBreadcrumbComponent, BizyBreadcrumbModule, BizyButtonComponent, BizyButtonModule, BizyCardComponent, BizyCardModule, BizyCheckboxComponent, BizyCheckboxModule, BizyDatePickerComponent, BizyDatePickerModule, BizyFilterComponent, BizyFilterModule, BizyFilterPipe, BizyFilterSectionCheckboxOptionComponent, BizyFilterSectionComponent, BizyFilterSectionRangeOptionComponent, BizyFilterSectionSearchOptionComponent, BizyInputComponent, BizyInputModule, BizyInputOptionComponent, BizyMenuComponent, BizyMenuModule, BizyMenuOptionComponent, BizyMenuTitleComponent, BizyPieChartComponent, BizyPieChartModule, BizyRangeFilterPipe, BizySelectComponent, BizySelectModule, BizySelectOptionComponent, BizySidebarComponent, BizySidebarFloatingOptionComponent, BizySidebarFloatingOptionTitleComponent, BizySidebarModule, BizySidebarOptionComponent, BizySliderComponent, BizySliderModule, BizyTabComponent, BizyTableColumnArrowsComponent, BizyTableColumnComponent, BizyTableComponent, BizyTableFooterComponent, BizyTableHeaderComponent, BizyTableModule, BizyTableRowComponent, BizyTableRowExpandContentComponent, BizyTableScrollingComponent, BizyTableScrollingDirective, BizyTabsComponent, BizyTabsModule, BizyTagComponent, BizyTagModule, BizyToggleComponent, BizyToggleModule, BizyToolbarComponent, BizyToolbarModule, BizyVirtualScrollComponent, BizyVirtualScrollModule, BizyVirtualScrollNgForDirective };
+export { BIZY_TAG_TYPE, BizyAccordionComponent, BizyAccordionModule, BizyBarLineChartComponent, BizyBarLineChartModule, BizyBreadcrumbComponent, BizyBreadcrumbModule, BizyButtonComponent, BizyButtonModule, BizyCardComponent, BizyCardModule, BizyCheckboxComponent, BizyCheckboxModule, BizyDatePickerComponent, BizyDatePickerModule, BizyFileUploaderComponent, BizyFileUploaderModule, BizyFileUploaderService, BizyFilterComponent, BizyFilterModule, BizyFilterPipe, BizyFilterSectionCheckboxOptionComponent, BizyFilterSectionComponent, BizyFilterSectionRangeOptionComponent, BizyFilterSectionSearchOptionComponent, BizyInputComponent, BizyInputModule, BizyInputOptionComponent, BizyMenuComponent, BizyMenuModule, BizyMenuOptionComponent, BizyMenuTitleComponent, BizyPieChartComponent, BizyPieChartModule, BizyRadioComponent, BizyRadioModule, BizyRangeFilterPipe, BizySelectComponent, BizySelectModule, BizySelectOptionComponent, BizySidebarComponent, BizySidebarFloatingOptionComponent, BizySidebarFloatingOptionTitleComponent, BizySidebarModule, BizySidebarOptionComponent, BizySliderComponent, BizySliderModule, BizyTabComponent, BizyTableColumnArrowsComponent, BizyTableColumnComponent, BizyTableComponent, BizyTableFooterComponent, BizyTableHeaderComponent, BizyTableModule, BizyTableRowComponent, BizyTableRowExpandContentComponent, BizyTableScrollingComponent, BizyTableScrollingDirective, BizyTabsComponent, BizyTabsModule, BizyTagComponent, BizyTagModule, BizyToggleComponent, BizyToggleModule, BizyToolbarComponent, BizyToolbarModule, BizyVirtualScrollComponent, BizyVirtualScrollModule, BizyVirtualScrollNgForDirective };
 //# sourceMappingURL=bizy-components.mjs.map

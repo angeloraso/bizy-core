@@ -1,0 +1,48 @@
+:host {
+    font-size: 1rem;
+}
+
+.bizy-radio {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    position: relative;
+    width: fit-content;
+    display: flex;
+    column-gap: 0.5rem;
+    align-items: center;
+}
+
+.bizy-radio__input {
+    position: absolute;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.bizy-radio__input:checked+.bizy-radio__radio:before {
+    box-shadow: inset 0 0 0 0.3rem var(--bizy-radio-color);
+}
+
+.bizy-radio__radio {
+    display: flex;
+    align-items: center;
+    transition: 0.25s ease;
+}
+
+.bizy-radio__radio:before {
+    display: flex;
+    flex-shrink: 0;
+    content: "";
+    background-color: #fff;
+    min-width: 1rem;
+    min-height: 1rem;
+    border-radius: 50%;
+    transition: 0.25s ease;
+    box-shadow: inset 0 0 0 0.1rem var(--bizy-radio-color);
+}
+
+.bizy-radio__input--disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: not-allowed !important;
+}

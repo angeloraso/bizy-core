@@ -29,6 +29,10 @@
     background-color: var(--bizy-menu-option-selected-background-color) !important;
 }
 
+::ng-deep .bizy-menu-option--selected * {
+    color: var(--bizy-menu-option-selected-color) !important;
+}
+
 .bizy-menu-option--disabled {
    opacity: 0.5;
    pointer-events: none;

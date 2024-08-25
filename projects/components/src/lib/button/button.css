@@ -11,7 +11,7 @@
     height: 100%;
     padding: var(--bizy-button-padding);
     border-radius: 0.3rem;
-    border: none;
+    border: var(--bizy-button-border);
     cursor: pointer;
     background-color: var(--bizy-button-background-color);
 }

@@ -1,0 +1,15 @@
+<button type="button" (click)="_onSelect($event)" (keyup.enter)="_onSelect($event)" class="bizy-radio" [ngClass]="{'bizy-radio--disabled': disabled}">
+    <input 
+        class="bizy-radio__input"
+        [id]="id"
+        [disabled]="disabled"
+        type="radio"
+        [name]="name"
+        [checked]="selected"/>
+
+    <ng-content select="[slot=start]"></ng-content>
+
+    <span class="bizy-radio__radio"></span>
+    
+    <ng-content select="[slot=end]"></ng-content>
+</button>

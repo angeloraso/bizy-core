@@ -62,7 +62,7 @@ export class BizySidebarComponent implements AfterContentInit {
             if (__option.getId() !== _option.getId()) {
               setTimeout(() => {
                 __option.selectedChange.emit(false);
-              }, 50);
+              }, 100);
             }
           })
         }
@@ -81,17 +81,17 @@ export class BizySidebarComponent implements AfterContentInit {
           founded = true;
           setTimeout(() => {
             options[i].selectedChange.emit(true);
-          }, 50)
+          }, 100)
         } else {
           setTimeout(() => {
             options[i].selectedChange.emit(false);
-          }, 50)
+          }, 100)
         }
         
       } else {
         setTimeout(() => {
           options[i].selectedChange.emit(false);
-        }, 50)
+        }, 100)
       }
     }
 

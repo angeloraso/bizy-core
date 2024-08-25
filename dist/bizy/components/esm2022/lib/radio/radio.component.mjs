@@ -1,0 +1,37 @@
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import * as i0 from "@angular/core";
+import * as i1 from "@angular/common";
+export class BizyRadioComponent {
+    id = `bizy-radio-${Math.random()}`;
+    name;
+    selected = false;
+    disabled = false;
+    selectedChange = new EventEmitter();
+    onSelect = new EventEmitter();
+    _onSelect(event) {
+        if (this.disabled) {
+            return;
+        }
+        this.selectedChange.emit(!this.selected);
+        this.onSelect.emit(event);
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyRadioComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyRadioComponent, selector: "bizy-radio", inputs: { id: "id", name: "name", selected: "selected", disabled: "disabled" }, outputs: { selectedChange: "selectedChange", onSelect: "onSelect" }, ngImport: i0, template: "<button type=\"button\" (click)=\"_onSelect($event)\" (keyup.enter)=\"_onSelect($event)\" class=\"bizy-radio\" [ngClass]=\"{'bizy-radio--disabled': disabled}\">\n    <input \n        class=\"bizy-radio__input\"\n        [id]=\"id\"\n        [disabled]=\"disabled\"\n        type=\"radio\"\n        [name]=\"name\"\n        [checked]=\"selected\"/>\n\n    <ng-content select=\"[slot=start]\"></ng-content>\n\n    <span class=\"bizy-radio__radio\"></span>\n    \n    <ng-content select=\"[slot=end]\"></ng-content>\n</button>\n", styles: [":host{font-size:1rem}.bizy-radio{border:none;background-color:transparent;cursor:pointer;position:relative;width:-moz-fit-content;width:fit-content;display:flex;column-gap:.5rem;align-items:center}.bizy-radio__input{position:absolute;visibility:hidden;pointer-events:none}.bizy-radio__input:checked+.bizy-radio__radio:before{box-shadow:inset 0 0 0 .3rem var(--bizy-radio-color)}.bizy-radio__radio{display:flex;align-items:center;transition:.25s ease}.bizy-radio__radio:before{display:flex;flex-shrink:0;content:\"\";background-color:#fff;min-width:1rem;min-height:1rem;border-radius:50%;transition:.25s ease;box-shadow:inset 0 0 0 .1rem var(--bizy-radio-color)}.bizy-radio__input--disabled{opacity:.5;pointer-events:none;cursor:not-allowed!important}\n"], dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyRadioComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-radio', changeDetection: ChangeDetectionStrategy.OnPush, template: "<button type=\"button\" (click)=\"_onSelect($event)\" (keyup.enter)=\"_onSelect($event)\" class=\"bizy-radio\" [ngClass]=\"{'bizy-radio--disabled': disabled}\">\n    <input \n        class=\"bizy-radio__input\"\n        [id]=\"id\"\n        [disabled]=\"disabled\"\n        type=\"radio\"\n        [name]=\"name\"\n        [checked]=\"selected\"/>\n\n    <ng-content select=\"[slot=start]\"></ng-content>\n\n    <span class=\"bizy-radio__radio\"></span>\n    \n    <ng-content select=\"[slot=end]\"></ng-content>\n</button>\n", styles: [":host{font-size:1rem}.bizy-radio{border:none;background-color:transparent;cursor:pointer;position:relative;width:-moz-fit-content;width:fit-content;display:flex;column-gap:.5rem;align-items:center}.bizy-radio__input{position:absolute;visibility:hidden;pointer-events:none}.bizy-radio__input:checked+.bizy-radio__radio:before{box-shadow:inset 0 0 0 .3rem var(--bizy-radio-color)}.bizy-radio__radio{display:flex;align-items:center;transition:.25s ease}.bizy-radio__radio:before{display:flex;flex-shrink:0;content:\"\";background-color:#fff;min-width:1rem;min-height:1rem;border-radius:50%;transition:.25s ease;box-shadow:inset 0 0 0 .1rem var(--bizy-radio-color)}.bizy-radio__input--disabled{opacity:.5;pointer-events:none;cursor:not-allowed!important}\n"] }]
+        }], propDecorators: { id: [{
+                type: Input
+            }], name: [{
+                type: Input
+            }], selected: [{
+                type: Input
+            }], disabled: [{
+                type: Input
+            }], selectedChange: [{
+                type: Output
+            }], onSelect: [{
+                type: Output
+            }] } });
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicmFkaW8uY29tcG9uZW50LmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vLi4vcHJvamVjdHMvY29tcG9uZW50cy9zcmMvbGliL3JhZGlvL3JhZGlvLmNvbXBvbmVudC50cyIsIi4uLy4uLy4uLy4uLy4uLy4uL3Byb2plY3RzL2NvbXBvbmVudHMvc3JjL2xpYi9yYWRpby9yYWRpby5odG1sIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sRUFBRSx1QkFBdUIsRUFBRSxTQUFTLEVBQUUsWUFBWSxFQUFFLEtBQUssRUFBRSxNQUFNLEVBQUUsTUFBTSxlQUFlLENBQUM7OztBQVFoRyxNQUFNLE9BQU8sa0JBQWtCO0lBQ3BCLEVBQUUsR0FBVyxjQUFjLElBQUksQ0FBQyxNQUFNLEVBQUUsRUFBRSxDQUFDO0lBQzNDLElBQUksQ0FBUztJQUNiLFFBQVEsR0FBWSxLQUFLLENBQUM7SUFDMUIsUUFBUSxHQUFZLEtBQUssQ0FBQztJQUN6QixjQUFjLEdBQUcsSUFBSSxZQUFZLEVBQVcsQ0FBQztJQUM3QyxRQUFRLEdBQUcsSUFBSSxZQUFZLEVBQWdCLENBQUM7SUFFdEQsU0FBUyxDQUFDLEtBQW1CO1FBQzNCLElBQUksSUFBSSxDQUFDLFFBQVEsRUFBRTtZQUNqQixPQUFPO1NBQ1I7UUFFRCxJQUFJLENBQUMsY0FBYyxDQUFDLElBQUksQ0FBQyxDQUFDLElBQUksQ0FBQyxRQUFRLENBQUMsQ0FBQztRQUN6QyxJQUFJLENBQUMsUUFBUSxDQUFDLElBQUksQ0FBQyxLQUFLLENBQUMsQ0FBQTtJQUMzQixDQUFDO3dHQWZVLGtCQUFrQjs0RkFBbEIsa0JBQWtCLHVNQ1IvQiwrZ0JBZUE7OzRGRFBhLGtCQUFrQjtrQkFOOUIsU0FBUzsrQkFDRSxZQUFZLG1CQUdMLHVCQUF1QixDQUFDLE1BQU07OEJBR3RDLEVBQUU7c0JBQVYsS0FBSztnQkFDRyxJQUFJO3NCQUFaLEtBQUs7Z0JBQ0csUUFBUTtzQkFBaEIsS0FBSztnQkFDRyxRQUFRO3NCQUFoQixLQUFLO2dCQUNJLGNBQWM7c0JBQXZCLE1BQU07Z0JBQ0csUUFBUTtzQkFBakIsTUFBTSIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IENoYW5nZURldGVjdGlvblN0cmF0ZWd5LCBDb21wb25lbnQsIEV2ZW50RW1pdHRlciwgSW5wdXQsIE91dHB1dCB9IGZyb20gJ0Bhbmd1bGFyL2NvcmUnO1xuXG5AQ29tcG9uZW50KHtcbiAgc2VsZWN0b3I6ICdiaXp5LXJhZGlvJyxcbiAgdGVtcGxhdGVVcmw6ICcuL3JhZGlvLmh0bWwnLFxuICBzdHlsZVVybHM6IFsnLi9yYWRpby5jc3MnXSxcbiAgY2hhbmdlRGV0ZWN0aW9uOiBDaGFuZ2VEZXRlY3Rpb25TdHJhdGVneS5PblB1c2hcbn0pXG5leHBvcnQgY2xhc3MgQml6eVJhZGlvQ29tcG9uZW50IHtcbiAgQElucHV0KCkgaWQ6IHN0cmluZyA9IGBiaXp5LXJhZGlvLSR7TWF0aC5yYW5kb20oKX1gO1xuICBASW5wdXQoKSBuYW1lOiBzdHJpbmc7XG4gIEBJbnB1dCgpIHNlbGVjdGVkOiBib29sZWFuID0gZmFsc2U7XG4gIEBJbnB1dCgpIGRpc2FibGVkOiBib29sZWFuID0gZmFsc2U7XG4gIEBPdXRwdXQoKSBzZWxlY3RlZENoYW5nZSA9IG5ldyBFdmVudEVtaXR0ZXI8Ym9vbGVhbj4oKTtcbiAgQE91dHB1dCgpIG9uU2VsZWN0ID0gbmV3IEV2ZW50RW1pdHRlcjxQb2ludGVyRXZlbnQ+KCk7XG5cbiAgX29uU2VsZWN0KGV2ZW50OiBQb2ludGVyRXZlbnQpIHtcbiAgICBpZiAodGhpcy5kaXNhYmxlZCkge1xuICAgICAgcmV0dXJuO1xuICAgIH1cblxuICAgIHRoaXMuc2VsZWN0ZWRDaGFuZ2UuZW1pdCghdGhpcy5zZWxlY3RlZCk7XG4gICAgdGhpcy5vblNlbGVjdC5lbWl0KGV2ZW50KVxuICB9XG59IiwiPGJ1dHRvbiB0eXBlPVwiYnV0dG9uXCIgKGNsaWNrKT1cIl9vblNlbGVjdCgkZXZlbnQpXCIgKGtleXVwLmVudGVyKT1cIl9vblNlbGVjdCgkZXZlbnQpXCIgY2xhc3M9XCJiaXp5LXJhZGlvXCIgW25nQ2xhc3NdPVwieydiaXp5LXJhZGlvLS1kaXNhYmxlZCc6IGRpc2FibGVkfVwiPlxuICAgIDxpbnB1dCBcbiAgICAgICAgY2xhc3M9XCJiaXp5LXJhZGlvX19pbnB1dFwiXG4gICAgICAgIFtpZF09XCJpZFwiXG4gICAgICAgIFtkaXNhYmxlZF09XCJkaXNhYmxlZFwiXG4gICAgICAgIHR5cGU9XCJyYWRpb1wiXG4gICAgICAgIFtuYW1lXT1cIm5hbWVcIlxuICAgICAgICBbY2hlY2tlZF09XCJzZWxlY3RlZFwiLz5cblxuICAgIDxuZy1jb250ZW50IHNlbGVjdD1cIltzbG90PXN0YXJ0XVwiPjwvbmctY29udGVudD5cblxuICAgIDxzcGFuIGNsYXNzPVwiYml6eS1yYWRpb19fcmFkaW9cIj48L3NwYW4+XG4gICAgXG4gICAgPG5nLWNvbnRlbnQgc2VsZWN0PVwiW3Nsb3Q9ZW5kXVwiPjwvbmctY29udGVudD5cbjwvYnV0dG9uPlxuIl19

@@ -19,3 +19,5 @@ export * from './accordion';
 export * from './slider';
 export * from './tag';
 export * from './card';
+export * from './file-uploader';
+export * from './radio';

@@ -18,6 +18,7 @@
     --bizy-button-background-color: #666;
     --bizy-button-padding: 0.5rem;
     --bizy-button-border-radius: 0.3rem;
+    --bizy-button-border: none;
 
     --bizy-card-background-color: #fff;
     --bizy-card-selected-background-color: #2484c644;
@@ -62,12 +63,15 @@
     --bizy-menu-color: #fff;
     --bizy-menu-background-color: #fff;
     --bizy-menu-arrow-height: 0.9rem;
+    --bizy-menu-height: 20rem;
 
     --bizy-popup-background-color: #fff;
     --bizy-popup-drag-button-color: #666;
     --bizy-popup-drag-button-background-color: #fff;
     --bizy-popup-close-button-color: #666;
     --bizy-popup-close-button-hover-color: #e76565;
+
+    --bizy-radio-color: #16aa88;
 
     --bizy-select-height: 20rem;
     --bizy-select-width: 100%;

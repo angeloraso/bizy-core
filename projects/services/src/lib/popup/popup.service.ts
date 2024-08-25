@@ -21,7 +21,7 @@ export class BizyPopupService {
       autoFocus: true,
       hasBackdrop: true,
       disableClose: data.disableClose ?? false,
-      panelClass: ['bizy-popup', data.customClass] 
+      panelClass: [data.customClass] 
     }));
 
     this.#dialogs.add(dialogRef);

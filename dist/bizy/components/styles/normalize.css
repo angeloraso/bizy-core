@@ -84,6 +84,13 @@ button {
     font-family: var(--bizy-font-family);
 }
 
+pre {
+    display: inline-block;
+    font-family: var(--bizy-font-family);
+    unicode-bidi: normal;
+    margin: 0;
+}
+
 *,
 *::before,
 *::after {

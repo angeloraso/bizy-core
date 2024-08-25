@@ -33,7 +33,10 @@
 
     <span class="bizy-menu__options">
 
-        <ng-content select="bizy-menu-title"></ng-content>
+        <span class="bizy-menu__options__header">
+            <ng-content select="bizy-menu-title"></ng-content>
+            <ng-content select="bizy-input"></ng-content>
+        </span>
 
         <ng-content select="bizy-menu-option"></ng-content>
 
