@@ -8,5 +8,5 @@ export declare class BizyToggleComponent {
     selectedChange: EventEmitter<boolean>;
     _onSelect(event: PointerEvent): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyToggleComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<BizyToggleComponent, "bizy-toggle", never, { "id": { "alias": "id"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; "selected": { "alias": "selected"; "required": false; }; }, { "onSelect": "onSelect"; "selectedChange": "selectedChange"; }, never, ["[label-before]", "[label-after]"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<BizyToggleComponent, "bizy-toggle", never, { "id": { "alias": "id"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; "selected": { "alias": "selected"; "required": false; }; }, { "onSelect": "onSelect"; "selectedChange": "selectedChange"; }, never, ["[slot=start]", "[slot=end]"], false, never>;
 }

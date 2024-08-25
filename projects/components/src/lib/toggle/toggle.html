@@ -1,8 +1,6 @@
 <button type="button" class="bizy-toggle" [ngClass]="{'bizy-toggle--disabled': disabled}" (click)="_onSelect($event)" (keyup.enter)="_onSelect($event)">
 
-    <label class="bizy-toggle__label--before" for="{{id}}">
-        <ng-content select="[label-before]"></ng-content>
-    </label>
+    <ng-content select="[slot=start]"></ng-content>
 
     <div class="bizy-toggle__slide" [ngClass]="{'bizy-toggle__slide--disabled': disabled}">
         <input 
@@ -17,8 +15,6 @@
         <div class="bizy-toggle__slide__layer"></div>
     </div>
 
-    <label class="bizy-toggle__label--after" for="{{id}}">
-        <ng-content select="[label-after]"></ng-content>
-    </label>
-    
+    <ng-content select="[slot=end]"></ng-content>
+
 </button>

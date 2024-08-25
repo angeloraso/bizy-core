@@ -11,8 +11,8 @@
 }
 
 .bizy-toggle {
-    display: flex;
     width: fit-content;
+    display: flex;
     column-gap: 0.5rem;
     align-items: center;
     border: none;
