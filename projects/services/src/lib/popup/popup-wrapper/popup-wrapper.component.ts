@@ -5,7 +5,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, ViewChil
 @Component({
   selector: 'bizy-popup-wrapper',
   templateUrl: './popup-wrapper.html',
-  styleUrls: ['./popup-wrapper.css'],
+  styleUrls: ['./popup-wrapper.css', '../popup.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyPopupWrapperComponent<T> {
