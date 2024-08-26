@@ -60,7 +60,7 @@
 
 .bizy-loading--bar {
     width: 100%;
-    min-height: 0.5rem;
+    height: 100%;
     display: inline-block;
     position: relative;
 }

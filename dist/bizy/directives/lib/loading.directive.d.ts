@@ -8,10 +8,9 @@ export declare class BizyLoadingDirective {
     #private;
     private elementRef;
     private renderer;
-    private document;
     set bizyLoading(value: boolean);
     bizyLoadingType: LOADING_TYPE;
-    constructor(elementRef: ElementRef, renderer: Renderer2, document: Document);
+    constructor(elementRef: ElementRef, renderer: Renderer2);
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyLoadingDirective, never>;
     static ɵdir: i0.ɵɵDirectiveDeclaration<BizyLoadingDirective, "[bizyLoading]", never, { "bizyLoading": { "alias": "bizyLoading"; "required": false; }; "bizyLoadingType": { "alias": "bizyLoadingType"; "required": false; }; }, {}, never, never, false, never>;
 }
