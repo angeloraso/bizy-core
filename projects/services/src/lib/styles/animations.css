@@ -136,19 +136,18 @@
     animation-name: fade-in-up;
 }
 
-@keyframes fade-output {
+@keyframes fade-out {
     from {
         opacity: 1;
     }
 
     to {
         opacity: 0;
-        transform: translate3d(0, -100%, 0);
     }
 }
 
-.fade-output {
-    animation-name: fade-output;
+.fade-out {
+    animation-name: fade-out;
 }
 
 @keyframes slide-in-up {
@@ -182,6 +181,6 @@
 }
 
 .animated {
-    animation-duration: 0.5s;
+    animation-duration: var(--bizy-animation-timeout);
     animation-fill-mode: both;
 }

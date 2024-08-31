@@ -1,4 +1,6 @@
 :root {
+    --bizy-animation-timeout: 500ms;
+
     --bizy-copy-to-clipboard-default-color: #2484c6;
     --bizy-copy-to-clipboard-success-color: #5fbc5a;
     --bizy-copy-to-clipboard-danger-color: #e76565;

@@ -1,3 +1,4 @@
+export { BizyAnimationService } from './animation.service';
 export { BizyViewportService } from './viewport.service';
 export { BizyKeyboardService } from './keyboard.service';
 export { BizyExportToCSVService } from './export-to-csv.service';

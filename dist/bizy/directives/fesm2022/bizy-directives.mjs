@@ -268,7 +268,7 @@ class BizyLoadingDirective {
             const width = this.elementRef.nativeElement.offsetWidth;
             const height = this.elementRef.nativeElement.offsetHeight;
             const loadingWrapper = this.renderer.createElement('span');
-            this.renderer.setStyle(loadingWrapper, 'width', width ? `${this.elementRef.nativeElement.offsetWidth}px` : '100%');
+            this.renderer.setStyle(loadingWrapper, 'width', width ? `${this.elementRef.nativeElement.offsetWidth}px` : '1rem');
             this.renderer.setStyle(loadingWrapper, 'height', height ? `${this.elementRef.nativeElement.offsetHeight}px` : '1rem');
             this.renderer.setStyle(loadingWrapper, 'display', 'grid');
             this.renderer.setStyle(loadingWrapper, 'placeItems', 'center');
@@ -282,8 +282,8 @@ class BizyLoadingDirective {
                 if (this.elementRef.nativeElement.offsetWidth > 0 && this.elementRef.nativeElement.offsetHeight > 0) {
                     minSize = Math.min(this.elementRef.nativeElement.offsetWidth, this.elementRef.nativeElement.offsetHeight);
                 }
-                this.renderer.setStyle(loading, 'width', minSize ? `${minSize * 0.8}px` : '0.8rem');
-                this.renderer.setStyle(loading, 'height', minSize ? `${minSize * 0.8}px` : '0.8rem');
+                this.renderer.setStyle(loading, 'width', minSize ? `${minSize}px` : '1rem');
+                this.renderer.setStyle(loading, 'height', minSize ? `${minSize}px` : '1rem');
             }
             this.renderer.appendChild(loadingWrapper, loading);
             this.#loadingElement = loadingWrapper;
