@@ -1,7 +1,6 @@
 export * from './toggle';
 export * from './breadcrumb';
 export * from './button';
-export * from './virtual-scroll';
 export * from './input';
 export * from './date-picker';
 export * from './tabs';
@@ -21,3 +20,5 @@ export * from './tag';
 export * from './card';
 export * from './file-uploader';
 export * from './radio';
+export * from './form';
+export * from './grid';

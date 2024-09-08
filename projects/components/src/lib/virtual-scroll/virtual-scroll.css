@@ -1,9 +1,0 @@
-:host {
-  font-size: 1rem;
-}
-
-.bizy-virtual-scroll {
-  width: 100%;
-  font-size: 1rem;
-  height: var(--bizy-virtual-scroll-height);
-}
