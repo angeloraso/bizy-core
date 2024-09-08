@@ -1,15 +1,15 @@
-<button type="button" class="anura-toggle" [ngClass]="{'anura-toggle--disabled': disabled}" (click)="_onSelect($event)" (keyup.enter)="_onSelect($event)">
+<button type="button" class="bizy-toggle" [ngClass]="{'bizy-toggle--disabled': disabled}" (click)="_onSelect($event)" (keyup.enter)="_onSelect($event)">
 
     <ng-content select="[slot=start]"></ng-content>
 
     <input 
-        class="anura-toggle__toggle"
+        class="bizy-toggle__toggle"
         type="checkbox"
         [id]="id"
         [disabled]="disabled"
         [checked]="selected"
         readonly
-        [ngClass]="{'anura-toggle__toggle--disabled': disabled}">
+        [ngClass]="{'bizy-toggle__toggle--disabled': disabled}">
 
     <ng-content select="[slot=end]"></ng-content>
 

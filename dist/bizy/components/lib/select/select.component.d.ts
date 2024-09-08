@@ -1,11 +1,12 @@
 import { BizySelectOptionComponent } from './select-option/select-option.component';
-import { ChangeDetectorRef, EventEmitter, QueryList, AfterViewInit } from '@angular/core';
+import { ChangeDetectorRef, EventEmitter, QueryList, AfterViewInit, TemplateRef } from '@angular/core';
 import { BizyInputComponent } from '../input';
+import { Portal, TemplatePortal } from '@angular/cdk/portal';
 import * as i0 from "@angular/core";
 export declare class BizySelectComponent implements AfterViewInit {
     #private;
     private ref;
-    private document;
+    templatePortalContent: TemplateRef<unknown>;
     options: QueryList<BizySelectOptionComponent>;
     bizyInput: BizyInputComponent;
     id: string;
@@ -17,7 +18,9 @@ export declare class BizySelectComponent implements AfterViewInit {
     onOpen: EventEmitter<boolean>;
     _optionValue: string;
     touched: boolean;
-    constructor(ref: ChangeDetectorRef, document: Document);
+    optionPortal: Portal<any>;
+    templatePortal: TemplatePortal<any> | null;
+    constructor(ref: ChangeDetectorRef);
     ngAfterViewInit(): void;
     _onOpen(event: PointerEvent): void;
     close: (event?: PointerEvent & {
@@ -27,5 +30,5 @@ export declare class BizySelectComponent implements AfterViewInit {
     }, select?: BizyInputComponent) => void;
     ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizySelectComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<BizySelectComponent, "bizy-select", never, { "id": { "alias": "id"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; "opened": { "alias": "opened"; "required": false; }; }, { "openedChange": "openedChange"; "onSelect": "onSelect"; "onOpen": "onOpen"; }, ["bizyInput", "options"], ["[slot=header]", "[slot=prefix]", "[slot=error]", "bizy-input", "bizy-select-option"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<BizySelectComponent, "bizy-select", never, { "id": { "alias": "id"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; "opened": { "alias": "opened"; "required": false; }; }, { "openedChange": "openedChange"; "onSelect": "onSelect"; "onOpen": "onOpen"; }, ["bizyInput", "options"], ["[slot=header]", "[slot=prefix]", "[slot=error]", "bizy-select-option", "bizy-input"], false, never>;
 }

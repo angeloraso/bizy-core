@@ -36,6 +36,20 @@
 
     --bizy-font-family: Roboto, "Helvetica Neue", sans-serif;
 
+    --bizy-form-max-width: 40rem;
+    --bizy-form-row-gap: 1rem;
+
+    --bizy-grid-height: 100%;
+    --bizy-grid-min-height: 5rem;
+    --bizy-grid-max-height: 100%;
+    --bizy-grid-scroll-bar-color: #666;
+    --bizy-grid-width: 100%;
+    --bizy-grid-background-color: transparent;
+    --bizy-grid-row-background-color: transparent;
+    --bizy-grid-row-height: 3rem;
+    --bizy-grid-column-width: 18rem;
+    --bizy-grid-gap: 0.6rem;
+
     --bizy-input-background-color: #fff;
     --bizy-input-focus-color: #2484c6;
     --bizy-input-invalid-color: #e76565;
@@ -64,12 +78,6 @@
     --bizy-menu-background-color: #fff;
     --bizy-menu-arrow-height: 0.9rem;
     --bizy-menu-height: 20rem;
-
-    --bizy-popup-background-color: #fff;
-    --bizy-popup-drag-button-color: #666;
-    --bizy-popup-drag-button-background-color: #fff;
-    --bizy-popup-close-button-color: #666;
-    --bizy-popup-close-button-hover-color: #e76565;
 
     --bizy-radio-color: #16aa88;
 
@@ -153,23 +161,23 @@
     --bizy-tabs-arrow-button-color: #666;
     --bizy-tabs-arrow-button-background-color: #fff;
 
-    --bizy-tag-background-color: #eee;
+    --bizy-tag-background-color: #d4d4d4;
     --bizy-tag-color: #333;
-    --bizy-tag-default-background-color: #eee;
+    --bizy-tag-default-background-color: #d4d4d4;
     --bizy-tag-default-color: #333;
-    --bizy-tag-success-background-color: #dfeddd;
+    --bizy-tag-success-background-color: #c7e0c8;
     --bizy-tag-success-color: #3f8e3a;
-    --bizy-tag-info-background-color: #e2eefa;
+    --bizy-tag-info-background-color: #cad8e7;
     --bizy-tag-info-color: #1a3d5d;
-    --bizy-tag-warning-background-color: #fde5c9;
+    --bizy-tag-warning-background-color: #fbd9b5;
     --bizy-tag-warning-color: #c07b2d;
-    --bizy-tag-danger-background-color: #ffe0e0;
+    --bizy-tag-danger-background-color: #f3c5c5;
     --bizy-tag-danger-color: #c34b4b;
 
     --bizy-toggle-color: #e76565;
-    --bizy-toggle-background-color: #f3dada;
+    --bizy-toggle-background-color: #f2d5d7;
     --bizy-toggle-selected-color: #5fbc5a;
-    --bizy-toggle-selected-background-color: #dbf2d5;
+    --bizy-toggle-selected-background-color: #abd8b0;
 
     --bizy-toolbar-height: 3.2rem;
     --bizy-toolbar-column-gap: 0.5rem;

@@ -3,7 +3,7 @@
     [id]="id"
     (click)="_onSelect()"
     (keyup.enter)="_onSelect()"
-    [ngClass]="{'bizy-select-option--selected': selected, 'bizy-select-option--disabled': disabled}"
+    [ngClass]="{'bizy-select-option--selected': (selected$ | async), 'bizy-select-option--disabled': disabled}"
     class="bizy-select-option {{customClass}}">
 
     <span class="bizy-select-option__content">

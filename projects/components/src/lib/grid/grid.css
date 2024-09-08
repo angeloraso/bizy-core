@@ -1,0 +1,52 @@
+:host {
+    display: inline-block !important;
+    min-height: var(--bizy-grid-min-height);
+    max-height: var(--bizy-grid-max-height);
+    height: var(--bizy-grid-height);
+    width: var(--bizy-grid-width);
+    flex: 1;
+    overflow-x: auto;
+    overflow-y: hidden;
+    font-size: 1rem;
+}
+
+.bizy-grid {
+    width: inherit;
+    height: inherit;
+    min-width: fit-content;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.3rem;
+    overflow-x: clip;
+    background-color: var(--bizy-grid-background-color);
+}
+
+.bizy-grid__rows {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    min-width: fit-content;
+    overflow-x: hidden;
+}
+
+::ng-deep .cdk-virtual-scrollable {
+    height: 100%;
+    width: 100%;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    contain: inline-size !important;
+}
+
+::ng-deep .cdk-virtual-scrollable::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+}
+
+::ng-deep .cdk-virtual-scrollable::-webkit-scrollbar-thumb {
+    border-radius: 1rem;
+    background-color: var(--bizy-grid-scroll-bar-color);
+}
+
+::ng-deep .cdk-virtual-scrollable::-webkit-scrollbar-button {
+    height: 1rem;
+}

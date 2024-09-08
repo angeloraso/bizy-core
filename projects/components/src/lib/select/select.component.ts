@@ -1,8 +1,8 @@
 import { BizySelectOptionComponent } from './select-option/select-option.component';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Inject, Input, Output, QueryList, ContentChildren, AfterViewInit, ElementRef, ViewChild, ContentChild } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { DOCUMENT } from '@angular/common';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Inject, Input, Output, QueryList, ContentChildren, AfterViewInit, ViewChild, ContentChild, TemplateRef, inject, ViewContainerRef } from '@angular/core';
+import { filter, Subscription } from 'rxjs';
 import { BizyInputComponent } from '../input';
+import { Portal, TemplatePortal } from '@angular/cdk/portal';
 
 @Component({
   selector: 'bizy-select',
@@ -11,6 +11,8 @@ import { BizyInputComponent } from '../input';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizySelectComponent implements AfterViewInit {
+  #viewContainerRef = inject(ViewContainerRef);
+  @ViewChild('templatePortalContent') templatePortalContent: TemplateRef<unknown>;
   @ContentChildren(BizySelectOptionComponent) options: QueryList<BizySelectOptionComponent>;
   @ContentChild(BizyInputComponent) bizyInput: BizyInputComponent;
   @Input() id: string = `bizy-select-${Math.random()}`;
@@ -23,38 +25,47 @@ export class BizySelectComponent implements AfterViewInit {
 
   _optionValue: string = '';
   touched: boolean = false;
-
-  #options: Array<BizySelectOptionComponent> = [];
+  optionPortal: Portal<any>;
+  templatePortal: TemplatePortal<any> | null = null;
 
   #subscription = new Subscription();
-  #mutationObserver: MutationObserver;
+  #contentChildrenSubscription = new Subscription();
 
   constructor(
-    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef,
-    @Inject(DOCUMENT) private document: Document
+    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
   ) {}
 
   ngAfterViewInit() {
-    this.#mutationObserver = new MutationObserver(() => {
-      if (!this.options || (this.#options.length === 0 && this.options.length === 0)) {
-        return;
-      }
+    this.templatePortal = new TemplatePortal(this.templatePortalContent, this.#viewContainerRef);
+    this._optionValue = '';
 
-      this.#options = this.options.toArray();
+    const option = this.options.find(_option => _option.getSelected());
 
-      this._optionValue = '';
+    if (option) {
+      this._optionValue = option.getValue();
+    }
 
-      const option = this.#options.find(_option => _option.getSelected());
-
-      if (option) {
-        this._optionValue = option.getValue();
-      }
-
-      this.ref.detectChanges();
-      this.#listenOptionChanges();
+    this.options.forEach(_option => {
+      this.#subscription.add(_option.selected$.pipe(filter(_value => _value === true)).subscribe(() => {
+        this._optionValue = _option.getValue();
+        this.close();
+        this.ref.detectChanges();
+      }));
     });
 
-    this.#mutationObserver.observe(this.document.body, { childList: true, subtree: true });
+    this.#contentChildrenSubscription.add(this.options.changes.subscribe(() => {
+      this.#subscription.unsubscribe();
+      this.#subscription = new Subscription();
+
+      this.options.forEach(_option => {
+        this.#subscription.add(_option.selected$.pipe(filter(_value => _value === true)).subscribe(() => {
+          this._optionValue = _option.getValue();
+          this.close();
+          this.ref.detectChanges();
+        }));
+      });
+    }));
+    this.ref.detectChanges();
   }
 
   _onOpen(event: PointerEvent) {
@@ -70,7 +81,6 @@ export class BizySelectComponent implements AfterViewInit {
     if (this.bizyInput) {
       this.bizyInput.setFocus(true);
     }
-
     this.ref.detectChanges();
   }
 
@@ -85,23 +95,8 @@ export class BizySelectComponent implements AfterViewInit {
     this.ref.detectChanges();
   }
 
-  #listenOptionChanges = () => {
-    this.#subscription.unsubscribe();
-    this.#subscription = new Subscription();
-
-    this.options.forEach(_option => {
-      this.#subscription.add(_option.onSelect.subscribe(() => {
-        this._optionValue = _option.getValue();
-        this.close();
-        this.ref.detectChanges();
-      }));
-    });
-  }
-
   ngOnDestroy() {
     this.#subscription.unsubscribe();
-    if (this.#mutationObserver) {
-      this.#mutationObserver.disconnect();
-    }
+    this.#contentChildrenSubscription.unsubscribe();
   }
 }

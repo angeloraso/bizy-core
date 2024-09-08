@@ -1,13 +1,16 @@
 import { ChangeDetectorRef, EventEmitter, ElementRef } from '@angular/core';
+import { Observable } from 'rxjs';
 import * as i0 from "@angular/core";
 export declare class BizySelectOptionComponent {
+    #private;
     private elementRef;
     private ref;
     id: string;
     disabled: boolean;
     customClass: string;
-    selected: boolean;
     onSelect: EventEmitter<void>;
+    set selected(selected: boolean);
+    get selected$(): Observable<boolean>;
     constructor(elementRef: ElementRef, ref: ChangeDetectorRef);
     _onSelect(): void;
     getId: () => string;

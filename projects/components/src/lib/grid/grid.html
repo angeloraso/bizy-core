@@ -1,0 +1,27 @@
+<div class="bizy-grid">
+
+    <cdk-virtual-scroll-viewport
+        class="bizy-grid__rows"
+        *ngIf="items && items.length > 0"
+        [itemSize]="rowHeight"
+        [minBufferPx]="rowHeight + (rowHeight * 20)"
+        [maxBufferPx]="rowHeight + (rowHeight * 40)">
+        
+        <ng-content></ng-content>
+
+        <ng-template #gridScrollingContent>
+            <ng-template let-item cdkVirtualFor [cdkVirtualForOf]="itemRows">
+                <bizy-grid-row [rowHeight]="rowHeight" [itemsPerRow]="itemsPerRow">
+                    <ng-container *ngFor="let it of item">
+                        <ng-template *ngTemplateOutlet="itemTemplate; context: { $implicit: it }"></ng-template>
+                    </ng-container>
+                </bizy-grid-row>
+            </ng-template>
+        </ng-template>
+    </cdk-virtual-scroll-viewport>
+
+    <span *ngIf="!items || items.length === 0">
+        <ng-content select="[slot=empty]"></ng-content>
+    </span>
+
+</div>

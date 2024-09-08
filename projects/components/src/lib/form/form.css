@@ -1,0 +1,12 @@
+:host {
+    font-size: 1rem;
+}
+
+.bizy-form {
+    max-width: var(--bizy-form-max-width);
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--bizy-form-row-gap);
+    --bizy-input-max-width: 100%;
+    --bizy-select-max-width: 100%;
+}

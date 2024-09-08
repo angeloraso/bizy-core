@@ -30,9 +30,13 @@
 
 </bizy-input>
 
-<span class="bizy-select__errors">
+<span class="bizy-select__errors" *ngIf="touched">
     <ng-content select="[slot=error]"></ng-content>
 </span>
+
+<ng-template #templatePortalContent>
+    <ng-content select="bizy-select-option"></ng-content>
+</ng-template>
 
 <ng-template
     cdkConnectedOverlay
@@ -47,7 +51,7 @@
             <ng-content select="bizy-input"></ng-content>
         </span>
 
-        <ng-content select="bizy-select-option"></ng-content>
+        <ng-template [cdkPortalOutlet]="templatePortal"></ng-template>
     
     </span>
 

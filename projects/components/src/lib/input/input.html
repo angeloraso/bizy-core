@@ -73,6 +73,6 @@
 
 </ng-template>
 
-<span class="bizy-input__errors">
+<span class="bizy-input__errors" *ngIf="touched">
     <ng-content select="[slot=error]"></ng-content>
 </span>

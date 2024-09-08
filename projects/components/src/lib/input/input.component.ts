@@ -1,7 +1,6 @@
 import { takeUntil } from 'rxjs/operators';
-import { DOCUMENT } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, Input, OnDestroy, Output, ViewChild, ContentChildren, QueryList } from '@angular/core';
-import { Subject, Subscription, debounceTime, filter, take, interval, fromEvent } from 'rxjs';
+import { Subject, Subscription, debounceTime, interval } from 'rxjs';
 import { BizyInputOptionComponent } from './input-option/input-option.component';
 
 @Component({
@@ -87,22 +86,12 @@ export class BizyInputComponent implements OnDestroy {
     this.onFocus.emit(event);
   }
 
+  setTouched(touched: boolean) {
+    this.touched = touched;
+    this.ref.detectChanges();
+  }
+
   ngAfterViewInit() {
-    const submit$ = fromEvent(this.document, 'click');
-    this.#subscription.add(submit$.pipe(
-      filter(_event => {
-        if (!_event || !_event.target || (<HTMLButtonElement>_event.target).type !== 'submit') {
-          return false;
-        }
-
-          return true;
-        }),
-      take(1)
-    ).subscribe(() => {
-      this.touched = true;
-      this.ref.detectChanges();
-    }));
-
     this.#subscription.add(this.onChange$.pipe(debounceTime(this.debounceTime)).subscribe(value => {
       this.valueChange.emit(value);
       this.onChange.emit(value);
@@ -162,8 +151,7 @@ export class BizyInputComponent implements OnDestroy {
   }
 
   constructor(
-    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef,
-    @Inject(DOCUMENT) private document: Document
+    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
   ) {}
 
   ngOnDestroy() {
