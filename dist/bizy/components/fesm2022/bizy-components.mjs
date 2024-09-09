@@ -2607,7 +2607,6 @@ class BizySelectComponent {
     onOpen = new EventEmitter();
     _optionValue = '';
     touched = false;
-    optionPortal;
     templatePortal = null;
     #subscription = new Subscription();
     #contentChildrenSubscription = new Subscription();
@@ -2622,6 +2621,10 @@ class BizySelectComponent {
             this._optionValue = option.getValue();
         }
         this.options.forEach(_option => {
+            this.#subscription.add(_option.onSelect.subscribe(() => {
+                this.close();
+                this.ref.detectChanges();
+            }));
             this.#subscription.add(_option.selected$.pipe(filter(_value => _value === true)).subscribe(() => {
                 this._optionValue = _option.getValue();
                 this.close();
@@ -2632,6 +2635,10 @@ class BizySelectComponent {
             this.#subscription.unsubscribe();
             this.#subscription = new Subscription();
             this.options.forEach(_option => {
+                this.#subscription.add(_option.onSelect.subscribe(() => {
+                    this.close();
+                    this.ref.detectChanges();
+                }));
                 this.#subscription.add(_option.selected$.pipe(filter(_value => _value === true)).subscribe(() => {
                     this._optionValue = _option.getValue();
                     this.close();
@@ -3890,11 +3897,11 @@ class BizyFormComponent {
         this.#subscription.unsubscribe();
     }
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyFormComponent, deps: [{ token: ElementRef }], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyFormComponent, selector: "bizy-form", inputs: { id: "id", customClass: "customClass" }, queries: [{ propertyName: "inputs", predicate: BizyInputComponent }], ngImport: i0, template: "<form class=\"bizy-form {{customClass}}\">\n    <ng-content></ng-content>\n</form>", styles: [":host{font-size:1rem}.bizy-form{max-width:var(--bizy-form-max-width);display:flex;flex-direction:column;row-gap:var(--bizy-form-row-gap);--bizy-input-max-width: 100%;--bizy-select-max-width: 100%}\n"], dependencies: [{ kind: "directive", type: i2.ɵNgNoValidate, selector: "form:not([ngNoForm]):not([ngNativeValidate])" }, { kind: "directive", type: i2.NgControlStatusGroup, selector: "[formGroupName],[formArrayName],[ngModelGroup],[formGroup],form:not([ngNoForm]),[ngForm]" }, { kind: "directive", type: i2.NgForm, selector: "form:not([ngNoForm]):not([formGroup]),ng-form,[ngForm]", inputs: ["ngFormOptions"], outputs: ["ngSubmit"], exportAs: ["ngForm"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyFormComponent, selector: "bizy-form", inputs: { id: "id", customClass: "customClass" }, queries: [{ propertyName: "inputs", predicate: BizyInputComponent }], ngImport: i0, template: "<form class=\"bizy-form {{customClass}}\" [id]=\"id\">\n    <ng-content></ng-content>\n</form>", styles: [":host{font-size:1rem;max-width:var(--anura-form-max-width)}.bizy-form{max-width:inherit;display:flex;flex-direction:column;row-gap:var(--bizy-form-row-gap);--bizy-input-max-width: 100%;--bizy-select-max-width: 100%}\n"], dependencies: [{ kind: "directive", type: i2.ɵNgNoValidate, selector: "form:not([ngNoForm]):not([ngNativeValidate])" }, { kind: "directive", type: i2.NgControlStatusGroup, selector: "[formGroupName],[formArrayName],[ngModelGroup],[formGroup],form:not([ngNoForm]),[ngForm]" }, { kind: "directive", type: i2.NgForm, selector: "form:not([ngNoForm]):not([formGroup]),ng-form,[ngForm]", inputs: ["ngFormOptions"], outputs: ["ngSubmit"], exportAs: ["ngForm"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyFormComponent, decorators: [{
             type: Component,
-            args: [{ selector: 'bizy-form', changeDetection: ChangeDetectionStrategy.OnPush, template: "<form class=\"bizy-form {{customClass}}\">\n    <ng-content></ng-content>\n</form>", styles: [":host{font-size:1rem}.bizy-form{max-width:var(--bizy-form-max-width);display:flex;flex-direction:column;row-gap:var(--bizy-form-row-gap);--bizy-input-max-width: 100%;--bizy-select-max-width: 100%}\n"] }]
+            args: [{ selector: 'bizy-form', changeDetection: ChangeDetectionStrategy.OnPush, template: "<form class=\"bizy-form {{customClass}}\" [id]=\"id\">\n    <ng-content></ng-content>\n</form>", styles: [":host{font-size:1rem;max-width:var(--anura-form-max-width)}.bizy-form{max-width:inherit;display:flex;flex-direction:column;row-gap:var(--bizy-form-row-gap);--bizy-input-max-width: 100%;--bizy-select-max-width: 100%}\n"] }]
         }], ctorParameters: function () { return [{ type: i0.ElementRef, decorators: [{
                     type: Inject,
                     args: [ElementRef]
@@ -4033,6 +4040,9 @@ class BizyGridComponent {
                 return;
             }
             this.#subscription.add(this.gridDirective.items$.subscribe(items => {
+                if (this.items.length === 0 && items.length === 0) {
+                    return;
+                }
                 this.items = items;
                 this.#updateView();
                 if (!this.#view) {

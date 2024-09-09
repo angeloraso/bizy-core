@@ -1,7 +1,7 @@
 import { BizySelectOptionComponent } from './select-option/select-option.component';
 import { ChangeDetectorRef, EventEmitter, QueryList, AfterViewInit, TemplateRef } from '@angular/core';
 import { BizyInputComponent } from '../input';
-import { Portal, TemplatePortal } from '@angular/cdk/portal';
+import { TemplatePortal } from '@angular/cdk/portal';
 import * as i0 from "@angular/core";
 export declare class BizySelectComponent implements AfterViewInit {
     #private;
@@ -18,7 +18,6 @@ export declare class BizySelectComponent implements AfterViewInit {
     onOpen: EventEmitter<boolean>;
     _optionValue: string;
     touched: boolean;
-    optionPortal: Portal<any>;
     templatePortal: TemplatePortal<any> | null;
     constructor(ref: ChangeDetectorRef);
     ngAfterViewInit(): void;

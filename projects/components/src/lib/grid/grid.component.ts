@@ -40,6 +40,10 @@ export class BizyGridComponent implements AfterContentInit {
       }
 
       this.#subscription.add(this.gridDirective.items$.subscribe(items => {
+        if (this.items.length === 0 && items.length === 0) {
+          return;
+        }
+
         this.items = items;
         this.#updateView();
 

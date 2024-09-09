@@ -1,9 +1,10 @@
 :host {
     font-size: 1rem;
+    max-width: var(--anura-form-max-width);
 }
 
 .bizy-form {
-    max-width: var(--bizy-form-max-width);
+    max-width: inherit;
     display: flex;
     flex-direction: column;
     row-gap: var(--bizy-form-row-gap);

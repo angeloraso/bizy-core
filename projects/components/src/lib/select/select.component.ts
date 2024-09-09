@@ -2,7 +2,7 @@ import { BizySelectOptionComponent } from './select-option/select-option.compone
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Inject, Input, Output, QueryList, ContentChildren, AfterViewInit, ViewChild, ContentChild, TemplateRef, inject, ViewContainerRef } from '@angular/core';
 import { filter, Subscription } from 'rxjs';
 import { BizyInputComponent } from '../input';
-import { Portal, TemplatePortal } from '@angular/cdk/portal';
+import { TemplatePortal } from '@angular/cdk/portal';
 
 @Component({
   selector: 'bizy-select',
@@ -25,7 +25,6 @@ export class BizySelectComponent implements AfterViewInit {
 
   _optionValue: string = '';
   touched: boolean = false;
-  optionPortal: Portal<any>;
   templatePortal: TemplatePortal<any> | null = null;
 
   #subscription = new Subscription();
@@ -46,6 +45,11 @@ export class BizySelectComponent implements AfterViewInit {
     }
 
     this.options.forEach(_option => {
+      this.#subscription.add(_option.onSelect.subscribe(() => {
+        this.close();
+        this.ref.detectChanges();
+      }));
+
       this.#subscription.add(_option.selected$.pipe(filter(_value => _value === true)).subscribe(() => {
         this._optionValue = _option.getValue();
         this.close();
@@ -58,6 +62,11 @@ export class BizySelectComponent implements AfterViewInit {
       this.#subscription = new Subscription();
 
       this.options.forEach(_option => {
+        this.#subscription.add(_option.onSelect.subscribe(() => {
+          this.close();
+          this.ref.detectChanges();
+        }));
+
         this.#subscription.add(_option.selected$.pipe(filter(_value => _value === true)).subscribe(() => {
           this._optionValue = _option.getValue();
           this.close();
