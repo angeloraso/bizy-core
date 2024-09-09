@@ -69,6 +69,11 @@ export class BizyExportToCSVService {
       }
     });
 
+    if (csv && csv[csv.length - 1] === ',') {
+      // Remove the last character (',')
+      csv = csv.slice(0, -1);
+    }
+
     return csv;
   }
 
