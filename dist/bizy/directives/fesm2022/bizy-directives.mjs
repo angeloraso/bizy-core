@@ -282,8 +282,8 @@ class BizyLoadingDirective {
                 if (this.elementRef.nativeElement.offsetWidth > 0 && this.elementRef.nativeElement.offsetHeight > 0) {
                     minSize = Math.min(this.elementRef.nativeElement.offsetWidth, this.elementRef.nativeElement.offsetHeight);
                 }
-                this.renderer.setStyle(loading, 'width', minSize ? `${minSize}px` : '1rem');
-                this.renderer.setStyle(loading, 'height', minSize ? `${minSize}px` : '1rem');
+                this.renderer.setStyle(loading, 'width', minSize ? `min(15rem, ${minSize}px)` : '1rem');
+                this.renderer.setStyle(loading, 'height', minSize ? `min(15rem, ${minSize}px)` : '1rem');
             }
             this.renderer.appendChild(loadingWrapper, loading);
             this.#loadingElement = loadingWrapper;
