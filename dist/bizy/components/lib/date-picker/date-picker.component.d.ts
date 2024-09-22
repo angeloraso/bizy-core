@@ -24,6 +24,7 @@ export declare class BizyDatePickerComponent {
     dateFormat: string;
     datePipeFormat: string;
     enableTime: boolean;
+    started: boolean;
     noCalendar: boolean;
     mode: 'single' | 'range';
     dates: Array<number>;
@@ -34,7 +35,7 @@ export declare class BizyDatePickerComponent {
         to: number;
     });
     value: string;
-    set type(type: 'date' | 'date-time' | 'time' | 'year' | 'month' | 'year-month');
+    set type(type: 'date' | 'date-time' | 'time' | 'year-month');
     constructor(datePipe: DatePipe);
     ngAfterViewInit(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyDatePickerComponent, never>;

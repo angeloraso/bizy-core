@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyFilterComponent {
-  @ContentChildren(BizyFilterSectionComponent) private sections: QueryList<BizyFilterSectionComponent>;
+  @ContentChildren(BizyFilterSectionComponent, { descendants: true }) private sections: QueryList<BizyFilterSectionComponent>;
   @Input() id: string = `bizy-filter-${Math.random()}`;
   @Input() disabled: boolean = false;
   @Input() customClass: string = '';

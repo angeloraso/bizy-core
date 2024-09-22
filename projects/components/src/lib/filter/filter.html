@@ -23,9 +23,15 @@
     (overlayOutsideClick)="close($event)"
     [cdkConnectedOverlayOpen]="opened">
 
-    <span class="bizy-filter__sections">
+    <span class="bizy-filter__sections-wrapper">
 
-        <ng-content select="bizy-filter-section"></ng-content>
+        <bizy-filter-sections>
+    
+            <ng-content select="bizy-filter-section"></ng-content>
+    
+        </bizy-filter-sections>
+
+        <ng-content select="bizy-filter-content"></ng-content>
 
     </span>
 

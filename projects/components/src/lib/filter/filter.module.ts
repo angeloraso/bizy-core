@@ -10,9 +10,13 @@ import { BizyFilterSectionRangeOptionComponent } from './filter-section-range-op
 import { BizyInputModule } from '../input';
 import { BizyFilterSectionCheckboxOptionComponent } from './filter-section-checkbox-option/filter-section-checkbox-option.component';
 import { BizyFilterSectionSearchOptionComponent } from './filter-section-search-option/filter-section-search-option.component';
+import { BizyFilterSectionsComponent } from './filter-sections/filter-sections.component';
+import { BizyFilterContentComponent } from './filter-content/filter-content.component';
 
-const COMPONENTS = [
+const COMPONENTS: Array<any> = [
   BizyFilterComponent,
+  BizyFilterContentComponent,
+  BizyFilterSectionsComponent,
   BizyFilterSectionComponent,
   BizyFilterSectionCheckboxOptionComponent,
   BizyFilterSectionRangeOptionComponent,

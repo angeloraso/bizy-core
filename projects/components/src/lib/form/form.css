@@ -1,6 +1,6 @@
 :host {
     font-size: 1rem;
-    max-width: var(--anura-form-max-width);
+    max-width: var(--bizy-form-max-width);
 }
 
 .bizy-form {

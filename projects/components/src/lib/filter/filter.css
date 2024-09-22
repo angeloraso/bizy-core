@@ -46,14 +46,13 @@
     pointer-events: none;
 }
 
-
-.bizy-filter__sections {
-    max-width: 75vw;
+.bizy-filter__sections-wrapper {
     background-color: var(--bizy-filter-background-color);
-    min-width: 100%;
     display: flex;
-    column-gap: 1.2rem;
-    flex-wrap: wrap;
+    flex-direction: column;
+    overflow-y: auto;
+    max-height: 40rem;
+    max-width: 70vw;
     padding: 0.5rem;
     box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
 }

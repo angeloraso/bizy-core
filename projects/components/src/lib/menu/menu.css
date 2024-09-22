@@ -27,7 +27,7 @@
 }
 
 .bizy-menu__arrow {
-    height: var(--bizy-menu-arrow-height);;
+    height: var(--bizy-menu-arrow-height);
     pointer-events: none;
     display: block;
     transition: transform 0.2s ease;

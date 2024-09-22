@@ -122,7 +122,6 @@ export class BizyFilterSectionComponent {
 
   ngOnDestroy() {
     this.#subscription.unsubscribe();
-
     if (this.#mutationObserver) {
       this.#mutationObserver.disconnect();
     }

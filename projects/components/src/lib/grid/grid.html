@@ -20,7 +20,7 @@
         </ng-template>
     </cdk-virtual-scroll-viewport>
 
-    <span *ngIf="!items || items.length === 0">
+    <span class="bizy-grid__empty" *ngIf="!items || items.length === 0">
         <ng-content select="[slot=empty]"></ng-content>
     </span>
 

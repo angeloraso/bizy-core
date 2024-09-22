@@ -33,6 +33,7 @@
     --bizy-filter-background-color: #fff;
     --bizy-filter-badge-color: #e76565;
     --bizy-filter-section-clear-color: #e76565;
+    --bizy-filter-section-min-width: 12rem;
 
     --bizy-font-family: Roboto, "Helvetica Neue", sans-serif;
 
@@ -173,6 +174,7 @@
     --bizy-tag-warning-color: #c07b2d;
     --bizy-tag-danger-background-color: #f3c5c5;
     --bizy-tag-danger-color: #c34b4b;
+    --bizy-tag-padding: 0.1rem 0.3rem;
 
     --bizy-toggle-color: #e76565;
     --bizy-toggle-background-color: #f2d5d7;

@@ -1,6 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ContentChildren, ElementRef, Inject, Input, OnDestroy, QueryList } from '@angular/core';
 import { fromEvent, Subscription, take } from 'rxjs';
 import { BizyInputComponent } from '../input';
+import { BizySelectComponent } from '../select';
 
 @Component({
   selector: 'bizy-form',
@@ -9,7 +10,8 @@ import { BizyInputComponent } from '../input';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyFormComponent implements AfterViewInit, OnDestroy {
-  @ContentChildren(BizyInputComponent) inputs: QueryList<BizyInputComponent>;
+  @ContentChildren(BizyInputComponent, { descendants: true }) inputs: QueryList<BizyInputComponent>;
+  @ContentChildren(BizySelectComponent, { descendants: true }) selects: QueryList<BizySelectComponent>;
   @Input() id: string = `bizy-form-${Math.random()}`;
   @Input() customClass: string = '';
 
@@ -24,6 +26,12 @@ export class BizyFormComponent implements AfterViewInit, OnDestroy {
     this.#subscription.add(submit$.pipe(take(1)).subscribe(() => {
       if (this.inputs.length > 0) {
         this.inputs.forEach(component => {
+          component.setTouched(true);
+        });
+      }
+
+      if (this.selects.length > 0) {
+        this.selects.forEach(component => {
           component.setTouched(true);
         });
       }

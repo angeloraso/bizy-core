@@ -34,7 +34,7 @@
 }
 
 .bizy-accordion__arrow {
-    height: var(--bizy-accordion-arrow-height);;
+    height: var(--bizy-accordion-arrow-height);
     pointer-events: none;
     display: block;
     transition: transform 0.1s ease;

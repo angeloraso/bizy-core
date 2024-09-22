@@ -22,6 +22,7 @@
         <input
             #bizyInput
             *ngIf="type !== 'textarea'"
+            [id]="id"
             class="bizy-input__content__input"
             [type]="type"
             [readonly]="readonly"
@@ -37,6 +38,7 @@
         <textarea
             #bizyInput
             *ngIf="type === 'textarea'"
+            [id]="id"
             [rows]="rows"
             [readonly]="readonly"
             class="bizy-input__content__input"

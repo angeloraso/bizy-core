@@ -1,6 +1,7 @@
 :host {
     font-size: 1rem;
     flex: 1;
+    min-width: var(--bizy-filter-section-min-width);
 }
 
 :host:has(.bizy-filter-section-range-option) .bizy-filter-section__header__checkbox {
@@ -21,7 +22,6 @@
 
 :host:has(.bizy-filter-section-checkbox-option) .bizy-filter-section__options {
     overflow-y: auto !important;
-    min-height: 6rem !important;
 }
 
 

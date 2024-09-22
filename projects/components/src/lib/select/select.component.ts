@@ -2,7 +2,7 @@ import { BizySelectOptionComponent } from './select-option/select-option.compone
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Inject, Input, Output, QueryList, ContentChildren, AfterViewInit, ViewChild, ContentChild, TemplateRef, inject, ViewContainerRef } from '@angular/core';
 import { filter, Subscription } from 'rxjs';
 import { BizyInputComponent } from '../input';
-import { TemplatePortal } from '@angular/cdk/portal';
+import { Portal, TemplatePortal } from '@angular/cdk/portal';
 
 @Component({
   selector: 'bizy-select',
@@ -14,9 +14,10 @@ export class BizySelectComponent implements AfterViewInit {
   #viewContainerRef = inject(ViewContainerRef);
   @ViewChild('templatePortalContent') templatePortalContent: TemplateRef<unknown>;
   @ContentChildren(BizySelectOptionComponent) options: QueryList<BizySelectOptionComponent>;
-  @ContentChild(BizyInputComponent) bizyInput: BizyInputComponent;
+  @ViewChild('bizyInput') bizyInput: BizyInputComponent;
   @Input() id: string = `bizy-select-${Math.random()}`;
   @Input() disabled: boolean = false;
+  @Input() readonly: boolean = false;
   @Input() customClass: string = '';
   @Input() opened: boolean = false;
   @Output() openedChange = new EventEmitter<boolean>();
@@ -24,7 +25,7 @@ export class BizySelectComponent implements AfterViewInit {
   @Output() onOpen = new EventEmitter<boolean>();
 
   _optionValue: string = '';
-  touched: boolean = false;
+  optionPortal: Portal<any>;
   templatePortal: TemplatePortal<any> | null = null;
 
   #subscription = new Subscription();
@@ -33,6 +34,10 @@ export class BizySelectComponent implements AfterViewInit {
   constructor(
     @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
   ) {}
+
+  get touched(): boolean {
+    return this.bizyInput ? this.bizyInput.touched : false;
+  }
 
   ngAfterViewInit() {
     this.templatePortal = new TemplatePortal(this.templatePortalContent, this.#viewContainerRef);
@@ -78,7 +83,7 @@ export class BizySelectComponent implements AfterViewInit {
   }
 
   _onOpen(event: PointerEvent) {
-    if (this.disabled) {
+    if (this.disabled || this.readonly) {
       return;
     }
 
@@ -102,6 +107,13 @@ export class BizySelectComponent implements AfterViewInit {
     this.openedChange.emit(this.opened);
     this.onOpen.emit(this.opened);
     this.ref.detectChanges();
+  }
+
+  setTouched(touched: boolean) {
+    if (this.bizyInput) {
+      this.bizyInput.setTouched(touched);
+      this.ref.detectChanges();
+    }
   }
 
   ngOnDestroy() {

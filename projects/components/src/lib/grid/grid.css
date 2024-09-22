@@ -29,6 +29,11 @@
     overflow-x: hidden;
 }
 
+.bizy-grid__empty {
+    height: 100%;
+    width: 100%;
+}
+
 ::ng-deep .cdk-virtual-scrollable {
     height: 100%;
     width: 100%;

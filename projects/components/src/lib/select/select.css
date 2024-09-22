@@ -9,14 +9,27 @@
     row-gap: 0.3rem;
 }
 
+:host:has(> .bizy-select__errors:not(:empty)) ::ng-deep .bizy-input__bottom-line {
+    background-color: var(--bizy-input-invalid-color) !important;
+    visibility: visible !important;
+}
+
+:host:has(> .bizy-select__errors:not(:empty)) ::ng-deep .bizy-input__content__input {
+    color: var(--bizy-input-invalid-color) !important;
+}
+
 .bizy-select {
     --bizy-input-cursor: pointer;
     --bizy-input-background-color: var(--bizy-select-background-color);
     --bizy-input-color: var(--bizy-select-color);
 }
 
+.bizy-select--readonly {
+    --bizy-input-cursor: default;
+}
+
 .bizy-select__arrow {
-    height: var(--bizy-select-arrow-height);;
+    height: var(--bizy-select-arrow-height);
     pointer-events: none;
     display: block;
     transition: transform 0.2s ease;

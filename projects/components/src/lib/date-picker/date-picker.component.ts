@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Inject, Input, Output, ViewChild } from '@angular/core';
 import flatpickr from "flatpickr";
+import monthSelectPlugin from 'flatpickr/dist/plugins/monthSelect/index.js';
 import { Spanish } from "flatpickr/dist/l10n/es.js"
 import { BizyInputComponent } from '../input';
 import { DatePipe } from '@angular/common';
@@ -27,6 +28,7 @@ export class BizyDatePickerComponent {
   dateFormat: string = 'Y-m-d';
   datePipeFormat: string = 'yyyy-MM-dd'
   enableTime: boolean = false;
+  started: boolean = false;
   noCalendar: boolean = true;
   mode: 'single' | 'range' = 'single';
   dates: Array<number> = [Date.now()];
@@ -40,8 +42,10 @@ export class BizyDatePickerComponent {
     this.mode = 'single';
     this.dates = [date];
     this.time = date;
-    this.value = this.datePipe.transform(date, this.datePipeFormat, undefined, 'es-AR'); 
-    this.#start()
+    this.value = this.datePipe.transform(date, this.datePipeFormat, undefined, 'es-AR');
+    if (!this.enableTime || !this.started) {
+      this.#start();
+    }
   }
 
   @Input() set range(range: {from: number, to: number}) {
@@ -58,7 +62,7 @@ export class BizyDatePickerComponent {
 
   value: string = '';
 
-  @Input() set type(type: 'date' | 'date-time' | 'time' | 'year' | 'month' | 'year-month') {
+  @Input() set type(type: 'date' | 'date-time' | 'time' | 'year-month') {
     if (!type) {
       return;
     }
@@ -71,32 +75,20 @@ export class BizyDatePickerComponent {
         this.noCalendar = false;
         break;
       case 'date-time':
-        this.dateFormat = 'Y-m-d H:i';
-        this.datePipeFormat = 'yyyy-MM-dd HH:mm';
+        this.dateFormat = 'Y-m-d H:i:S';
+        this.datePipeFormat = 'yyyy-MM-dd HH:mm:ss';
         this.enableTime = true;
         this.noCalendar = false;
         break;
       case 'time':
-        this.dateFormat = 'H:i';
-        this.datePipeFormat = 'HH:mm';
+        this.dateFormat = 'H:i:S';
+        this.datePipeFormat = 'HH:mm:ss';
         this.enableTime = true;
         this.noCalendar = true;
         break;
-      case 'year':
-        this.dateFormat = 'Y';
-        this.datePipeFormat = 'yyyy';
-        this.enableTime = false;
-        this.noCalendar = false;
-        break;
-      case 'month':
-        this.dateFormat = 'm';
-        this.datePipeFormat = 'MMMM';
-        this.enableTime = false;
-        this.noCalendar = false;
-        break;
       case 'year-month':
           this.dateFormat = 'Y-M';
-          this.datePipeFormat = 'yyyy-MMMM';
+          this.datePipeFormat = 'yyyy MMMM';
           this.enableTime = false;
           this.noCalendar = false;
           break;
@@ -118,11 +110,21 @@ export class BizyDatePickerComponent {
 
   #start() {
     if (this.bizyDatePicker && this.bizyDatePicker.bizyInputWrapper && this.bizyDatePicker.bizyInputWrapper.nativeElement) {
+      const plugins = [];
+
+      if (this.dateFormat === 'Y-M') {
+        plugins.push(monthSelectPlugin({
+          shorthand: true
+        }));
+      }
+
       flatpickr(this.bizyDatePicker.bizyInputWrapper.nativeElement, {
         locale: Spanish,
         mode: this.mode,
         dateFormat: this.dateFormat,
         enableTime: this.enableTime,
+        enableSeconds: this.enableTime,
+        plugins,
         noCalendar: this.noCalendar,
         disableMobile: true,
         time_24hr: true,
@@ -154,6 +156,8 @@ export class BizyDatePickerComponent {
           this.onOpen.emit(this.opened);
         }
       });
+
+      this.started = true;
     }
   }
 
