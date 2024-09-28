@@ -2,7 +2,6 @@ import { EventEmitter } from '@angular/core';
 import * as i0 from "@angular/core";
 export declare class BizyCheckboxComponent {
     id: string;
-    name: string;
     selected: boolean;
     disabled: boolean;
     selectedChange: EventEmitter<boolean>;
@@ -10,5 +9,5 @@ export declare class BizyCheckboxComponent {
     _checkboxId: string;
     _onSelect(event: PointerEvent): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyCheckboxComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<BizyCheckboxComponent, "bizy-checkbox", never, { "id": { "alias": "id"; "required": false; }; "name": { "alias": "name"; "required": false; }; "selected": { "alias": "selected"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; }, { "selectedChange": "selectedChange"; "onSelect": "onSelect"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<BizyCheckboxComponent, "bizy-checkbox", never, { "id": { "alias": "id"; "required": false; }; "selected": { "alias": "selected"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; }, { "selectedChange": "selectedChange"; "onSelect": "onSelect"; }, never, ["[slot=start]", "[slot=end]"], false, never>;
 }

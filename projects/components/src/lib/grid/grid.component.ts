@@ -100,9 +100,9 @@ export class BizyGridComponent implements AfterContentInit {
 
     const count = Math.trunc(rowWidth / (columnWidth));
     if (Math.round((gap * (count - 1)) + (columnWidth * count)) <= (rowWidth)) {
-      this.itemsPerRow = count;
+      this.itemsPerRow = count <= 0 ? 1 : count;
     } else {
-      this.itemsPerRow = count - 1;
+      this.itemsPerRow = (count - 1) <= 0 ? 1 : count - 1;
     }
 
     const itemRows: Array<Array<unknown>> = [];

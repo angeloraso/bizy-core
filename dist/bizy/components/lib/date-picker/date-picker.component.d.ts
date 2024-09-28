@@ -9,6 +9,7 @@ export declare class BizyDatePickerComponent {
     disabled: boolean;
     customClass: string;
     opened: boolean;
+    enableSeconds: boolean;
     dateChange: EventEmitter<number>;
     rangeChange: EventEmitter<{
         from: number;
@@ -39,5 +40,5 @@ export declare class BizyDatePickerComponent {
     constructor(datePipe: DatePipe);
     ngAfterViewInit(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyDatePickerComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<BizyDatePickerComponent, "bizy-date-picker", never, { "id": { "alias": "id"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; "opened": { "alias": "opened"; "required": false; }; "date": { "alias": "date"; "required": false; }; "range": { "alias": "range"; "required": false; }; "type": { "alias": "type"; "required": false; }; }, { "dateChange": "dateChange"; "rangeChange": "rangeChange"; "onChange": "onChange"; "openedChange": "openedChange"; "onOpen": "onOpen"; "onSelect": "onSelect"; }, never, ["[slot=header]", "[slot=prefix]", "[slot=error]"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<BizyDatePickerComponent, "bizy-date-picker", never, { "id": { "alias": "id"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; "opened": { "alias": "opened"; "required": false; }; "enableSeconds": { "alias": "enableSeconds"; "required": false; }; "date": { "alias": "date"; "required": false; }; "range": { "alias": "range"; "required": false; }; "type": { "alias": "type"; "required": false; }; }, { "dateChange": "dateChange"; "rangeChange": "rangeChange"; "onChange": "onChange"; "openedChange": "openedChange"; "onOpen": "onOpen"; "onSelect": "onSelect"; }, never, ["[slot=header]", "[slot=prefix]", "[slot=error]"], false, never>;
 }

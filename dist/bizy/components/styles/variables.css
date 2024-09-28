@@ -24,9 +24,9 @@
     --bizy-card-selected-background-color: #2484c644;
     --bizy-card-cursor: default;
 
-    --bizy-checkbox-border-color: #043126;
+    --bizy-checkbox-border-color: #ccc;
     --bizy-checkbox-hover-color: #16aa8833;
-    --bizy-checkbox-selected-color: #16aa88;
+    --bizy-checkbox-color: #16aa88;
 
     --bizy-filter-padding: 0;
     --bizy-filter-color: #666;

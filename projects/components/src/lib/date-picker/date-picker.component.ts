@@ -18,6 +18,7 @@ export class BizyDatePickerComponent {
   @Input() disabled: boolean = false;
   @Input() customClass: string = '';
   @Input() opened: boolean = false;
+  @Input() enableSeconds: boolean = false;
   @Output() dateChange = new EventEmitter<number>();
   @Output() rangeChange = new EventEmitter<{from: number, to: number}>();
   @Output() onChange = new EventEmitter<number | {from: number, to: number}>();
@@ -76,13 +77,13 @@ export class BizyDatePickerComponent {
         break;
       case 'date-time':
         this.dateFormat = 'Y-m-d H:i:S';
-        this.datePipeFormat = 'yyyy-MM-dd HH:mm:ss';
+        this.datePipeFormat = this.enableSeconds ? 'yyyy-MM-dd HH:mm:ss' : 'yyyy-MM-dd HH:mm';
         this.enableTime = true;
         this.noCalendar = false;
         break;
       case 'time':
         this.dateFormat = 'H:i:S';
-        this.datePipeFormat = 'HH:mm:ss';
+        this.datePipeFormat = this.enableSeconds ? 'HH:mm:ss' : 'HH:mm';
         this.enableTime = true;
         this.noCalendar = true;
         break;
@@ -123,7 +124,7 @@ export class BizyDatePickerComponent {
         mode: this.mode,
         dateFormat: this.dateFormat,
         enableTime: this.enableTime,
-        enableSeconds: this.enableTime,
+        enableSeconds: this.enableSeconds,
         plugins,
         noCalendar: this.noCalendar,
         disableMobile: true,

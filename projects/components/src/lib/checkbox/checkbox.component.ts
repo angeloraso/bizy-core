@@ -8,7 +8,6 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 })
 export class BizyCheckboxComponent {
   @Input() id: string = `bizy-checkbox-${Math.random()}`;
-  @Input() name: string;
   @Input() selected: boolean = false;
   @Input() disabled: boolean = false;
   @Output() selectedChange = new EventEmitter<boolean>();

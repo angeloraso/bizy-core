@@ -51,7 +51,7 @@
     flex-direction: column;
     row-gap: 0.7rem;
     min-height: fit-content;
-    max-height: 20rem;
+    max-height: 15rem;
     overflow-y: hidden;
     overflow-x: hidden;
 }

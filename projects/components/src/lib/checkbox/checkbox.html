@@ -1,21 +1,9 @@
-<button type="button" (click)="_onSelect($event)" (keyup.enter)="_onSelect($event)" class="bizy-checkbox" [ngClass]="{'bizy-checkbox--disabled': disabled}">
-    <input 
-        class="bizy-checkbox__input"
-        [id]="id"
-        [name]="name"
-        [disabled]="disabled"
-        type="checkbox"
-        [ngModel]="selected"/>
-    <label class="bizy-checkbox__checkbox" for="{{id}}">
-        <span>
-            <svg width="12px" height="10px">
-            <use attr.xlink:href="#{{_checkboxId}}"></use>
-            </svg>
-        </span>
-    </label>
-    <svg class="bizy-checkbox__inline-svg">
-      <symbol id="{{_checkboxId}}" viewbox="0 0 12 10">
-        <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
-      </symbol>
-    </svg>
+<button type="button" [id]="id" (click)="_onSelect($event)" (keyup.enter)="_onSelect($event)" class="bizy-checkbox" [ngClass]="{'bizy-checkbox--disabled': disabled}">
+
+  <ng-content select="[slot=start]"></ng-content>
+
+  <input class="bizy-checkbox__input" type="checkbox" [id]="_checkboxId" [disabled]="disabled" [ngModel]="selected">
+
+  <ng-content select="[slot=end]"></ng-content>
+
 </button>
