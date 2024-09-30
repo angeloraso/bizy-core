@@ -16,6 +16,7 @@ export class BizySelectComponent implements AfterViewInit {
   @ContentChildren(BizySelectOptionComponent) options: QueryList<BizySelectOptionComponent>;
   @ViewChild('bizyInput') bizyInput: BizyInputComponent;
   @Input() id: string = `bizy-select-${Math.random()}`;
+  @Input() placeholder: string = '';
   @Input() disabled: boolean = false;
   @Input() readonly: boolean = false;
   @Input() customClass: string = '';

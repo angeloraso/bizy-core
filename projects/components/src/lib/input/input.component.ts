@@ -17,6 +17,7 @@ export class BizyInputComponent implements OnDestroy {
   @Input() name: string = `bizy-input-${Math.random()}`;
   @Input() type: 'text' | 'number' | 'email' | 'password' | 'tel' | 'textarea' = 'text';
   @Input() customClass: string = '';
+  @Input() placeholder: string = '';
   @Input() debounceTime: number = 250;
   @Input() rows: number = 4;
   @Input() disabled: boolean = false;

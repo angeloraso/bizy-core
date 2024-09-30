@@ -12,6 +12,7 @@ export declare class BizyInputComponent implements OnDestroy {
     name: string;
     type: 'text' | 'number' | 'email' | 'password' | 'tel' | 'textarea';
     customClass: string;
+    placeholder: string;
     debounceTime: number;
     rows: number;
     disabled: boolean;
@@ -47,5 +48,5 @@ export declare class BizyInputComponent implements OnDestroy {
     constructor(ref: ChangeDetectorRef);
     ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyInputComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<BizyInputComponent, "bizy-input", never, { "id": { "alias": "id"; "required": false; }; "name": { "alias": "name"; "required": false; }; "type": { "alias": "type"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; "debounceTime": { "alias": "debounceTime"; "required": false; }; "rows": { "alias": "rows"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; "readonly": { "alias": "readonly"; "required": false; }; "value": { "alias": "value"; "required": false; }; "autofocus": { "alias": "autofocus"; "required": false; }; }, { "valueChange": "valueChange"; "onChange": "onChange"; "onEnter": "onEnter"; "onBackspace": "onBackspace"; "onSelect": "onSelect"; "onBlur": "onBlur"; "onFocus": "onFocus"; }, ["options"], ["[slot=header]", "[slot=prefix]", "[slot=suffix]", "bizy-input-option", "[slot=error]"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<BizyInputComponent, "bizy-input", never, { "id": { "alias": "id"; "required": false; }; "name": { "alias": "name"; "required": false; }; "type": { "alias": "type"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; "placeholder": { "alias": "placeholder"; "required": false; }; "debounceTime": { "alias": "debounceTime"; "required": false; }; "rows": { "alias": "rows"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; "readonly": { "alias": "readonly"; "required": false; }; "value": { "alias": "value"; "required": false; }; "autofocus": { "alias": "autofocus"; "required": false; }; }, { "valueChange": "valueChange"; "onChange": "onChange"; "onEnter": "onEnter"; "onBackspace": "onBackspace"; "onSelect": "onSelect"; "onBlur": "onBlur"; "onFocus": "onFocus"; }, ["options"], ["[slot=header]", "[slot=prefix]", "[slot=suffix]", "bizy-input-option", "[slot=error]"], false, never>;
 }
