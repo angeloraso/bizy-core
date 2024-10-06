@@ -31,7 +31,7 @@
             [bizyOnlyPhoneDigits]="type === 'tel'"
             (blur)="_onBlur($event)"
             (focus)="_onFocus($event)"
-            (keyup.enter)="onEnter.emit($event)"
+            (keyup.enter)="_onEnter($event)"
             (keyup.backspace)="_onBackspace($event)"
             [ngModel]="value"
             (ngModelChange)="_onchange($event)"/>
@@ -46,7 +46,7 @@
             class="bizy-input__content__input"
             (blur)="_onBlur($event)"
             (focus)="_onFocus($event)"
-            (keyup.enter)="onEnter.emit($event)"
+            (keyup.enter)="_onEnter($event)"
             (keyup.backspace)="_onBackspace($event)"
             [ngModel]="value"
             (ngModelChange)="_onchange($event)">

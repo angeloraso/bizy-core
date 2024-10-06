@@ -8,9 +8,10 @@
     align-items: center;
     column-gap: 0.5rem;
     width: 100%;
+    min-width: var(--bizy-button-min-width);
     height: 100%;
     padding: var(--bizy-button-padding);
-    border-radius: 0.3rem;
+    border-radius: var(--bizy-button-border-radius);
     border: var(--bizy-button-border);
     cursor: pointer;
     background-color: var(--bizy-button-background-color);
@@ -28,8 +29,8 @@
 .bizy-button__content {
     width: 100%;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     column-gap: 0.3rem;
 }
 

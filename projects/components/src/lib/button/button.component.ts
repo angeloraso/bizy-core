@@ -13,8 +13,10 @@ export class BizyButtonComponent {
   @Input() customClass: string = '';
   @Output() onSelect = new EventEmitter<PointerEvent>();
 
+  _focused: boolean = false;
+
   _onSelect(event: PointerEvent) {
-    if (this.disabled) {
+    if (this.disabled || !this._focused) {
       return;
     }
 

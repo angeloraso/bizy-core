@@ -1,6 +1,8 @@
 <button 
     [type]="type"
     [id]="id"
+    (focus)="_focused = true"
+    (blur)="_focused = false"
     class="bizy-button {{customClass}}"
     [ngClass]="{'bizy-button--disabled': disabled}"
     (click)="_onSelect($event)"

@@ -9,6 +9,7 @@ export declare class BizyPieChartComponent {
     private renderer;
     resizeRef: HTMLElement | null;
     tooltip: boolean;
+    type: 'pie' | 'donut';
     download: {
         hide?: boolean;
         label: string;
@@ -23,5 +24,5 @@ export declare class BizyPieChartComponent {
     set data(data: Array<IBizyPieChartData>);
     ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyPieChartComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<BizyPieChartComponent, "bizy-pie-chart", never, { "resizeRef": { "alias": "resizeRef"; "required": false; }; "tooltip": { "alias": "tooltip"; "required": false; }; "download": { "alias": "download"; "required": false; }; "onLabelFormatter": { "alias": "onLabelFormatter"; "required": false; }; "onTooltipFormatter": { "alias": "onTooltipFormatter"; "required": false; }; "data": { "alias": "data"; "required": false; }; }, { "onSelect": "onSelect"; "onDownload": "onDownload"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<BizyPieChartComponent, "bizy-pie-chart", never, { "resizeRef": { "alias": "resizeRef"; "required": false; }; "tooltip": { "alias": "tooltip"; "required": false; }; "type": { "alias": "type"; "required": false; }; "download": { "alias": "download"; "required": false; }; "onLabelFormatter": { "alias": "onLabelFormatter"; "required": false; }; "onTooltipFormatter": { "alias": "onTooltipFormatter"; "required": false; }; "data": { "alias": "data"; "required": false; }; }, { "onSelect": "onSelect"; "onDownload": "onDownload"; }, never, never, false, never>;
 }

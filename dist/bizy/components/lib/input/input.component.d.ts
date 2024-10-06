@@ -33,6 +33,7 @@ export declare class BizyInputComponent implements OnDestroy {
     getWidth(): number;
     _onchange(value: string | number): void;
     _onClick(event: PointerEvent): void;
+    _onEnter(event: PointerEvent): void;
     _onBlur(event: PointerEvent): void;
     _onBackspace(event: PointerEvent): void;
     _onFocus(event: PointerEvent): void;

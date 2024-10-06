@@ -26,6 +26,7 @@ const MIN_CHART_SIZE = 350 // px;
 export class BizyPieChartComponent {
   @Input() resizeRef: HTMLElement | null = null;
   @Input() tooltip: boolean = true;
+  @Input() type: 'pie' | 'donut' = 'pie';
   @Input() download: {hide?: boolean, label: string, name: string} = {hide: false, label: 'Descargar', name: 'Bizy'};
   @Input() onLabelFormatter: (item: any ) => string;
   @Input() onTooltipFormatter: (item: any ) => string;
@@ -105,27 +106,37 @@ export class BizyPieChartComponent {
         this.#data = EMPTY_CHART;
       }
 
-      const series = [{
-        type: 'pie',
-        radius: '50%',
-        center: ['50%', '50%'],
-        data: this.#data,
-        itemStyle: {
-          emphasis: {
-            label: {
-              show: true
-            }
+      const itemStyle = this.type === 'pie' ? {
+        emphasis: {
+          label: {
+            show: true
+          }
+        },
+        normal: {
+          label: {
+            position: 'outer',
+            formatter: this.onLabelFormatter
           },
-          normal: {
-            label: {
-              position: 'outer',
-              formatter: this.onLabelFormatter
-            },
-            labelLine: {
-              show: true
-            }
+          labelLine: {
+            show: true
           }
         }
+      } : 
+      {
+        borderRadius: 10,
+        borderColor: '#fff',
+        borderWidth: 2
+      };
+
+      const label = this.type === 'pie' ? undefined : { show: false, position: 'center' };
+
+      const series = [{
+        type: 'pie',
+        radius: this.type === 'pie' ? '50%' : ['40%', '55%'],
+        center: ['50%', '50%'],
+        data: this.#data,
+        itemStyle,
+        label
       }];
 
       const textColor = getComputedStyle(this.document.documentElement).getPropertyValue('--bizy-tooltip-color') ?? '#000';
@@ -170,11 +181,14 @@ export class BizyPieChartComponent {
         trigger: 'item',
         appendToBody: true,
         formatter: this.onTooltipFormatter
-      }
+      };
+
+      const legend = this.type === 'pie' ? { show: false } : { show: true, orient: 'vertical', left: 'left'};
 
       const option: any = {
         tooltip,
         toolbox,
+        legend,
         series
       };
       

@@ -64,10 +64,19 @@ export class BizyInputComponent implements OnDestroy {
     this.onOpen()
   }
 
+  _onEnter(event: PointerEvent) {
+    if (this.disabled || this.readonly || !this.focused) {
+      return;
+    }
+
+    this.onEnter.emit(event);
+  }
+
   _onBlur(event: PointerEvent) {
     setTimeout(() => {
       this.focused = false;
       this.touched = true;
+      this.ref.detectChanges();
       this.onBlur.emit(event);
     }, 250)
   }
@@ -84,6 +93,7 @@ export class BizyInputComponent implements OnDestroy {
     }
 
     this.focused = true;
+    this.ref.detectChanges();
     this.onFocus.emit(event);
   }
 
