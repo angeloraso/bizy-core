@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { Pipe, Inject, NgModule } from '@angular/core';
+import { Pipe, Inject, Injectable, NgModule } from '@angular/core';
 import * as i1 from '@angular/platform-browser';
 import { DomSanitizer } from '@angular/platform-browser';
 import Fuse from 'fuse.js';
@@ -300,47 +300,104 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 }]
         }] });
 
+var BIZY_FORMAT_SECONDS_LANGUAGE;
+(function (BIZY_FORMAT_SECONDS_LANGUAGE) {
+    BIZY_FORMAT_SECONDS_LANGUAGE["SPANISH"] = "es";
+    BIZY_FORMAT_SECONDS_LANGUAGE["ENGLISH"] = "en";
+})(BIZY_FORMAT_SECONDS_LANGUAGE || (BIZY_FORMAT_SECONDS_LANGUAGE = {}));
+var BIZY_FORMAT_SECONDS_FORMAT;
+(function (BIZY_FORMAT_SECONDS_FORMAT) {
+    BIZY_FORMAT_SECONDS_FORMAT["DATE_TIME"] = "date-time";
+    BIZY_FORMAT_SECONDS_FORMAT["TIME"] = "time";
+})(BIZY_FORMAT_SECONDS_FORMAT || (BIZY_FORMAT_SECONDS_FORMAT = {}));
+
+class BizyFormatSecondsService {
+    #options = {
+        language: BIZY_FORMAT_SECONDS_LANGUAGE.SPANISH,
+        format: BIZY_FORMAT_SECONDS_FORMAT.TIME
+    };
+    getOptions() {
+        return this.#options;
+    }
+    setOptions(options) {
+        if (options && options.language) {
+            this.#options.language = options.language;
+        }
+        if (options && options.format) {
+            this.#options.format = options.format;
+        }
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyFormatSecondsService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyFormatSecondsService });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyFormatSecondsService, decorators: [{
+            type: Injectable
+        }] });
+
 class BizyFormatSecondsPipe {
-    transform(seconds, language = 'es') {
+    bizyFormatSecondsService;
+    constructor(bizyFormatSecondsService) {
+        this.bizyFormatSecondsService = bizyFormatSecondsService;
+    }
+    transform(seconds, options) {
         if (!seconds) {
             return '00:00:00';
         }
-        const DAY = language === 'es' ? 'Día' : 'Day';
-        const DAYS = language === 'es' ? 'Días' : 'Days';
-        const MONTH = language === 'es' ? 'Mes' : 'Meses';
-        const MONTHS = language === 'es' ? 'Meses' : 'Months';
-        const YEAR = language === 'es' ? 'Año' : 'Year';
-        const YEARS = language === 'es' ? 'Años' : 'Years';
+        const regex = /^-?\d+(\.\d+)?$/;
+        const isNumber = regex.test(String(seconds).toLowerCase());
+        if (!isNumber || seconds <= 0) {
+            return '00:00:00';
+        }
+        const defaultOptions = this.bizyFormatSecondsService.getOptions();
+        const language = options?.language ?? defaultOptions.language;
+        const format = options?.format ?? defaultOptions.format;
+        const DAY = language === BIZY_FORMAT_SECONDS_LANGUAGE.SPANISH ? 'Día' : 'Day';
+        const DAYS = language === BIZY_FORMAT_SECONDS_LANGUAGE.SPANISH ? 'Días' : 'Days';
+        const MONTH = language === BIZY_FORMAT_SECONDS_LANGUAGE.SPANISH ? 'Mes' : 'Month';
+        const MONTHS = language === BIZY_FORMAT_SECONDS_LANGUAGE.SPANISH ? 'Meses' : 'Months';
+        const YEAR = language === BIZY_FORMAT_SECONDS_LANGUAGE.SPANISH ? 'Año' : 'Year';
+        const YEARS = language === BIZY_FORMAT_SECONDS_LANGUAGE.SPANISH ? 'Años' : 'Years';
         let _seconds = Number(seconds);
         const SECONDS_IN_YEAR = 365.25 * 24 * 3600;
         const SECONDS_IN_MONTH = 30.44 * 24 * 3600;
         const SECONDS_IN_DAY = 24 * 3600;
         const SECONDS_IN_HOUR = 3600;
         const SECONDS_IN_MINUTE = 60;
-        const years = Math.floor(_seconds / SECONDS_IN_YEAR);
-        _seconds %= SECONDS_IN_YEAR;
-        const months = Math.floor(_seconds / SECONDS_IN_MONTH);
-        _seconds %= SECONDS_IN_MONTH;
-        const days = Math.floor(_seconds / SECONDS_IN_DAY);
-        _seconds %= SECONDS_IN_DAY;
-        const hours = Math.floor(_seconds / SECONDS_IN_HOUR);
-        _seconds %= SECONDS_IN_HOUR;
-        const minutes = Math.floor(_seconds / SECONDS_IN_MINUTE);
-        _seconds %= SECONDS_IN_MINUTE;
-        const parts = [];
-        if (years > 0) {
-            parts.push(years + (years === 1 ? ` ${YEAR}` : ` ${YEARS}`));
+        if (format === BIZY_FORMAT_SECONDS_FORMAT.DATE_TIME) {
+            const years = Math.floor(_seconds / SECONDS_IN_YEAR);
+            _seconds %= SECONDS_IN_YEAR;
+            const months = Math.floor(_seconds / SECONDS_IN_MONTH);
+            _seconds %= SECONDS_IN_MONTH;
+            const days = Math.floor(_seconds / SECONDS_IN_DAY);
+            _seconds %= SECONDS_IN_DAY;
+            const hours = Math.floor(_seconds / SECONDS_IN_HOUR);
+            _seconds %= SECONDS_IN_HOUR;
+            const minutes = Math.floor(_seconds / SECONDS_IN_MINUTE);
+            _seconds %= SECONDS_IN_MINUTE;
+            const parts = [];
+            if (years > 0) {
+                parts.push(years + (years === 1 ? ` ${YEAR}` : ` ${YEARS}`));
+            }
+            if (months > 0) {
+                parts.push(months + (months === 1 ? ` ${MONTH}` : ` ${MONTHS}`));
+            }
+            if (days > 0) {
+                parts.push(days + (days === 1 ? ` ${DAY}` : ` ${DAYS}`));
+            }
+            parts.push(`${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${_seconds < 10 ? '0' + Math.trunc(_seconds) : Math.trunc(_seconds)}`);
+            return parts.join(' ');
         }
-        if (months > 0) {
-            parts.push(months + (months === 1 ? ` ${MONTH}` : ` ${MONTHS}`));
+        else {
+            const hours = Math.floor(_seconds / SECONDS_IN_HOUR);
+            _seconds %= SECONDS_IN_HOUR;
+            const minutes = Math.floor(_seconds / SECONDS_IN_MINUTE);
+            _seconds %= SECONDS_IN_MINUTE;
+            const parts = [];
+            parts.push(`${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${_seconds < 10 ? '0' + Math.trunc(_seconds) : Math.trunc(_seconds)}`);
+            return parts.join(' ');
         }
-        if (days > 0) {
-            parts.push(days + (days === 1 ? ` ${DAY}` : ` ${DAYS}`));
-        }
-        parts.push(`${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${_seconds < 10 ? '0' + Math.trunc(_seconds) : Math.trunc(_seconds)}`);
-        return parts.join(' ');
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyFormatSecondsPipe, deps: [], target: i0.ɵɵFactoryTarget.Pipe });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyFormatSecondsPipe, deps: [{ token: BizyFormatSecondsService }], target: i0.ɵɵFactoryTarget.Pipe });
     static ɵpipe = i0.ɵɵngDeclarePipe({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BizyFormatSecondsPipe, name: "bizyFormatSeconds" });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyFormatSecondsPipe, decorators: [{
@@ -348,7 +405,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             args: [{
                     name: 'bizyFormatSeconds'
                 }]
-        }] });
+        }], ctorParameters: function () { return [{ type: BizyFormatSecondsService, decorators: [{
+                    type: Inject,
+                    args: [BizyFormatSecondsService]
+                }] }]; } });
 
 class BizyAveragePipe {
     transform(items, key, fixedTo = 2) {
@@ -399,14 +459,14 @@ class BizyPipesModule {
             BizySetToArrayPipe,
             BizyFormatSecondsPipe,
             BizyAveragePipe] });
-    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyPipesModule, providers: PIPES });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyPipesModule, providers: PIPES.concat([BizyFormatSecondsService]) });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyPipesModule, decorators: [{
             type: NgModule,
             args: [{
                     declarations: PIPES,
                     exports: PIPES,
-                    providers: PIPES
+                    providers: PIPES.concat([BizyFormatSecondsService])
                 }]
         }] });
 
@@ -414,5 +474,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
  * Generated bundle index. Do not edit.
  */
 
-export { BizyAveragePipe, BizyFormatSecondsPipe, BizyOrderByPipe, BizyPipesModule, BizyReducePipe, BizySafePipe, BizySearchPipe, BizySelectedPipe, BizySetToArrayPipe, FuseOptions };
+export { BIZY_FORMAT_SECONDS_FORMAT, BIZY_FORMAT_SECONDS_LANGUAGE, BizyAveragePipe, BizyFormatSecondsPipe, BizyFormatSecondsService, BizyOrderByPipe, BizyPipesModule, BizyReducePipe, BizySafePipe, BizySearchPipe, BizySelectedPipe, BizySetToArrayPipe, FuseOptions };
 //# sourceMappingURL=bizy-pipes.mjs.map

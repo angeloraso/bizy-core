@@ -5,10 +5,10 @@ import { BizySafePipe } from './safe.pipe';
 import { BizySearchPipe } from './search';
 import { BizySelectedPipe } from './selected.pipe';
 import { BizySetToArrayPipe } from './setToArray.pipe';
-import { BizyFormatSecondsPipe } from './formatSeconds.pipe';
+import { BizyFormatSecondsPipe, BizyFormatSecondsService } from './formatSeconds';
 import { BizyAveragePipe } from './average.pipe';
 
-const PIPES = [
+const PIPES: Array<any> = [
   BizyOrderByPipe,
   BizyReducePipe,
   BizySafePipe,
@@ -21,6 +21,6 @@ const PIPES = [
 @NgModule({
   declarations: PIPES,
   exports: PIPES,
-  providers: PIPES
+  providers: PIPES.concat([BizyFormatSecondsService])
 })
 export class BizyPipesModule {}
