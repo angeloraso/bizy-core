@@ -1,0 +1,45 @@
+:host {
+    font-size: 1rem;
+    height: 100%;
+    width: 100%;
+}
+
+.bizy-skeleton-card {
+    height: var(--bizy-card-height);
+    width: var(--bizy-card-width);
+    cursor: default;
+    border: none;
+    border-radius: 0.3rem;
+    overflow: hidden;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    row-gap: 0.3rem;
+    position: relative;
+    background-color: var(--bizy-card-background-color);
+    transition: transform 250ms ease-in-out;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.bizy-skeleton-card::after {
+    content: '';  
+    width: calc(100% - 1rem);
+    height: calc(100% - 1rem);
+    top: 0.5rem;
+    left: 0.5rem;
+    position: absolute;
+    background-image: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.4) 50%, transparent 80%), radial-gradient(circle 20px at 30px 25px, #DDD 99%, transparent 0), linear-gradient(#DDD 1.6rem, transparent 0), linear-gradient(#DDD 1.8rem, transparent 0), linear-gradient(#DDD 4rem, transparent 0);
+    background-repeat: no-repeat;
+    background-size: 6rem 10rem, 100% 5rem, 100% 1.4rem, 100% 1.4rem, 100% 4rem;
+    animation: bizy-skeleton-card-animation 1s linear infinite;
+}
+  
+@keyframes bizy-skeleton-card-animation {
+0% {
+    background-position: 0% 0, 0 0, 70px 5px, 70px 38px, 0px 66px;
+}
+100% {
+    background-position: 150% 0, 0 0, 70px 5px, 70px 38px, 0px 66px;
+}
+}

@@ -21,5 +21,5 @@ export declare class BizyGridComponent implements AfterContentInit {
     ngAfterContentInit(): void;
     ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyGridComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<BizyGridComponent, "bizy-grid", never, { "resizeRef": { "alias": "resizeRef"; "required": false; }; }, {}, ["gridDirective"], ["*", "[slot=empty]"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<BizyGridComponent, "bizy-grid", never, { "resizeRef": { "alias": "resizeRef"; "required": false; }; }, {}, ["gridDirective"], ["*"], false, never>;
 }

@@ -4,6 +4,20 @@ import * as i1 from '@angular/platform-browser';
 import { DomSanitizer } from '@angular/platform-browser';
 import Fuse from 'fuse.js';
 
+class BizyRepeatPipe {
+    transform(value) {
+        return Array.from({ length: value }, (_, i) => i);
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyRepeatPipe, deps: [], target: i0.ɵɵFactoryTarget.Pipe });
+    static ɵpipe = i0.ɵɵngDeclarePipe({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BizyRepeatPipe, name: "bizyRepeat" });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyRepeatPipe, decorators: [{
+            type: Pipe,
+            args: [{
+                    name: 'bizyRepeat'
+                }]
+        }] });
+
 class BizySetToArrayPipe {
     transform(items) {
         if (!items) {
@@ -440,7 +454,8 @@ const PIPES = [
     BizySelectedPipe,
     BizySetToArrayPipe,
     BizyFormatSecondsPipe,
-    BizyAveragePipe
+    BizyAveragePipe,
+    BizyRepeatPipe
 ];
 class BizyPipesModule {
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyPipesModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
@@ -451,14 +466,16 @@ class BizyPipesModule {
             BizySelectedPipe,
             BizySetToArrayPipe,
             BizyFormatSecondsPipe,
-            BizyAveragePipe], exports: [BizyOrderByPipe,
+            BizyAveragePipe,
+            BizyRepeatPipe], exports: [BizyOrderByPipe,
             BizyReducePipe,
             BizySafePipe,
             BizySearchPipe,
             BizySelectedPipe,
             BizySetToArrayPipe,
             BizyFormatSecondsPipe,
-            BizyAveragePipe] });
+            BizyAveragePipe,
+            BizyRepeatPipe] });
     static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyPipesModule, providers: PIPES.concat([BizyFormatSecondsService]) });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyPipesModule, decorators: [{
@@ -474,5 +491,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
  * Generated bundle index. Do not edit.
  */
 
-export { BIZY_FORMAT_SECONDS_FORMAT, BIZY_FORMAT_SECONDS_LANGUAGE, BizyAveragePipe, BizyFormatSecondsPipe, BizyFormatSecondsService, BizyOrderByPipe, BizyPipesModule, BizyReducePipe, BizySafePipe, BizySearchPipe, BizySelectedPipe, BizySetToArrayPipe, FuseOptions };
+export { BIZY_FORMAT_SECONDS_FORMAT, BIZY_FORMAT_SECONDS_LANGUAGE, BizyAveragePipe, BizyFormatSecondsPipe, BizyFormatSecondsService, BizyOrderByPipe, BizyPipesModule, BizyReducePipe, BizyRepeatPipe, BizySafePipe, BizySearchPipe, BizySelectedPipe, BizySetToArrayPipe, FuseOptions };
 //# sourceMappingURL=bizy-pipes.mjs.map

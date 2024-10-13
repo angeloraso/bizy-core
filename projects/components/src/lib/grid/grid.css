@@ -10,6 +10,12 @@
     font-size: 1rem;
 }
 
+:host:has(.bizy-grid--empty) {
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+}
+
 .bizy-grid {
     width: inherit;
     height: inherit;
@@ -27,11 +33,6 @@
     flex-direction: column;
     min-width: fit-content;
     overflow-x: hidden;
-}
-
-.bizy-grid__empty {
-    height: 100%;
-    width: 100%;
 }
 
 ::ng-deep .cdk-virtual-scrollable {

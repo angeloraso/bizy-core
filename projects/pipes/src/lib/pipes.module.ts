@@ -7,6 +7,7 @@ import { BizySelectedPipe } from './selected.pipe';
 import { BizySetToArrayPipe } from './setToArray.pipe';
 import { BizyFormatSecondsPipe, BizyFormatSecondsService } from './formatSeconds';
 import { BizyAveragePipe } from './average.pipe';
+import { BizyRepeatPipe } from './repeat.pipe';
 
 const PIPES: Array<any> = [
   BizyOrderByPipe,
@@ -16,7 +17,8 @@ const PIPES: Array<any> = [
   BizySelectedPipe,
   BizySetToArrayPipe,
   BizyFormatSecondsPipe,
-  BizyAveragePipe
+  BizyAveragePipe,
+  BizyRepeatPipe
 ];
 @NgModule({
   declarations: PIPES,
