@@ -23,6 +23,8 @@
     --bizy-card-background-color: #fff;
     --bizy-card-selected-background-color: #2484c644;
     --bizy-card-cursor: default;
+    --bizy-card-height: 100%;
+    --bizy-card-width: 100%;
 
     --bizy-checkbox-border-color: #ccc;
     --bizy-checkbox-hover-color: #16aa8833;

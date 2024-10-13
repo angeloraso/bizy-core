@@ -5,8 +5,8 @@
 }
 
 .bizy-card {
-    height: 100%;
-    width: 100%;
+    height: var(--bizy-card-height);
+    width: var(--bizy-card-width);
     cursor: var(--bizy-card-cursor);
     border: none;
     border-radius: 0.3rem;
@@ -37,7 +37,6 @@
 .bizy-card:has(.bizy-card__content:empty) .bizy-card__footer:not(:empty) {
     height: 100% !important;
 }
-
 
 .bizy-card--selected {
     background-color: var(--bizy-card-selected-background-color);
