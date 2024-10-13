@@ -54,7 +54,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS$j = [
+const COMPONENTS$k = [
     BizyToggleComponent,
 ];
 class BizyToggleModule {
@@ -66,8 +66,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$j,
-                    exports: COMPONENTS$j
+                    declarations: COMPONENTS$k,
+                    exports: COMPONENTS$k
                 }]
         }] });
 
@@ -128,7 +128,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Input
             }] } });
 
-const COMPONENTS$i = [BizyBreadcrumbComponent];
+const COMPONENTS$j = [BizyBreadcrumbComponent];
 class BizyBreadcrumbModule {
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyBreadcrumbModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
     static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BizyBreadcrumbModule, declarations: [BizyBreadcrumbComponent], imports: [CommonModule,
@@ -143,8 +143,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                         CommonModule,
                         FormsModule
                     ],
-                    declarations: COMPONENTS$i,
-                    exports: COMPONENTS$i,
+                    declarations: COMPONENTS$j,
+                    exports: COMPONENTS$j,
                 }]
         }] });
 
@@ -179,7 +179,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS$h = [
+const COMPONENTS$i = [
     BizyButtonComponent,
 ];
 class BizyButtonModule {
@@ -191,8 +191,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$h,
-                    exports: COMPONENTS$h
+                    declarations: COMPONENTS$i,
+                    exports: COMPONENTS$i
                 }]
         }] });
 
@@ -432,7 +432,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Input
             }] } });
 
-const COMPONENTS$g = [BizyInputComponent, BizyInputOptionComponent];
+const COMPONENTS$h = [BizyInputComponent, BizyInputOptionComponent];
 class BizyInputModule {
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyInputModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
     static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BizyInputModule, declarations: [BizyInputComponent, BizyInputOptionComponent], imports: [CommonModule,
@@ -450,8 +450,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                         FormsModule,
                         OverlayModule
                     ],
-                    declarations: COMPONENTS$g,
-                    exports: COMPONENTS$g
+                    declarations: COMPONENTS$h,
+                    exports: COMPONENTS$h
                 }]
         }] });
 
@@ -642,7 +642,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Input
             }] } });
 
-const COMPONENTS$f = [
+const COMPONENTS$g = [
     BizyDatePickerComponent,
 ];
 class BizyDatePickerModule {
@@ -654,8 +654,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, BizyInputModule],
-                    declarations: COMPONENTS$f,
-                    exports: COMPONENTS$f,
+                    declarations: COMPONENTS$g,
+                    exports: COMPONENTS$g,
                     providers: [DatePipe]
                 }]
         }] });
@@ -775,7 +775,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Input
             }] } });
 
-const COMPONENTS$e = [
+const COMPONENTS$f = [
     BizyTabsComponent,
     BizyTabComponent
 ];
@@ -790,8 +790,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$e,
-                    exports: COMPONENTS$e
+                    declarations: COMPONENTS$f,
+                    exports: COMPONENTS$f
                 }]
         }] });
 
@@ -804,7 +804,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             args: [{ selector: 'bizy-toolbar', changeDetection: ChangeDetectionStrategy.OnPush, template: "<div class=\"bizy-toolbar\">\n\n    <span class=\"bizy-toolbar__start\">\n        \n        <ng-content select=\"[slot=start]\"></ng-content>\n\n    </span>\n\n    <span class=\"bizy-toolbar__end\">\n\n        <ng-content select=\"[slot=end]\"></ng-content>\n\n    </span>\n\n</div>\n", styles: [":host{font-size:1rem}.bizy-toolbar{height:var(--bizy-toolbar-height);width:100%;background-color:var(--bizy-toolbar-background-color);display:flex;align-items:center;justify-content:space-between;column-gap:var(--bizy-toolbar-column-gap);padding:var(--bizy-toolbar-padding)}.bizy-toolbar__start{height:100%;display:flex;align-items:center;column-gap:var(--bizy-toolbar-column-gap)}.bizy-toolbar__end{height:100%;display:flex;align-items:center;justify-content:flex-end;column-gap:var(--bizy-toolbar-column-gap)}::ng-deep .bizy-toolbar *[toolbar-option]{height:100%}\n"] }]
         }] });
 
-const COMPONENTS$d = [
+const COMPONENTS$e = [
     BizyToolbarComponent,
 ];
 class BizyToolbarModule {
@@ -816,8 +816,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$d,
-                    exports: COMPONENTS$d
+                    declarations: COMPONENTS$e,
+                    exports: COMPONENTS$e
                 }]
         }] });
 
@@ -1181,7 +1181,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS$c = [
+const COMPONENTS$d = [
     BizyAccordionComponent,
 ];
 class BizyAccordionModule {
@@ -1193,12 +1193,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$c,
-                    exports: COMPONENTS$c
+                    declarations: COMPONENTS$d,
+                    exports: COMPONENTS$d
                 }]
         }] });
 
-const COMPONENTS$b = [
+const COMPONENTS$c = [
     BizySidebarComponent,
     BizySidebarOptionComponent,
     BizySidebarFloatingOptionComponent,
@@ -1219,8 +1219,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, BizyAccordionModule, OverlayModule],
-                    declarations: COMPONENTS$b,
-                    exports: COMPONENTS$b
+                    declarations: COMPONENTS$c,
+                    exports: COMPONENTS$c
                 }]
         }] });
 
@@ -1734,7 +1734,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Input
             }] } });
 
-const COMPONENTS$a = [
+const COMPONENTS$b = [
     BizyCheckboxComponent,
 ];
 class BizyCheckboxModule {
@@ -1746,12 +1746,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$a,
-                    exports: COMPONENTS$a
+                    declarations: COMPONENTS$b,
+                    exports: COMPONENTS$b
                 }]
         }] });
 
-const COMPONENTS$9 = [
+const COMPONENTS$a = [
     BizyTableComponent,
     BizyTableHeaderComponent,
     BizyTableFooterComponent,
@@ -1787,8 +1787,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, ScrollingModule, BizyCheckboxModule, BizyAccordionModule],
-                    declarations: COMPONENTS$9,
-                    exports: COMPONENTS$9
+                    declarations: COMPONENTS$a,
+                    exports: COMPONENTS$a
                 }]
         }] });
 
@@ -1917,7 +1917,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS$8 = [
+const COMPONENTS$9 = [
     BizyMenuComponent,
     BizyMenuOptionComponent,
     BizyMenuTitleComponent
@@ -1935,8 +1935,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, OverlayModule],
-                    declarations: COMPONENTS$8,
-                    exports: COMPONENTS$8
+                    declarations: COMPONENTS$9,
+                    exports: COMPONENTS$9
                 }]
         }] });
 
@@ -2525,7 +2525,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS$7 = [
+const COMPONENTS$8 = [
     BizyFilterComponent,
     BizyFilterContentComponent,
     BizyFilterSectionsComponent,
@@ -2561,8 +2561,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, OverlayModule, BizyCheckboxModule, BizyInputModule],
-                    declarations: COMPONENTS$7,
-                    exports: COMPONENTS$7,
+                    declarations: COMPONENTS$8,
+                    exports: COMPONENTS$8,
                     providers: [BizyFilterPipe, BizyRangeFilterPipe]
                 }]
         }] });
@@ -2760,7 +2760,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS$6 = [
+const COMPONENTS$7 = [
     BizySelectComponent,
     BizySelectOptionComponent
 ];
@@ -2775,8 +2775,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, BizyInputModule, OverlayModule, PortalModule],
-                    declarations: COMPONENTS$6,
-                    exports: COMPONENTS$6
+                    declarations: COMPONENTS$7,
+                    exports: COMPONENTS$7
                 }]
         }] });
 
@@ -2846,7 +2846,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Input
             }] } });
 
-const COMPONENTS$5 = [
+const COMPONENTS$6 = [
     BizySliderComponent,
 ];
 class BizySliderModule {
@@ -2858,8 +2858,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$5,
-                    exports: COMPONENTS$5
+                    declarations: COMPONENTS$6,
+                    exports: COMPONENTS$6
                 }]
         }] });
 
@@ -3555,7 +3555,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS$4 = [
+const COMPONENTS$5 = [
     BizyTagComponent,
 ];
 class BizyTagModule {
@@ -3567,8 +3567,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$4,
-                    exports: COMPONENTS$4
+                    declarations: COMPONENTS$5,
+                    exports: COMPONENTS$5
                 }]
         }] });
 
@@ -3602,7 +3602,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS$3 = [
+const COMPONENTS$4 = [
     BizyCardComponent,
 ];
 class BizyCardModule {
@@ -3614,8 +3614,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$3,
-                    exports: COMPONENTS$3
+                    declarations: COMPONENTS$4,
+                    exports: COMPONENTS$4
                 }]
         }] });
 
@@ -3922,7 +3922,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS$2 = [
+const COMPONENTS$3 = [
     BizyRadioComponent,
 ];
 class BizyRadioModule {
@@ -3934,8 +3934,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$2,
-                    exports: COMPONENTS$2
+                    declarations: COMPONENTS$3,
+                    exports: COMPONENTS$3
                 }]
         }] });
 
@@ -3988,7 +3988,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Input
             }] } });
 
-const COMPONENTS$1 = [
+const COMPONENTS$2 = [
     BizyFormComponent,
 ];
 class BizyFormModule {
@@ -4000,8 +4000,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$1,
-                    exports: COMPONENTS$1
+                    declarations: COMPONENTS$2,
+                    exports: COMPONENTS$2
                 }]
         }] });
 
@@ -4215,7 +4215,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Input
             }] } });
 
-const COMPONENTS = [
+const COMPONENTS$1 = [
     BizyGridComponent,
     BizyGridForDirective,
     BizyGridRowComponent
@@ -4233,6 +4233,41 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, ScrollingModule],
+                    declarations: COMPONENTS$1,
+                    exports: COMPONENTS$1
+                }]
+        }] });
+
+class BizySkeletonCardComponent {
+    id = `bizy-skeleton-card-${Math.random()}`;
+    customClass = '';
+    onSelect = new EventEmitter();
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizySkeletonCardComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizySkeletonCardComponent, selector: "bizy-skeleton-card", inputs: { id: "id", customClass: "customClass" }, outputs: { onSelect: "onSelect" }, ngImport: i0, template: "<button \n    type=\"button\"\n    (click)=\"onSelect.emit($event)\"\n    (keyup.enter)=\"onSelect.emit($event)\"\n    class=\"bizy-skeleton-card {{customClass}}\">\n</button>", styles: [":host{font-size:1rem;height:100%;width:100%}.bizy-skeleton-card{height:var(--bizy-card-height);width:var(--bizy-card-width);cursor:default;border:none;border-radius:.3rem;overflow:hidden;padding:.5rem;display:flex;flex-direction:column;justify-content:space-between;row-gap:.3rem;position:relative;background-color:var(--bizy-card-background-color);transition:transform .25s ease-in-out;box-shadow:0 4px 6px #32325d1c,0 1px 3px #00000014}.bizy-skeleton-card:after{content:\"\";width:calc(100% - 1rem);height:calc(100% - 1rem);top:.5rem;left:.5rem;position:absolute;background-image:linear-gradient(100deg,transparent,rgba(255,255,255,.4) 50%,transparent 80%),radial-gradient(circle 20px at 30px 25px,#DDD 99%,transparent 0),linear-gradient(#DDD 1.6rem,transparent 0),linear-gradient(#DDD 1.8rem,transparent 0),linear-gradient(#DDD 4rem,transparent 0);background-repeat:no-repeat;background-size:6rem 10rem,100% 5rem,100% 1.4rem,100% 1.4rem,100% 4rem;animation:bizy-skeleton-card-animation 1s linear infinite}@keyframes bizy-skeleton-card-animation{0%{background-position:0% 0,0 0,70px 5px,70px 38px,0px 66px}to{background-position:150% 0,0 0,70px 5px,70px 38px,0px 66px}}\n"], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizySkeletonCardComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-skeleton-card', changeDetection: ChangeDetectionStrategy.OnPush, template: "<button \n    type=\"button\"\n    (click)=\"onSelect.emit($event)\"\n    (keyup.enter)=\"onSelect.emit($event)\"\n    class=\"bizy-skeleton-card {{customClass}}\">\n</button>", styles: [":host{font-size:1rem;height:100%;width:100%}.bizy-skeleton-card{height:var(--bizy-card-height);width:var(--bizy-card-width);cursor:default;border:none;border-radius:.3rem;overflow:hidden;padding:.5rem;display:flex;flex-direction:column;justify-content:space-between;row-gap:.3rem;position:relative;background-color:var(--bizy-card-background-color);transition:transform .25s ease-in-out;box-shadow:0 4px 6px #32325d1c,0 1px 3px #00000014}.bizy-skeleton-card:after{content:\"\";width:calc(100% - 1rem);height:calc(100% - 1rem);top:.5rem;left:.5rem;position:absolute;background-image:linear-gradient(100deg,transparent,rgba(255,255,255,.4) 50%,transparent 80%),radial-gradient(circle 20px at 30px 25px,#DDD 99%,transparent 0),linear-gradient(#DDD 1.6rem,transparent 0),linear-gradient(#DDD 1.8rem,transparent 0),linear-gradient(#DDD 4rem,transparent 0);background-repeat:no-repeat;background-size:6rem 10rem,100% 5rem,100% 1.4rem,100% 1.4rem,100% 4rem;animation:bizy-skeleton-card-animation 1s linear infinite}@keyframes bizy-skeleton-card-animation{0%{background-position:0% 0,0 0,70px 5px,70px 38px,0px 66px}to{background-position:150% 0,0 0,70px 5px,70px 38px,0px 66px}}\n"] }]
+        }], propDecorators: { id: [{
+                type: Input
+            }], customClass: [{
+                type: Input
+            }], onSelect: [{
+                type: Output
+            }] } });
+
+const COMPONENTS = [
+    BizySkeletonCardComponent,
+];
+class BizySkeletonCardModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizySkeletonCardModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BizySkeletonCardModule, declarations: [BizySkeletonCardComponent], imports: [CommonModule, FormsModule], exports: [BizySkeletonCardComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizySkeletonCardModule, imports: [CommonModule, FormsModule] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizySkeletonCardModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: [CommonModule, FormsModule],
                     declarations: COMPONENTS,
                     exports: COMPONENTS
                 }]
@@ -4242,5 +4277,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
  * Generated bundle index. Do not edit.
  */
 
-export { BIZY_TAG_TYPE, BizyAccordionComponent, BizyAccordionModule, BizyBarLineChartComponent, BizyBarLineChartModule, BizyBreadcrumbComponent, BizyBreadcrumbModule, BizyButtonComponent, BizyButtonModule, BizyCardComponent, BizyCardModule, BizyCheckboxComponent, BizyCheckboxModule, BizyDatePickerComponent, BizyDatePickerModule, BizyFileUploaderComponent, BizyFileUploaderModule, BizyFileUploaderService, BizyFilterComponent, BizyFilterContentComponent, BizyFilterModule, BizyFilterPipe, BizyFilterSectionCheckboxOptionComponent, BizyFilterSectionComponent, BizyFilterSectionRangeOptionComponent, BizyFilterSectionSearchOptionComponent, BizyFilterSectionsComponent, BizyFormComponent, BizyFormModule, BizyGridComponent, BizyGridForDirective, BizyGridModule, BizyGridRowComponent, BizyInputComponent, BizyInputModule, BizyInputOptionComponent, BizyMenuComponent, BizyMenuModule, BizyMenuOptionComponent, BizyMenuTitleComponent, BizyPieChartComponent, BizyPieChartModule, BizyRadioComponent, BizyRadioModule, BizyRangeFilterPipe, BizySelectComponent, BizySelectModule, BizySelectOptionComponent, BizySidebarComponent, BizySidebarFloatingOptionComponent, BizySidebarFloatingOptionTitleComponent, BizySidebarModule, BizySidebarOptionComponent, BizySliderComponent, BizySliderModule, BizyTabComponent, BizyTableColumnArrowsComponent, BizyTableColumnComponent, BizyTableComponent, BizyTableFooterComponent, BizyTableHeaderComponent, BizyTableModule, BizyTableRowComponent, BizyTableRowExpandContentComponent, BizyTableScrollingComponent, BizyTableScrollingDirective, BizyTabsComponent, BizyTabsModule, BizyTagComponent, BizyTagModule, BizyToggleComponent, BizyToggleModule, BizyToolbarComponent, BizyToolbarModule };
+export { BIZY_TAG_TYPE, BizyAccordionComponent, BizyAccordionModule, BizyBarLineChartComponent, BizyBarLineChartModule, BizyBreadcrumbComponent, BizyBreadcrumbModule, BizyButtonComponent, BizyButtonModule, BizyCardComponent, BizyCardModule, BizyCheckboxComponent, BizyCheckboxModule, BizyDatePickerComponent, BizyDatePickerModule, BizyFileUploaderComponent, BizyFileUploaderModule, BizyFileUploaderService, BizyFilterComponent, BizyFilterContentComponent, BizyFilterModule, BizyFilterPipe, BizyFilterSectionCheckboxOptionComponent, BizyFilterSectionComponent, BizyFilterSectionRangeOptionComponent, BizyFilterSectionSearchOptionComponent, BizyFilterSectionsComponent, BizyFormComponent, BizyFormModule, BizyGridComponent, BizyGridForDirective, BizyGridModule, BizyGridRowComponent, BizyInputComponent, BizyInputModule, BizyInputOptionComponent, BizyMenuComponent, BizyMenuModule, BizyMenuOptionComponent, BizyMenuTitleComponent, BizyPieChartComponent, BizyPieChartModule, BizyRadioComponent, BizyRadioModule, BizyRangeFilterPipe, BizySelectComponent, BizySelectModule, BizySelectOptionComponent, BizySidebarComponent, BizySidebarFloatingOptionComponent, BizySidebarFloatingOptionTitleComponent, BizySidebarModule, BizySidebarOptionComponent, BizySkeletonCardComponent, BizySkeletonCardModule, BizySliderComponent, BizySliderModule, BizyTabComponent, BizyTableColumnArrowsComponent, BizyTableColumnComponent, BizyTableComponent, BizyTableFooterComponent, BizyTableHeaderComponent, BizyTableModule, BizyTableRowComponent, BizyTableRowExpandContentComponent, BizyTableScrollingComponent, BizyTableScrollingDirective, BizyTabsComponent, BizyTabsModule, BizyTagComponent, BizyTagModule, BizyToggleComponent, BizyToggleModule, BizyToolbarComponent, BizyToolbarModule };
 //# sourceMappingURL=bizy-components.mjs.map
