@@ -13,14 +13,36 @@ export class BizySidebarComponent implements AfterContentInit {
   @Input() id: string = `bizy-sidebar-${Math.random()}`;
   @ContentChildren(BizySidebarOptionComponent) options!: QueryList<BizySidebarOptionComponent>;
   @ContentChildren(BizySidebarFloatingOptionComponent) floatingOptions!: QueryList<BizySidebarFloatingOptionComponent>;
-  @Input() toggle: boolean = false;
-  @Output() onToggle = new EventEmitter<boolean>(); 
+  @Output() toggleChange = new EventEmitter<boolean>(); 
+  @Output() onToggle = new EventEmitter<PointerEvent>(); 
 
+  _toggle: boolean = false;
   #subscription = new Subscription();
   #optionSubscription = new Subscription();
   #floatingOptionSubscription = new Subscription();
 
+  @Input() set toggle(toggle: boolean) {
+    if (typeof toggle === 'undefined' || toggle === null) {
+      return;
+    }
+
+    this._toggle = toggle;
+
+    this.#unsubscribe();
+    this.#subscription = new Subscription();
+    this.#optionSubscription = new Subscription();
+    this.#floatingOptionSubscription = new Subscription();
+
+    setTimeout(() => {
+      this.#listenOptions();
+    }, 500);
+  }
+
   ngAfterContentInit() {
+    this.#listenOptions();
+  }
+
+  #listenOptions() {
     if (this.options && this.options.length > 0) {
       this.#listenOptionChanges(this.options.toArray());
       this.#subscription.add(this.options.changes.subscribe(() => {
@@ -98,9 +120,18 @@ export class BizySidebarComponent implements AfterContentInit {
     return founded;
   };
 
-  ngOnDestroy() {
+  #unsubscribe() {
     this.#subscription.unsubscribe();
     this.#optionSubscription.unsubscribe();
     this.#floatingOptionSubscription.unsubscribe();
+  }
+
+  _onToggle(event: PointerEvent) {
+    this.toggleChange.emit(!this._toggle);
+    this.onToggle.emit(event)
+  }
+
+  ngOnDestroy() {
+    this.#unsubscribe();
   }
 }

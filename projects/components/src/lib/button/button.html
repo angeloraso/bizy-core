@@ -5,9 +5,9 @@
     (blur)="_focused = false"
     class="bizy-button {{customClass}}"
     [ngClass]="{'bizy-button--disabled': disabled}"
-    (click)="_onSelect($event)"
+    (click)="_focused = true; _onSelect($event)"
     (keyup.enter)="_onSelect($event)">
-    <span class="bizy-button__content" (click)="_onSelect($event); $event.stopPropagation()">
+    <span class="bizy-button__content" (click)="_focused = true; _onSelect($event); $event.stopPropagation()">
         <ng-content></ng-content>
     </span>
     

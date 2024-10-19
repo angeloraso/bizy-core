@@ -7,10 +7,13 @@ export declare class BizySidebarComponent implements AfterContentInit {
     id: string;
     options: QueryList<BizySidebarOptionComponent>;
     floatingOptions: QueryList<BizySidebarFloatingOptionComponent>;
-    toggle: boolean;
-    onToggle: EventEmitter<boolean>;
+    toggleChange: EventEmitter<boolean>;
+    onToggle: EventEmitter<PointerEvent>;
+    _toggle: boolean;
+    set toggle(toggle: boolean);
     ngAfterContentInit(): void;
+    _onToggle(event: PointerEvent): void;
     ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizySidebarComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<BizySidebarComponent, "bizy-sidebar", never, { "id": { "alias": "id"; "required": false; }; "toggle": { "alias": "toggle"; "required": false; }; }, { "onToggle": "onToggle"; }, ["options", "floatingOptions"], ["[slot=start]", "[slot=start]", "*", "[slot=end]"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<BizySidebarComponent, "bizy-sidebar", never, { "id": { "alias": "id"; "required": false; }; "toggle": { "alias": "toggle"; "required": false; }; }, { "toggleChange": "toggleChange"; "onToggle": "onToggle"; }, ["options", "floatingOptions"], ["[slot=start]", "[slot=start]", "*", "[slot=end]"], false, never>;
 }
