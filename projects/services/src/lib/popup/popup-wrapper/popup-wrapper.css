@@ -5,7 +5,9 @@
 .bizy-popup-wrapper {
     position: relative;
     background-color: var(--bizy-popup-background-color);
+    min-width: var(--bizy-popup-min-width);
     width: var(--bizy-popup-width);
+    max-width: var(--bizy-popup-max-width);;
 }
 
 .bizy-popup-wrapper__drag-button {
@@ -68,3 +70,4 @@
 .bizy-popup-wrapper__close-button__icon {
     fill: var(--bizy-popup-close-button-color);
 }
+
