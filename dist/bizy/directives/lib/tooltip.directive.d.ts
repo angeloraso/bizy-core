@@ -1,6 +1,6 @@
-import { ElementRef, Renderer2 } from '@angular/core';
+import { ElementRef, Renderer2, OnDestroy } from '@angular/core';
 import * as i0 from "@angular/core";
-export declare class BizyTooltipDirective {
+export declare class BizyTooltipDirective implements OnDestroy {
     private elRef;
     private renderer;
     private document;
@@ -19,6 +19,7 @@ export declare class BizyTooltipDirective {
     hide(): void;
     create(): void;
     setPosition(): void;
+    ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyTooltipDirective, never>;
     static ɵdir: i0.ɵɵDirectiveDeclaration<BizyTooltipDirective, "[bizyTooltip]", never, { "tooltipTitle": { "alias": "bizyTooltip"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; "clickeable": { "alias": "clickeable"; "required": false; }; "placement": { "alias": "placement"; "required": false; }; "delay": { "alias": "delay"; "required": false; }; }, {}, never, never, false, never>;
 }

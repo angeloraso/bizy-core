@@ -1,10 +1,10 @@
 import { DOCUMENT } from '@angular/common';
-import { Directive, Input, ElementRef, HostListener, Renderer2, Inject } from '@angular/core';
+import { Directive, Input, ElementRef, HostListener, Renderer2, Inject, OnDestroy } from '@angular/core';
 
 @Directive({
   selector: '[bizyTooltip]'
 })
-export class BizyTooltipDirective {
+export class BizyTooltipDirective implements OnDestroy {
   @Input('bizyTooltip') tooltipTitle: string = '';
   @Input() customClass: string = '';
   @Input() clickeable: boolean = false;
@@ -136,5 +136,11 @@ export class BizyTooltipDirective {
 
     this.renderer.setStyle(this.tooltip, 'top', (top + scrollPos) + 'px');
     this.renderer.setStyle(this.tooltip, 'left', left + 'px');
+  }
+
+  ngOnDestroy() {
+    this.document.querySelectorAll('.bizy-tooltip-identify').forEach(element => {
+      this.renderer.removeChild(this.document.body, element);
+    });
   }
 }

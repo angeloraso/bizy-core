@@ -118,6 +118,11 @@ class BizyTooltipDirective {
         this.renderer.setStyle(this.tooltip, 'top', (top + scrollPos) + 'px');
         this.renderer.setStyle(this.tooltip, 'left', left + 'px');
     }
+    ngOnDestroy() {
+        this.document.querySelectorAll('.bizy-tooltip-identify').forEach(element => {
+            this.renderer.removeChild(this.document.body, element);
+        });
+    }
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyTooltipDirective, deps: [{ token: ElementRef }, { token: Renderer2 }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Directive });
     static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "16.2.12", type: BizyTooltipDirective, selector: "[bizyTooltip]", inputs: { tooltipTitle: ["bizyTooltip", "tooltipTitle"], customClass: "customClass", clickeable: "clickeable", placement: "placement", delay: "delay" }, host: { listeners: { "mouseenter": "onMouseEnter()", "mouseleave": "onMouseLeave()", "click": "onClick()" } }, ngImport: i0 });
 }
