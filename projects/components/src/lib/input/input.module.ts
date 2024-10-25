@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BizyInputComponent } from './input.component';
 import { OverlayModule } from '@angular/cdk/overlay';
@@ -13,6 +13,7 @@ const COMPONENTS = [BizyInputComponent, BizyInputOptionComponent];
     FormsModule,
     OverlayModule
   ],
+  providers: [DecimalPipe],
   declarations: COMPONENTS,
   exports: COMPONENTS
 })

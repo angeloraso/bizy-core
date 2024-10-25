@@ -24,7 +24,7 @@
             *ngIf="type !== 'textarea'"
             [id]="id"
             class="bizy-input__content__input"
-            [type]="type"
+            [type]="type === 'currency' ? 'tel' : type"
             [placeholder]="placeholder"
             [readonly]="readonly"
             [bizyOnlyNumbers]="type === 'number'"
@@ -33,9 +33,9 @@
             (focus)="_onFocus($event)"
             (keyup.enter)="_onEnter($event)"
             (keyup.backspace)="_onBackspace($event)"
-            [ngModel]="value"
+            [ngModel]="_value"
             (ngModelChange)="_onchange($event)"/>
-
+        
         <textarea
             #bizyInput
             *ngIf="type === 'textarea'"
@@ -48,7 +48,7 @@
             (focus)="_onFocus($event)"
             (keyup.enter)="_onEnter($event)"
             (keyup.backspace)="_onBackspace($event)"
-            [ngModel]="value"
+            [ngModel]="_value"
             (ngModelChange)="_onchange($event)">
         </textarea>
 

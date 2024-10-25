@@ -2,6 +2,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, Input, OnDestroy, Output, ViewChild, ContentChildren, QueryList } from '@angular/core';
 import { Subject, Subscription, debounceTime, interval } from 'rxjs';
 import { BizyInputOptionComponent } from './input-option/input-option.component';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'bizy-input',
@@ -15,14 +16,13 @@ export class BizyInputComponent implements OnDestroy {
   @ViewChild('bizyInput') bizyInput: ElementRef;
   @Input() id: string = `bizy-input-${Math.random()}`;
   @Input() name: string = `bizy-input-${Math.random()}`;
-  @Input() type: 'text' | 'number' | 'email' | 'password' | 'tel' | 'textarea' = 'text';
+  @Input() type: 'text' | 'number' | 'email' | 'password' | 'tel' | 'textarea' | 'currency' = 'text';
   @Input() customClass: string = '';
   @Input() placeholder: string = '';
   @Input() debounceTime: number = 250;
   @Input() rows: number = 4;
   @Input() disabled: boolean = false;
   @Input() readonly: boolean = false;
-  @Input() value: string | number = '';
   @Output() valueChange = new EventEmitter<string | number>();
   @Output() onChange = new EventEmitter<string | number>();
   @Output() onEnter = new EventEmitter<PointerEvent>();
@@ -39,20 +39,63 @@ export class BizyInputComponent implements OnDestroy {
     this.setFocus(autofocus);
   }
 
+  @Input() set value(value: string | number) {
+    if (typeof value === 'undefined' || value === null) {
+      return;
+    }
+
+    if (value === 0) {
+      this._value = '';
+      return;
+    }
+
+    if (this.type === 'currency' && Number(value)) {
+      const decimalPosition = String(value).indexOf('.');
+      if (decimalPosition > 0) {
+        let leftSide = String(value).substring(0, decimalPosition);
+        let rightSide = String(value).substring(decimalPosition + 1);
+        leftSide = this.decimalPipe.transform(leftSide, '1.0-0');
+        this._value = `${leftSide},${rightSide}`;
+        return;
+      }
+
+      this._value = this.decimalPipe.transform(value, '1.0-0');
+      return;
+    }
+
+    this._value = String(value);
+  }
+
+
   focused: boolean = false;
   touched: boolean = false;
   opened: boolean = false;
+  _value: string = '';
 
   #subscription = new Subscription();
   #optionSubscription = new Subscription();
   onChange$ = new Subject<string | number>();
 
+
+  constructor(
+    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef,
+    @Inject(DecimalPipe) private decimalPipe: DecimalPipe
+  ) {}
+
   getWidth(): number {
     return this.bizyInputWrapper && this.bizyInputWrapper.nativeElement && this.bizyInputWrapper.nativeElement.offsetWidth ? this.bizyInputWrapper.nativeElement.offsetWidth : 0;
   }
 
-  _onchange(value: string | number) {
+  _onchange(value: string) {
     if (this.disabled || this.readonly) {
+      return;
+    }
+
+    if (this.type === 'currency') {
+      let cleanedStr = value.replace(/\./g, '');
+      cleanedStr = cleanedStr.replace(',', '.');
+      cleanedStr = cleanedStr.replace(/\,/g, '');
+      this.onChange$.next(Number(cleanedStr));
       return;
     }
 
@@ -160,10 +203,6 @@ export class BizyInputComponent implements OnDestroy {
     this.opened = false;
     this.ref.detectChanges();
   }
-
-  constructor(
-    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
-  ) {}
 
   ngOnDestroy() {
     this.#subscription.unsubscribe();

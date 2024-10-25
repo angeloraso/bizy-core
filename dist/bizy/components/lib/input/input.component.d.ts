@@ -1,23 +1,24 @@
 import { ChangeDetectorRef, ElementRef, EventEmitter, OnDestroy, QueryList } from '@angular/core';
 import { Subject } from 'rxjs';
 import { BizyInputOptionComponent } from './input-option/input-option.component';
+import { DecimalPipe } from '@angular/common';
 import * as i0 from "@angular/core";
 export declare class BizyInputComponent implements OnDestroy {
     #private;
     private ref;
+    private decimalPipe;
     options: QueryList<BizyInputOptionComponent>;
     bizyInputWrapper: ElementRef;
     bizyInput: ElementRef;
     id: string;
     name: string;
-    type: 'text' | 'number' | 'email' | 'password' | 'tel' | 'textarea';
+    type: 'text' | 'number' | 'email' | 'password' | 'tel' | 'textarea' | 'currency';
     customClass: string;
     placeholder: string;
     debounceTime: number;
     rows: number;
     disabled: boolean;
     readonly: boolean;
-    value: string | number;
     valueChange: EventEmitter<string | number>;
     onChange: EventEmitter<string | number>;
     onEnter: EventEmitter<PointerEvent>;
@@ -26,12 +27,15 @@ export declare class BizyInputComponent implements OnDestroy {
     onBlur: EventEmitter<PointerEvent>;
     onFocus: EventEmitter<PointerEvent>;
     set autofocus(autofocus: boolean);
+    set value(value: string | number);
     focused: boolean;
     touched: boolean;
     opened: boolean;
+    _value: string;
     onChange$: Subject<string | number>;
+    constructor(ref: ChangeDetectorRef, decimalPipe: DecimalPipe);
     getWidth(): number;
-    _onchange(value: string | number): void;
+    _onchange(value: string): void;
     _onClick(event: PointerEvent): void;
     _onEnter(event: PointerEvent): void;
     _onBlur(event: PointerEvent): void;
@@ -46,8 +50,7 @@ export declare class BizyInputComponent implements OnDestroy {
             id: string;
         };
     }, button?: HTMLButtonElement) => void;
-    constructor(ref: ChangeDetectorRef);
     ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyInputComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<BizyInputComponent, "bizy-input", never, { "id": { "alias": "id"; "required": false; }; "name": { "alias": "name"; "required": false; }; "type": { "alias": "type"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; "placeholder": { "alias": "placeholder"; "required": false; }; "debounceTime": { "alias": "debounceTime"; "required": false; }; "rows": { "alias": "rows"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; "readonly": { "alias": "readonly"; "required": false; }; "value": { "alias": "value"; "required": false; }; "autofocus": { "alias": "autofocus"; "required": false; }; }, { "valueChange": "valueChange"; "onChange": "onChange"; "onEnter": "onEnter"; "onBackspace": "onBackspace"; "onSelect": "onSelect"; "onBlur": "onBlur"; "onFocus": "onFocus"; }, ["options"], ["[slot=header]", "[slot=prefix]", "[slot=suffix]", "bizy-input-option", "[slot=error]"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<BizyInputComponent, "bizy-input", never, { "id": { "alias": "id"; "required": false; }; "name": { "alias": "name"; "required": false; }; "type": { "alias": "type"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; "placeholder": { "alias": "placeholder"; "required": false; }; "debounceTime": { "alias": "debounceTime"; "required": false; }; "rows": { "alias": "rows"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; "readonly": { "alias": "readonly"; "required": false; }; "autofocus": { "alias": "autofocus"; "required": false; }; "value": { "alias": "value"; "required": false; }; }, { "valueChange": "valueChange"; "onChange": "onChange"; "onEnter": "onEnter"; "onBackspace": "onBackspace"; "onSelect": "onSelect"; "onBlur": "onBlur"; "onFocus": "onFocus"; }, ["options"], ["[slot=header]", "[slot=prefix]", "[slot=suffix]", "bizy-input-option", "[slot=error]"], false, never>;
 }
