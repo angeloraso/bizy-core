@@ -28,6 +28,7 @@
             [placeholder]="placeholder"
             [readonly]="readonly"
             [bizyOnlyNumbers]="type === 'number'"
+            [bizyCurrencyFormat]="type === 'currency'"
             [bizyOnlyPhoneDigits]="type === 'tel'"
             (blur)="_onBlur($event)"
             (focus)="_onFocus($event)"

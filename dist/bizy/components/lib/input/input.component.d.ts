@@ -32,6 +32,7 @@ export declare class BizyInputComponent implements OnDestroy {
     touched: boolean;
     opened: boolean;
     _value: string;
+    hasFinalComma: boolean;
     onChange$: Subject<string | number>;
     constructor(ref: ChangeDetectorRef, decimalPipe: DecimalPipe);
     getWidth(): number;
