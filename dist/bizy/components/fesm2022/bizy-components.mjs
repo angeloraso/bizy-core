@@ -2320,7 +2320,7 @@ class BizyFilterPipe {
                     _state = _state[_property];
                 });
                 if (typeof state.id === 'boolean') {
-                    return Boolean(_state) === state.id;
+                    return Boolean(_state) === state.id || (Array.isArray(_state) && _state.length !== 0);
                 }
                 if (Array.isArray(_state)) {
                     return _state.includes(state.id);

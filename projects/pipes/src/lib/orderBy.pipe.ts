@@ -62,12 +62,12 @@ export class BizyOrderByPipe implements PipeTransform {
       let value = item;
       const nestedProperty = property.split('.');
       nestedProperty.forEach(_property => {
-        if (_property) {
+        if (_property && value[_property]) {
           value = value[_property];
         }
       });
 
-      return value;
+      return value || null;
     }
 
     const index = output.findIndex(_item => {
