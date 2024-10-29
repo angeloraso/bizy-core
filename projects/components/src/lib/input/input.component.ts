@@ -111,9 +111,11 @@ export class BizyInputComponent implements OnDestroy {
       this.valueChange.emit(_value);
       this.onChange.emit(_value);
       return;
+    } else if (this.type === 'number' && Number(value)) {
+      this.onChange$.next(Number(value));
+    } else {
+      this.onChange$.next(value);
     }
-
-    this.onChange$.next(value);
   }
 
   _onClick(event: PointerEvent) {

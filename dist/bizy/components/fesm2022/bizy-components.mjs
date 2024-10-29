@@ -328,7 +328,12 @@ class BizyInputComponent {
             this.onChange.emit(_value);
             return;
         }
-        this.onChange$.next(value);
+        else if (this.type === 'number' && Number(value)) {
+            this.onChange$.next(Number(value));
+        }
+        else {
+            this.onChange$.next(value);
+        }
     }
     _onClick(event) {
         this.onSelect.emit(event);
