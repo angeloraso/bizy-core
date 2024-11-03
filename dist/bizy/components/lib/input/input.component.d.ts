@@ -1,12 +1,10 @@
 import { ChangeDetectorRef, ElementRef, EventEmitter, OnDestroy, QueryList } from '@angular/core';
 import { Subject } from 'rxjs';
 import { BizyInputOptionComponent } from './input-option/input-option.component';
-import { DecimalPipe } from '@angular/common';
 import * as i0 from "@angular/core";
 export declare class BizyInputComponent implements OnDestroy {
     #private;
     private ref;
-    private decimalPipe;
     options: QueryList<BizyInputOptionComponent>;
     bizyInputWrapper: ElementRef;
     bizyInput: ElementRef;
@@ -27,14 +25,15 @@ export declare class BizyInputComponent implements OnDestroy {
     onBlur: EventEmitter<PointerEvent>;
     onFocus: EventEmitter<PointerEvent>;
     set autofocus(autofocus: boolean);
-    set value(value: string | number);
+    set value(value: string | number | null);
     focused: boolean;
     touched: boolean;
     opened: boolean;
-    _value: string;
-    hasFinalComma: boolean;
+    _value: string | number | null;
+    _currencyValue: string | number | null;
+    currencyOptions: string;
     onChange$: Subject<string | number>;
-    constructor(ref: ChangeDetectorRef, decimalPipe: DecimalPipe);
+    constructor(ref: ChangeDetectorRef);
     getWidth(): number;
     _onchange(value: string): void;
     _onClick(event: PointerEvent): void;
