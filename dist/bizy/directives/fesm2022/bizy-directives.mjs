@@ -1,9 +1,56 @@
+import * as i0 from '@angular/core';
+import { ElementRef, Directive, Inject, Input, Renderer2, HostListener, Host, EventEmitter, Output, NgModule } from '@angular/core';
+import AutoNumeric from 'autonumeric';
 import * as i1 from '@angular/common';
 import { DOCUMENT } from '@angular/common';
-import * as i0 from '@angular/core';
-import { ElementRef, Renderer2, Directive, Inject, Input, HostListener, Host, EventEmitter, Output, NgModule } from '@angular/core';
 import { fromEvent, merge, timer, of } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
+
+class BizyCurrencyFormatDirective {
+    elementRef;
+    bizyCurrencyFormat = false;
+    options = {};
+    #autoNumericInstance;
+    constructor(elementRef) {
+        this.elementRef = elementRef;
+    }
+    ngOnInit() {
+        if (typeof this.bizyCurrencyFormat === 'undefined' || this.bizyCurrencyFormat === null || this.bizyCurrencyFormat === false) {
+            return;
+        }
+        this.#autoNumericInstance = new AutoNumeric(this.elementRef.nativeElement, this.options);
+        this.elementRef.nativeElement.getValue = this.getValue;
+        this.elementRef.nativeElement.setValue = this.setValue;
+    }
+    ngOnDestroy() {
+        if (this.#autoNumericInstance) {
+            this.#autoNumericInstance.remove();
+        }
+    }
+    getValue = () => {
+        return this.#autoNumericInstance.getNumber();
+    };
+    setValue = (value) => {
+        this.#autoNumericInstance.set(value);
+    };
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyCurrencyFormatDirective, deps: [{ token: ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
+    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "16.2.12", type: BizyCurrencyFormatDirective, selector: "[bizyCurrencyFormat]", inputs: { bizyCurrencyFormat: "bizyCurrencyFormat", options: ["bizyCurrencyOptions", "options"] }, ngImport: i0 });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyCurrencyFormatDirective, decorators: [{
+            type: Directive,
+            args: [{
+                    selector: '[bizyCurrencyFormat]'
+                }]
+        }], ctorParameters: function () { return [{ type: i0.ElementRef, decorators: [{
+                    type: Inject,
+                    args: [ElementRef]
+                }] }]; }, propDecorators: { bizyCurrencyFormat: [{
+                type: Input,
+                args: ['bizyCurrencyFormat']
+            }], options: [{
+                type: Input,
+                args: ['bizyCurrencyOptions']
+            }] } });
 
 class BizyTooltipDirective {
     elRef;
@@ -422,7 +469,8 @@ const DIRECTIVES = [
     BizyOnlyNumbersDirective,
     BizyOnlyPhoneDigitsDirective,
     BizyNgForTrackByIdDirective,
-    BizyTooltipDirective
+    BizyTooltipDirective,
+    BizyCurrencyFormatDirective
 ];
 class BizyDirectivesModule {
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyDirectivesModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
@@ -431,12 +479,14 @@ class BizyDirectivesModule {
             BizyOnlyNumbersDirective,
             BizyOnlyPhoneDigitsDirective,
             BizyNgForTrackByIdDirective,
-            BizyTooltipDirective], exports: [BizyLoadingDirective,
+            BizyTooltipDirective,
+            BizyCurrencyFormatDirective], exports: [BizyLoadingDirective,
             BizyLongPressDirective,
             BizyOnlyNumbersDirective,
             BizyOnlyPhoneDigitsDirective,
             BizyNgForTrackByIdDirective,
-            BizyTooltipDirective] });
+            BizyTooltipDirective,
+            BizyCurrencyFormatDirective] });
     static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyDirectivesModule });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyDirectivesModule, decorators: [{
@@ -451,5 +501,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
  * Generated bundle index. Do not edit.
  */
 
-export { BizyDirectivesModule, BizyLoadingDirective, BizyLongPressDirective, BizyNgForTrackByIdDirective, BizyOnlyNumbersDirective, BizyOnlyPhoneDigitsDirective, BizyTooltipDirective, LOADING_TYPE };
+export { BizyCurrencyFormatDirective, BizyDirectivesModule, BizyLoadingDirective, BizyLongPressDirective, BizyNgForTrackByIdDirective, BizyOnlyNumbersDirective, BizyOnlyPhoneDigitsDirective, BizyTooltipDirective, LOADING_TYPE };
 //# sourceMappingURL=bizy-directives.mjs.map

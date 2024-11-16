@@ -348,7 +348,7 @@ class BizyInputComponent {
         this.ref.detectChanges();
     }
     ngAfterViewInit() {
-        if (this.type === 'currency') {
+        if (this.type === 'currency' && this.bizyInput.nativeElement.setValue) {
             this.bizyInput.nativeElement.setValue(this._currencyValue);
         }
         this.#subscription.add(this.onChange$.pipe(debounceTime(this.debounceTime)).subscribe(value => {
