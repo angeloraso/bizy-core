@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { BizyInputComponent } from './input.component';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { BizyInputOptionComponent } from './input-option/input-option.component';
+import { BizyDirectivesModule } from '@bizy/directives';
 
 const COMPONENTS = [BizyInputComponent, BizyInputOptionComponent];
 
@@ -11,7 +12,8 @@ const COMPONENTS = [BizyInputComponent, BizyInputOptionComponent];
   imports: [
     CommonModule,
     FormsModule,
-    OverlayModule
+    OverlayModule,
+    BizyDirectivesModule
   ],
   providers: [DecimalPipe],
   declarations: COMPONENTS,

@@ -46,7 +46,7 @@ export class BizyInputComponent implements OnDestroy {
     if (this.type === 'currency') {
       this._currencyValue = Number(value);
 
-      if (this.bizyInput) {
+      if (this.bizyInput && this.bizyInput.nativeElement && (<any>this.bizyInput.nativeElement).getValue) {
         const _value = (<any>this.bizyInput.nativeElement).getValue();
         if (_value !== this._currencyValue) {
           this.bizyInput.nativeElement.setValue(this._currencyValue);

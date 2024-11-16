@@ -5,7 +5,7 @@ import { Directive, HostListener, Inject, Input, ElementRef } from '@angular/cor
 })
 export class BizyOnlyNumbersDirective {
   @Input('bizyOnlyNumbers') public onlyNumbers: boolean;
-  #regex: RegExp = new RegExp(/^-?\d*[.,]?\d*$/);
+  #regex: RegExp = new RegExp(/^-?\d+([.,]?\d+)*$/);
   #specialKeys = ['Backspace', 'backspace', 'delete', 'Delete', 'Tab', 'tab', 'Escape', 'escape', 'Enter', 'enter', 'Subtract', 'subtract'];
 
   constructor(@Inject(ElementRef) private elementRef: ElementRef){}
