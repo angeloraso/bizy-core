@@ -76,9 +76,9 @@ export class BizyFileUploaderService {
         dragDropAreaWidth: string;
         dragDropAreaHeight: string;
         allowedFileTypes: Array<string>;
-        tenantId: string;
         language: 'es' | 'en';
         templateId: string;
+        headers: Record<string, string>;
     }): void {
       const locale = data.language === 'es' ? ES : EN;
       this.#uppy = new Uppy({
@@ -103,9 +103,7 @@ export class BizyFileUploaderService {
         })
         .use(XHRUpload, {
           endpoint: '',
-          headers: {
-            'Bizy-TenantId': data.tenantId
-          },
+          headers: data.headers,
           getResponseData: (responseText, response) => {
             return {
               fileId: responseText,
@@ -160,14 +158,12 @@ export class BizyFileUploaderService {
       });
     }
 
-    upload(data: {url: string, token: string}) {
-        this.#uppy.getPlugin('XHRUpload')!.setOptions({
-          endpoint: data.url,
-          headers: {
-            authorization: `Bearer ${data.token}`
-          }
-        });
-        this.#uppy.upload();
+    upload(data: {endpoint: string, headers?: Record<string,string>}) {
+      this.#uppy.getPlugin('XHRUpload')!.setOptions({
+        endpoint: data.endpoint,
+        headers: data.headers ?? {}
+      });
+      this.#uppy.upload();
     }
 
     cleanAllFiles() {

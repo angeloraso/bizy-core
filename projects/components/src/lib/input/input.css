@@ -28,6 +28,13 @@
     cursor: var(--bizy-input-cursor);
 }
 
+.bizy-input--negative,
+.bizy-input--negative .bizy-input__header,
+.bizy-input--negative .bizy-input__content,
+.bizy-input--negative .bizy-input__content__input {
+    background-color: var(--bizy-input-negative-background-color);
+}
+
 .bizy-input--disabled {
     opacity: 0.5;
     pointer-events: none;

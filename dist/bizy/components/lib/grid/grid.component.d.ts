@@ -19,6 +19,7 @@ export declare class BizyGridComponent implements AfterContentInit {
     itemsPerRow: number;
     constructor(ref: ChangeDetectorRef, document: Document, renderer: Renderer2, elementRef: ElementRef);
     ngAfterContentInit(): void;
+    trackById(index: number, item: any): any;
     ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyGridComponent, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<BizyGridComponent, "bizy-grid", never, { "resizeRef": { "alias": "resizeRef"; "required": false; }; }, {}, ["gridDirective"], ["*"], false, never>;

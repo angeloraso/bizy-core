@@ -9,17 +9,17 @@ import { BizyFileUploaderService } from './file-uploader.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyFileUploaderComponent implements AfterViewInit, OnDestroy {
-  @Input() tenantId: number | null = null;
   @Input() dragDropAreaWidth: string = '100%';
   @Input() dragDropAreaHeight: string = '16rem';
   @Input() language: 'es' | 'en' = 'es';
+  @Input() headers: Record<string, string> = {};
   @Input() maxFileSize: number | null = null;
   @Input() minFileSize: number | null = null;
   @Input() maxTotalFileSize: number | null = 31458000; // 30MB
   @Input() maxNumberOfFiles: number | null = null;
   @Input() minNumberOfFiles: number | null = null;
   @Input() allowedFileTypes = ['.wav'];
-  @Input() upload: Subject<{url: string, token: string}>;
+  @Input() upload: Subject<{endpoint: string, headers?: Record<string,string>}>;
 
   @Output() completed = new EventEmitter<{successful: Array<string>, failed: Array<string>}>();
   @Output() loadedFiles = new EventEmitter<Array<UppyFile>>();
@@ -34,10 +34,6 @@ export class BizyFileUploaderComponent implements AfterViewInit, OnDestroy {
   ) {}
 
   ngAfterViewInit(): void {
-    if (!this.tenantId) {
-      return;
-    }
-
     this.fileUploader.createFileUploader({
       maxFileSize: this.maxFileSize,
       minFileSize: this.minFileSize,
@@ -47,9 +43,9 @@ export class BizyFileUploaderComponent implements AfterViewInit, OnDestroy {
       dragDropAreaWidth: this.dragDropAreaWidth,
       dragDropAreaHeight: this.dragDropAreaHeight,
       allowedFileTypes: this.allowedFileTypes,
-      tenantId: String(this.tenantId),
       language: this.language,
-      templateId: this.TEMPLATE_ID
+      templateId: this.TEMPLATE_ID,
+      headers: this.headers,
     });
 
     this.#subscription.add(this.upload.subscribe(data => {

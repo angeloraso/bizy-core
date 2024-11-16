@@ -30,7 +30,7 @@ export declare class BizyInputComponent implements OnDestroy {
     touched: boolean;
     opened: boolean;
     _value: string | number | null;
-    _currencyValue: string | number | null;
+    _currencyValue: number | null;
     currencyOptions: string;
     onChange$: Subject<string | number>;
     constructor(ref: ChangeDetectorRef);

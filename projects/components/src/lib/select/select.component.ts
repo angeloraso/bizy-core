@@ -16,9 +16,9 @@ export class BizySelectComponent implements AfterViewInit {
   @ContentChildren(BizySelectOptionComponent) options: QueryList<BizySelectOptionComponent>;
   @ViewChild('bizyInput') bizyInput: BizyInputComponent;
   @Input() id: string = `bizy-select-${Math.random()}`;
-  @Input() placeholder: string = '';
   @Input() disabled: boolean = false;
   @Input() readonly: boolean = false;
+  @Input() placeholder: string = '';
   @Input() customClass: string = '';
   @Input() opened: boolean = false;
   @Output() openedChange = new EventEmitter<boolean>();
@@ -58,7 +58,6 @@ export class BizySelectComponent implements AfterViewInit {
 
       this.#subscription.add(_option.selected$.pipe(filter(_value => _value === true)).subscribe(() => {
         this._optionValue = _option.getValue();
-        this.close();
         this.ref.detectChanges();
       }));
     });
@@ -75,7 +74,6 @@ export class BizySelectComponent implements AfterViewInit {
 
         this.#subscription.add(_option.selected$.pipe(filter(_value => _value === true)).subscribe(() => {
           this._optionValue = _option.getValue();
-          this.close();
           this.ref.detectChanges();
         }));
       });

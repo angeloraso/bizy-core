@@ -44,7 +44,13 @@ export class BizyInputComponent implements OnDestroy {
     }
 
     if (this.type === 'currency') {
-      this._currencyValue = value;
+      this._currencyValue = Number(value);
+
+      const _value = (<any>this.bizyInput.nativeElement).getValue();
+      if (_value !== this._currencyValue) {
+        this.bizyInput.nativeElement.setValue(this._currencyValue);
+      }
+
       return;
     }
 
@@ -55,7 +61,7 @@ export class BizyInputComponent implements OnDestroy {
   touched: boolean = false;
   opened: boolean = false;
   _value: string | number | null = null;
-  _currencyValue: string | number | null = null;
+  _currencyValue: number | null = null;
 
   currencyOptions = 'commaDecimalCharDotSeparator';
 

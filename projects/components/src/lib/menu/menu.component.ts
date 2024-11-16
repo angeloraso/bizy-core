@@ -1,3 +1,4 @@
+import { ConnectedPosition } from '@angular/cdk/overlay';
 import { BizyMenuOptionComponent } from './menu-option/menu-option.component';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, EventEmitter, Inject, Input, Output, QueryList } from '@angular/core';
 import { Subscription } from 'rxjs';
@@ -22,6 +23,21 @@ export class BizyMenuComponent {
   _menuWidth: number;
 
   #subscription = new Subscription();
+
+  overlayPositions: Array<ConnectedPosition> = [
+    {
+      originX: 'start',
+      originY: 'bottom',
+      overlayX: 'start',
+      overlayY: 'top',
+    },
+    {
+      originX: 'start',
+      originY: 'top',
+      overlayX: 'start',
+      overlayY: 'bottom',
+    }
+  ];
 
   constructor(@Inject(ChangeDetectorRef) private ref: ChangeDetectorRef) {}
 

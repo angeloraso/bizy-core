@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd, NavigationStart, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { fromEvent, Observable } from 'rxjs';
 import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 
 @Injectable({
@@ -12,6 +12,8 @@ export class BizyRouterService {
   transitionsEnd$: Observable<ActivatedRouteSnapshot>;
 
   transitionsStart$: Observable<ActivatedRouteSnapshot>;
+
+  popStateEvent$: Observable<PopStateEvent>;
 
   constructor(@Inject(Router) private router: Router) {
     this.transitionsEnd$ = this.router.events.pipe(
@@ -27,6 +29,8 @@ export class BizyRouterService {
       distinctUntilChanged(),
       map(() => this.router.routerState.snapshot.root)
     );
+
+    this.popStateEvent$ = fromEvent<PopStateEvent>(window, 'popstate');
   }
 
   getURL() {
@@ -45,12 +49,26 @@ export class BizyRouterService {
     return activatedRoute.snapshot.queryParamMap.get(param);
   }
 
-  goTo(data: { path: string; params?: Record<string, string> }) {
-    this._backPath = this.getURL();
+  getAllQueryParam(): Record<string, string> {
+    const params = new URL(window.location.href).searchParams as any;
+    const queryParams: Record<string, string> = {};
+  
+    for (const [key, value] of params.entries()) {
+        queryParams[key] = value;
+    }
+  
+    return queryParams;
+  }
+
+  goTo(data: { path: string; params?: Record<string, string>, replace?: boolean, skip?: boolean }) {
+    if (data.replace) {
+      this._backPath = '';
+    } else {
+      this._backPath = this.getURL();
+    }
+
     if (data.path[0] === '/') {
-      this.router.navigateByUrl(`${data.path}${this._serialize(data.params)}`, {
-        replaceUrl: true
-      });
+      this.router.navigateByUrl(`${data.path}${this._serialize(data.params)}`, { replaceUrl: data.replace ?? false, skipLocationChange: data.skip ?? false });
       return;
     }
 
@@ -58,15 +76,15 @@ export class BizyRouterService {
     const index = path.indexOf('?');
     const url = index !== -1 ? path.substring(0, index) : path;
 
-    this.router.navigateByUrl(`${url}/${data.path}${this._serialize(data.params)}`, {
-      replaceUrl: true
-    });
+    this.router.navigateByUrl(`${url}/${data.path}${this._serialize(data.params)}`, { replaceUrl: data.replace ?? false, skipLocationChange: data.skip ?? false  });
   }
 
-  goBack() {
+  goBack(data?: {path: string}) {
     if (this._backPath) {
-      this.router.navigateByUrl(this._backPath, { replaceUrl: true });
+      history.back();
       this._backPath = '';
+    } else if (data && data.path) {
+      this.router.navigateByUrl(data.path, { replaceUrl: true });
     } else {
       const index = this.getURL().lastIndexOf('/');
       const backURL = this.getURL().substring(0, index);
@@ -78,9 +96,11 @@ export class BizyRouterService {
     if (force) {
       window.location.reload();
     } else {
-      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-        this.goTo({ path: this.getURL() });
-      });
+      setTimeout(() => {
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+          this.goTo({ path: this.getURL(), params: this.getAllQueryParam() });
+        });
+      }, 1);
     }
   }
 

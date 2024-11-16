@@ -2,8 +2,8 @@
     font-size: 1rem;
     background-color: inherit;
     width: fit-content;
-    max-width: 70vw;
+    max-width: 90vw;
     grid-template-columns: repeat(auto-fit, minmax(var(--bizy-filter-section-min-width), 1fr));
     display: grid;
-    gap: 1rem;
+    gap: 2rem;
 }

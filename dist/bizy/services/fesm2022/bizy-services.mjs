@@ -239,10 +239,12 @@ class BizyRouterService {
     _backPath = '';
     transitionsEnd$;
     transitionsStart$;
+    popStateEvent$;
     constructor(router) {
         this.router = router;
         this.transitionsEnd$ = this.router.events.pipe(filter(event => event instanceof NavigationEnd), map((event) => event.id), distinctUntilChanged(), map(() => this.router.routerState.snapshot.root));
         this.transitionsStart$ = this.router.events.pipe(filter(event => event instanceof NavigationStart), map((event) => event.id), distinctUntilChanged(), map(() => this.router.routerState.snapshot.root));
+        this.popStateEvent$ = fromEvent(window, 'popstate');
     }
     getURL() {
         return window.location.pathname;
@@ -256,25 +258,37 @@ class BizyRouterService {
     getQueryParam(activatedRoute, param) {
         return activatedRoute.snapshot.queryParamMap.get(param);
     }
+    getAllQueryParam() {
+        const params = new URL(window.location.href).searchParams;
+        const queryParams = {};
+        for (const [key, value] of params.entries()) {
+            queryParams[key] = value;
+        }
+        return queryParams;
+    }
     goTo(data) {
-        this._backPath = this.getURL();
+        if (data.replace) {
+            this._backPath = '';
+        }
+        else {
+            this._backPath = this.getURL();
+        }
         if (data.path[0] === '/') {
-            this.router.navigateByUrl(`${data.path}${this._serialize(data.params)}`, {
-                replaceUrl: true
-            });
+            this.router.navigateByUrl(`${data.path}${this._serialize(data.params)}`, { replaceUrl: data.replace ?? false, skipLocationChange: data.skip ?? false });
             return;
         }
         const path = this.getURL();
         const index = path.indexOf('?');
         const url = index !== -1 ? path.substring(0, index) : path;
-        this.router.navigateByUrl(`${url}/${data.path}${this._serialize(data.params)}`, {
-            replaceUrl: true
-        });
+        this.router.navigateByUrl(`${url}/${data.path}${this._serialize(data.params)}`, { replaceUrl: data.replace ?? false, skipLocationChange: data.skip ?? false });
     }
-    goBack() {
+    goBack(data) {
         if (this._backPath) {
-            this.router.navigateByUrl(this._backPath, { replaceUrl: true });
+            history.back();
             this._backPath = '';
+        }
+        else if (data && data.path) {
+            this.router.navigateByUrl(data.path, { replaceUrl: true });
         }
         else {
             const index = this.getURL().lastIndexOf('/');
@@ -287,9 +301,11 @@ class BizyRouterService {
             window.location.reload();
         }
         else {
-            this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-                this.goTo({ path: this.getURL() });
-            });
+            setTimeout(() => {
+                this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+                    this.goTo({ path: this.getURL(), params: this.getAllQueryParam() });
+                });
+            }, 1);
         }
     }
     _serialize(params) {

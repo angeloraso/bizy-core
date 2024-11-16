@@ -3,15 +3,15 @@
     <cdk-virtual-scroll-viewport
         class="bizy-grid__rows"
         [itemSize]="rowHeight"
-        [minBufferPx]="rowHeight + (rowHeight * 20)"
-        [maxBufferPx]="rowHeight + (rowHeight * 40)">
-        
-        <ng-content></ng-content>
+        [minBufferPx]="rowHeight + (rowHeight * 5)"
+        [maxBufferPx]="rowHeight + (rowHeight * 10)">
 
+        <ng-content></ng-content>
+        
         <ng-template #gridScrollingContent>
             <ng-template let-item cdkVirtualFor [cdkVirtualForOf]="itemRows">
                 <bizy-grid-row [rowHeight]="rowHeight" [itemsPerRow]="itemsPerRow">
-                    <ng-container *ngFor="let it of item">
+                    <ng-container *ngFor="let it of item; trackBy: trackById">
                         <ng-template *ngTemplateOutlet="itemTemplate; context: { $implicit: it }"></ng-template>
                     </ng-container>
                 </bizy-grid-row>

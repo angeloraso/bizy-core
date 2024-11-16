@@ -4,17 +4,9 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'bizyOrderBy'
 })
 export class BizyOrderByPipe implements PipeTransform {
-  transform<T>(items: Array<T>, order: 'asc' | 'desc' | null = null, property: string = '', turnOff: boolean = false): Array<T> {
-    if (turnOff) {
-      return items;
-    }
-
+  transform<T>(items: Array<T>, order: 'asc' | 'desc' | null = null, property: string = ''): Array<T> {
     // No items
-    if (!items) {
-      return [];
-    }
-
-    if (!order) {
+    if (!items || !order) {
       return items;
     }
 
@@ -23,16 +15,54 @@ export class BizyOrderByPipe implements PipeTransform {
       return items;
     }
 
-    let output: Array<T> = [...items];
+    const sortByString = (items: Array<T>, order: 'asc' | 'desc'): Array<T> => {
+      return items.sort((a: any, b: any) => {
+        let aValue: any = a;
+        let bValue: any = b;
+        const nestedProperty = property.split('.');
+        nestedProperty.forEach(_property => {
+          aValue = aValue[_property];
+          bValue = bValue[_property];
+        });
+  
+        if ((typeof aValue === 'undefined' || aValue === null) && (typeof bValue === 'undefined' || bValue === null)) {
+          return 0;
+        }
+  
+        if ((typeof aValue === 'undefined' || aValue === null) && (typeof bValue !== 'undefined' && bValue !== null)) {
+          return order === 'desc' ? 1 : -1;
+        }
+  
+        if ((typeof aValue !== 'undefined' && aValue !== null) && (typeof bValue === 'undefined' || bValue === null) ) {
+          return order === 'desc' ? -1 : 1;
+        }
+  
+        if (aValue === bValue) {
+          return 0;
+        }
+  
+        if (order === 'desc') {
+          return (this.#removeAccentsAndDiacritics(String(aValue)).toLowerCase() > this.#removeAccentsAndDiacritics(String(bValue)).toLowerCase() ? -1 : 1);
+        }
+  
+        return (this.#removeAccentsAndDiacritics(String(bValue)).toLowerCase() > this.#removeAccentsAndDiacritics(String(aValue)).toLowerCase() ? -1 : 1);
+      });
+    }
 
-    if (property === '') {
+    const sortByNumber = (items: Array<T>, order: 'asc' | 'desc'): Array<T> => {
       if (order === 'asc') {
-        output.sort();
-        return output;
+        return items.sort((a, b) => Number(getValue(a)) - Number(getValue(b)));
+      } else {
+        return items.sort((a, b) => Number(getValue(b)) - Number(getValue(a)));
       }
+    }
 
-      output.sort().reverse();
-      return output;
+    const sortByDate = (items: Array<T>, order: 'asc' | 'desc'): Array<T> => {
+      return items.sort((a, b) =>  {
+        const aDate = parseDateString(getValue(a) as string)
+        const bDate = parseDateString(getValue(b) as string)
+        return order === 'asc' ? aDate.getTime() -  bDate.getTime() : bDate.getTime() -  aDate.getTime()
+      });
     }
 
     const isDate = (value: string) => {
@@ -61,13 +91,30 @@ export class BizyOrderByPipe implements PipeTransform {
     const getValue = (item: T) => {
       let value = item;
       const nestedProperty = property.split('.');
-      nestedProperty.forEach(_property => {
-        if (_property && value[_property]) {
-          value = value[_property];
-        }
-      });
 
-      return value || null;
+      for (let i = 0; i < nestedProperty.length; i++) {
+        const property = nestedProperty[i];
+        if (!property || typeof value[property] === 'undefined' || value[property] === null) {
+          value = null;
+          break;
+        }
+
+        value = value[property];
+      }
+
+      return value;
+    }
+
+    let output: Array<T> = [...items];
+
+    if (property === '') {
+      if (typeof output[0] === 'number' && !isNaN(output[0])) {
+        return sortByNumber(output, order);
+      } else if (isDate(output[0] as string)) {
+        return sortByDate(output, order);
+      } else {
+        return sortByString(output, order);
+      }
     }
 
     const index = output.findIndex(_item => {
@@ -81,53 +128,20 @@ export class BizyOrderByPipe implements PipeTransform {
 
 
     const value = getValue(output[index]);
-    if (!isNaN(value as number)) {
-      if (order === 'asc') {
-        output = output.sort((a, b) => Number(getValue(a)) - Number(getValue(b)));
-      } else {
-        output = output.sort((a, b) => Number(getValue(b)) - Number(getValue(a)));
-      }
-      return output;
+    if (typeof value === 'number' && !isNaN(value)) {
+      return sortByNumber(output, order);
     } else if (isDate(value as string)) {
-      output = output.sort((a, b) =>  {
-        const aDate = parseDateString(getValue(a) as string)
-        const bDate = parseDateString(getValue(b) as string)
-        return order === 'asc' ? aDate.getTime() -  bDate.getTime() : bDate.getTime() -  aDate.getTime()
-      });
-      return output;
+      return sortByDate(output, order);
     } else {
-      output.sort((a: any, b: any) => {
-        let aValue: any = a;
-        let bValue: any = b;
-        const nestedProperty = property.split('.');
-        nestedProperty.forEach(_property => {
-          aValue = aValue[_property];
-          bValue = bValue[_property];
-        });
-  
-        if ((typeof aValue === 'undefined' || aValue === null) && (typeof bValue === 'undefined' || bValue === null)) {
-          return 0;
-        }
-  
-        if ((typeof aValue === 'undefined' || aValue === null) && (typeof bValue !== 'undefined' && bValue !== null)) {
-          return order === 'desc' ? 1 : -1;
-        }
-  
-        if ((typeof aValue !== 'undefined' && aValue !== null) && (typeof bValue === 'undefined' || bValue === null) ) {
-          return order === 'desc' ? -1 : 1;
-        }
-  
-        if (aValue === bValue) {
-          return 0;
-        }
-  
-        if (order === 'desc') {
-          return (aValue.toString().toLowerCase() > bValue.toString().toLowerCase() ? -1 : 1);
-        }
-  
-        return (bValue.toString().toLowerCase() > aValue.toString().toLowerCase() ? -1 : 1);
-      });
-      return output;
+      return sortByString(output, order);
     }
+  }
+
+  #removeAccentsAndDiacritics(search: string): string {
+    if (!search) {
+      return '';
+    }
+
+    return search.normalize('NFD')!.replace(/[\u0300-\u036f]/g, '');
   }
 }

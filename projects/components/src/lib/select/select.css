@@ -7,6 +7,8 @@
     display: flex;
     flex-direction: column;
     row-gap: 0.3rem;
+
+    --bizy-input-focus-color: transparent;
 }
 
 :host:has(> .bizy-select__errors:not(:empty)) ::ng-deep .bizy-input__bottom-line {
@@ -53,6 +55,20 @@
     position: relative;
 }
 
+.bizy-select__options::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+}
+
+.bizy-select__options::-webkit-scrollbar-thumb {
+    border-radius: 1rem;
+    background-color: var(--bizy-select-scroll-bar-color);
+}
+
+.bizy-select__options::-webkit-scrollbar-button {
+    height: 1rem;
+}
+
 .bizy-select__options__search {
     position: sticky;
     z-index: 1;
@@ -64,6 +80,8 @@
     --bizy-input-background-color: #fff;
     --bizy-input-min-width: var(--bizy-select-min-width);
     --bizy-input-max-width: auto;
+
+    margin-bottom: 0.3rem;
 }
 
 .bizy-select__errors:empty {

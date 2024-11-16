@@ -53,84 +53,17 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
         }] });
 
 class BizyOrderByPipe {
-    transform(items, order = null, property = '', turnOff = false) {
-        if (turnOff) {
-            return items;
-        }
+    transform(items, order = null, property = '') {
         // No items
-        if (!items) {
-            return [];
-        }
-        if (!order) {
+        if (!items || !order) {
             return items;
         }
         // Array with only one item
         if (items.length <= 1) {
             return items;
         }
-        let output = [...items];
-        if (property === '') {
-            if (order === 'asc') {
-                output.sort();
-                return output;
-            }
-            output.sort().reverse();
-            return output;
-        }
-        const isDate = (value) => {
-            const ddMMYYYYhhmmss = /^\d{1,2}\/\d{1,2}\/\d{4}( \d{1,2}:\d{1,2}(:\d{1,2})?)?$/;
-            return ddMMYYYYhhmmss.test(value);
-        };
-        const parseDateString = (value) => {
-            const [datePart, timePart] = value.split(' ');
-            const separator = value.includes('/') ? '/' : '-';
-            const [day, month, year] = datePart.split(separator).map(Number);
-            let hours = 0, minutes = 0, seconds = 0;
-            if (timePart) {
-                const [hourStr, minuteStr, secondStr] = timePart.split(':').map(Number);
-                hours = isNaN(hourStr) ? 0 : hourStr;
-                minutes = isNaN(minuteStr) ? 0 : minuteStr;
-                seconds = isNaN(secondStr) ? 0 : secondStr;
-            }
-            return new Date(year, month - 1, day, hours, minutes, seconds);
-        };
-        const getValue = (item) => {
-            let value = item;
-            const nestedProperty = property.split('.');
-            nestedProperty.forEach(_property => {
-                if (_property && value[_property]) {
-                    value = value[_property];
-                }
-            });
-            return value || null;
-        };
-        const index = output.findIndex(_item => {
-            const value = getValue(_item);
-            return typeof value !== 'undefined' && value !== null;
-        });
-        if (index === -1) {
-            return output;
-        }
-        const value = getValue(output[index]);
-        if (!isNaN(value)) {
-            if (order === 'asc') {
-                output = output.sort((a, b) => Number(getValue(a)) - Number(getValue(b)));
-            }
-            else {
-                output = output.sort((a, b) => Number(getValue(b)) - Number(getValue(a)));
-            }
-            return output;
-        }
-        else if (isDate(value)) {
-            output = output.sort((a, b) => {
-                const aDate = parseDateString(getValue(a));
-                const bDate = parseDateString(getValue(b));
-                return order === 'asc' ? aDate.getTime() - bDate.getTime() : bDate.getTime() - aDate.getTime();
-            });
-            return output;
-        }
-        else {
-            output.sort((a, b) => {
+        const sortByString = (items, order) => {
+            return items.sort((a, b) => {
                 let aValue = a;
                 let bValue = b;
                 const nestedProperty = property.split('.');
@@ -151,12 +84,91 @@ class BizyOrderByPipe {
                     return 0;
                 }
                 if (order === 'desc') {
-                    return (aValue.toString().toLowerCase() > bValue.toString().toLowerCase() ? -1 : 1);
+                    return (this.#removeAccentsAndDiacritics(String(aValue)).toLowerCase() > this.#removeAccentsAndDiacritics(String(bValue)).toLowerCase() ? -1 : 1);
                 }
-                return (bValue.toString().toLowerCase() > aValue.toString().toLowerCase() ? -1 : 1);
+                return (this.#removeAccentsAndDiacritics(String(bValue)).toLowerCase() > this.#removeAccentsAndDiacritics(String(aValue)).toLowerCase() ? -1 : 1);
             });
+        };
+        const sortByNumber = (items, order) => {
+            if (order === 'asc') {
+                return items.sort((a, b) => Number(getValue(a)) - Number(getValue(b)));
+            }
+            else {
+                return items.sort((a, b) => Number(getValue(b)) - Number(getValue(a)));
+            }
+        };
+        const sortByDate = (items, order) => {
+            return items.sort((a, b) => {
+                const aDate = parseDateString(getValue(a));
+                const bDate = parseDateString(getValue(b));
+                return order === 'asc' ? aDate.getTime() - bDate.getTime() : bDate.getTime() - aDate.getTime();
+            });
+        };
+        const isDate = (value) => {
+            const ddMMYYYYhhmmss = /^\d{1,2}\/\d{1,2}\/\d{4}( \d{1,2}:\d{1,2}(:\d{1,2})?)?$/;
+            return ddMMYYYYhhmmss.test(value);
+        };
+        const parseDateString = (value) => {
+            const [datePart, timePart] = value.split(' ');
+            const separator = value.includes('/') ? '/' : '-';
+            const [day, month, year] = datePart.split(separator).map(Number);
+            let hours = 0, minutes = 0, seconds = 0;
+            if (timePart) {
+                const [hourStr, minuteStr, secondStr] = timePart.split(':').map(Number);
+                hours = isNaN(hourStr) ? 0 : hourStr;
+                minutes = isNaN(minuteStr) ? 0 : minuteStr;
+                seconds = isNaN(secondStr) ? 0 : secondStr;
+            }
+            return new Date(year, month - 1, day, hours, minutes, seconds);
+        };
+        const getValue = (item) => {
+            let value = item;
+            const nestedProperty = property.split('.');
+            for (let i = 0; i < nestedProperty.length; i++) {
+                const property = nestedProperty[i];
+                if (!property || typeof value[property] === 'undefined' || value[property] === null) {
+                    value = null;
+                    break;
+                }
+                value = value[property];
+            }
+            return value;
+        };
+        let output = [...items];
+        if (property === '') {
+            if (typeof output[0] === 'number' && !isNaN(output[0])) {
+                return sortByNumber(output, order);
+            }
+            else if (isDate(output[0])) {
+                return sortByDate(output, order);
+            }
+            else {
+                return sortByString(output, order);
+            }
+        }
+        const index = output.findIndex(_item => {
+            const value = getValue(_item);
+            return typeof value !== 'undefined' && value !== null;
+        });
+        if (index === -1) {
             return output;
         }
+        const value = getValue(output[index]);
+        if (typeof value === 'number' && !isNaN(value)) {
+            return sortByNumber(output, order);
+        }
+        else if (isDate(value)) {
+            return sortByDate(output, order);
+        }
+        else {
+            return sortByString(output, order);
+        }
+    }
+    #removeAccentsAndDiacritics(search) {
+        if (!search) {
+            return '';
+        }
+        return search.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     }
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyOrderByPipe, deps: [], target: i0.ɵɵFactoryTarget.Pipe });
     static ɵpipe = i0.ɵɵngDeclarePipe({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BizyOrderByPipe, name: "bizyOrderBy" });

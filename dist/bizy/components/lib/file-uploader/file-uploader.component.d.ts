@@ -6,10 +6,10 @@ import * as i0 from "@angular/core";
 export declare class BizyFileUploaderComponent implements AfterViewInit, OnDestroy {
     #private;
     private fileUploader;
-    tenantId: number | null;
     dragDropAreaWidth: string;
     dragDropAreaHeight: string;
     language: 'es' | 'en';
+    headers: Record<string, string>;
     maxFileSize: number | null;
     minFileSize: number | null;
     maxTotalFileSize: number | null;
@@ -17,8 +17,8 @@ export declare class BizyFileUploaderComponent implements AfterViewInit, OnDestr
     minNumberOfFiles: number | null;
     allowedFileTypes: string[];
     upload: Subject<{
-        url: string;
-        token: string;
+        endpoint: string;
+        headers?: Record<string, string>;
     }>;
     completed: EventEmitter<{
         successful: Array<string>;
@@ -30,5 +30,5 @@ export declare class BizyFileUploaderComponent implements AfterViewInit, OnDestr
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyFileUploaderComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<BizyFileUploaderComponent, "bizy-file-uploader", never, { "tenantId": { "alias": "tenantId"; "required": false; }; "dragDropAreaWidth": { "alias": "dragDropAreaWidth"; "required": false; }; "dragDropAreaHeight": { "alias": "dragDropAreaHeight"; "required": false; }; "language": { "alias": "language"; "required": false; }; "maxFileSize": { "alias": "maxFileSize"; "required": false; }; "minFileSize": { "alias": "minFileSize"; "required": false; }; "maxTotalFileSize": { "alias": "maxTotalFileSize"; "required": false; }; "maxNumberOfFiles": { "alias": "maxNumberOfFiles"; "required": false; }; "minNumberOfFiles": { "alias": "minNumberOfFiles"; "required": false; }; "allowedFileTypes": { "alias": "allowedFileTypes"; "required": false; }; "upload": { "alias": "upload"; "required": false; }; }, { "completed": "completed"; "loadedFiles": "loadedFiles"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<BizyFileUploaderComponent, "bizy-file-uploader", never, { "dragDropAreaWidth": { "alias": "dragDropAreaWidth"; "required": false; }; "dragDropAreaHeight": { "alias": "dragDropAreaHeight"; "required": false; }; "language": { "alias": "language"; "required": false; }; "headers": { "alias": "headers"; "required": false; }; "maxFileSize": { "alias": "maxFileSize"; "required": false; }; "minFileSize": { "alias": "minFileSize"; "required": false; }; "maxTotalFileSize": { "alias": "maxTotalFileSize"; "required": false; }; "maxNumberOfFiles": { "alias": "maxNumberOfFiles"; "required": false; }; "minNumberOfFiles": { "alias": "minNumberOfFiles"; "required": false; }; "allowedFileTypes": { "alias": "allowedFileTypes"; "required": false; }; "upload": { "alias": "upload"; "required": false; }; }, { "completed": "completed"; "loadedFiles": "loadedFiles"; }, never, never, false, never>;
 }

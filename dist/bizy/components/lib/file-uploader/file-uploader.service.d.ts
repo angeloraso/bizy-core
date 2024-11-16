@@ -28,17 +28,17 @@ export declare class BizyFileUploaderService {
         dragDropAreaWidth: string;
         dragDropAreaHeight: string;
         allowedFileTypes: Array<string>;
-        tenantId: string;
         language: 'es' | 'en';
         templateId: string;
+        headers: Record<string, string>;
     }): void;
     load(data: {
         id: string;
         file: File;
     }): void;
     upload(data: {
-        url: string;
-        token: string;
+        endpoint: string;
+        headers?: Record<string, string>;
     }): void;
     cleanAllFiles(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyFileUploaderService, never>;
