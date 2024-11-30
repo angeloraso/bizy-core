@@ -29,6 +29,7 @@
 }
 
 .bizy-accordion__content {
+    background-color: inherit;
     width: 100%;
     flex: 1;
 }

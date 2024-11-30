@@ -30,17 +30,22 @@ export declare class BizyFileUploaderService {
         allowedFileTypes: Array<string>;
         language: 'es' | 'en';
         templateId: string;
+        hideCancelButton: boolean;
+        hideUploadButton: boolean;
+        hidePauseResumeButton: boolean;
+        disableLocalFiles: boolean;
         headers: Record<string, string>;
     }): void;
-    load(data: {
+    load: (data: {
         id: string;
         file: File;
-    }): void;
-    upload(data: {
+    }) => void;
+    disable(value: boolean): void;
+    upload: (data: {
         endpoint: string;
         headers?: Record<string, string>;
-    }): void;
-    cleanAllFiles(): void;
+    }) => void;
+    cleanAllFiles: () => void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyFileUploaderService, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<BizyFileUploaderService>;
 }

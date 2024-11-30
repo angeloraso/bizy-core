@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, inject, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'bizy-table-column',
@@ -11,7 +11,17 @@ export class BizyTableColumnComponent {
   @Input() customClass: string = '';
   @Output() onSelect = new EventEmitter<PointerEvent>();
 
+  readonly #elementRef = inject(ElementRef);
+
   getId = (): string => {
     return this.id;
+  }
+
+  setMarginLeft(margin: number): void {
+    if (!this.#elementRef.nativeElement || !this.#elementRef.nativeElement.setMarginLeft) {
+      return;
+    }
+
+    this.#elementRef.nativeElement.setMarginLeft(margin);
   }
 }

@@ -1,17 +1,14 @@
 :host {
     font-size: 1rem;
     width: 100%;
+    background-color: var(--bizy-table-row-background-color);
     display: flex;
     min-width: fit-content;
     margin-bottom: 0.1rem;
 }
 
-:host:not(:has(.bizy-table-row--selected)) ::ng-deep .bizy-table-row__accordion:hover {
-    background-color: var(--bizy-table-row-hover-background-color) !important;
-}
-
-:host:not(:has(.bizy-table-row--selected)) ::ng-deep .bizy-table-row:hover {
-    background-color: inherit !important;
+:host:not(:has(.bizy-table-row--selected)) ::ng-deep .bizy-table-row__accordion:hover ::ng-deep .bizy-table-row::before {
+    opacity: 1;
 }
 
 ::ng-deep .bizy-table-row__accordion {
@@ -37,6 +34,19 @@
     border-bottom: inherit;
 }
 
+::ng-deep .bizy-table-row::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--bizy-table-row-hover-background-color);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
 .bizy-table-row--disabled {
     pointer-events: none;
     opacity: 0.5;
@@ -47,7 +57,7 @@
     background-color: var(--bizy-table-row-selected-background-color) !important;
 }
 
-::ng-deep .bizy-table-row--opened {
+:host(:has(bizy-table-row-expand-content)) ::ng-deep .bizy-table-row--opened {
     background-color: var(--bizy-table-row-opened-background-color) !important;
 }
 

@@ -24,11 +24,9 @@
 }
 
 ::ng-deep .bizy-sidebar-option--disabled {
-    cursor: default !important;
     pointer-events: none;
     opacity: 0.5;
     cursor: not-allowed !important;
-
 }
 
 ::ng-deep .bizy-accordion__options--opened {

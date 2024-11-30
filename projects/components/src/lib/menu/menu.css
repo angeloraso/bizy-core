@@ -71,6 +71,10 @@
     background-color: var(--bizy-menu-scroll-bar-color);
 }
 
+.bizy-menu__options::-webkit-scrollbar-thumb:hover {
+    background-color: var(--bizy-menu-scroll-bar-hover-color);
+}
+
 .bizy-menu__options::-webkit-scrollbar-button {
     height: 1rem;
 }

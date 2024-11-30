@@ -142,7 +142,7 @@ export class BizyInputComponent implements OnDestroy {
   }
 
   ngAfterViewInit() {
-    if (this.type === 'currency' && this.bizyInput.nativeElement.setValue) {
+    if (this.type === 'currency'&& (<any>this.bizyInput.nativeElement).setValue) {
       this.bizyInput.nativeElement.setValue(this._currencyValue);
     }
     this.#subscription.add(this.onChange$.pipe(debounceTime(this.debounceTime)).subscribe(value => {

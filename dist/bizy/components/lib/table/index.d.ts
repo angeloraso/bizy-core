@@ -1,3 +1,4 @@
+export { BizyTableColumnFixedDirective } from './directives';
 export { BizyTableRowExpandContentComponent } from './table-row-expand-content/table-row-expand-content.component';
 export { BizyTableScrollingComponent } from './table-scrolling/table-scrolling.component';
 export { BizyTableScrollingDirective } from './table-scrolling/table-scrolling.directive';

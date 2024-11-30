@@ -212,7 +212,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
 class BizyOnlyNumbersDirective {
     elementRef;
     onlyNumbers;
-    #regex = new RegExp(/^-?\d*[.,]?\d*$/);
+    #regex = new RegExp(/^-?\d+([.,]?\d+)*$/);
     #specialKeys = ['Backspace', 'backspace', 'delete', 'Delete', 'Tab', 'tab', 'Escape', 'escape', 'Enter', 'enter', 'Subtract', 'subtract'];
     constructor(elementRef) {
         this.elementRef = elementRef;

@@ -8,7 +8,7 @@
     height: var(--bizy-card-height);
     width: var(--bizy-card-width);
     cursor: var(--bizy-card-cursor);
-    border: none;
+    border: var(--bizy-card-border);
     border-radius: 0.3rem;
     overflow: hidden;
     padding: 0.5rem;

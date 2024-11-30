@@ -14,16 +14,17 @@ export declare class BizyTableComponent implements AfterContentInit {
     private elementRef;
     viewport: BizyTableScrollingComponent;
     virtualFor: BizyTableScrollingDirective;
-    header: BizyTableHeaderComponent;
     rows: QueryList<BizyTableRowComponent>;
-    footer: BizyTableFooterComponent;
+    headers: QueryList<BizyTableHeaderComponent>;
+    footers: QueryList<BizyTableFooterComponent>;
     resizeRef: ElementRef;
     notifier$: Subject<void>;
     marginRight: number;
+    marginLeft: number;
     set selectable(selectable: boolean);
     constructor(ref: ChangeDetectorRef, document: Document, renderer: Renderer2, elementRef: ElementRef);
     ngAfterContentInit(): void;
     ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyTableComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<BizyTableComponent, "bizy-table", never, { "resizeRef": { "alias": "resizeRef"; "required": false; }; "selectable": { "alias": "selectable"; "required": false; }; }, {}, ["virtualFor", "header", "footer", "rows"], ["bizy-table-header", "bizy-table-row", "bizy-table-footer"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<BizyTableComponent, "bizy-table", never, { "resizeRef": { "alias": "resizeRef"; "required": false; }; "selectable": { "alias": "selectable"; "required": false; }; }, {}, ["virtualFor", "rows", "headers", "footers"], ["bizy-table-header", "bizy-table-row", "bizy-table-footer"], false, never>;
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Inject, Input, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Inject, Input, Output, ViewChild } from '@angular/core';
 import flatpickr from "flatpickr";
 import monthSelectPlugin from 'flatpickr/dist/plugins/monthSelect/index.js';
 import { Spanish } from "flatpickr/dist/l10n/es.js"
@@ -18,6 +18,8 @@ export class BizyDatePickerComponent {
   @Input() disabled: boolean = false;
   @Input() customClass: string = '';
   @Input() opened: boolean = false;
+  @Input() minDate: number | null = null;
+  @Input() maxDate: number | null = null;
   @Input() enableSeconds: boolean = false;
   @Output() dateChange = new EventEmitter<number>();
   @Output() rangeChange = new EventEmitter<{from: number, to: number}>();
@@ -34,6 +36,10 @@ export class BizyDatePickerComponent {
   mode: 'single' | 'range' = 'single';
   dates: Array<number> = [Date.now()];
   time: number = Date.now();
+
+  get touched(): boolean {
+    return this.bizyDatePicker ? this.bizyDatePicker.touched : false;
+  }
 
   @Input() set date(date: number) {
     if (typeof date === 'undefined' || date === null) {
@@ -102,7 +108,8 @@ export class BizyDatePickerComponent {
   }
 
   constructor(
-    @Inject(DatePipe) private datePipe: DatePipe
+    @Inject(DatePipe) private datePipe: DatePipe,
+    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
   ) {}
 
   ngAfterViewInit() {
@@ -126,6 +133,8 @@ export class BizyDatePickerComponent {
         enableTime: this.enableTime,
         enableSeconds: this.enableSeconds,
         plugins,
+        minDate: this.minDate,
+        maxDate: this.maxDate,
         noCalendar: this.noCalendar,
         disableMobile: true,
         time_24hr: true,
@@ -159,6 +168,13 @@ export class BizyDatePickerComponent {
       });
 
       this.started = true;
+    }
+  }
+
+  setTouched(touched: boolean) {
+    if (this.bizyDatePicker) {
+      this.bizyDatePicker.setTouched(touched);
+      this.ref.detectChanges();
     }
   }
 

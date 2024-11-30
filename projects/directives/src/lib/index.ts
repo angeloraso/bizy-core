@@ -1,4 +1,4 @@
-export { BizyCurrencyFormatDirective } from './currencyFormat.directive';
+export { BizyCurrencyFormatDirective } from './currency-format.directive';
 export { BizyTooltipDirective } from './tooltip.directive';
 export { BizyDirectivesModule } from "./directives.module";
 export { BizyLoadingDirective, LOADING_TYPE } from "./loading.directive";

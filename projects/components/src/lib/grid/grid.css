@@ -53,6 +53,10 @@
     background-color: var(--bizy-grid-scroll-bar-color);
 }
 
+::ng-deep .cdk-virtual-scrollable::-webkit-scrollbar-thumb:hover {
+    background-color: var(--bizy-grid-scroll-bar-hover-color);
+}
+
 ::ng-deep .cdk-virtual-scrollable::-webkit-scrollbar-button {
     height: 1rem;
 }

@@ -1,4 +1,3 @@
-import { ConnectedPosition } from '@angular/cdk/overlay';
 import { BizyMenuOptionComponent } from './menu-option/menu-option.component';
 import { ChangeDetectorRef, EventEmitter, QueryList } from '@angular/core';
 import * as i0 from "@angular/core";
@@ -15,7 +14,6 @@ export declare class BizyMenuComponent {
     opened: boolean;
     onSelect: EventEmitter<PointerEvent>;
     _menuWidth: number;
-    overlayPositions: Array<ConnectedPosition>;
     constructor(ref: ChangeDetectorRef);
     _onSelect(event: any): void;
     selectButton(event: any): void;

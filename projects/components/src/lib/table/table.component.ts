@@ -16,9 +16,9 @@ import { BizyTableScrollingDirective } from './table-scrolling/table-scrolling.d
 export class BizyTableComponent implements AfterContentInit {
   @ViewChild(BizyTableScrollingComponent) viewport: BizyTableScrollingComponent;
   @ContentChild(BizyTableScrollingDirective) virtualFor: BizyTableScrollingDirective;
-  @ContentChild(BizyTableHeaderComponent) header: BizyTableHeaderComponent;
   @ContentChildren(BizyTableRowComponent) rows: QueryList<BizyTableRowComponent>;
-  @ContentChild(BizyTableFooterComponent) footer: BizyTableFooterComponent;
+  @ContentChildren(BizyTableHeaderComponent) headers: QueryList<BizyTableHeaderComponent>;
+  @ContentChildren(BizyTableFooterComponent) footers: QueryList<BizyTableFooterComponent>;
   @Input() resizeRef: ElementRef = null;
 
   #selectableMutationObserver: MutationObserver;
@@ -28,6 +28,7 @@ export class BizyTableComponent implements AfterContentInit {
   notifier$ = new Subject<void>();
   #subscription = new Subscription();
   marginRight: number = 0;
+  marginLeft: number = 0;
 
   @Input() set selectable(selectable: boolean) {
     this.#selectableMutationObserver = new MutationObserver(() => {
@@ -38,15 +39,16 @@ export class BizyTableComponent implements AfterContentInit {
       this.rows.forEach(_row => {
         _row.setSelectable(selectable);
         _row.setMarginRight(this.marginRight);
+        _row.setMarginLeft(this.marginLeft);
       });
 
-      if (this.header) {
-        this.header.setSelectable(selectable);
-      }
+      this.headers.forEach(_header => {
+        _header.setSelectable(selectable);
+      });
 
-      if (this.footer) {
-        this.footer.setSelectable(selectable);
-      }
+      this.footers.forEach(_footer => {
+        _footer.setSelectable(selectable);
+      });
 
       this.ref.detectChanges();      
     });
@@ -70,7 +72,16 @@ export class BizyTableComponent implements AfterContentInit {
       if (this.elementRef.nativeElement.offsetHeight) {
         const fontSize =  getComputedStyle(this.document.documentElement).getPropertyValue('font-size');
         const gap = Number(fontSize.split('px')[0]) * 0.3;
-        this.renderer.setStyle(this.viewport.elementRef.nativeElement, 'height', `${this.elementRef.nativeElement.offsetHeight - (this.header ? this.header.elementRef.nativeElement.offsetHeight + gap : 0) - (this.footer ? this.footer.elementRef.nativeElement.offsetHeight + gap : 0)}px`)
+        let headersHeight = 0;
+        this.headers.forEach(_header => {
+          headersHeight += _header.elementRef.nativeElement.offsetHeight + gap;
+        });
+
+        let footersHeight = 0;
+        this.footers.forEach(_footer => {
+          footersHeight += _footer.elementRef.nativeElement.offsetHeight + gap;
+        });
+        this.renderer.setStyle(this.viewport.elementRef.nativeElement, 'height', `${this.elementRef.nativeElement.offsetHeight - headersHeight - footersHeight}px`)
       }
 
       this.viewport.attachView(this.virtualFor);
@@ -84,31 +95,39 @@ export class BizyTableComponent implements AfterContentInit {
         }
   
         this.marginRight = this.elementRef.nativeElement.scrollWidth ? (this.elementRef.nativeElement.scrollWidth - this.elementRef.nativeElement.offsetWidth) - this.elementRef.nativeElement.scrollLeft : 0;
+        this.marginLeft = this.elementRef.nativeElement.scrollLeft;
         this.rows.forEach(_row => {
-            _row.setMarginRight(this.marginRight);
+          _row.setMarginRight(this.marginRight);
+          _row.setMarginLeft(this.marginLeft);
         });
 
-        if (this.header) {
-          this.header.setMarginRight(this.marginRight);
-        }
-
-        if (this.footer) {
-          this.footer.setMarginRight(this.marginRight);
-        }
+        this.headers.forEach(_header => {
+          _header.setMarginRight(this.marginRight);
+          _header.setMarginLeft(this.marginLeft);
+        });
+  
+        this.footers.forEach(_footer => {
+          _footer.setMarginRight(this.marginRight);
+          _footer.setMarginLeft(this.marginLeft);
+        });
 
         this.#subscription.add(fromEvent(this.elementRef.nativeElement, 'scroll', { capture: true }).subscribe(() => {
           this.marginRight = this.elementRef.nativeElement.scrollWidth ? (this.elementRef.nativeElement.scrollWidth - this.elementRef.nativeElement.offsetWidth) - this.elementRef.nativeElement.scrollLeft : 0;
+          this.marginLeft = this.elementRef.nativeElement.scrollLeft;
           this.rows.forEach(_row => {
             _row.setMarginRight(this.marginRight);
+            _row.setMarginLeft(this.marginLeft);
           });
           
-          if (this.header) {
-            this.header.setMarginRight(this.marginRight);
-          }
-  
-          if (this.footer) {
-            this.footer.setMarginRight(this.marginRight);
-          }
+          this.headers.forEach(_header => {
+            _header.setMarginRight(this.marginRight);
+            _header.setMarginLeft(this.marginLeft);
+          });
+    
+          this.footers.forEach(_footer => {
+            _footer.setMarginRight(this.marginRight);
+            _footer.setMarginLeft(this.marginLeft);
+          });
         }));
   
         this.#afterContentInitObserver.disconnect();   
@@ -128,20 +147,33 @@ export class BizyTableComponent implements AfterContentInit {
       if (this.viewport && this.elementRef.nativeElement.offsetHeight) {
         const fontSize =  getComputedStyle(this.document.documentElement).getPropertyValue('font-size');
         const gap = Number(fontSize.split('px')[0]) * 0.3;
-        this.renderer.setStyle(this.viewport.elementRef.nativeElement, 'height', `${this.elementRef.nativeElement.offsetHeight - (this.header ? this.header.elementRef.nativeElement.offsetHeight + gap : 0) - (this.footer ? this.footer.elementRef.nativeElement.offsetHeight + gap : 0)}px`)
+        let headersHeight = 0;
+        this.headers.forEach(_header => {
+          headersHeight += _header.elementRef.nativeElement.offsetHeight + gap;
+        });
+
+        let footersHeight = 0;
+        this.footers.forEach(_footer => {
+          footersHeight += _footer.elementRef.nativeElement.offsetHeight + gap;
+        });
+        this.renderer.setStyle(this.viewport.elementRef.nativeElement, 'height', `${this.elementRef.nativeElement.offsetHeight - headersHeight - footersHeight}px`)
       }
       this.marginRight = this.elementRef.nativeElement.scrollWidth ? (this.elementRef.nativeElement.scrollWidth - this.elementRef.nativeElement.offsetWidth) - this.elementRef.nativeElement.scrollLeft : 0;
+      this.marginLeft = this.elementRef.nativeElement.scrollLeft;
       this.rows.forEach(_row => {
         _row.setMarginRight(this.marginRight);
+        _row.setMarginLeft(this.marginLeft);
       });
       
-      if (this.header) {
-        this.header.setMarginRight(this.marginRight);
-      }
+      this.headers.forEach(_header => {
+        _header.setMarginRight(this.marginRight);
+        _header.setMarginLeft(this.marginLeft);
+      });
 
-      if (this.footer) {
-        this.footer.setMarginRight(this.marginRight);
-      }
+      this.footers.forEach(_footer => {
+        _footer.setMarginRight(this.marginRight);
+        _footer.setMarginLeft(this.marginLeft);
+      });
     }));
     this.notifier$.next();
   }

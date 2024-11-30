@@ -24,21 +24,6 @@ export class BizyMenuComponent {
 
   #subscription = new Subscription();
 
-  overlayPositions: Array<ConnectedPosition> = [
-    {
-      originX: 'start',
-      originY: 'bottom',
-      overlayX: 'start',
-      overlayY: 'top',
-    },
-    {
-      originX: 'start',
-      originY: 'top',
-      overlayX: 'start',
-      overlayY: 'bottom',
-    }
-  ];
-
   constructor(@Inject(ChangeDetectorRef) private ref: ChangeDetectorRef) {}
 
   _onSelect(event: any) {

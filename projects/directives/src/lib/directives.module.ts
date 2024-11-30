@@ -5,7 +5,7 @@ import { BizyOnlyPhoneDigitsDirective } from './only-phone-digits.directive';
 import { BizyNgForTrackByIdDirective } from './track-by-id.directive';
 import { BizyLongPressDirective } from './long-press.directive';
 import { BizyTooltipDirective } from './tooltip.directive';
-import { BizyCurrencyFormatDirective } from './currencyFormat.directive';
+import { BizyCurrencyFormatDirective } from './currency-format.directive';
 
 const DIRECTIVES = [
   BizyLoadingDirective,

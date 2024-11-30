@@ -13,6 +13,7 @@ import { BizyTableScrollingDirective } from './table-scrolling/table-scrolling.d
 import { BizyTableScrollingComponent } from './table-scrolling/table-scrolling.component';
 import { BizyAccordionModule } from '../accordion';
 import { BizyTableRowExpandContentComponent } from './table-row-expand-content/table-row-expand-content.component';
+import { BizyTableColumnFixedDirective } from './directives';
 
 const COMPONENTS: Array<any> = [
   BizyTableComponent,
@@ -23,12 +24,16 @@ const COMPONENTS: Array<any> = [
   BizyTableColumnArrowsComponent,
   BizyTableScrollingDirective,
   BizyTableScrollingComponent,
-  BizyTableRowExpandContentComponent
+  BizyTableRowExpandContentComponent,
 ];
+
+const DIRECTIVES: Array<any> = [
+  BizyTableColumnFixedDirective
+]
 
 @NgModule({
   imports: [CommonModule, FormsModule, ScrollingModule, BizyCheckboxModule, BizyAccordionModule],
-  declarations: COMPONENTS,
-  exports: COMPONENTS
+  declarations: COMPONENTS.concat(DIRECTIVES),
+  exports: COMPONENTS.concat(DIRECTIVES)
 })
 export class BizyTableModule {}

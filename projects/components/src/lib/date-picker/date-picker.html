@@ -25,7 +25,7 @@
         <ng-content select="[slot=prefix]"></ng-content>
     </ng-container>
 
-    <ng-container slot="error">
+    <ng-container slot="error" *ngIf="touched">
         <ng-content select="[slot=error]"></ng-content>
     </ng-container>
 

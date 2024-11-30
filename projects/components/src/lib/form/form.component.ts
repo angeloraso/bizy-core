@@ -1,3 +1,4 @@
+import { BizyDatePickerComponent } from './../date-picker/date-picker.component';
 import { AfterViewInit, ChangeDetectionStrategy, Component, ContentChildren, ElementRef, Inject, Input, OnDestroy, QueryList } from '@angular/core';
 import { fromEvent, Subscription, take } from 'rxjs';
 import { BizyInputComponent } from '../input';
@@ -12,6 +13,7 @@ import { BizySelectComponent } from '../select';
 export class BizyFormComponent implements AfterViewInit, OnDestroy {
   @ContentChildren(BizyInputComponent, { descendants: true }) inputs: QueryList<BizyInputComponent>;
   @ContentChildren(BizySelectComponent, { descendants: true }) selects: QueryList<BizySelectComponent>;
+  @ContentChildren(BizyDatePickerComponent, { descendants: true }) datePickers: QueryList<BizyDatePickerComponent>;
   @Input() id: string = `bizy-form-${Math.random()}`;
   @Input() customClass: string = '';
 
@@ -34,6 +36,19 @@ export class BizyFormComponent implements AfterViewInit, OnDestroy {
         this.selects.forEach(component => {
           component.setTouched(true);
         });
+      }
+
+      if (this.datePickers.length > 0) {
+        this.datePickers.forEach(component => {
+          component.setTouched(true);
+        });
+      }
+    }));
+
+    const keyPress$ = fromEvent(this.elementRef.nativeElement, 'keypress');
+    this.#subscription.add(keyPress$.subscribe((event: KeyboardEvent) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
       }
     }));
   }

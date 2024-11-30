@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, ChangeDetectorRef, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, ChangeDetectorRef, Inject, ContentChildren, QueryList } from '@angular/core';
+import { BizyTableColumnComponent } from '../table-column/table-column.component';
 
 @Component({
   selector: 'bizy-table-row',
@@ -7,6 +8,7 @@ import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, Change
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyTableRowComponent {
+  @ContentChildren(BizyTableColumnComponent) columns: QueryList<BizyTableColumnComponent>;
   @Input() id: string = `bizy-table-row-${Math.random()}`;
   @Input() customClass: string = '';
   @Input() disabled: boolean = false;
@@ -63,5 +65,16 @@ export class BizyTableRowComponent {
   setMarginRight(margin: number) {
     this.marginRight = margin - 5;
     this.ref.detectChanges();
+  }
+
+  setMarginLeft(margin: number) {
+    if (this.columns.length === 0) {
+      return;
+    }
+
+    this.columns.forEach(_column => {
+      _column.setMarginLeft(margin);
+      this.ref.detectChanges();
+    })
   }
 }

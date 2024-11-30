@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { debounceTime, fromEvent, Observable, skip, Subscription } from 'rxjs';
 import {
   Component,
   TemplateRef,
@@ -6,10 +6,14 @@ import {
   ViewContainerRef,
   Inject,
   ElementRef,
+  Input,
+  OnDestroy,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { BizyTableRowComponent } from '../table-row/table-row.component';
 import { BizyTableScrollingDirective } from './table-scrolling.directive';
 import { DOCUMENT } from '@angular/common';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'bizy-table-scrolling',
@@ -19,7 +23,8 @@ import { DOCUMENT } from '@angular/common';
 
 // FIX: This components fixes the bug with Angular CDK virtual scrolling not supporting content projection.
 // https://github.com/angular/components/issues/15277
-export class BizyTableScrollingComponent {
+export class BizyTableScrollingComponent implements OnDestroy {
+  @ViewChild(CdkVirtualScrollViewport) viewport!: CdkVirtualScrollViewport;
   @ViewChild('tableScrollingContent') content: TemplateRef<object>;
 
   #view: ViewContainerRef;
@@ -27,10 +32,14 @@ export class BizyTableScrollingComponent {
   itemTemplate: TemplateRef<BizyTableRowComponent>;
 
   itemSize: number;
+  
+  #subscription = new Subscription();
+  #scrollTop: number = 0;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
-    @Inject(ElementRef) public elementRef: ElementRef
+    @Inject(ElementRef) public elementRef: ElementRef,
+    @Inject(ChangeDetectorRef) public ref: ChangeDetectorRef
   ) {}
 
   /** Called by the virtual-for directive inside of the viewport. */
@@ -53,5 +62,21 @@ export class BizyTableScrollingComponent {
     this.itemTemplate = tableDirective.template;
     this.#view = tableDirective.viewContainerRef;
     this.#view.createEmbeddedView(this.content);
+    this.ref.detectChanges();
+
+    this.#subscription.add(fromEvent(this.elementRef.nativeElement, 'scroll', { capture: true }).pipe(debounceTime(100)).subscribe(() => {
+      this.#scrollTop = this.viewport.measureScrollOffset();
+    }));
+
+    this.#subscription.add(this.items$.pipe(skip(1)).subscribe(() => {
+      if (this.viewport) {
+        this.viewport.scrollToOffset(this.#scrollTop);
+        this.ref.detectChanges();
+      }
+    }));
+  }
+
+  ngOnDestroy() {
+    this.#subscription.unsubscribe();
   }
 }
