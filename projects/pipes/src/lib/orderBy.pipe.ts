@@ -17,16 +17,9 @@ export class BizyOrderByPipe implements PipeTransform {
 
     const sortByString = (items: Array<T>, order: 'asc' | 'desc'): Array<T> => {
       return items.sort((a: any, b: any) => {
-        let aValue: any = a;
-        let bValue: any = b;
-        if (property) {
-          const nestedProperty = property.split('.');
-          nestedProperty.forEach(_property => {
-            aValue = aValue[_property];
-            bValue = bValue[_property];
-          });
-        }
-  
+        let aValue: any = getValue(a);
+        let bValue: any = getValue(b);
+
         if ((typeof aValue === 'undefined' || aValue === null) && (typeof bValue === 'undefined' || bValue === null)) {
           return 0;
         }
@@ -92,32 +85,25 @@ export class BizyOrderByPipe implements PipeTransform {
 
     const getValue = (item: T) => {
       let value = item;
-      const nestedProperty = property.split('.');
 
-      for (let i = 0; i < nestedProperty.length; i++) {
-        const property = nestedProperty[i];
-        if (!property || typeof value[property] === 'undefined' || value[property] === null) {
-          value = null;
-          break;
+      if (property) {
+        const nestedProperty = property.split('.');
+  
+        for (let i = 0; i < nestedProperty.length; i++) {
+          const property = nestedProperty[i];
+          if (!property || typeof value[property] === 'undefined' || value[property] === null) {
+            value = null;
+            break;
+          }
+  
+          value = value[property];
         }
-
-        value = value[property];
       }
 
       return value;
     }
 
     let output: Array<T> = [...items];
-
-    if (property === '') {
-      if (typeof output[0] === 'number' && !isNaN(output[0])) {
-        return sortByNumber(output, order);
-      } else if (isDate(output[0] as string)) {
-        return sortByDate(output, order);
-      } else {
-        return sortByString(output, order);
-      }
-    }
 
     const index = output.findIndex(_item => {
       const value = getValue(_item);
