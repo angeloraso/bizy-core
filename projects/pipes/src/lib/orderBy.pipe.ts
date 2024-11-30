@@ -19,11 +19,13 @@ export class BizyOrderByPipe implements PipeTransform {
       return items.sort((a: any, b: any) => {
         let aValue: any = a;
         let bValue: any = b;
-        const nestedProperty = property.split('.');
-        nestedProperty.forEach(_property => {
-          aValue = aValue[_property];
-          bValue = bValue[_property];
-        });
+        if (property) {
+          const nestedProperty = property.split('.');
+          nestedProperty.forEach(_property => {
+            aValue = aValue[_property];
+            bValue = bValue[_property];
+          });
+        }
   
         if ((typeof aValue === 'undefined' || aValue === null) && (typeof bValue === 'undefined' || bValue === null)) {
           return 0;
