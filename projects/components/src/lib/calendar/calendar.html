@@ -1,0 +1,53 @@
+<ng-container [ngSwitch]="mode">
+
+   <mwl-calendar-month-view
+      *ngSwitchCase="BIZY_CALENDAR_MODE.MONTH"
+      [viewDate]="_viewDate"
+      [events]="_calendarEvents"
+      [weekendDays]="weekendDays"
+      [weekStartsOn]="weekStartsOn"
+      [refresh]="_refresh"
+      [locale]="language"
+      [activeDayIsOpen]="_activeDayIsOpen"
+      [excludeDays]="excludeDays"
+      (dayClicked)="dayClicked($event.day)"
+      (eventClicked)="eventClicked($event.event)">
+   </mwl-calendar-month-view>
+
+   <mwl-calendar-week-view
+      *ngSwitchCase="BIZY_CALENDAR_MODE.WEEK"
+      [ngClass]="{'bizy-calendar--hide-header-date': hideHeaderDate}"
+      [viewDate]="_viewDate"
+      [events]="_calendarEvents"
+      [weekendDays]="weekendDays"
+      [weekStartsOn]="weekStartsOn"
+      [dayStartHour]="dayStartHour"
+      [dayEndHour]="dayEndHour"
+      [hourDuration]="hourMinutesDuration"
+      [hourSegments]="hourSegments"
+      [refresh]="_refresh"
+      [locale]="language"
+      [excludeDays]="excludeDays"
+      (dayHeaderClicked)="dayHeaderClicked($event.day.date)"
+      (hourSegmentClicked)="hourSegmentClicked($event.date)"
+      (eventClicked)="eventClicked($event.event)">
+   </mwl-calendar-week-view>
+
+   <mwl-calendar-day-view
+      *ngSwitchCase="BIZY_CALENDAR_MODE.DAY"
+      [viewDate]="_viewDate"
+      [events]="_calendarEvents"
+      [weekendDays]="weekendDays"
+      [weekStartsOn]="weekStartsOn"
+      [dayStartHour]="dayStartHour"
+      [dayEndHour]="dayEndHour"
+      [hourDuration]="hourMinutesDuration"
+      [hourSegments]="hourSegments"
+      [refresh]="_refresh"
+      [locale]="language"
+      [excludeDays]="excludeDays"
+      (hourSegmentClicked)="hourSegmentClicked($event.date)"
+      (eventClicked)="eventClicked($event.event)">
+   </mwl-calendar-day-view>
+
+</ng-container>

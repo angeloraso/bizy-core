@@ -1,12 +1,12 @@
 :root {
     --bizy-success-color: #5fbc5a;
-    --bizy-light-success-color: #dfeddd;
+    --bizy-light-success-color: #eaf6e8;
     --bizy-dark-success-color: #3f8e3a;
     --bizy-default-color: #666;
     --bizy-light-default-color: #eee;
     --bizy-dark-default-color: #333;
     --bizy-info-color: #2484c6;
-    --bizy-light-info-color: #d0e8fc;
+    --bizy-light-info-color: #e6eff6;
     --bizy-dark-info-color: #355b7f;
     --bizy-alert-color: #fffe56;
     --bizy-light-alert-color: #fffdc8;
@@ -50,6 +50,13 @@
     --bizy-card-height: 100%;
     --bizy-card-width: 100%;
     --bizy-card-border: none;
+
+    --bizy-calendar-event-color: var(--bizy-dark-default-color);
+    --bizy-calendar-event-delete-action-color: var(--bizy-danger-color);
+    --bizy-calendar-event-delete-action-hover-color: var(--bizy-dark-danger-color);
+    --bizy-calendar-event-delete-action-line-color: var(--bizy-light-default-color);
+    --bizy-calendar-event-delete-action-width: 1rem;
+    --bizy-calendar-event-delete-action-height: 1rem;
 
     --bizy-checkbox-border-color: #ccc;
     --bizy-checkbox-hover-color: var(--bizy-accent-hover-color);

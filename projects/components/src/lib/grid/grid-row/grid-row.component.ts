@@ -18,14 +18,8 @@ export class BizyGridRowComponent {
       itemsPerRow = 1;
     }
 
-    let gridTemplateColumnsStyle = '1fr';
-    for (let i = 1; i < itemsPerRow; i++) {
-      gridTemplateColumnsStyle += ' 1fr';
-    }
-
     this.renderer.setStyle(this.elementRef.nativeElement, 'gridTemplateRows', `${this.rowHeight}px`);
-    this.renderer.setStyle(this.elementRef.nativeElement, 'gridTemplateColumns', gridTemplateColumnsStyle);
-    this.ref.detectChanges();
+    this.renderer.setStyle(this.elementRef.nativeElement, 'gridTemplateColumns', `repeat(${itemsPerRow}, minmax(0, 1fr)`);    this.ref.detectChanges();
   }
 
   constructor(

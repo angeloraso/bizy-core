@@ -43,6 +43,11 @@
     contain: inline-size !important;
 }
 
+::ng-deep .cdk-virtual-scroll-content-wrapper {
+    min-width: 100%;
+    max-width: 100%;
+}
+
 ::ng-deep .cdk-virtual-scrollable::-webkit-scrollbar {
     width: 0.5rem;
     height: 0.5rem;
