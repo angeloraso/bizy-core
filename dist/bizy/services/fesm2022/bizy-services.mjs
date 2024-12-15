@@ -1061,7 +1061,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
 
 class BizyPopupService {
     dialog;
-    #dialogs = new Set();
+    static dialogs = new Set();
     #data;
     constructor(dialog) {
         this.dialog = dialog;
@@ -1076,9 +1076,9 @@ class BizyPopupService {
             disableClose: data.disableClose ?? false,
             panelClass: ['bizy-popup', data.customClass]
         }));
-        this.#dialogs.add(dialogRef);
+        BizyPopupService.dialogs.add(dialogRef);
         dialogRef.closed.pipe(take(1)).subscribe(response => {
-            this.#dialogs.delete(dialogRef);
+            BizyPopupService.dialogs.delete(dialogRef);
             if (callback) {
                 callback(response);
             }
@@ -1090,24 +1090,24 @@ class BizyPopupService {
     close(data) {
         let dialogRef = null;
         if (data && data.id) {
-            dialogRef = Array.from(this.#dialogs).find(_dialogRef => _dialogRef.id === data.id);
+            dialogRef = Array.from(BizyPopupService.dialogs).find(_dialogRef => _dialogRef.id === data.id);
         }
         else {
-            dialogRef = Array.from(this.#dialogs).pop();
+            dialogRef = Array.from(BizyPopupService.dialogs).pop();
         }
         if (dialogRef) {
             dialogRef.close(data ? data.response : null);
-            this.#dialogs.delete(dialogRef);
+            BizyPopupService.dialogs.delete(dialogRef);
         }
     }
     closeAll() {
-        Array.from(this.#dialogs).forEach(_dialogRef => {
+        Array.from(BizyPopupService.dialogs).forEach(_dialogRef => {
             _dialogRef.close();
         });
-        this.#dialogs.clear();
+        BizyPopupService.dialogs.clear();
     }
     openedPopups() {
-        return this.#dialogs.size;
+        return BizyPopupService.dialogs.size;
     }
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyPopupService, deps: [{ token: Dialog }], target: i0.ɵɵFactoryTarget.Injectable });
     static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyPopupService });

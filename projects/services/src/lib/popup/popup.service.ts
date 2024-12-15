@@ -6,7 +6,7 @@ import { Dialog, DialogRef } from '@angular/cdk/dialog';
 
 @Injectable()
 export class BizyPopupService {
-  #dialogs = new Set<DialogRef<unknown, BizyPopupWrapperComponent<unknown>>>();
+  static dialogs = new Set<DialogRef<unknown, BizyPopupWrapperComponent<unknown>>>();
   
   #data: unknown;
 
@@ -24,10 +24,10 @@ export class BizyPopupService {
       panelClass: ['bizy-popup', data.customClass] 
     }));
 
-    this.#dialogs.add(dialogRef);
+    BizyPopupService.dialogs.add(dialogRef);
 
     dialogRef.closed.pipe(take(1)).subscribe(response => {
-      this.#dialogs.delete(dialogRef);
+      BizyPopupService.dialogs.delete(dialogRef);
       if (callback) {
         callback(response as R);
       }
@@ -41,25 +41,25 @@ export class BizyPopupService {
   close(data?: {id?: string, response?: unknown}) {
     let dialogRef: DialogRef<unknown, BizyPopupWrapperComponent<unknown>> | null = null;
     if (data && data.id) {
-      dialogRef = Array.from(this.#dialogs).find(_dialogRef => _dialogRef.id === data.id);
+      dialogRef = Array.from(BizyPopupService.dialogs).find(_dialogRef => _dialogRef.id === data.id);
     } else {
-      dialogRef = Array.from(this.#dialogs).pop();
+      dialogRef = Array.from(BizyPopupService.dialogs).pop();
     }
 
     if (dialogRef) {
       dialogRef.close(data ? data.response : null);
-      this.#dialogs.delete(dialogRef);
+      BizyPopupService.dialogs.delete(dialogRef);
     }
   }
 
   closeAll() {
-    Array.from(this.#dialogs).forEach(_dialogRef => {
+    Array.from(BizyPopupService.dialogs).forEach(_dialogRef => {
       _dialogRef.close();
     });
-    this.#dialogs.clear();
+    BizyPopupService.dialogs.clear();
   }
 
   openedPopups(): number {
-    return this.#dialogs.size;
+    return BizyPopupService.dialogs.size;
   }
 }
