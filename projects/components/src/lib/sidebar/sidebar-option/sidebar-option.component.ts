@@ -11,6 +11,7 @@ export class BizySidebarOptionComponent {
   @ContentChildren(BizySidebarOptionComponent) options: QueryList<BizySidebarOptionComponent>;
   @Input() id: string = `bizy-sidebar-option-${Math.random()}`;
   @Input() disabled: boolean = false;
+  @Input() selectable: boolean = true;
   @Input() customClass: string = '';
   @Output() selectedChange = new EventEmitter<boolean>();
   @Output() onSelect = new EventEmitter<PointerEvent>();
@@ -34,7 +35,7 @@ export class BizySidebarOptionComponent {
   ) {}
 
   _onSelect(event: PointerEvent): void {
-    if (this.disabled) {
+    if (this.disabled || !this.selectable) {
       return;
     }
 

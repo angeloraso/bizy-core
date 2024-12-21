@@ -12,6 +12,7 @@ export class BizySidebarFloatingOptionComponent implements AfterContentInit {
   @ContentChildren(BizySidebarOptionComponent) options!: QueryList<BizySidebarOptionComponent>;
   @Input() id: string = `bizy-sidebar-floating-option-${Math.random()}`;
   @Input() disabled: boolean = false;
+  @Input() selectable: boolean = true;
   @Input() offsetX: number = 0;
   @Input() offsetY: number = 0;
   @Input() customClass: string = '';
@@ -53,7 +54,7 @@ export class BizySidebarFloatingOptionComponent implements AfterContentInit {
   }
 
   _onSelect(event: PointerEvent) {
-    if (this.disabled) {
+    if (this.disabled || !this.selectable) {
       return;
     }
 

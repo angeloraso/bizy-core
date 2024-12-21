@@ -183,6 +183,7 @@
     --bizy-table-column-border-bottom: none;
     --bizy-table-column-border-left: none;
     --bizy-table-column-background-color: inherit;
+    --bizy-table-column-cursor: default;
     --bizy-table-column-min-width: 2rem;
     --bizy-table-column-justify-content: flex-start;
     --bizy-table-column-arrows-color: var(--bizy-info-color);
@@ -190,6 +191,8 @@
 
     --bizy-tabs-column-gap: 0;
     --bizy-tabs-background-color: transparent;
+    --bizy-tabs-scroll-bar-color: var(--bizy-default-color);
+    --bizy-tabs-scroll-bar-hover-color: #999;
     --bizy-tab-border-top:  0.1rem solid #ddd;
     --bizy-tab-border-right:  0.1rem solid #ddd;
     --bizy-tab-border-left:  0.1rem solid #ddd;

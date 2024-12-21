@@ -25,6 +25,11 @@
     background-color: var(--bizy-sidebar-option-selected-color) !important;
 }
 
+.bizy-sidebar-floating-option--no-selectable {
+    pointer-events: none;
+    cursor: default !important;
+}
+
 .bizy-sidebar-floating-option--disabled {
     pointer-events: none;
     opacity: 0.5;

@@ -23,6 +23,11 @@
     --bizy-accordion-background-color: var(--bizy-sidebar-option-selected-color) !important;
 }
 
+::ng-deep .bizy-sidebar-option--no-selectable {
+    pointer-events: none;
+    cursor: default !important;
+}
+
 ::ng-deep .bizy-sidebar-option--disabled {
     pointer-events: none;
     opacity: 0.5;

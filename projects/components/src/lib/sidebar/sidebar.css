@@ -55,9 +55,17 @@
     align-self: start;
 }
 
+.bizy-sidebar__top:empty {
+    display: none;
+}
+
 .bizy-sidebar__bottom {
     overflow: hidden;
     align-self: end;
+}
+
+.bizy-sidebar__bottom:empty {
+    display: none;
 }
 
 .bizy-sidebar__content {

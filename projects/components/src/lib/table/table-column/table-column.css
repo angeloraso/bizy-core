@@ -18,6 +18,7 @@
     font-size: 1rem;
     min-width: var(--bizy-table-column-min-width);
     width: 100%;
+    cursor: var(--bizy-table-column-cursor);
     border-top: var(--bizy-table-column-border-top);
     border-right: var(--bizy-table-column-border-right);
     border-bottom: var(--bizy-table-column-border-bottom);

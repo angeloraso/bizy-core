@@ -8,6 +8,7 @@ export declare class BizySidebarFloatingOptionComponent implements AfterContentI
     options: QueryList<BizySidebarOptionComponent>;
     id: string;
     disabled: boolean;
+    selectable: boolean;
     offsetX: number;
     offsetY: number;
     customClass: string;
@@ -29,5 +30,5 @@ export declare class BizySidebarFloatingOptionComponent implements AfterContentI
     getSelected: () => boolean;
     ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizySidebarFloatingOptionComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<BizySidebarFloatingOptionComponent, "bizy-sidebar-floating-option", never, { "id": { "alias": "id"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; "offsetX": { "alias": "offsetX"; "required": false; }; "offsetY": { "alias": "offsetY"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; "selected": { "alias": "selected"; "required": false; }; }, { "selectedChange": "selectedChange"; "onSelect": "onSelect"; }, ["options"], ["*", "bizy-sidebar-floating-option-title", "bizy-sidebar-option"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<BizySidebarFloatingOptionComponent, "bizy-sidebar-floating-option", never, { "id": { "alias": "id"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; "selectable": { "alias": "selectable"; "required": false; }; "offsetX": { "alias": "offsetX"; "required": false; }; "offsetY": { "alias": "offsetY"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; "selected": { "alias": "selected"; "required": false; }; }, { "selectedChange": "selectedChange"; "onSelect": "onSelect"; }, ["options"], ["*", "bizy-sidebar-floating-option-title", "bizy-sidebar-option"], false, never>;
 }

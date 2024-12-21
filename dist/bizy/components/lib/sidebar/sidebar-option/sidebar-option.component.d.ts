@@ -6,6 +6,7 @@ export declare class BizySidebarOptionComponent {
     options: QueryList<BizySidebarOptionComponent>;
     id: string;
     disabled: boolean;
+    selectable: boolean;
     customClass: string;
     selectedChange: EventEmitter<boolean>;
     onSelect: EventEmitter<PointerEvent>;
@@ -18,5 +19,5 @@ export declare class BizySidebarOptionComponent {
     getId: () => string;
     getSelected: () => boolean;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizySidebarOptionComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<BizySidebarOptionComponent, "bizy-sidebar-option", never, { "id": { "alias": "id"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; "selected": { "alias": "selected"; "required": false; }; }, { "selectedChange": "selectedChange"; "onSelect": "onSelect"; }, ["options"], ["*", "bizy-sidebar-option"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<BizySidebarOptionComponent, "bizy-sidebar-option", never, { "id": { "alias": "id"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; "selectable": { "alias": "selectable"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; "selected": { "alias": "selected"; "required": false; }; }, { "selectedChange": "selectedChange"; "onSelect": "onSelect"; }, ["options"], ["*", "bizy-sidebar-option"], false, never>;
 }

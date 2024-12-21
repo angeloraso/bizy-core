@@ -1,7 +1,7 @@
 <bizy-accordion
     class="{{customClass}}"
     [id]="id"
-    customClass="bizy-sidebar-option {{_selected && (!options || options.length === 0) ? 'bizy-sidebar-option--selected' : ''}} {{disabled ? 'bizy-sidebar-option--disabled' : ''}}"
+    customClass="bizy-sidebar-option {{_selected && (!options || options.length === 0) ? 'bizy-sidebar-option--selected' : ''}} {{!selectable ? 'bizy-sidebar-option--no-selectable' : ''}} {{disabled ? 'bizy-sidebar-option--disabled' : ''}}"
     [opened]="_selected"
     (onSelect)="_onSelect($event)">
 

@@ -23,6 +23,24 @@
     background-color: var(--bizy-tabs-background-color); 
 }
 
+.bizy-tabs__wrapper::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+}
+
+.bizy-tabs__wrapper::-webkit-scrollbar-thumb {
+    border-radius: 1rem;
+    background-color: var(--bizy-tabs-scroll-bar-color);
+}
+
+.bizy-tabs__wrapper::-webkit-scrollbar-thumb:hover {
+    background-color: var(--bizy-tabs-scroll-bar-hover-color);
+}
+
+.bizy-tabs__wrapper::-webkit-scrollbar-button {
+    height: 1rem;
+}
+
 .bizy-tabs__scroll-button {
     width: 2rem;
     border: none;

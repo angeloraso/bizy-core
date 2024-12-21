@@ -1,7 +1,7 @@
 <button 
     type="button"
     class="bizy-sidebar-floating-option {{customClass}}"
-    [ngClass]="{'bizy-sidebar-floating-option--disabled': disabled, 'bizy-sidebar-floating-option--selected': _selected}"
+    [ngClass]="{'bizy-sidebar-floating-option--selected': _selected, 'bizy-sidebar-floating-option--no-selectable': !selectable, 'bizy-sidebar-floating-option--disabled': disabled}"
     [id]="id"
     (click)="_onSelect($event)"
     (keyup.enter)="_onSelect($event)"
