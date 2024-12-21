@@ -1,6 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
 import { BizyRouterService } from './router.service';
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class BizyCacheService {
   readonly CACHE_PREFIX = 'BIZY-CACHE';
   constructor(@Inject(BizyRouterService) private router: BizyRouterService) {}
@@ -20,7 +22,7 @@ export class BizyCacheService {
   }
 
   setData<T>(value: T, key?: string, expiresAt?: number) {
-    if (!value) {
+    if (typeof value === 'undefined' || value === null) {
       return;
     }
 

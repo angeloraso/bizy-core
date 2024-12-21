@@ -352,7 +352,7 @@ class BizyCacheService {
         return {};
     }
     setData(value, key, expiresAt) {
-        if (!value) {
+        if (typeof value === 'undefined' || value === null) {
             return;
         }
         if (!key) {
@@ -384,10 +384,13 @@ class BizyCacheService {
         });
     }
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyCacheService, deps: [{ token: BizyRouterService }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyCacheService });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyCacheService, providedIn: 'root' });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyCacheService, decorators: [{
-            type: Injectable
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
         }], ctorParameters: function () { return [{ type: BizyRouterService, decorators: [{
                     type: Inject,
                     args: [BizyRouterService]
