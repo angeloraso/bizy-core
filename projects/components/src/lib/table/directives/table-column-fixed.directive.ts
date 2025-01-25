@@ -49,10 +49,12 @@ export class BizyTableColumnFixedDirective {
     if (marginLeft > 0) {
       this.#renderer.setStyle(this.#elementRef.nativeElement, 'boxShadow', '16px 0px 15px -5px rgba(0,0,0,0.37)');
     } else {
+      this.#renderer.setStyle(this.#elementRef.nativeElement, 'zIndex', '0');
       this.#renderer.setStyle(this.#elementRef.nativeElement, 'boxShadow', this.#originalBoxShadow);
     }
 
     this.#renderer.setStyle(this.#elementRef.nativeElement, 'left', `${marginLeft - 5}px`);
+    this.#renderer.setStyle(this.#elementRef.nativeElement, 'paddingLeft', '5px');
   }
 }
 

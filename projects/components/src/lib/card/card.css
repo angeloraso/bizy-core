@@ -9,21 +9,21 @@
     width: var(--bizy-card-width);
     cursor: var(--bizy-card-cursor);
     border: var(--bizy-card-border);
-    border-radius: 0.3rem;
+    border-radius: var(--bizy-card-border-radius);
     overflow: hidden;
-    padding: 0.5rem;
+    padding: var(--bizy-card-padding);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     row-gap: 0.3rem;
     background-color: var(--bizy-card-background-color);
     transition: transform 250ms ease-in-out;
-    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--bizy-card-box-shadow);
 }
 
 .bizy-card:hover {
     transform: translateY(-1px);
-    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--bizy-card-hover-box-shadow);
 }
 
 .bizy-card:has(.bizy-card__content:empty) .bizy-card__content {
@@ -36,10 +36,6 @@
 
 .bizy-card:has(.bizy-card__content:empty) .bizy-card__footer:not(:empty) {
     height: 100% !important;
-}
-
-.bizy-card--selected {
-    background-color: var(--bizy-card-selected-background-color);
 }
 
 .bizy-card--disabled {

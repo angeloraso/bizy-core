@@ -2,10 +2,6 @@
     font-size: 1rem;
 }
 
-:host:has(.bizy-sidebar__toggle:checked) .bizy-sidebar .bizy-sidebar__content {
-    width: var(--bizy-sidebar-shrinked-width);
-}
-
 .bizy-sidebar {
     height: 100%;
     min-width: fit-content;
@@ -80,6 +76,7 @@
 }
 
 .bizy-sidebar__content--shrinked {
+    width: var(--bizy-sidebar-shrinked-width);
     padding-left: 0 !important;
 }
 
