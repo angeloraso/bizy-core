@@ -1,3 +1,5 @@
+import { FuseGetFunction } from "fuse.js";
+
 export interface IFuseResult {
   item: any;
   refIndex: number;
@@ -17,7 +19,7 @@ export interface IOptions {
   useExtendedSearch?: boolean; // Cuando es verdadero, permite el uso de comandos de búsqueda tipo Unix. (def: false)
   ignoreLocation?: boolean; // Cuando es verdadero, la búsqueda ignorará la ubicación y la distancia, por lo que no importará en qué parte de la cadena aparezca el patrón. (def: false)
   ignoreFieldNorm?: boolean; // Cuando es verdadero, el cálculo de la puntuación de relevancia (utilizada para la clasificación) ignorará la norma de longitud de campo.
-  // getFn?: Function; // La función que se utiliza para recuperar el valor de un objeto en la ruta proporcionada. El valor predeterminado también buscará rutas anidadas.
+  getFn?: FuseGetFunction<any>; // La función que se utiliza para recuperar el valor de un objeto en la ruta proporcionada. El valor predeterminado también buscará rutas anidadas.
   // sortFn?: Function; // La función a utilizar para ordenar todos los resultados. El valor predeterminado se ordenará por puntuación de relevancia ascendente
 }
 /**
@@ -56,8 +58,8 @@ export class FuseOptions implements IFuseOptions {
       includeScore: true,
       // Cuando es verdadero, la búsqueda ignorará la ubicación y la distancia, por lo que no importará en qué parte de la cadena aparezca el patrón
       ignoreLocation: true,
-      // Se reduce a 0.3 el threshold (default: 0.6) para aumentar precisión en resultados
-      threshold: 0.3
+      // Se reduce a 0.1 el threshold (default: 0.6) para aumentar precisión en resultados
+      threshold: 0.1
     };
 
     if (options) {

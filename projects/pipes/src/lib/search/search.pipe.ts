@@ -23,10 +23,14 @@ export class BizySearchPipe implements PipeTransform {
       return items;
     }
 
-    if (keys && !Array.isArray(keys)) {
-      keys = [keys];
-    } else if (!keys) {
-      keys = []
+    let _keys: Array<string> = [];
+
+    if (keys) {
+      if (Array.isArray(keys)) {
+        _keys = keys;
+      } else {
+        _keys = [keys];
+      }
     }
 
     if (!Array.isArray(search)) {
@@ -35,26 +39,31 @@ export class BizySearchPipe implements PipeTransform {
       search = search.map(_search => this.#removeAccentsAndDiacritics(String(_search)))
     }
 
-    let output: Array<T> = items;
+    const getFn = (item: T, keys: Array<string>) => {
+      const value = keys.reduce((acc, key) => acc && acc[key], item);
+      return typeof value === 'string' ? this.#removeAccentsAndDiacritics(value) : value;
+    }
+
     // Remove empty items
     search = search.filter(n => n);
     search.forEach(_keyword => {
       // Apply perfect match if "search" is a number or is an email
       const searchIsText = isNaN(Number(_keyword)) && !String(_keyword).includes('@');
 
-      if (!searchIsText) {
-        this.fuseOptions = new FuseOptions({...options, ...this.perfectMatch}, keys as Array<string>);
-        this.fuse = new Fuse(output, this.fuseOptions);
+      if (searchIsText) {
+        this.fuseOptions = new FuseOptions({...options, getFn}, _keys);
+        this.fuse = new Fuse(items, this.fuseOptions);
       } else {
-        this.fuseOptions = new FuseOptions(options!, keys as Array<string>);
-        this.fuse = new Fuse(output, this.fuseOptions);
+        this.fuseOptions = new FuseOptions({...options, ...this.perfectMatch, getFn}, _keys);
+        this.fuse = new Fuse(items, this.fuseOptions);
       }
 
       const fuseResult = this.fuse.search(String(_keyword)) as Array<IFuseResult>;
       // Get each fuse result item
-      output = fuseResult.map(match => match.item);
+      items = fuseResult.map(match => match.item);
     });
-    return output;
+
+    return items;
   }
 
   #removeAccentsAndDiacritics(search: string): string {
