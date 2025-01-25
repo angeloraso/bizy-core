@@ -933,7 +933,7 @@ class BizyCopyToClipboardDirective {
     onMouseEnter() {
         this.#svgElement.innerHTML = this.#COPY_ICON;
         this.renderer.setStyle(this.#svgElement, 'fill', 'var(--bizy-copy-to-clipboard-default-color)');
-        const elementHeight = this.elementRef.nativeElement.offsetHeight - 1;
+        const elementHeight = this.elementRef.nativeElement.offsetHeight - 4;
         this.renderer.setStyle(this.#svgElement, 'height', `${elementHeight}px`);
         const svg = this.#svgElement.querySelector('svg');
         if (svg) {
