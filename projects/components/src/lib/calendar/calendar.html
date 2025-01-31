@@ -1,3 +1,20 @@
+<ng-template 
+   #bizyCustomCalendarWeekEventTemplate
+   let-weekEvent="weekEvent"
+   let-locale="locale"
+   let-eventClicked="eventClicked"
+   let-tooltipPlacement="tooltipPlacement"
+   let-tooltipTemplate="tooltipTemplate"
+   let-tooltipAppendToBody="tooltipAppendToBody"
+   let-tooltipDisabled="tooltipDisabled">
+
+   <ng-container *ngIf="customCalendarWeekEventTemplate">
+      <ng-container *ngTemplateOutlet="customCalendarWeekEventTemplate; context: { $implicit: { id: weekEvent.event.id, start: weekEvent.event.start, end: weekEvent.event.end, description: weekEvent.event.title, color: weekEvent.event.color.primary, backgroundColor: weekEvent.event.color.secondary, meta: weekEvent.event.meta}}"></ng-container>
+   </ng-container>
+
+</ng-template>
+
+
 <ng-container [ngSwitch]="mode">
 
    <mwl-calendar-month-view
@@ -27,6 +44,7 @@
       [hourSegments]="hourSegments"
       [refresh]="_refresh"
       [locale]="language"
+      [eventTemplate]="customCalendarWeekEventTemplate ? bizyCustomCalendarWeekEventTemplate : ''"
       [excludeDays]="excludeDays"
       (dayHeaderClicked)="dayHeaderClicked($event.day.date)"
       (hourSegmentClicked)="hourSegmentClicked($event.date)"

@@ -1,7 +1,6 @@
-import { ConnectedPosition } from '@angular/cdk/overlay';
 import { BizyMenuOptionComponent } from './menu-option/menu-option.component';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, EventEmitter, Inject, Input, Output, QueryList } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, EventEmitter, inject, Input, Output, QueryList } from '@angular/core';
+import { fromEvent, Subscription } from 'rxjs';
 
 @Component({
   selector: 'bizy-menu',
@@ -10,6 +9,8 @@ import { Subscription } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyMenuComponent {
+  readonly #ref = inject(ChangeDetectorRef);
+
   @ContentChildren(BizyMenuOptionComponent) options!: QueryList<BizyMenuOptionComponent>;
   @Input() id: string = `bizy-menu-${Math.random()}`;
   @Input() disabled: boolean = false;
@@ -23,8 +24,6 @@ export class BizyMenuComponent {
   _menuWidth: number;
 
   #subscription = new Subscription();
-
-  constructor(@Inject(ChangeDetectorRef) private ref: ChangeDetectorRef) {}
 
   _onSelect(event: any) {
     if (this.disabled) {
@@ -46,6 +45,13 @@ export class BizyMenuComponent {
     }
 
     if (this.opened) {
+      this.#subscription = new Subscription();
+      this.#subscription.add(fromEvent(window, 'scroll', { capture: true }).subscribe(() => {
+        this.opened = false;
+        this.#ref.detectChanges();
+        this.#subscription.unsubscribe();
+      }));
+
       if (this.options) {
         this.options.forEach((option: BizyMenuOptionComponent) => {
           this.#subscription.add(option.onSelect.subscribe(event => {
@@ -58,13 +64,14 @@ export class BizyMenuComponent {
     }
   }
 
-  close = (event: PointerEvent & {target: {id: string}}) => {
+  close = (event: Event & {target: {id: string}}) => {
     if (event && event.target && event.target.id && event.target.id === this.id) {
       return;
     }
 
     this.opened = false;
-    this.ref.detectChanges();
+    this.#subscription.unsubscribe();
+    this.#ref.detectChanges();
   }
 
   ngOnDestroy() {

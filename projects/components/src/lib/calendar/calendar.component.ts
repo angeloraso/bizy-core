@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
 import { BIZY_CALENDAR_MODE, IBizyCalendarEvent, BIZY_CALENDAR_LANGUAGE, BIZY_CALENDAR_EVENT_ACTION, BIZY_CALENDAR_DAY } from './calendar.types';
 import { CalendarDateFormatter, CalendarEvent, CalendarEventAction } from 'angular-calendar';
 import { Subject } from 'rxjs';
@@ -29,6 +29,7 @@ export class BizyCalendarComponent {
   @Input() weekendDays: Array<BIZY_CALENDAR_DAY> = [BIZY_CALENDAR_DAY.SATURDAY, BIZY_CALENDAR_DAY.SUNDAY];
   @Input() weekStartsOn: BIZY_CALENDAR_DAY = BIZY_CALENDAR_DAY.SUNDAY;
   @Input() mode: BIZY_CALENDAR_MODE = BIZY_CALENDAR_MODE.WEEK;
+  @Input() customCalendarWeekEventTemplate: TemplateRef<any> | null = null;
   @Output() onEventSelect = new EventEmitter<IBizyCalendarEvent>();
   @Output() onDateSelect = new EventEmitter<{start: number, end: number, events: Array<IBizyCalendarEvent>}>();
   @Output() onEventDelete = new EventEmitter<{ event: IBizyCalendarEvent, sourceEvent: MouseEvent | KeyboardEvent }>();

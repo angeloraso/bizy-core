@@ -1,9 +1,8 @@
 import { BizyMenuOptionComponent } from './menu-option/menu-option.component';
-import { ChangeDetectorRef, EventEmitter, QueryList } from '@angular/core';
+import { EventEmitter, QueryList } from '@angular/core';
 import * as i0 from "@angular/core";
 export declare class BizyMenuComponent {
     #private;
-    private ref;
     options: QueryList<BizyMenuOptionComponent>;
     id: string;
     disabled: boolean;
@@ -14,10 +13,9 @@ export declare class BizyMenuComponent {
     opened: boolean;
     onSelect: EventEmitter<PointerEvent>;
     _menuWidth: number;
-    constructor(ref: ChangeDetectorRef);
     _onSelect(event: any): void;
     selectButton(event: any): void;
-    close: (event: PointerEvent & {
+    close: (event: Event & {
         target: {
             id: string;
         };
