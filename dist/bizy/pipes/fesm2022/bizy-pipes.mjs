@@ -35,6 +35,22 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 }]
         }] });
 
+class BizyEnumToArrayPipe {
+    transform(enumObj) {
+        return Object.keys(enumObj)
+            .filter(key => isNaN(Number(key))) // Only keep the keys, not the reverse mappings in numeric enums
+            .map(key => ({ key, value: enumObj[key] }));
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyEnumToArrayPipe, deps: [], target: i0.ɵɵFactoryTarget.Pipe });
+    static ɵpipe = i0.ɵɵngDeclarePipe({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BizyEnumToArrayPipe, name: "bizyEnumToArray" });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyEnumToArrayPipe, decorators: [{
+            type: Pipe,
+            args: [{
+                    name: 'bizyEnumToArray'
+                }]
+        }] });
+
 class BizySelectedPipe {
     transform(items) {
         if (!items || items.length === 0) {
@@ -240,8 +256,8 @@ class FuseOptions {
             includeScore: true,
             // Cuando es verdadero, la búsqueda ignorará la ubicación y la distancia, por lo que no importará en qué parte de la cadena aparezca el patrón
             ignoreLocation: true,
-            // Se reduce a 0.3 el threshold (default: 0.6) para aumentar precisión en resultados
-            threshold: 0.3
+            // Se reduce a 0.1 el threshold (default: 0.6) para aumentar precisión en resultados
+            threshold: 0.1
         };
         if (options) {
             options = { ...defaultOptions, ...options };
@@ -264,11 +280,14 @@ class BizySearchPipe {
         if (typeof search === 'undefined' || search === null || search === '' || (Array.isArray(search) && search.length === 0)) {
             return items;
         }
-        if (keys && !Array.isArray(keys)) {
-            keys = [keys];
-        }
-        else if (!keys) {
-            keys = [];
+        let _keys = [];
+        if (keys) {
+            if (Array.isArray(keys)) {
+                _keys = keys;
+            }
+            else {
+                _keys = [keys];
+            }
         }
         if (!Array.isArray(search)) {
             search = [this.#removeAccentsAndDiacritics(String(search))];
@@ -276,25 +295,28 @@ class BizySearchPipe {
         else {
             search = search.map(_search => this.#removeAccentsAndDiacritics(String(_search)));
         }
-        let output = items;
+        const getFn = (item, keys) => {
+            const value = keys.reduce((acc, key) => acc && acc[key], item);
+            return typeof value === 'string' ? this.#removeAccentsAndDiacritics(value) : value;
+        };
         // Remove empty items
         search = search.filter(n => n);
         search.forEach(_keyword => {
             // Apply perfect match if "search" is a number or is an email
             const searchIsText = isNaN(Number(_keyword)) && !String(_keyword).includes('@');
-            if (!searchIsText) {
-                this.fuseOptions = new FuseOptions({ ...options, ...this.perfectMatch }, keys);
-                this.fuse = new Fuse(output, this.fuseOptions);
+            if (searchIsText) {
+                this.fuseOptions = new FuseOptions({ ...options, getFn }, _keys);
+                this.fuse = new Fuse(items, this.fuseOptions);
             }
             else {
-                this.fuseOptions = new FuseOptions(options, keys);
-                this.fuse = new Fuse(output, this.fuseOptions);
+                this.fuseOptions = new FuseOptions({ ...options, ...this.perfectMatch, getFn }, _keys);
+                this.fuse = new Fuse(items, this.fuseOptions);
             }
             const fuseResult = this.fuse.search(String(_keyword));
             // Get each fuse result item
-            output = fuseResult.map(match => match.item);
+            items = fuseResult.map(match => match.item);
         });
-        return output;
+        return items;
     }
     #removeAccentsAndDiacritics(search) {
         if (!search) {
@@ -453,7 +475,8 @@ const PIPES = [
     BizySetToArrayPipe,
     BizyFormatSecondsPipe,
     BizyAveragePipe,
-    BizyRepeatPipe
+    BizyRepeatPipe,
+    BizyEnumToArrayPipe
 ];
 class BizyPipesModule {
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyPipesModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
@@ -465,7 +488,8 @@ class BizyPipesModule {
             BizySetToArrayPipe,
             BizyFormatSecondsPipe,
             BizyAveragePipe,
-            BizyRepeatPipe], exports: [BizyOrderByPipe,
+            BizyRepeatPipe,
+            BizyEnumToArrayPipe], exports: [BizyOrderByPipe,
             BizyReducePipe,
             BizySafePipe,
             BizySearchPipe,
@@ -473,7 +497,8 @@ class BizyPipesModule {
             BizySetToArrayPipe,
             BizyFormatSecondsPipe,
             BizyAveragePipe,
-            BizyRepeatPipe] });
+            BizyRepeatPipe,
+            BizyEnumToArrayPipe] });
     static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyPipesModule, providers: PIPES.concat([BizyFormatSecondsService]) });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyPipesModule, decorators: [{
@@ -489,5 +514,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
  * Generated bundle index. Do not edit.
  */
 
-export { BIZY_FORMAT_SECONDS_FORMAT, BIZY_FORMAT_SECONDS_LANGUAGE, BizyAveragePipe, BizyFormatSecondsPipe, BizyFormatSecondsService, BizyOrderByPipe, BizyPipesModule, BizyReducePipe, BizyRepeatPipe, BizySafePipe, BizySearchPipe, BizySelectedPipe, BizySetToArrayPipe, FuseOptions };
+export { BIZY_FORMAT_SECONDS_FORMAT, BIZY_FORMAT_SECONDS_LANGUAGE, BizyAveragePipe, BizyEnumToArrayPipe, BizyFormatSecondsPipe, BizyFormatSecondsService, BizyOrderByPipe, BizyPipesModule, BizyReducePipe, BizyRepeatPipe, BizySafePipe, BizySearchPipe, BizySelectedPipe, BizySetToArrayPipe, FuseOptions };
 //# sourceMappingURL=bizy-pipes.mjs.map

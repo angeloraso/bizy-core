@@ -1,5 +1,6 @@
 export { BizyRepeatPipe } from "./repeat.pipe";
 export { BizySetToArrayPipe } from "./setToArray.pipe";
+export { BizyEnumToArrayPipe } from "./enumToArray.pipe";
 export { BizySelectedPipe } from "./selected.pipe";
 export { BizyOrderByPipe } from "./orderBy.pipe";
 export { BizyPipesModule } from "./pipes.module";

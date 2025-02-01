@@ -1,3 +1,4 @@
+import { FuseGetFunction } from "fuse.js";
 export interface IFuseResult {
     item: any;
     refIndex: number;
@@ -16,6 +17,7 @@ export interface IOptions {
     useExtendedSearch?: boolean;
     ignoreLocation?: boolean;
     ignoreFieldNorm?: boolean;
+    getFn?: FuseGetFunction<any>;
 }
 /**
  * NOTA:
