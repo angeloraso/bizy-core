@@ -1,6 +1,6 @@
 {
   "name": "@bizy/components",
-  "version": "1.21.0",
+  "version": "1.21.1",
   "peerDependencies": {
     "@angular/common": "16.2.12",
     "@angular/core": "16.2.12",
@@ -9,7 +9,7 @@
     "@uppy/dashboard": "3.8.3",
     "@uppy/locales": "3.5.3",
     "@uppy/xhr-upload": "3.6.7",
-    "@bizy/directives": "1.5.1",
+    "@bizy/directives": "1.6.0",
     "echarts": "5.5.0",
     "angular-calendar": "0.31.1",
     "date-fns": "4.1.0",
