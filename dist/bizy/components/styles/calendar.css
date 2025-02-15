@@ -1,0 +1,102 @@
+@import "/node_modules/angular-calendar/css/angular-calendar.css";
+
+.bizy-calendar--hide-header-date .cal-week-view .cal-header.cal-weekend span {
+    display: none !important;
+}
+
+.bizy-calendar--hide-header-date .cal-week-view .cal-day-headers span {
+    display: none !important;
+}
+
+.bizy-calendar-event .cal-event {
+    font-weight: bold;
+    color: var(--bizy-calendar-event-color);
+}
+
+.bizy-calendar-event .cal-event-action {
+    position: absolute;
+    top: 0;
+}
+
+.bizy-calendar-event .cal-event-actions {
+    margin-right: 1.2rem;
+}
+
+.bizy-calendar-event .cal-event-actions:empty {
+    margin-right: 0;
+}
+
+.bizy-calendar-event-delete-action__icon {
+    position: relative;
+    top: 0.4rem;
+    width: var(--bizy-calendar-event-delete-action-width);
+    height: var(--bizy-calendar-event-delete-action-height);
+}
+
+.bizy-calendar-event-delete-action__icon:hover .bizy-calendar-event-delete-action__icon__trash-lid,
+.bizy-calendar-event-delete-action__icon:hover .bizy-calendar-event-delete-action__icon__trash-container {
+    background-color: var(--bizy-calendar-event-delete-action-hover-color);
+}
+
+
+.bizy-calendar-event-delete-action__icon__trash-lid {
+    position: absolute;
+    width: 0.65rem;
+    height: 0.1rem;
+    left: 0.18rem;
+    top: 0.07rem;
+    background-color: var(--bizy-calendar-event-delete-action-color);
+    border-top-left-radius: 80%;
+    border-top-right-radius: 80%;
+}
+
+.bizy-calendar-event-delete-action__icon__trash-lid::after {
+    content: "";
+    width: 0.26rem;
+    height: 100%;
+    position: absolute;
+    left: 0.2rem;
+    margin-top: -0.05rem;
+    background-color: inherit;
+    border-top-left-radius: 30%;
+    border-top-right-radius: 30%;
+}
+
+
+.bizy-calendar-event-delete-action__icon__trash-container {
+    width: 0.58rem;
+    height: 0.65rem;
+    position: absolute;
+    left: 0.22rem;
+    bottom: 0.1rem;
+    background-color: var(--bizy-calendar-event-delete-action-color);
+    border-bottom-left-radius: 15%;
+    border-bottom-right-radius: 15%;
+}
+
+.bizy-calendar-event-delete-action__icon__trash-line-1 {
+    width: 0.05rem;
+    height: 0.5rem;
+    position: absolute;
+    left: 0.33rem;
+    bottom: 0.17rem;
+    background-color: var(--bizy-calendar-event-delete-action-line-color);
+}
+
+.bizy-calendar-event-delete-action__icon__trash-line-2 {
+    width: 0.05rem;
+    height: 0.5rem;
+    position: absolute;
+    left: 0.46rem;
+    bottom: 0.17rem;
+    background-color: var(--bizy-calendar-event-delete-action-line-color);
+}
+
+.bizy-calendar-event-delete-action__icon__trash-line-3 {
+    width: 0.05rem;
+    height: 0.5rem;
+    position: absolute;
+    left: 0.62rem;
+    bottom: 0.17rem;
+    background-color: var(--bizy-calendar-event-delete-action-line-color);
+}
