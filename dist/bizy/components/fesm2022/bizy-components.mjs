@@ -1,7 +1,7 @@
 import * as i0 from '@angular/core';
 import { EventEmitter, Component, ChangeDetectionStrategy, Input, Output, NgModule, ChangeDetectorRef, Inject, ContentChildren, ViewChild, ElementRef, inject, Renderer2, Directive, ViewContainerRef, TemplateRef, ContentChild, Pipe, Injectable } from '@angular/core';
 import * as i1 from '@angular/common';
-import { CommonModule, DecimalPipe, DatePipe, DOCUMENT } from '@angular/common';
+import { CommonModule, DecimalPipe, DatePipe, DOCUMENT, registerLocaleData } from '@angular/common';
 import * as i2 from '@angular/forms';
 import { FormsModule, Validators, FormBuilder } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
@@ -24,6 +24,11 @@ import es_ES from '@uppy/locales/lib/es_ES';
 import en_US from '@uppy/locales/lib/en_US';
 import Dashboard from '@uppy/dashboard';
 import XHRUpload from '@uppy/xhr-upload';
+import * as i2$3 from 'angular-calendar';
+import { CalendarNativeDateFormatter, CalendarDateFormatter, CalendarModule, DateAdapter } from 'angular-calendar';
+import { isSameMonth, isSameDay } from 'date-fns';
+import localeEs from '@angular/common/locales/es';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
 class BizyToggleComponent {
     id = `bizy-toggle-${Math.random()}`;
@@ -56,7 +61,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS$k = [
+const COMPONENTS$l = [
     BizyToggleComponent,
 ];
 class BizyToggleModule {
@@ -68,8 +73,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$k,
-                    exports: COMPONENTS$k
+                    declarations: COMPONENTS$l,
+                    exports: COMPONENTS$l
                 }]
         }] });
 
@@ -130,7 +135,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Input
             }] } });
 
-const COMPONENTS$j = [BizyBreadcrumbComponent];
+const COMPONENTS$k = [BizyBreadcrumbComponent];
 class BizyBreadcrumbModule {
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyBreadcrumbModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
     static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BizyBreadcrumbModule, declarations: [BizyBreadcrumbComponent], imports: [CommonModule,
@@ -145,8 +150,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                         CommonModule,
                         FormsModule
                     ],
-                    declarations: COMPONENTS$j,
-                    exports: COMPONENTS$j,
+                    declarations: COMPONENTS$k,
+                    exports: COMPONENTS$k,
                 }]
         }] });
 
@@ -181,7 +186,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS$i = [
+const COMPONENTS$j = [
     BizyButtonComponent,
 ];
 class BizyButtonModule {
@@ -193,8 +198,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$i,
-                    exports: COMPONENTS$i
+                    declarations: COMPONENTS$j,
+                    exports: COMPONENTS$j
                 }]
         }] });
 
@@ -463,7 +468,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Input
             }] } });
 
-const COMPONENTS$h = [BizyInputComponent, BizyInputOptionComponent];
+const COMPONENTS$i = [BizyInputComponent, BizyInputOptionComponent];
 class BizyInputModule {
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyInputModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
     static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BizyInputModule, declarations: [BizyInputComponent, BizyInputOptionComponent], imports: [CommonModule,
@@ -485,8 +490,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                         OverlayModule
                     ],
                     providers: [DecimalPipe],
-                    declarations: COMPONENTS$h,
-                    exports: COMPONENTS$h
+                    declarations: COMPONENTS$i,
+                    exports: COMPONENTS$i
                 }]
         }] });
 
@@ -699,7 +704,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Input
             }] } });
 
-const COMPONENTS$g = [
+const COMPONENTS$h = [
     BizyDatePickerComponent,
 ];
 class BizyDatePickerModule {
@@ -711,8 +716,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, BizyInputModule],
-                    declarations: COMPONENTS$g,
-                    exports: COMPONENTS$g,
+                    declarations: COMPONENTS$h,
+                    exports: COMPONENTS$h,
                     providers: [DatePipe]
                 }]
         }] });
@@ -832,7 +837,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Input
             }] } });
 
-const COMPONENTS$f = [
+const COMPONENTS$g = [
     BizyTabsComponent,
     BizyTabComponent
 ];
@@ -847,8 +852,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$f,
-                    exports: COMPONENTS$f
+                    declarations: COMPONENTS$g,
+                    exports: COMPONENTS$g
                 }]
         }] });
 
@@ -861,7 +866,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             args: [{ selector: 'bizy-toolbar', changeDetection: ChangeDetectionStrategy.OnPush, template: "<div class=\"bizy-toolbar\">\n\n    <span class=\"bizy-toolbar__start\">\n        \n        <ng-content select=\"[slot=start]\"></ng-content>\n\n    </span>\n\n    <span class=\"bizy-toolbar__end\">\n\n        <ng-content select=\"[slot=end]\"></ng-content>\n\n    </span>\n\n</div>\n", styles: [":host{font-size:1rem}.bizy-toolbar{height:var(--bizy-toolbar-height);width:100%;background-color:var(--bizy-toolbar-background-color);display:flex;align-items:center;justify-content:space-between;column-gap:var(--bizy-toolbar-column-gap);padding:var(--bizy-toolbar-padding)}.bizy-toolbar__start{height:100%;display:flex;align-items:center;column-gap:var(--bizy-toolbar-column-gap)}.bizy-toolbar__end{height:100%;display:flex;align-items:center;justify-content:flex-end;column-gap:var(--bizy-toolbar-column-gap)}::ng-deep .bizy-toolbar *[toolbar-option]{height:100%}\n"] }]
         }] });
 
-const COMPONENTS$e = [
+const COMPONENTS$f = [
     BizyToolbarComponent,
 ];
 class BizyToolbarModule {
@@ -873,8 +878,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$e,
-                    exports: COMPONENTS$e
+                    declarations: COMPONENTS$f,
+                    exports: COMPONENTS$f
                 }]
         }] });
 
@@ -1270,7 +1275,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Input
             }] } });
 
-const COMPONENTS$d = [
+const COMPONENTS$e = [
     BizyAccordionComponent,
 ];
 class BizyAccordionModule {
@@ -1282,12 +1287,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$d,
-                    exports: COMPONENTS$d
+                    declarations: COMPONENTS$e,
+                    exports: COMPONENTS$e
                 }]
         }] });
 
-const COMPONENTS$c = [
+const COMPONENTS$d = [
     BizySidebarComponent,
     BizySidebarOptionComponent,
     BizySidebarFloatingOptionComponent,
@@ -1308,8 +1313,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, BizyAccordionModule, OverlayModule],
-                    declarations: COMPONENTS$c,
-                    exports: COMPONENTS$c
+                    declarations: COMPONENTS$d,
+                    exports: COMPONENTS$d
                 }]
         }] });
 
@@ -1978,7 +1983,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Input
             }] } });
 
-const COMPONENTS$b = [
+const COMPONENTS$c = [
     BizyCheckboxComponent,
 ];
 class BizyCheckboxModule {
@@ -1990,12 +1995,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$b,
-                    exports: COMPONENTS$b
+                    declarations: COMPONENTS$c,
+                    exports: COMPONENTS$c
                 }]
         }] });
 
-const COMPONENTS$a = [
+const COMPONENTS$b = [
     BizyTableComponent,
     BizyTableHeaderComponent,
     BizyTableFooterComponent,
@@ -2034,8 +2039,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, ScrollingModule, BizyCheckboxModule, BizyAccordionModule],
-                    declarations: COMPONENTS$a.concat(DIRECTIVES),
-                    exports: COMPONENTS$a.concat(DIRECTIVES)
+                    declarations: COMPONENTS$b.concat(DIRECTIVES),
+                    exports: COMPONENTS$b.concat(DIRECTIVES)
                 }]
         }] });
 
@@ -2165,7 +2170,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS$9 = [
+const COMPONENTS$a = [
     BizyMenuComponent,
     BizyMenuOptionComponent,
     BizyMenuTitleComponent
@@ -2183,8 +2188,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, OverlayModule],
-                    declarations: COMPONENTS$9,
-                    exports: COMPONENTS$9
+                    declarations: COMPONENTS$a,
+                    exports: COMPONENTS$a
                 }]
         }] });
 
@@ -2773,7 +2778,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS$8 = [
+const COMPONENTS$9 = [
     BizyFilterComponent,
     BizyFilterContentComponent,
     BizyFilterSectionsComponent,
@@ -2809,8 +2814,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, OverlayModule, BizyCheckboxModule, BizyInputModule],
-                    declarations: COMPONENTS$8,
-                    exports: COMPONENTS$8,
+                    declarations: COMPONENTS$9,
+                    exports: COMPONENTS$9,
                     providers: [BizyFilterPipe, BizyRangeFilterPipe]
                 }]
         }] });
@@ -3006,7 +3011,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS$7 = [
+const COMPONENTS$8 = [
     BizySelectComponent,
     BizySelectOptionComponent
 ];
@@ -3021,8 +3026,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, BizyInputModule, OverlayModule, PortalModule],
-                    declarations: COMPONENTS$7,
-                    exports: COMPONENTS$7
+                    declarations: COMPONENTS$8,
+                    exports: COMPONENTS$8
                 }]
         }] });
 
@@ -3092,7 +3097,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Input
             }] } });
 
-const COMPONENTS$6 = [
+const COMPONENTS$7 = [
     BizySliderComponent,
 ];
 class BizySliderModule {
@@ -3104,8 +3109,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$6,
-                    exports: COMPONENTS$6
+                    declarations: COMPONENTS$7,
+                    exports: COMPONENTS$7
                 }]
         }] });
 
@@ -3801,7 +3806,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS$5 = [
+const COMPONENTS$6 = [
     BizyTagComponent,
 ];
 class BizyTagModule {
@@ -3813,8 +3818,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$5,
-                    exports: COMPONENTS$5
+                    declarations: COMPONENTS$6,
+                    exports: COMPONENTS$6
                 }]
         }] });
 
@@ -3848,7 +3853,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS$4 = [
+const COMPONENTS$5 = [
     BizyCardComponent,
 ];
 class BizyCardModule {
@@ -3860,8 +3865,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$4,
-                    exports: COMPONENTS$4
+                    declarations: COMPONENTS$5,
+                    exports: COMPONENTS$5
                 }]
         }] });
 
@@ -4245,7 +4250,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS$3 = [
+const COMPONENTS$4 = [
     BizyRadioComponent,
 ];
 class BizyRadioModule {
@@ -4257,8 +4262,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$3,
-                    exports: COMPONENTS$3
+                    declarations: COMPONENTS$4,
+                    exports: COMPONENTS$4
                 }]
         }] });
 
@@ -4326,7 +4331,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Input
             }] } });
 
-const COMPONENTS$2 = [
+const COMPONENTS$3 = [
     BizyFormComponent,
 ];
 class BizyFormModule {
@@ -4338,8 +4343,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
-                    declarations: COMPONENTS$2,
-                    exports: COMPONENTS$2
+                    declarations: COMPONENTS$3,
+                    exports: COMPONENTS$3
                 }]
         }] });
 
@@ -4552,7 +4557,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Input
             }] } });
 
-const COMPONENTS$1 = [
+const COMPONENTS$2 = [
     BizyGridComponent,
     BizyGridForDirective,
     BizyGridRowComponent
@@ -4570,8 +4575,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, ScrollingModule],
-                    declarations: COMPONENTS$1,
-                    exports: COMPONENTS$1
+                    declarations: COMPONENTS$2,
+                    exports: COMPONENTS$2
                 }]
         }] });
 
@@ -4593,7 +4598,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
                 type: Output
             }] } });
 
-const COMPONENTS = [
+const COMPONENTS$1 = [
     BizySkeletonCardComponent,
 ];
 class BizySkeletonCardModule {
@@ -4605,6 +4610,272 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule],
+                    declarations: COMPONENTS$1,
+                    exports: COMPONENTS$1
+                }]
+        }] });
+
+var BIZY_CALENDAR_MODE;
+(function (BIZY_CALENDAR_MODE) {
+    BIZY_CALENDAR_MODE["MONTH"] = "month";
+    BIZY_CALENDAR_MODE["WEEK"] = "week";
+    BIZY_CALENDAR_MODE["DAY"] = "day";
+})(BIZY_CALENDAR_MODE || (BIZY_CALENDAR_MODE = {}));
+var BIZY_CALENDAR_DAY;
+(function (BIZY_CALENDAR_DAY) {
+    BIZY_CALENDAR_DAY[BIZY_CALENDAR_DAY["SUNDAY"] = 0] = "SUNDAY";
+    BIZY_CALENDAR_DAY[BIZY_CALENDAR_DAY["MONDAY"] = 1] = "MONDAY";
+    BIZY_CALENDAR_DAY[BIZY_CALENDAR_DAY["TUESDAY"] = 2] = "TUESDAY";
+    BIZY_CALENDAR_DAY[BIZY_CALENDAR_DAY["WEDNESDAY"] = 3] = "WEDNESDAY";
+    BIZY_CALENDAR_DAY[BIZY_CALENDAR_DAY["THURSDAY"] = 4] = "THURSDAY";
+    BIZY_CALENDAR_DAY[BIZY_CALENDAR_DAY["FRIDAY"] = 5] = "FRIDAY";
+    BIZY_CALENDAR_DAY[BIZY_CALENDAR_DAY["SATURDAY"] = 6] = "SATURDAY";
+})(BIZY_CALENDAR_DAY || (BIZY_CALENDAR_DAY = {}));
+var BIZY_CALENDAR_EVENT_ACTION;
+(function (BIZY_CALENDAR_EVENT_ACTION) {
+    BIZY_CALENDAR_EVENT_ACTION["DELETE"] = "DELETE";
+})(BIZY_CALENDAR_EVENT_ACTION || (BIZY_CALENDAR_EVENT_ACTION = {}));
+var BIZY_CALENDAR_LANGUAGE;
+(function (BIZY_CALENDAR_LANGUAGE) {
+    BIZY_CALENDAR_LANGUAGE["SPANISH"] = "es";
+    BIZY_CALENDAR_LANGUAGE["ENGLISH"] = "en";
+})(BIZY_CALENDAR_LANGUAGE || (BIZY_CALENDAR_LANGUAGE = {}));
+
+class BizyCalendarFormatter extends CalendarNativeDateFormatter {
+    weekViewHour({ date, locale }) {
+        return new Intl.DateTimeFormat(locale, {
+            hour: '2-digit',
+            minute: '2-digit'
+        }).format(date);
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyCalendarFormatter, deps: null, target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyCalendarFormatter });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyCalendarFormatter, decorators: [{
+            type: Injectable
+        }] });
+
+class BizyCalendarComponent {
+    id = `bizy-calendar-${Math.random()}`;
+    hideHeaderDate = false;
+    dayStartHour = 0;
+    dayEndHour = 24;
+    hourMinutesDuration = 60;
+    hourSegments = 2;
+    language = BIZY_CALENDAR_LANGUAGE.SPANISH;
+    excludeDays = [];
+    weekendDays = [BIZY_CALENDAR_DAY.SATURDAY, BIZY_CALENDAR_DAY.SUNDAY];
+    weekStartsOn = BIZY_CALENDAR_DAY.SUNDAY;
+    mode = BIZY_CALENDAR_MODE.WEEK;
+    customCalendarWeekEventTemplate = null;
+    onEventSelect = new EventEmitter();
+    onDateSelect = new EventEmitter();
+    onEventDelete = new EventEmitter();
+    BIZY_CALENDAR_MODE = BIZY_CALENDAR_MODE;
+    _viewDate = new Date();
+    _activeDayIsOpen = false;
+    _refresh = new Subject();
+    viewDate(viewDate) {
+        if (!viewDate) {
+            return;
+        }
+        this._viewDate = new Date(viewDate);
+    }
+    _calendarEvents = [];
+    _events = [];
+    set events(events) {
+        if (!events || events.length === 0) {
+            return;
+        }
+        this._events.length = 0;
+        this._calendarEvents = events.map(_event => {
+            const id = _event.id || `bizy-calendar-event-${Math.random()}`;
+            this._events.push({ ..._event, id });
+            return {
+                id,
+                start: new Date(_event.start),
+                end: new Date(_event.end),
+                title: _event.description || '',
+                color: {
+                    primary: _event.color,
+                    secondary: _event.backgroundColor
+                },
+                actions: this.#getCalendarEventActions(_event),
+                allDay: false,
+                cssClass: `bizy-calendar-event ${_event.customClass || ''}`,
+                resizable: {
+                    beforeStart: false,
+                    afterEnd: false
+                },
+                draggable: false,
+                meta: _event.meta
+            };
+        });
+        this._refresh.next();
+    }
+    dayClicked({ date, events }) {
+        if (isSameMonth(date, this._viewDate)) {
+            if ((isSameDay(this._viewDate, date) && this._activeDayIsOpen === true) || events.length === 0) {
+                this._activeDayIsOpen = false;
+            }
+            else {
+                this._activeDayIsOpen = true;
+            }
+            this._viewDate = date;
+        }
+        const ids = events.map(_event => _event.id);
+        const _events = this._events.filter(_event => ids.includes(_event.id));
+        const startOfDay = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        const startDate = startOfDay.getTime();
+        const endOfDay = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59, 999);
+        const endDate = endOfDay.getTime();
+        this.onDateSelect.emit({
+            start: startDate,
+            end: endDate,
+            events: _events
+        });
+    }
+    eventClicked(event) {
+        const _event = this._events.find(_e => _e.id === event.id);
+        if (!_event) {
+            return;
+        }
+        this.onEventSelect.emit(_event);
+    }
+    dayHeaderClicked(date) {
+        if (!date) {
+            return;
+        }
+        const startOfDay = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        const startDate = startOfDay.getTime();
+        const endOfDay = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59, 999);
+        const endDate = endOfDay.getTime();
+        const _events = this._events.filter(_event => _event.start >= startDate && _event.end <= endDate);
+        this.onDateSelect.emit({
+            start: startDate,
+            end: endDate,
+            events: _events
+        });
+    }
+    hourSegmentClicked(date) {
+        if (!date) {
+            return;
+        }
+        const startOfDay = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), 0, 0);
+        const startDate = startOfDay.getTime();
+        const endOfDay = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes() + this.hourMinutesDuration, 59, 999);
+        const endDate = endOfDay.getTime();
+        const _events = this._events.filter(_event => _event.start >= startDate && _event.end <= endDate);
+        this.onDateSelect.emit({
+            start: startDate,
+            end: endDate,
+            events: _events
+        });
+    }
+    #getCalendarEventActions(event) {
+        if (!event || !event.actions || event.actions.length === 0) {
+            return [];
+        }
+        const actions = [];
+        if (event.actions.includes(BIZY_CALENDAR_EVENT_ACTION.DELETE)) {
+            actions.push({
+                label: `<div class="bizy-calendar-event-delete-action__icon">
+                    <div class="bizy-calendar-event-delete-action__icon__trash-lid"></div>
+                    <div class="bizy-calendar-event-delete-action__icon__trash-container"></div>
+                    <div class="bizy-calendar-event-delete-action__icon__trash-line-1"></div>
+                    <div class="bizy-calendar-event-delete-action__icon__trash-line-2"></div>
+                    <div class="bizy-calendar-event-delete-action__icon__trash-line-3"></div>
+                </div>`,
+                a11yLabel: 'delete',
+                onClick: ({ event, sourceEvent }) => {
+                    const _event = this._events.find(_e => _e.id === event.id);
+                    if (!_event) {
+                        return;
+                    }
+                    this.onEventDelete.emit({ event: _event, sourceEvent });
+                },
+            });
+        }
+        return actions;
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyCalendarComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.2.12", type: BizyCalendarComponent, selector: "bizy-calendar", inputs: { id: "id", hideHeaderDate: "hideHeaderDate", dayStartHour: "dayStartHour", dayEndHour: "dayEndHour", hourMinutesDuration: "hourMinutesDuration", hourSegments: "hourSegments", language: "language", excludeDays: "excludeDays", weekendDays: "weekendDays", weekStartsOn: "weekStartsOn", mode: "mode", customCalendarWeekEventTemplate: "customCalendarWeekEventTemplate", viewDate: "viewDate", events: "events" }, outputs: { onEventSelect: "onEventSelect", onDateSelect: "onDateSelect", onEventDelete: "onEventDelete" }, providers: [
+            {
+                provide: CalendarDateFormatter,
+                useClass: BizyCalendarFormatter
+            }
+        ], ngImport: i0, template: "<ng-template \n   #bizyCustomCalendarWeekEventTemplate\n   let-weekEvent=\"weekEvent\"\n   let-locale=\"locale\"\n   let-eventClicked=\"eventClicked\"\n   let-tooltipPlacement=\"tooltipPlacement\"\n   let-tooltipTemplate=\"tooltipTemplate\"\n   let-tooltipAppendToBody=\"tooltipAppendToBody\"\n   let-tooltipDisabled=\"tooltipDisabled\">\n\n   <ng-container *ngIf=\"customCalendarWeekEventTemplate\">\n      <ng-container *ngTemplateOutlet=\"customCalendarWeekEventTemplate; context: { $implicit: { id: weekEvent.event.id, start: weekEvent.event.start, end: weekEvent.event.end, description: weekEvent.event.title, color: weekEvent.event.color.primary, backgroundColor: weekEvent.event.color.secondary, meta: weekEvent.event.meta}}\"></ng-container>\n   </ng-container>\n\n</ng-template>\n\n\n<ng-container [ngSwitch]=\"mode\">\n\n   <mwl-calendar-month-view\n      *ngSwitchCase=\"BIZY_CALENDAR_MODE.MONTH\"\n      [viewDate]=\"_viewDate\"\n      [events]=\"_calendarEvents\"\n      [weekendDays]=\"weekendDays\"\n      [weekStartsOn]=\"weekStartsOn\"\n      [refresh]=\"_refresh\"\n      [locale]=\"language\"\n      [activeDayIsOpen]=\"_activeDayIsOpen\"\n      [excludeDays]=\"excludeDays\"\n      (dayClicked)=\"dayClicked($event.day)\"\n      (eventClicked)=\"eventClicked($event.event)\">\n   </mwl-calendar-month-view>\n\n   <mwl-calendar-week-view\n      *ngSwitchCase=\"BIZY_CALENDAR_MODE.WEEK\"\n      [ngClass]=\"{'bizy-calendar--hide-header-date': hideHeaderDate}\"\n      [viewDate]=\"_viewDate\"\n      [events]=\"_calendarEvents\"\n      [weekendDays]=\"weekendDays\"\n      [weekStartsOn]=\"weekStartsOn\"\n      [dayStartHour]=\"dayStartHour\"\n      [dayEndHour]=\"dayEndHour\"\n      [hourDuration]=\"hourMinutesDuration\"\n      [hourSegments]=\"hourSegments\"\n      [refresh]=\"_refresh\"\n      [locale]=\"language\"\n      [eventTemplate]=\"customCalendarWeekEventTemplate ? bizyCustomCalendarWeekEventTemplate : ''\"\n      [excludeDays]=\"excludeDays\"\n      (dayHeaderClicked)=\"dayHeaderClicked($event.day.date)\"\n      (hourSegmentClicked)=\"hourSegmentClicked($event.date)\"\n      (eventClicked)=\"eventClicked($event.event)\">\n   </mwl-calendar-week-view>\n\n   <mwl-calendar-day-view\n      *ngSwitchCase=\"BIZY_CALENDAR_MODE.DAY\"\n      [viewDate]=\"_viewDate\"\n      [events]=\"_calendarEvents\"\n      [weekendDays]=\"weekendDays\"\n      [weekStartsOn]=\"weekStartsOn\"\n      [dayStartHour]=\"dayStartHour\"\n      [dayEndHour]=\"dayEndHour\"\n      [hourDuration]=\"hourMinutesDuration\"\n      [hourSegments]=\"hourSegments\"\n      [refresh]=\"_refresh\"\n      [locale]=\"language\"\n      [excludeDays]=\"excludeDays\"\n      (hourSegmentClicked)=\"hourSegmentClicked($event.date)\"\n      (eventClicked)=\"eventClicked($event.event)\">\n   </mwl-calendar-day-view>\n\n</ng-container>\n", styles: [":host{font-size:1rem}.custom-calendar-week-event{width:100%;height:100%;display:-webkit-box;-webkit-line-clamp:unset;-webkit-box-orient:vertical;overflow:hidden;word-wrap:break-word;text-overflow:ellipsis;line-height:1.2}\n"], dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: i1.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: i1.NgSwitch, selector: "[ngSwitch]", inputs: ["ngSwitch"] }, { kind: "directive", type: i1.NgSwitchCase, selector: "[ngSwitchCase]", inputs: ["ngSwitchCase"] }, { kind: "component", type: i2$3.CalendarMonthViewComponent, selector: "mwl-calendar-month-view", inputs: ["viewDate", "events", "excludeDays", "activeDayIsOpen", "activeDay", "refresh", "locale", "tooltipPlacement", "tooltipTemplate", "tooltipAppendToBody", "tooltipDelay", "weekStartsOn", "headerTemplate", "cellTemplate", "openDayEventsTemplate", "eventTitleTemplate", "eventActionsTemplate", "weekendDays"], outputs: ["beforeViewRender", "dayClicked", "eventClicked", "columnHeaderClicked", "eventTimesChanged"] }, { kind: "component", type: i2$3.CalendarWeekViewComponent, selector: "mwl-calendar-week-view", inputs: ["viewDate", "events", "excludeDays", "refresh", "locale", "tooltipPlacement", "tooltipTemplate", "tooltipAppendToBody", "tooltipDelay", "weekStartsOn", "headerTemplate", "eventTemplate", "eventTitleTemplate", "eventActionsTemplate", "precision", "weekendDays", "snapDraggedEvents", "hourSegments", "hourDuration", "hourSegmentHeight", "minimumEventHeight", "dayStartHour", "dayStartMinute", "dayEndHour", "dayEndMinute", "hourSegmentTemplate", "eventSnapSize", "allDayEventsLabelTemplate", "daysInWeek", "currentTimeMarkerTemplate", "validateEventTimesChanged", "resizeCursors"], outputs: ["dayHeaderClicked", "eventClicked", "eventTimesChanged", "beforeViewRender", "hourSegmentClicked"] }, { kind: "component", type: i2$3.CalendarDayViewComponent, selector: "mwl-calendar-day-view", inputs: ["viewDate", "events", "hourSegments", "hourSegmentHeight", "hourDuration", "minimumEventHeight", "dayStartHour", "dayStartMinute", "dayEndHour", "dayEndMinute", "refresh", "locale", "eventSnapSize", "tooltipPlacement", "tooltipTemplate", "tooltipAppendToBody", "tooltipDelay", "hourSegmentTemplate", "eventTemplate", "eventTitleTemplate", "eventActionsTemplate", "snapDraggedEvents", "allDayEventsLabelTemplate", "currentTimeMarkerTemplate", "validateEventTimesChanged", "resizeCursors"], outputs: ["eventClicked", "hourSegmentClicked", "eventTimesChanged", "beforeViewRender"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyCalendarComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-calendar', providers: [
+                        {
+                            provide: CalendarDateFormatter,
+                            useClass: BizyCalendarFormatter
+                        }
+                    ], changeDetection: ChangeDetectionStrategy.OnPush, template: "<ng-template \n   #bizyCustomCalendarWeekEventTemplate\n   let-weekEvent=\"weekEvent\"\n   let-locale=\"locale\"\n   let-eventClicked=\"eventClicked\"\n   let-tooltipPlacement=\"tooltipPlacement\"\n   let-tooltipTemplate=\"tooltipTemplate\"\n   let-tooltipAppendToBody=\"tooltipAppendToBody\"\n   let-tooltipDisabled=\"tooltipDisabled\">\n\n   <ng-container *ngIf=\"customCalendarWeekEventTemplate\">\n      <ng-container *ngTemplateOutlet=\"customCalendarWeekEventTemplate; context: { $implicit: { id: weekEvent.event.id, start: weekEvent.event.start, end: weekEvent.event.end, description: weekEvent.event.title, color: weekEvent.event.color.primary, backgroundColor: weekEvent.event.color.secondary, meta: weekEvent.event.meta}}\"></ng-container>\n   </ng-container>\n\n</ng-template>\n\n\n<ng-container [ngSwitch]=\"mode\">\n\n   <mwl-calendar-month-view\n      *ngSwitchCase=\"BIZY_CALENDAR_MODE.MONTH\"\n      [viewDate]=\"_viewDate\"\n      [events]=\"_calendarEvents\"\n      [weekendDays]=\"weekendDays\"\n      [weekStartsOn]=\"weekStartsOn\"\n      [refresh]=\"_refresh\"\n      [locale]=\"language\"\n      [activeDayIsOpen]=\"_activeDayIsOpen\"\n      [excludeDays]=\"excludeDays\"\n      (dayClicked)=\"dayClicked($event.day)\"\n      (eventClicked)=\"eventClicked($event.event)\">\n   </mwl-calendar-month-view>\n\n   <mwl-calendar-week-view\n      *ngSwitchCase=\"BIZY_CALENDAR_MODE.WEEK\"\n      [ngClass]=\"{'bizy-calendar--hide-header-date': hideHeaderDate}\"\n      [viewDate]=\"_viewDate\"\n      [events]=\"_calendarEvents\"\n      [weekendDays]=\"weekendDays\"\n      [weekStartsOn]=\"weekStartsOn\"\n      [dayStartHour]=\"dayStartHour\"\n      [dayEndHour]=\"dayEndHour\"\n      [hourDuration]=\"hourMinutesDuration\"\n      [hourSegments]=\"hourSegments\"\n      [refresh]=\"_refresh\"\n      [locale]=\"language\"\n      [eventTemplate]=\"customCalendarWeekEventTemplate ? bizyCustomCalendarWeekEventTemplate : ''\"\n      [excludeDays]=\"excludeDays\"\n      (dayHeaderClicked)=\"dayHeaderClicked($event.day.date)\"\n      (hourSegmentClicked)=\"hourSegmentClicked($event.date)\"\n      (eventClicked)=\"eventClicked($event.event)\">\n   </mwl-calendar-week-view>\n\n   <mwl-calendar-day-view\n      *ngSwitchCase=\"BIZY_CALENDAR_MODE.DAY\"\n      [viewDate]=\"_viewDate\"\n      [events]=\"_calendarEvents\"\n      [weekendDays]=\"weekendDays\"\n      [weekStartsOn]=\"weekStartsOn\"\n      [dayStartHour]=\"dayStartHour\"\n      [dayEndHour]=\"dayEndHour\"\n      [hourDuration]=\"hourMinutesDuration\"\n      [hourSegments]=\"hourSegments\"\n      [refresh]=\"_refresh\"\n      [locale]=\"language\"\n      [excludeDays]=\"excludeDays\"\n      (hourSegmentClicked)=\"hourSegmentClicked($event.date)\"\n      (eventClicked)=\"eventClicked($event.event)\">\n   </mwl-calendar-day-view>\n\n</ng-container>\n", styles: [":host{font-size:1rem}.custom-calendar-week-event{width:100%;height:100%;display:-webkit-box;-webkit-line-clamp:unset;-webkit-box-orient:vertical;overflow:hidden;word-wrap:break-word;text-overflow:ellipsis;line-height:1.2}\n"] }]
+        }], propDecorators: { id: [{
+                type: Input
+            }], hideHeaderDate: [{
+                type: Input
+            }], dayStartHour: [{
+                type: Input
+            }], dayEndHour: [{
+                type: Input
+            }], hourMinutesDuration: [{
+                type: Input
+            }], hourSegments: [{
+                type: Input
+            }], language: [{
+                type: Input
+            }], excludeDays: [{
+                type: Input
+            }], weekendDays: [{
+                type: Input
+            }], weekStartsOn: [{
+                type: Input
+            }], mode: [{
+                type: Input
+            }], customCalendarWeekEventTemplate: [{
+                type: Input
+            }], onEventSelect: [{
+                type: Output
+            }], onDateSelect: [{
+                type: Output
+            }], onEventDelete: [{
+                type: Output
+            }], viewDate: [{
+                type: Input
+            }], events: [{
+                type: Input
+            }] } });
+
+registerLocaleData(localeEs);
+const COMPONENTS = [
+    BizyCalendarComponent
+];
+class BizyCalendarModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyCalendarModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.2.12", ngImport: i0, type: BizyCalendarModule, declarations: [BizyCalendarComponent], imports: [CommonModule,
+            FormsModule, i2$3.CalendarModule], exports: [BizyCalendarComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyCalendarModule, imports: [CommonModule,
+            FormsModule,
+            CalendarModule.forRoot({
+                provide: DateAdapter,
+                useFactory: adapterFactory
+            })] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImport: i0, type: BizyCalendarModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: [
+                        CommonModule,
+                        FormsModule,
+                        CalendarModule.forRoot({
+                            provide: DateAdapter,
+                            useFactory: adapterFactory
+                        })
+                    ],
                     declarations: COMPONENTS,
                     exports: COMPONENTS
                 }]
@@ -4614,5 +4885,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.2.12", ngImpo
  * Generated bundle index. Do not edit.
  */
 
-export { BIZY_TAG_TYPE, BizyAccordionComponent, BizyAccordionModule, BizyBarLineChartComponent, BizyBarLineChartModule, BizyBreadcrumbComponent, BizyBreadcrumbModule, BizyButtonComponent, BizyButtonModule, BizyCardComponent, BizyCardModule, BizyCheckboxComponent, BizyCheckboxModule, BizyDatePickerComponent, BizyDatePickerModule, BizyFileUploaderComponent, BizyFileUploaderModule, BizyFileUploaderService, BizyFilterComponent, BizyFilterContentComponent, BizyFilterModule, BizyFilterPipe, BizyFilterSectionCheckboxOptionComponent, BizyFilterSectionComponent, BizyFilterSectionRangeOptionComponent, BizyFilterSectionSearchOptionComponent, BizyFilterSectionsComponent, BizyFormComponent, BizyFormModule, BizyGridComponent, BizyGridForDirective, BizyGridModule, BizyGridRowComponent, BizyInputComponent, BizyInputModule, BizyInputOptionComponent, BizyMenuComponent, BizyMenuModule, BizyMenuOptionComponent, BizyMenuTitleComponent, BizyPieChartComponent, BizyPieChartModule, BizyRadioComponent, BizyRadioModule, BizyRangeFilterPipe, BizySelectComponent, BizySelectModule, BizySelectOptionComponent, BizySidebarComponent, BizySidebarFloatingOptionComponent, BizySidebarFloatingOptionTitleComponent, BizySidebarModule, BizySidebarOptionComponent, BizySkeletonCardComponent, BizySkeletonCardModule, BizySliderComponent, BizySliderModule, BizyTabComponent, BizyTableColumnArrowsComponent, BizyTableColumnComponent, BizyTableColumnFixedDirective, BizyTableComponent, BizyTableFooterComponent, BizyTableHeaderComponent, BizyTableModule, BizyTableRowComponent, BizyTableRowExpandContentComponent, BizyTableScrollingComponent, BizyTableScrollingDirective, BizyTabsComponent, BizyTabsModule, BizyTagComponent, BizyTagModule, BizyToggleComponent, BizyToggleModule, BizyToolbarComponent, BizyToolbarModule };
+export { BIZY_CALENDAR_DAY, BIZY_CALENDAR_EVENT_ACTION, BIZY_CALENDAR_LANGUAGE, BIZY_CALENDAR_MODE, BIZY_TAG_TYPE, BizyAccordionComponent, BizyAccordionModule, BizyBarLineChartComponent, BizyBarLineChartModule, BizyBreadcrumbComponent, BizyBreadcrumbModule, BizyButtonComponent, BizyButtonModule, BizyCalendarComponent, BizyCalendarModule, BizyCardComponent, BizyCardModule, BizyCheckboxComponent, BizyCheckboxModule, BizyDatePickerComponent, BizyDatePickerModule, BizyFileUploaderComponent, BizyFileUploaderModule, BizyFileUploaderService, BizyFilterComponent, BizyFilterContentComponent, BizyFilterModule, BizyFilterPipe, BizyFilterSectionCheckboxOptionComponent, BizyFilterSectionComponent, BizyFilterSectionRangeOptionComponent, BizyFilterSectionSearchOptionComponent, BizyFilterSectionsComponent, BizyFormComponent, BizyFormModule, BizyGridComponent, BizyGridForDirective, BizyGridModule, BizyGridRowComponent, BizyInputComponent, BizyInputModule, BizyInputOptionComponent, BizyMenuComponent, BizyMenuModule, BizyMenuOptionComponent, BizyMenuTitleComponent, BizyPieChartComponent, BizyPieChartModule, BizyRadioComponent, BizyRadioModule, BizyRangeFilterPipe, BizySelectComponent, BizySelectModule, BizySelectOptionComponent, BizySidebarComponent, BizySidebarFloatingOptionComponent, BizySidebarFloatingOptionTitleComponent, BizySidebarModule, BizySidebarOptionComponent, BizySkeletonCardComponent, BizySkeletonCardModule, BizySliderComponent, BizySliderModule, BizyTabComponent, BizyTableColumnArrowsComponent, BizyTableColumnComponent, BizyTableColumnFixedDirective, BizyTableComponent, BizyTableFooterComponent, BizyTableHeaderComponent, BizyTableModule, BizyTableRowComponent, BizyTableRowExpandContentComponent, BizyTableScrollingComponent, BizyTableScrollingDirective, BizyTabsComponent, BizyTabsModule, BizyTagComponent, BizyTagModule, BizyToggleComponent, BizyToggleModule, BizyToolbarComponent, BizyToolbarModule };
 //# sourceMappingURL=bizy-components.mjs.map
