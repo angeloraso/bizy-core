@@ -22,5 +22,4 @@ export * from './file-uploader';
 export * from './radio';
 export * from './form';
 export * from './grid';
-export * from './skeleton-card';
 export * from './calendar';

@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { BizySkeletonCardComponent } from './skeleton-card.component';
+import { BizySkeletonComponent } from './skeleton.component';
 
 const COMPONENTS = [
-  BizySkeletonCardComponent,
+  BizySkeletonComponent,
 ];
 
 @NgModule({
@@ -12,4 +12,4 @@ const COMPONENTS = [
   declarations: COMPONENTS,
   exports: COMPONENTS
 })
-export class BizySkeletonCardModule {}
+export class BizySkeletonModule {}

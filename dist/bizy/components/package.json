@@ -1,6 +1,6 @@
 {
   "name": "@bizy/components",
-  "version": "1.22.1",
+  "version": "1.23.0",
   "peerDependencies": {
     "@angular/common": "16.2.12",
     "@angular/core": "16.2.12",

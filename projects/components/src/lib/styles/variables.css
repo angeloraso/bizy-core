@@ -103,6 +103,12 @@
     --bizy-input-option-selected-color: #fff;
     --bizy-input-option-selected-background-color: var(--bizy-info-color);
 
+    --bizy-list-height: fit-content;
+    --bizy-list-width: 100%;
+    --bizy-list-flex-direction: column;
+    --bizy-list-column-gap: 0.5rem;
+    --bizy-list-row-gap: 0.5rem;
+
     --bizy-menu-option-background-color: transparent;
     --bizy-menu-option-hover-background-color: var(--bizy-light-info-color);
     --bizy-menu-option-selected-background-color: var(--bizy-info-color);
@@ -157,6 +163,9 @@
     --bizy-sidebar-floating-option-background-color: #fff;
     --bizy-sidebar-scroll-bar-color: var(--bizy-default-color);
     --bizy-sidebar-scroll-bar-hover-color: #999;
+
+    --bizy-skeleton-height: 1rem;
+    --bizy-skeleton-width: 100%;
 
     --bizy-slider-color: var(--bizy-default-color);
     --bizy-slider-background-color: #fff;

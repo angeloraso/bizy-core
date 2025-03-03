@@ -1,0 +1,25 @@
+:host {
+    font-size: 1rem;
+}
+
+.bizy-skeleton {
+    height: var(--bizy-skeleton-height);
+    width: var(--bizy-skeleton-width);
+    display: inline-block;
+    background: linear-gradient(90deg, #eee 25%, #f5f5f5 50%, #eee 75%);
+    background-size: 200% 100%;
+    animation: bizy-skeleton-animation 1.5s infinite linear;
+}
+
+.bizy-skeleton--circle {
+    border-radius: 50%;
+}
+
+@keyframes bizy-skeleton-animation {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
