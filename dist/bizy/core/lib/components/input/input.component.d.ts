@@ -1,0 +1,56 @@
+import { ChangeDetectorRef, ElementRef, EventEmitter, OnDestroy, QueryList } from '@angular/core';
+import { Subject } from 'rxjs';
+import { BizyInputOptionComponent } from './input-option/input-option.component';
+import * as i0 from "@angular/core";
+export declare class BizyInputComponent implements OnDestroy {
+    #private;
+    private ref;
+    options: QueryList<BizyInputOptionComponent>;
+    bizyInputWrapper: ElementRef;
+    bizyInput: ElementRef;
+    id: string;
+    name: string;
+    type: 'text' | 'number' | 'email' | 'password' | 'tel' | 'textarea' | 'currency';
+    customClass: string;
+    placeholder: string;
+    debounceTime: number;
+    rows: number;
+    disabled: boolean;
+    readonly: boolean;
+    valueChange: EventEmitter<string | number>;
+    onChange: EventEmitter<string | number>;
+    onEnter: EventEmitter<PointerEvent>;
+    onBackspace: EventEmitter<PointerEvent>;
+    onSelect: EventEmitter<PointerEvent>;
+    onBlur: EventEmitter<PointerEvent>;
+    onFocus: EventEmitter<PointerEvent>;
+    set autofocus(autofocus: boolean);
+    set value(value: string | number | null);
+    focused: boolean;
+    touched: boolean;
+    opened: boolean;
+    _value: string | number | null;
+    _currencyValue: number | null;
+    currencyOptions: string;
+    onChange$: Subject<string | number>;
+    constructor(ref: ChangeDetectorRef);
+    getWidth(): number;
+    _onchange(value: string): void;
+    _onClick(event: PointerEvent): void;
+    _onEnter(event: PointerEvent): void;
+    _onBlur(event: PointerEvent): void;
+    _onBackspace(event: PointerEvent): void;
+    _onFocus(event: PointerEvent): void;
+    setTouched(touched: boolean): void;
+    ngAfterViewInit(): void;
+    onOpen(): void;
+    setFocus(focus: boolean): void;
+    close: (event?: PointerEvent & {
+        target: {
+            id: string;
+        };
+    }, button?: HTMLButtonElement) => void;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<BizyInputComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<BizyInputComponent, "bizy-input", never, { "id": { "alias": "id"; "required": false; }; "name": { "alias": "name"; "required": false; }; "type": { "alias": "type"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; "placeholder": { "alias": "placeholder"; "required": false; }; "debounceTime": { "alias": "debounceTime"; "required": false; }; "rows": { "alias": "rows"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; "readonly": { "alias": "readonly"; "required": false; }; "autofocus": { "alias": "autofocus"; "required": false; }; "value": { "alias": "value"; "required": false; }; }, { "valueChange": "valueChange"; "onChange": "onChange"; "onEnter": "onEnter"; "onBackspace": "onBackspace"; "onSelect": "onSelect"; "onBlur": "onBlur"; "onFocus": "onFocus"; }, ["options"], ["[slot=header]", "[slot=prefix]", "[slot=suffix]", "bizy-input-option", "[slot=error]"], true, never>;
+}
