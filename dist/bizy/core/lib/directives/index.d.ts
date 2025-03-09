@@ -1,3 +1,4 @@
+export { BizyDirectivesModule } from './directives.module';
 export { BizyCopyToClipboardDirective } from './copy-to-clipboard.directive';
 export { BizyCurrencyFormatDirective } from './currency-format.directive';
 export { BizyLoadingDirective, LOADING_TYPE } from "./loading.directive";

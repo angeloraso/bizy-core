@@ -1,10 +1,11 @@
+import * as i0 from '@angular/core';
+import { EventEmitter, ChangeDetectorRef, Output, Input, Inject, ChangeDetectionStrategy, Component, NgModule, Renderer2, ElementRef, Injectable, Directive, ViewChild, ContentChildren, inject, ContentChild, Pipe, ViewContainerRef, TemplateRef, RendererFactory2, HostListener, Host } from '@angular/core';
 import * as i1 from '@angular/common';
 import { CommonModule, DOCUMENT, registerLocaleData, DatePipe } from '@angular/common';
-import * as i0 from '@angular/core';
-import { EventEmitter, ChangeDetectorRef, Output, Input, Inject, ChangeDetectionStrategy, Component, ElementRef, Renderer2, Injectable, Directive, ViewChild, ContentChildren, inject, Pipe, ContentChild, ViewContainerRef, TemplateRef, RendererFactory2, NgModule, HostListener, Host } from '@angular/core';
+import { Subject, Subscription, BehaviorSubject, filter, take, skip, auditTime, throttleTime, debounceTime as debounceTime$1, interval, fromEvent, merge, timer, of } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil, map, filter as filter$1, switchMap } from 'rxjs/operators';
 import * as echarts from 'echarts';
 import html2canvas from 'html2canvas';
-import { Subscription, BehaviorSubject, Subject, filter, take, skip, auditTime, throttleTime, debounceTime, interval, fromEvent, merge, timer, of } from 'rxjs';
 import * as i2 from 'angular-calendar';
 import { CalendarNativeDateFormatter, CalendarModule, CalendarUtils, CalendarA11y, CalendarEventTitleFormatter, DateAdapter, CalendarDateFormatter } from 'angular-calendar';
 import { isSameMonth, isSameDay } from 'date-fns';
@@ -15,7 +16,6 @@ import { FormsModule, Validators, FormBuilder } from '@angular/forms';
 import flatpickr from 'flatpickr';
 import monthSelectPlugin from 'flatpickr/dist/plugins/monthSelect/index.js';
 import { Spanish } from 'flatpickr/dist/l10n/es.js';
-import { takeUntil, debounceTime as debounceTime$1, map, filter as filter$1, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import * as i2$2 from '@angular/cdk/overlay';
 import { OverlayModule } from '@angular/cdk/overlay';
 import AutoNumeric from 'autonumeric';
@@ -28,16 +28,15 @@ import * as i3 from '@angular/cdk/portal';
 import { TemplatePortal, PortalModule } from '@angular/cdk/portal';
 import * as i2$3 from '@angular/cdk/scrolling';
 import { ScrollingModule, CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import * as i1$1 from '@angular/router';
+import * as i1$2 from '@angular/cdk/dialog';
+import { DIALOG_DATA, DialogRef, DialogModule, Dialog } from '@angular/cdk/dialog';
+import * as i1$1 from '@angular/cdk/drag-drop';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import * as i1$3 from '@angular/router';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Clipboard } from '@angular/cdk/clipboard';
-import * as i1$2 from '@ngx-translate/core';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import * as i1$4 from '@angular/cdk/dialog';
-import { DIALOG_DATA, DialogRef, DialogModule, Dialog } from '@angular/cdk/dialog';
-import * as i1$3 from '@angular/cdk/drag-drop';
-import { DragDropModule } from '@angular/cdk/drag-drop';
-import * as i1$5 from '@angular/platform-browser';
+import * as i1$4 from '@angular/platform-browser';
 import { DomSanitizer } from '@angular/platform-browser';
 import Fuse from 'fuse.js';
 
@@ -82,6 +81,198 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
             }], onSelect: [{
                 type: Output
             }] } });
+
+const COMPONENTS$q = [
+    BizyAccordionComponent,
+];
+class BizyAccordionModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyAccordionModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyAccordionModule, imports: [BizyAccordionComponent], exports: [BizyAccordionComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyAccordionModule, imports: [COMPONENTS$q] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyAccordionModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: COMPONENTS$q,
+                    exports: COMPONENTS$q
+                }]
+        }] });
+
+var MIME_TYPE;
+(function (MIME_TYPE) {
+    MIME_TYPE["OGG"] = "audio/ogg";
+    MIME_TYPE["MPEG"] = "audio/mpeg";
+    MIME_TYPE["WAV"] = "audio/wav";
+})(MIME_TYPE || (MIME_TYPE = {}));
+
+class BizyButtonComponent {
+    id = `bizy-button-${Math.random()}`;
+    disabled = false;
+    type = 'button';
+    customClass = '';
+    onSelect = new EventEmitter();
+    _focused = false;
+    _onSelect(event) {
+        if (this.disabled || !this._focused) {
+            return;
+        }
+        this.onSelect.emit(event);
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyButtonComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.1", type: BizyButtonComponent, isStandalone: true, selector: "bizy-button", inputs: { id: "id", disabled: "disabled", type: "type", customClass: "customClass" }, outputs: { onSelect: "onSelect" }, ngImport: i0, template: "<button \n    [type]=\"type\"\n    [id]=\"id\"\n    (focus)=\"_focused = true\"\n    (blur)=\"_focused = false\"\n    class=\"bizy-button {{customClass}}\"\n    [ngClass]=\"{'bizy-button--disabled': disabled}\"\n    (click)=\"_focused = true; _onSelect($event)\"\n    (keyup.enter)=\"_onSelect($event)\">\n    <span class=\"bizy-button__content\" (click)=\"_focused = true; _onSelect($event); $event.stopPropagation()\">\n        <ng-content></ng-content>\n    </span>\n    \n</button>\n\n", styles: [":host{font-size:1rem}.bizy-button{display:flex;justify-content:space-between;align-items:center;column-gap:.5rem;width:100%;min-width:var(--bizy-button-min-width);height:100%;padding:var(--bizy-button-padding);border-radius:var(--bizy-button-border-radius);border:var(--bizy-button-border);cursor:pointer;background-color:var(--bizy-button-background-color)}::ng-deep .bizy-button *{color:var(--bizy-button-color);text-wrap:nowrap}.bizy-button:hover{filter:brightness(95%)}.bizy-button__content{width:100%;height:100%;display:flex;justify-content:center;align-items:center;column-gap:.3rem}.bizy-button--disabled{opacity:.5;cursor:not-allowed!important;pointer-events:none}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }, { kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyButtonComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-button', imports: [CommonModule], changeDetection: ChangeDetectionStrategy.OnPush, template: "<button \n    [type]=\"type\"\n    [id]=\"id\"\n    (focus)=\"_focused = true\"\n    (blur)=\"_focused = false\"\n    class=\"bizy-button {{customClass}}\"\n    [ngClass]=\"{'bizy-button--disabled': disabled}\"\n    (click)=\"_focused = true; _onSelect($event)\"\n    (keyup.enter)=\"_onSelect($event)\">\n    <span class=\"bizy-button__content\" (click)=\"_focused = true; _onSelect($event); $event.stopPropagation()\">\n        <ng-content></ng-content>\n    </span>\n    \n</button>\n\n", styles: [":host{font-size:1rem}.bizy-button{display:flex;justify-content:space-between;align-items:center;column-gap:.5rem;width:100%;min-width:var(--bizy-button-min-width);height:100%;padding:var(--bizy-button-padding);border-radius:var(--bizy-button-border-radius);border:var(--bizy-button-border);cursor:pointer;background-color:var(--bizy-button-background-color)}::ng-deep .bizy-button *{color:var(--bizy-button-color);text-wrap:nowrap}.bizy-button:hover{filter:brightness(95%)}.bizy-button__content{width:100%;height:100%;display:flex;justify-content:center;align-items:center;column-gap:.3rem}.bizy-button--disabled{opacity:.5;cursor:not-allowed!important;pointer-events:none}\n"] }]
+        }], propDecorators: { id: [{
+                type: Input
+            }], disabled: [{
+                type: Input
+            }], type: [{
+                type: Input
+            }], customClass: [{
+                type: Input
+            }], onSelect: [{
+                type: Output
+            }] } });
+
+const COMPONENTS$p = [
+    BizyButtonComponent,
+];
+class BizyButtonModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyButtonModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyButtonModule, imports: [BizyButtonComponent], exports: [BizyButtonComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyButtonModule, imports: [COMPONENTS$p] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyButtonModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: COMPONENTS$p,
+                    exports: COMPONENTS$p
+                }]
+        }] });
+
+class BizyAudioPlayerComponent {
+    document;
+    renderer;
+    id = `bizy-audio-player-${Math.random()}`;
+    mimeType = MIME_TYPE.MPEG;
+    showDownload = true;
+    autoplay = false;
+    downloadURL;
+    downloadFileName = 'bizy_audio';
+    onDownload = new EventEmitter();
+    onTrackPlayerRate = new EventEmitter();
+    set audioURL(audioURL) {
+        if (!audioURL) {
+            return;
+        }
+        this._audioURL = audioURL;
+        this._audioRef = this._audioRef ?? this.document.getElementById(this.id);
+        if (this._audioRef) {
+            this._audioRef.load();
+            if (this.autoplay) {
+                this._audioRef.play();
+            }
+        }
+    }
+    _audioURL = null;
+    _audioRef;
+    _playbackRate = 1;
+    #trackPlaybackRate$ = new Subject();
+    #subscription = new Subscription();
+    constructor(document, renderer) {
+        this.document = document;
+        this.renderer = renderer;
+    }
+    trackPlayerRate() {
+        this.#subscription.add(this.#trackPlaybackRate$.pipe(debounceTime(500), distinctUntilChanged()).subscribe(value => {
+            this.onTrackPlayerRate.emit(value);
+        }));
+    }
+    _onTrackPlayerRate() {
+        this._audioRef = this._audioRef ?? this.document.getElementById(this.id);
+        if (this._audioRef) {
+            switch (this._audioRef.playbackRate) {
+                case 1:
+                    this._audioRef.playbackRate = 1.5;
+                    this._playbackRate = 1.5;
+                    this.#trackPlaybackRate$.next('1.5');
+                    break;
+                case 1.5:
+                    this._audioRef.playbackRate = 2;
+                    this._playbackRate = 2;
+                    this.#trackPlaybackRate$.next('2');
+                    break;
+                case 2:
+                    this._audioRef.playbackRate = 1;
+                    this._playbackRate = 1;
+                    break;
+                default:
+                    this._audioRef.playbackRate = 1;
+                    this._playbackRate = 1;
+            }
+        }
+    }
+    _onDownload() {
+        const downloadButton = this.renderer.createElement('a');
+        this.renderer.setAttribute(downloadButton, 'download', this.downloadFileName);
+        this.renderer.setProperty(downloadButton, 'href', this.downloadURL);
+        this.renderer.appendChild(this.document.body, downloadButton);
+        downloadButton.click();
+        this.renderer.removeChild(this.document.body, downloadButton);
+        this.onDownload.emit();
+    }
+    ngOnDestroy() {
+        this.#subscription.unsubscribe();
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyAudioPlayerComponent, deps: [{ token: DOCUMENT }, { token: Renderer2 }], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.1", type: BizyAudioPlayerComponent, isStandalone: true, selector: "bizy-audio-player", inputs: { id: "id", mimeType: "mimeType", showDownload: "showDownload", autoplay: "autoplay", downloadURL: "downloadURL", downloadFileName: "downloadFileName", audioURL: "audioURL" }, outputs: { onDownload: "onDownload", onTrackPlayerRate: "onTrackPlayerRate" }, ngImport: i0, template: "<div class=\"bizy-audio-player-component\">\n\n    <span class=\"bizy-audio-player__audio-controls\">\n\n        <audio\n            *ngIf=\"_audioURL\" \n            [id]=\"id\"\n            [autoplay]=\"autoplay\"\n            controls\n            controlslist=\"nodownload noplaybackrate\">\n            <source [src]=\"_audioURL\" [type]=\"mimeType\">\n            {{audioPlayerError}}\n        </audio>\n\n        <bizy-button customClass=\"bizy-audio-player__audio-controls__playback-rate\" (onSelect)=\"_onTrackPlayerRate()\">\n            <span>{{_playbackRate}}x</span>\n        </bizy-button>\n\n        <bizy-button customClass=\"bizy-audio-player__download-button\" *ngIf=\"showDownload\" (onSelect)=\"_onDownload()\">\n            <svg \n                class=\"bizy-audio-player__download-button__icon\"\n                fill=\"none\"\n                stroke=\"currentColor\"\n                stroke-linecap=\"round\"\n                stroke-linejoin=\"round\"\n                stroke-width=\"2\"\n                viewBox=\"0 0 24 24\"\n                xmlns=\"http://www.w3.org/2000/svg\">\n                <path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><polyline points=\"7 10 12 15 17 10\"/><line x1=\"12\" x2=\"12\" y1=\"15\" y2=\"3\"/>\n            </svg>\n        </bizy-button>\n\n    </span>\n\n</div>", styles: [":host{font-size:1rem}.bizy-audio-player-component{width:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;row-gap:2rem}.bizy-audio-player__audio-controls{width:100%;display:flex;align-items:center;column-gap:1rem}::ng-deep .bizy-audio-player__audio-controls__playback-rate{font-size:1rem;--bizy-button-background-color: var(--bizy-audio-player-playback-rate-background-color);--bizy-button-color: var(--bizy-audio-player-playback-rate-color);font-weight:700;border-radius:50%!important;width:4rem;height:2rem;display:grid;place-items:center;cursor:pointer}::ng-deep .bizy-audio-player__download-button{--bizy-button-background-color: var(--bizy-audio-player-download-button-background-color);--bizy-button-color: var(--bizy-audio-player-download-button-color)}.bizy-audio-player__download-button__icon{height:1rem}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }, { kind: "directive", type: i1.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "ngmodule", type: BizyButtonModule }, { kind: "component", type: BizyButtonComponent, selector: "bizy-button", inputs: ["id", "disabled", "type", "customClass"], outputs: ["onSelect"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyAudioPlayerComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-audio-player', imports: [CommonModule, BizyButtonModule], changeDetection: ChangeDetectionStrategy.OnPush, template: "<div class=\"bizy-audio-player-component\">\n\n    <span class=\"bizy-audio-player__audio-controls\">\n\n        <audio\n            *ngIf=\"_audioURL\" \n            [id]=\"id\"\n            [autoplay]=\"autoplay\"\n            controls\n            controlslist=\"nodownload noplaybackrate\">\n            <source [src]=\"_audioURL\" [type]=\"mimeType\">\n            {{audioPlayerError}}\n        </audio>\n\n        <bizy-button customClass=\"bizy-audio-player__audio-controls__playback-rate\" (onSelect)=\"_onTrackPlayerRate()\">\n            <span>{{_playbackRate}}x</span>\n        </bizy-button>\n\n        <bizy-button customClass=\"bizy-audio-player__download-button\" *ngIf=\"showDownload\" (onSelect)=\"_onDownload()\">\n            <svg \n                class=\"bizy-audio-player__download-button__icon\"\n                fill=\"none\"\n                stroke=\"currentColor\"\n                stroke-linecap=\"round\"\n                stroke-linejoin=\"round\"\n                stroke-width=\"2\"\n                viewBox=\"0 0 24 24\"\n                xmlns=\"http://www.w3.org/2000/svg\">\n                <path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><polyline points=\"7 10 12 15 17 10\"/><line x1=\"12\" x2=\"12\" y1=\"15\" y2=\"3\"/>\n            </svg>\n        </bizy-button>\n\n    </span>\n\n</div>", styles: [":host{font-size:1rem}.bizy-audio-player-component{width:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;row-gap:2rem}.bizy-audio-player__audio-controls{width:100%;display:flex;align-items:center;column-gap:1rem}::ng-deep .bizy-audio-player__audio-controls__playback-rate{font-size:1rem;--bizy-button-background-color: var(--bizy-audio-player-playback-rate-background-color);--bizy-button-color: var(--bizy-audio-player-playback-rate-color);font-weight:700;border-radius:50%!important;width:4rem;height:2rem;display:grid;place-items:center;cursor:pointer}::ng-deep .bizy-audio-player__download-button{--bizy-button-background-color: var(--bizy-audio-player-download-button-background-color);--bizy-button-color: var(--bizy-audio-player-download-button-color)}.bizy-audio-player__download-button__icon{height:1rem}\n"] }]
+        }], ctorParameters: () => [{ type: Document, decorators: [{
+                    type: Inject,
+                    args: [DOCUMENT]
+                }] }, { type: i0.Renderer2, decorators: [{
+                    type: Inject,
+                    args: [Renderer2]
+                }] }], propDecorators: { id: [{
+                type: Input
+            }], mimeType: [{
+                type: Input
+            }], showDownload: [{
+                type: Input
+            }], autoplay: [{
+                type: Input
+            }], downloadURL: [{
+                type: Input
+            }], downloadFileName: [{
+                type: Input
+            }], onDownload: [{
+                type: Output
+            }], onTrackPlayerRate: [{
+                type: Output
+            }], audioURL: [{
+                type: Input
+            }] } });
+
+const COMPONENTS$o = [
+    BizyAudioPlayerComponent,
+];
+class BizyAudioPlayerModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyAudioPlayerModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyAudioPlayerModule, imports: [BizyAudioPlayerComponent], exports: [BizyAudioPlayerComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyAudioPlayerModule, imports: [COMPONENTS$o] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyAudioPlayerModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: COMPONENTS$o,
+                    exports: COMPONENTS$o
+                }]
+        }] });
 
 const MIN_CHART_SIZE$1 = 350; // px;
 const Y_AXIS_OFFSET = 80;
@@ -452,6 +643,22 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
                 type: Input
             }] } });
 
+const COMPONENTS$n = [
+    BizyBarLineChartComponent,
+];
+class BizyBarLineChartModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyBarLineChartModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyBarLineChartModule, imports: [BizyBarLineChartComponent], exports: [BizyBarLineChartComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyBarLineChartModule, imports: [COMPONENTS$n] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyBarLineChartModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: COMPONENTS$n,
+                    exports: COMPONENTS$n
+                }]
+        }] });
+
 class BizyBreadcrumbComponent {
     ref;
     onSelect = new EventEmitter();
@@ -509,36 +716,21 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
                 type: Input
             }] } });
 
-class BizyButtonComponent {
-    id = `bizy-button-${Math.random()}`;
-    disabled = false;
-    type = 'button';
-    customClass = '';
-    onSelect = new EventEmitter();
-    _focused = false;
-    _onSelect(event) {
-        if (this.disabled || !this._focused) {
-            return;
-        }
-        this.onSelect.emit(event);
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyButtonComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.1", type: BizyButtonComponent, isStandalone: true, selector: "bizy-button", inputs: { id: "id", disabled: "disabled", type: "type", customClass: "customClass" }, outputs: { onSelect: "onSelect" }, ngImport: i0, template: "<button \n    [type]=\"type\"\n    [id]=\"id\"\n    (focus)=\"_focused = true\"\n    (blur)=\"_focused = false\"\n    class=\"bizy-button {{customClass}}\"\n    [ngClass]=\"{'bizy-button--disabled': disabled}\"\n    (click)=\"_focused = true; _onSelect($event)\"\n    (keyup.enter)=\"_onSelect($event)\">\n    <span class=\"bizy-button__content\" (click)=\"_focused = true; _onSelect($event); $event.stopPropagation()\">\n        <ng-content></ng-content>\n    </span>\n    \n</button>\n\n", styles: [":host{font-size:1rem}.bizy-button{display:flex;justify-content:space-between;align-items:center;column-gap:.5rem;width:100%;min-width:var(--bizy-button-min-width);height:100%;padding:var(--bizy-button-padding);border-radius:var(--bizy-button-border-radius);border:var(--bizy-button-border);cursor:pointer;background-color:var(--bizy-button-background-color)}::ng-deep .bizy-button *{color:var(--bizy-button-color);text-wrap:nowrap}.bizy-button:hover{filter:brightness(95%)}.bizy-button__content{width:100%;height:100%;display:flex;justify-content:center;align-items:center;column-gap:.3rem}.bizy-button--disabled{opacity:.5;cursor:not-allowed!important;pointer-events:none}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }, { kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+const COMPONENTS$m = [
+    BizyBreadcrumbComponent,
+];
+class BizyBreadcrumbModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyBreadcrumbModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyBreadcrumbModule, imports: [BizyBreadcrumbComponent], exports: [BizyBreadcrumbComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyBreadcrumbModule, imports: [COMPONENTS$m] });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyButtonComponent, decorators: [{
-            type: Component,
-            args: [{ selector: 'bizy-button', imports: [CommonModule], changeDetection: ChangeDetectionStrategy.OnPush, template: "<button \n    [type]=\"type\"\n    [id]=\"id\"\n    (focus)=\"_focused = true\"\n    (blur)=\"_focused = false\"\n    class=\"bizy-button {{customClass}}\"\n    [ngClass]=\"{'bizy-button--disabled': disabled}\"\n    (click)=\"_focused = true; _onSelect($event)\"\n    (keyup.enter)=\"_onSelect($event)\">\n    <span class=\"bizy-button__content\" (click)=\"_focused = true; _onSelect($event); $event.stopPropagation()\">\n        <ng-content></ng-content>\n    </span>\n    \n</button>\n\n", styles: [":host{font-size:1rem}.bizy-button{display:flex;justify-content:space-between;align-items:center;column-gap:.5rem;width:100%;min-width:var(--bizy-button-min-width);height:100%;padding:var(--bizy-button-padding);border-radius:var(--bizy-button-border-radius);border:var(--bizy-button-border);cursor:pointer;background-color:var(--bizy-button-background-color)}::ng-deep .bizy-button *{color:var(--bizy-button-color);text-wrap:nowrap}.bizy-button:hover{filter:brightness(95%)}.bizy-button__content{width:100%;height:100%;display:flex;justify-content:center;align-items:center;column-gap:.3rem}.bizy-button--disabled{opacity:.5;cursor:not-allowed!important;pointer-events:none}\n"] }]
-        }], propDecorators: { id: [{
-                type: Input
-            }], disabled: [{
-                type: Input
-            }], type: [{
-                type: Input
-            }], customClass: [{
-                type: Input
-            }], onSelect: [{
-                type: Output
-            }] } });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyBreadcrumbModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: COMPONENTS$m,
+                    exports: COMPONENTS$m
+                }]
+        }] });
 
 var BIZY_CALENDAR_MODE;
 (function (BIZY_CALENDAR_MODE) {
@@ -797,6 +989,22 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
                 type: Input
             }] } });
 
+const COMPONENTS$l = [
+    BizyCalendarComponent,
+];
+class BizyCalendarModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyCalendarModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyCalendarModule, imports: [BizyCalendarComponent], exports: [BizyCalendarComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyCalendarModule, imports: [COMPONENTS$l] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyCalendarModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: COMPONENTS$l,
+                    exports: COMPONENTS$l
+                }]
+        }] });
+
 class BizyCardComponent {
     id = `bizy-card-${Math.random()}`;
     disabled = false;
@@ -826,6 +1034,22 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
             }], onSelect: [{
                 type: Output
             }] } });
+
+const COMPONENTS$k = [
+    BizyCardComponent,
+];
+class BizyCardModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyCardModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyCardModule, imports: [BizyCardComponent], exports: [BizyCardComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyCardModule, imports: [COMPONENTS$k] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyCardModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: COMPONENTS$k,
+                    exports: COMPONENTS$k
+                }]
+        }] });
 
 class BizyCheckboxComponent {
     id = `bizy-checkbox-${Math.random()}`;
@@ -858,6 +1082,22 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
             }], onSelect: [{
                 type: Output
             }] } });
+
+const COMPONENTS$j = [
+    BizyCheckboxComponent,
+];
+class BizyCheckboxModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyCheckboxModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyCheckboxModule, imports: [BizyCheckboxComponent], exports: [BizyCheckboxComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyCheckboxModule, imports: [COMPONENTS$j] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyCheckboxModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: COMPONENTS$j,
+                    exports: COMPONENTS$j
+                }]
+        }] });
 
 class BizyInputOptionComponent {
     ref;
@@ -1060,7 +1300,7 @@ class BizyInputComponent {
         if (this.type === 'currency' && this.bizyInput.nativeElement.setValue) {
             this.bizyInput.nativeElement.setValue(this._currencyValue);
         }
-        this.#subscription.add(this.onChange$.pipe(debounceTime(this.debounceTime)).subscribe(value => {
+        this.#subscription.add(this.onChange$.pipe(debounceTime$1(this.debounceTime)).subscribe(value => {
             this.valueChange.emit(value);
             this.onChange.emit(value);
         }));
@@ -1368,6 +1608,22 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
             }], type: [{
                 type: Input
             }] } });
+
+const COMPONENTS$i = [
+    BizyDatePickerComponent,
+];
+class BizyDatePickerModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyDatePickerModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyDatePickerModule, imports: [BizyDatePickerComponent], exports: [BizyDatePickerComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyDatePickerModule, imports: [COMPONENTS$i] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyDatePickerModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: COMPONENTS$i,
+                    exports: COMPONENTS$i
+                }]
+        }] });
 
 const ES = {
     ...es_ES,
@@ -1705,127 +1961,22 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
                 type: Output
             }] } });
 
-class BizyFilterContentComponent {
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyFilterContentComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.1", type: BizyFilterContentComponent, isStandalone: true, selector: "bizy-filter-content", ngImport: i0, template: "<ng-content></ng-content>", styles: [":host{font-size:1rem}\n"], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+const COMPONENTS$h = [
+    BizyFileUploaderComponent,
+];
+class BizyFileUploaderModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyFileUploaderModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyFileUploaderModule, imports: [BizyFileUploaderComponent], exports: [BizyFileUploaderComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyFileUploaderModule, providers: [BizyFileUploaderService] });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyFilterContentComponent, decorators: [{
-            type: Component,
-            args: [{ selector: 'bizy-filter-content', changeDetection: ChangeDetectionStrategy.OnPush, template: "<ng-content></ng-content>", styles: [":host{font-size:1rem}\n"] }]
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyFileUploaderModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: COMPONENTS$h,
+                    exports: COMPONENTS$h,
+                    providers: [BizyFileUploaderService]
+                }]
         }] });
-
-class BizyFilterSectionSearchOptionComponent {
-    ref;
-    id = `bizy-filter-section-search-option-${Math.random()}`;
-    customClass = '';
-    valueChange = new EventEmitter();
-    onChange = new EventEmitter();
-    _value = '';
-    #activated = new BehaviorSubject(false);
-    get activated$() {
-        return this.#activated.asObservable();
-    }
-    set value(value) {
-        if (typeof value === 'undefined' || value === null) {
-            return;
-        }
-        if (Array.isArray(value)) {
-            value = '';
-        }
-        this._value = value;
-        this.#activated.next(Boolean(value));
-        this.ref.detectChanges();
-    }
-    constructor(ref) {
-        this.ref = ref;
-    }
-    _onChange(value) {
-        this.valueChange.emit(value);
-        this.onChange.emit(value);
-        this.#activated.next(Boolean(value));
-        this.ref.detectChanges();
-    }
-    getId = () => {
-        return this.id;
-    };
-    getValue = () => {
-        return this._value;
-    };
-    isActivated = () => {
-        return this.#activated.value;
-    };
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyFilterSectionSearchOptionComponent, deps: [{ token: ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.1", type: BizyFilterSectionSearchOptionComponent, isStandalone: true, selector: "bizy-filter-section-search-option", inputs: { id: "id", customClass: "customClass", value: "value" }, outputs: { valueChange: "valueChange", onChange: "onChange" }, ngImport: i0, template: "<bizy-input\n    [id]=\"id\" \n    (onChange)=\"_onChange($event)\"\n    [value]=\"_value\"\n    class=\"bizy-filter-section-search-option {{customClass}}\">\n\n    <span slot=\"header\"></span>\n\n    <ng-container slot=\"prefix\">\n        <ng-content select=\"[slot=prefix]\"></ng-content>\n    </ng-container>\n\n    <ng-container slot=\"suffix\">\n        <ng-content select=\"[slot=suffix]\"></ng-content>\n    </ng-container>\n\n</bizy-input>\n", styles: [":host{font-size:1rem;width:100%}.bizy-filter-section-search-option{--bizy-input-background-color: #f3f3f3 !important}\n"], dependencies: [{ kind: "component", type: BizyInputComponent, selector: "bizy-input", inputs: ["id", "name", "type", "customClass", "placeholder", "debounceTime", "rows", "disabled", "readonly", "autofocus", "value"], outputs: ["valueChange", "onChange", "onEnter", "onBackspace", "onSelect", "onBlur", "onFocus"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyFilterSectionSearchOptionComponent, decorators: [{
-            type: Component,
-            args: [{ selector: 'bizy-filter-section-search-option', imports: [BizyInputComponent], changeDetection: ChangeDetectionStrategy.OnPush, template: "<bizy-input\n    [id]=\"id\" \n    (onChange)=\"_onChange($event)\"\n    [value]=\"_value\"\n    class=\"bizy-filter-section-search-option {{customClass}}\">\n\n    <span slot=\"header\"></span>\n\n    <ng-container slot=\"prefix\">\n        <ng-content select=\"[slot=prefix]\"></ng-content>\n    </ng-container>\n\n    <ng-container slot=\"suffix\">\n        <ng-content select=\"[slot=suffix]\"></ng-content>\n    </ng-container>\n\n</bizy-input>\n", styles: [":host{font-size:1rem;width:100%}.bizy-filter-section-search-option{--bizy-input-background-color: #f3f3f3 !important}\n"] }]
-        }], ctorParameters: () => [{ type: i0.ChangeDetectorRef, decorators: [{
-                    type: Inject,
-                    args: [ChangeDetectorRef]
-                }] }], propDecorators: { id: [{
-                type: Input
-            }], customClass: [{
-                type: Input
-            }], valueChange: [{
-                type: Output
-            }], onChange: [{
-                type: Output
-            }], value: [{
-                type: Input
-            }] } });
-
-class BizyFilterSectionCheckboxOptionComponent {
-    ref;
-    id = `bizy-filter-section-checkbox-option-${Math.random()}`;
-    disabled = false;
-    customClass = '';
-    onChange = new EventEmitter();
-    set selected(selected) {
-        if (typeof selected === 'undefined' || selected === null) {
-            return;
-        }
-        this._selected = selected;
-        this.onSelect(selected);
-    }
-    _selected = true;
-    constructor(ref) {
-        this.ref = ref;
-    }
-    onSelect = (selected) => {
-        if (this.disabled) {
-            return;
-        }
-        this._selected = selected;
-        this.onChange.emit(selected);
-        this.ref.detectChanges();
-    };
-    getSelected = () => {
-        return this._selected;
-    };
-    getId = () => {
-        return this.id;
-    };
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyFilterSectionCheckboxOptionComponent, deps: [{ token: ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.1", type: BizyFilterSectionCheckboxOptionComponent, isStandalone: true, selector: "bizy-filter-section-checkbox-option", inputs: { id: "id", disabled: "disabled", customClass: "customClass", selected: "selected" }, outputs: { onChange: "onChange" }, ngImport: i0, template: "<div \n    class=\"bizy-filter-section-checkbox-option {{customClass}}\"\n    [id]=\"id\"\n    (click)=\"onSelect(!_selected)\"\n    (keyup.enter)=\"onSelect(!_selected)\">\n\n    <ng-content></ng-content>\n\n    <bizy-checkbox \n        class=\"bizy-filter-section-checkbox-option__checkbox\"\n        [selected]=\"_selected\"\n        [disabled]=\"disabled\">\n    </bizy-checkbox>\n    \n</div>", styles: [":host{font-size:1rem}.bizy-filter-section-checkbox-option{display:flex;align-items:center;column-gap:.3rem;justify-content:space-between;cursor:pointer}.bizy-filter-section-checkbox-option__checkbox{pointer-events:none}\n"], dependencies: [{ kind: "component", type: BizyCheckboxComponent, selector: "bizy-checkbox", inputs: ["id", "selected", "disabled"], outputs: ["selectedChange", "onSelect"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyFilterSectionCheckboxOptionComponent, decorators: [{
-            type: Component,
-            args: [{ selector: 'bizy-filter-section-checkbox-option', imports: [BizyCheckboxComponent], changeDetection: ChangeDetectionStrategy.OnPush, template: "<div \n    class=\"bizy-filter-section-checkbox-option {{customClass}}\"\n    [id]=\"id\"\n    (click)=\"onSelect(!_selected)\"\n    (keyup.enter)=\"onSelect(!_selected)\">\n\n    <ng-content></ng-content>\n\n    <bizy-checkbox \n        class=\"bizy-filter-section-checkbox-option__checkbox\"\n        [selected]=\"_selected\"\n        [disabled]=\"disabled\">\n    </bizy-checkbox>\n    \n</div>", styles: [":host{font-size:1rem}.bizy-filter-section-checkbox-option{display:flex;align-items:center;column-gap:.3rem;justify-content:space-between;cursor:pointer}.bizy-filter-section-checkbox-option__checkbox{pointer-events:none}\n"] }]
-        }], ctorParameters: () => [{ type: i0.ChangeDetectorRef, decorators: [{
-                    type: Inject,
-                    args: [ChangeDetectorRef]
-                }] }], propDecorators: { id: [{
-                type: Input
-            }], disabled: [{
-                type: Input
-            }], customClass: [{
-                type: Input
-            }], onChange: [{
-                type: Output
-            }], selected: [{
-                type: Input
-            }] } });
 
 class BizyFilterSectionRangeOptionComponent {
     fb;
@@ -1972,92 +2123,118 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
                 type: Input
             }] } });
 
-class BizyFilterPipe {
-    transform(items, property, states) {
-        if (!items || items.length === 0) {
-            return [];
+class BizyFilterSectionCheckboxOptionComponent {
+    ref;
+    id = `bizy-filter-section-checkbox-option-${Math.random()}`;
+    disabled = false;
+    customClass = '';
+    onChange = new EventEmitter();
+    set selected(selected) {
+        if (typeof selected === 'undefined' || selected === null) {
+            return;
         }
-        if (!property || !states || states.length === 0) {
-            return items;
-        }
-        const _selected = states.filter(_state => _state.selected);
-        if (_selected.length === states.length) {
-            return items;
-        }
-        let output = [];
-        states.forEach(state => {
-            if (!state.selected) {
-                return;
-            }
-            const res = items.filter(_item => {
-                let _state = _item;
-                const nestedProperty = property.split('.');
-                nestedProperty.forEach(_property => {
-                    _state = _state[_property];
-                });
-                if (typeof state.id === 'boolean') {
-                    return Boolean(_state) === state.id;
-                }
-                if (Array.isArray(_state)) {
-                    return _state.includes(state.id);
-                }
-                return _state === state.id;
-            });
-            output = output.concat(res);
-        });
-        let map = new Map();
-        output.forEach(obj => map.set(JSON.stringify(obj), obj));
-        const uniqueArray = Array.from(map.values());
-        return uniqueArray;
+        this._selected = selected;
+        this.onSelect(selected);
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyFilterPipe, deps: [], target: i0.ɵɵFactoryTarget.Pipe });
-    static ɵpipe = i0.ɵɵngDeclarePipe({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyFilterPipe, isStandalone: true, name: "bizyFilter" });
+    _selected = true;
+    constructor(ref) {
+        this.ref = ref;
+    }
+    onSelect = (selected) => {
+        if (this.disabled) {
+            return;
+        }
+        this._selected = selected;
+        this.onChange.emit(selected);
+        this.ref.detectChanges();
+    };
+    getSelected = () => {
+        return this._selected;
+    };
+    getId = () => {
+        return this.id;
+    };
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyFilterSectionCheckboxOptionComponent, deps: [{ token: ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.1", type: BizyFilterSectionCheckboxOptionComponent, isStandalone: true, selector: "bizy-filter-section-checkbox-option", inputs: { id: "id", disabled: "disabled", customClass: "customClass", selected: "selected" }, outputs: { onChange: "onChange" }, ngImport: i0, template: "<div \n    class=\"bizy-filter-section-checkbox-option {{customClass}}\"\n    [id]=\"id\"\n    (click)=\"onSelect(!_selected)\"\n    (keyup.enter)=\"onSelect(!_selected)\">\n\n    <ng-content></ng-content>\n\n    <bizy-checkbox \n        class=\"bizy-filter-section-checkbox-option__checkbox\"\n        [selected]=\"_selected\"\n        [disabled]=\"disabled\">\n    </bizy-checkbox>\n    \n</div>", styles: [":host{font-size:1rem}.bizy-filter-section-checkbox-option{display:flex;align-items:center;column-gap:.3rem;justify-content:space-between;cursor:pointer}.bizy-filter-section-checkbox-option__checkbox{pointer-events:none}\n"], dependencies: [{ kind: "component", type: BizyCheckboxComponent, selector: "bizy-checkbox", inputs: ["id", "selected", "disabled"], outputs: ["selectedChange", "onSelect"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyFilterPipe, decorators: [{
-            type: Pipe,
-            args: [{
-                    name: 'bizyFilter'
-                }]
-        }] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyFilterSectionCheckboxOptionComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-filter-section-checkbox-option', imports: [BizyCheckboxComponent], changeDetection: ChangeDetectionStrategy.OnPush, template: "<div \n    class=\"bizy-filter-section-checkbox-option {{customClass}}\"\n    [id]=\"id\"\n    (click)=\"onSelect(!_selected)\"\n    (keyup.enter)=\"onSelect(!_selected)\">\n\n    <ng-content></ng-content>\n\n    <bizy-checkbox \n        class=\"bizy-filter-section-checkbox-option__checkbox\"\n        [selected]=\"_selected\"\n        [disabled]=\"disabled\">\n    </bizy-checkbox>\n    \n</div>", styles: [":host{font-size:1rem}.bizy-filter-section-checkbox-option{display:flex;align-items:center;column-gap:.3rem;justify-content:space-between;cursor:pointer}.bizy-filter-section-checkbox-option__checkbox{pointer-events:none}\n"] }]
+        }], ctorParameters: () => [{ type: i0.ChangeDetectorRef, decorators: [{
+                    type: Inject,
+                    args: [ChangeDetectorRef]
+                }] }], propDecorators: { id: [{
+                type: Input
+            }], disabled: [{
+                type: Input
+            }], customClass: [{
+                type: Input
+            }], onChange: [{
+                type: Output
+            }], selected: [{
+                type: Input
+            }] } });
 
-class BizyRangeFilterPipe {
-    transform(items, property, range) {
-        if (!items || items.length === 0) {
-            return [];
-        }
-        if (!property || !range) {
-            return items;
-        }
-        const min = range.min ?? null;
-        const max = range.max ?? null;
-        let itemsWithoutProperty = [];
-        const output = items.filter(_item => {
-            let _value = _item;
-            const nestedProperty = property.split('.');
-            for (let i = 0; i < nestedProperty.length; i++) {
-                const _property = nestedProperty[i];
-                if (typeof _value[_property] === 'undefined' || _value[_property] === null) {
-                    itemsWithoutProperty.push(_item);
-                    return false;
-                }
-                _value = _value[_property];
-            }
-            if (isNaN(_value)) {
-                return false;
-            }
-            return (min === null || _value >= min) && (max === null || _value <= max);
-        });
-        return itemsWithoutProperty.length === items.length ? items : output;
+class BizyFilterSectionSearchOptionComponent {
+    ref;
+    id = `bizy-filter-section-search-option-${Math.random()}`;
+    customClass = '';
+    valueChange = new EventEmitter();
+    onChange = new EventEmitter();
+    _value = '';
+    #activated = new BehaviorSubject(false);
+    get activated$() {
+        return this.#activated.asObservable();
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyRangeFilterPipe, deps: [], target: i0.ɵɵFactoryTarget.Pipe });
-    static ɵpipe = i0.ɵɵngDeclarePipe({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyRangeFilterPipe, isStandalone: true, name: "bizyRangeFilter" });
+    set value(value) {
+        if (typeof value === 'undefined' || value === null) {
+            return;
+        }
+        if (Array.isArray(value)) {
+            value = '';
+        }
+        this._value = value;
+        this.#activated.next(Boolean(value));
+        this.ref.detectChanges();
+    }
+    constructor(ref) {
+        this.ref = ref;
+    }
+    _onChange(value) {
+        this.valueChange.emit(value);
+        this.onChange.emit(value);
+        this.#activated.next(Boolean(value));
+        this.ref.detectChanges();
+    }
+    getId = () => {
+        return this.id;
+    };
+    getValue = () => {
+        return this._value;
+    };
+    isActivated = () => {
+        return this.#activated.value;
+    };
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyFilterSectionSearchOptionComponent, deps: [{ token: ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.1", type: BizyFilterSectionSearchOptionComponent, isStandalone: true, selector: "bizy-filter-section-search-option", inputs: { id: "id", customClass: "customClass", value: "value" }, outputs: { valueChange: "valueChange", onChange: "onChange" }, ngImport: i0, template: "<bizy-input\n    [id]=\"id\" \n    (onChange)=\"_onChange($event)\"\n    [value]=\"_value\"\n    class=\"bizy-filter-section-search-option {{customClass}}\">\n\n    <span slot=\"header\"></span>\n\n    <ng-container slot=\"prefix\">\n        <ng-content select=\"[slot=prefix]\"></ng-content>\n    </ng-container>\n\n    <ng-container slot=\"suffix\">\n        <ng-content select=\"[slot=suffix]\"></ng-content>\n    </ng-container>\n\n</bizy-input>\n", styles: [":host{font-size:1rem;width:100%}.bizy-filter-section-search-option{--bizy-input-background-color: #f3f3f3 !important}\n"], dependencies: [{ kind: "component", type: BizyInputComponent, selector: "bizy-input", inputs: ["id", "name", "type", "customClass", "placeholder", "debounceTime", "rows", "disabled", "readonly", "autofocus", "value"], outputs: ["valueChange", "onChange", "onEnter", "onBackspace", "onSelect", "onBlur", "onFocus"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyRangeFilterPipe, decorators: [{
-            type: Pipe,
-            args: [{
-                    name: 'bizyRangeFilter'
-                }]
-        }] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyFilterSectionSearchOptionComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-filter-section-search-option', imports: [BizyInputComponent], changeDetection: ChangeDetectionStrategy.OnPush, template: "<bizy-input\n    [id]=\"id\" \n    (onChange)=\"_onChange($event)\"\n    [value]=\"_value\"\n    class=\"bizy-filter-section-search-option {{customClass}}\">\n\n    <span slot=\"header\"></span>\n\n    <ng-container slot=\"prefix\">\n        <ng-content select=\"[slot=prefix]\"></ng-content>\n    </ng-container>\n\n    <ng-container slot=\"suffix\">\n        <ng-content select=\"[slot=suffix]\"></ng-content>\n    </ng-container>\n\n</bizy-input>\n", styles: [":host{font-size:1rem;width:100%}.bizy-filter-section-search-option{--bizy-input-background-color: #f3f3f3 !important}\n"] }]
+        }], ctorParameters: () => [{ type: i0.ChangeDetectorRef, decorators: [{
+                    type: Inject,
+                    args: [ChangeDetectorRef]
+                }] }], propDecorators: { id: [{
+                type: Input
+            }], customClass: [{
+                type: Input
+            }], valueChange: [{
+                type: Output
+            }], onChange: [{
+                type: Output
+            }], value: [{
+                type: Input
+            }] } });
 
 class BizyFilterSectionComponent {
     document;
@@ -2293,6 +2470,147 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
             }], onChange: [{
                 type: Output
             }] } });
+
+class BizyFilterContentComponent {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyFilterContentComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.1", type: BizyFilterContentComponent, isStandalone: true, selector: "bizy-filter-content", ngImport: i0, template: "<ng-content></ng-content>", styles: [":host{font-size:1rem}\n"], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyFilterContentComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-filter-content', changeDetection: ChangeDetectionStrategy.OnPush, template: "<ng-content></ng-content>", styles: [":host{font-size:1rem}\n"] }]
+        }] });
+
+class BizyFilterPipe {
+    transform(items, property, states) {
+        if (!items || items.length === 0) {
+            return [];
+        }
+        if (!property || !states || states.length === 0) {
+            return items;
+        }
+        const _selected = states.filter(_state => _state.selected);
+        if (_selected.length === states.length) {
+            return items;
+        }
+        let output = [];
+        states.forEach(state => {
+            if (!state.selected) {
+                return;
+            }
+            const res = items.filter(_item => {
+                let _state = _item;
+                const nestedProperty = property.split('.');
+                nestedProperty.forEach(_property => {
+                    _state = _state[_property];
+                });
+                if (typeof state.id === 'boolean') {
+                    return Boolean(_state) === state.id;
+                }
+                if (Array.isArray(_state)) {
+                    return _state.includes(state.id);
+                }
+                return _state === state.id;
+            });
+            output = output.concat(res);
+        });
+        let map = new Map();
+        output.forEach(obj => map.set(JSON.stringify(obj), obj));
+        const uniqueArray = Array.from(map.values());
+        return uniqueArray;
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyFilterPipe, deps: [], target: i0.ɵɵFactoryTarget.Pipe });
+    static ɵpipe = i0.ɵɵngDeclarePipe({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyFilterPipe, isStandalone: true, name: "bizyFilter" });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyFilterPipe, decorators: [{
+            type: Pipe,
+            args: [{
+                    name: 'bizyFilter'
+                }]
+        }] });
+
+class BizyRangeFilterPipe {
+    transform(items, property, range) {
+        if (!items || items.length === 0) {
+            return [];
+        }
+        if (!property || !range) {
+            return items;
+        }
+        const min = range.min ?? null;
+        const max = range.max ?? null;
+        let itemsWithoutProperty = [];
+        const output = items.filter(_item => {
+            let _value = _item;
+            const nestedProperty = property.split('.');
+            for (let i = 0; i < nestedProperty.length; i++) {
+                const _property = nestedProperty[i];
+                if (typeof _value[_property] === 'undefined' || _value[_property] === null) {
+                    itemsWithoutProperty.push(_item);
+                    return false;
+                }
+                _value = _value[_property];
+            }
+            if (isNaN(_value)) {
+                return false;
+            }
+            return (min === null || _value >= min) && (max === null || _value <= max);
+        });
+        return itemsWithoutProperty.length === items.length ? items : output;
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyRangeFilterPipe, deps: [], target: i0.ɵɵFactoryTarget.Pipe });
+    static ɵpipe = i0.ɵɵngDeclarePipe({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyRangeFilterPipe, isStandalone: true, name: "bizyRangeFilter" });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyRangeFilterPipe, decorators: [{
+            type: Pipe,
+            args: [{
+                    name: 'bizyRangeFilter'
+                }]
+        }] });
+
+const COMPONENTS$g = [
+    BizyFilterComponent,
+    BizyFilterSectionComponent,
+    BizyFilterContentComponent,
+    BizyFilterSectionCheckboxOptionComponent,
+    BizyFilterSectionRangeOptionComponent,
+    BizyFilterSectionSearchOptionComponent,
+    BizyFilterSectionsComponent
+];
+const PIPES$1 = [
+    BizyFilterPipe,
+    BizyRangeFilterPipe
+];
+class BizyFilterModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyFilterModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyFilterModule, imports: [BizyFilterComponent,
+            BizyFilterSectionComponent,
+            BizyFilterContentComponent,
+            BizyFilterSectionCheckboxOptionComponent,
+            BizyFilterSectionRangeOptionComponent,
+            BizyFilterSectionSearchOptionComponent,
+            BizyFilterSectionsComponent, BizyFilterPipe,
+            BizyRangeFilterPipe], exports: [BizyFilterComponent,
+            BizyFilterSectionComponent,
+            BizyFilterContentComponent,
+            BizyFilterSectionCheckboxOptionComponent,
+            BizyFilterSectionRangeOptionComponent,
+            BizyFilterSectionSearchOptionComponent,
+            BizyFilterSectionsComponent, BizyFilterPipe,
+            BizyRangeFilterPipe] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyFilterModule, providers: PIPES$1, imports: [BizyFilterComponent,
+            BizyFilterSectionComponent,
+            BizyFilterSectionCheckboxOptionComponent,
+            BizyFilterSectionRangeOptionComponent,
+            BizyFilterSectionSearchOptionComponent] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyFilterModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: COMPONENTS$g.concat(PIPES$1),
+                    exports: COMPONENTS$g.concat(PIPES$1),
+                    providers: PIPES$1
+                }]
+        }] });
 
 class BizySelectOptionComponent {
     elementRef;
@@ -2549,6 +2867,45 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
                 type: Input
             }] } });
 
+const COMPONENTS$f = [
+    BizyFormComponent,
+];
+class BizyFormModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyFormModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyFormModule, imports: [BizyFormComponent], exports: [BizyFormComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyFormModule, imports: [COMPONENTS$f] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyFormModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: COMPONENTS$f,
+                    exports: COMPONENTS$f,
+                }]
+        }] });
+
+class BizyGridForDirective {
+    viewContainerRef = inject(ViewContainerRef);
+    templateRef = inject(TemplateRef);
+    #items = new BehaviorSubject([]);
+    get items$() {
+        return this.#items.asObservable();
+    }
+    set gridForOf(items) {
+        this.#items.next(items);
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyGridForDirective, deps: [], target: i0.ɵɵFactoryTarget.Directive });
+    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "19.2.1", type: BizyGridForDirective, isStandalone: true, selector: "[gridFor]", inputs: { gridForOf: "gridForOf" }, ngImport: i0 });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyGridForDirective, decorators: [{
+            type: Directive,
+            args: [{
+                    selector: '[gridFor]',
+                }]
+        }], propDecorators: { gridForOf: [{
+                type: Input,
+                args: ['gridForOf']
+            }] } });
+
 class BizyGridRowComponent {
     #elementRef = inject(ElementRef);
     #ref = inject(ChangeDetectorRef);
@@ -2575,29 +2932,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
                 type: Input
             }], itemsPerRow: [{
                 type: Input
-            }] } });
-
-class BizyGridForDirective {
-    viewContainerRef = inject(ViewContainerRef);
-    templateRef = inject(TemplateRef);
-    #items = new BehaviorSubject([]);
-    get items$() {
-        return this.#items.asObservable();
-    }
-    set gridForOf(items) {
-        this.#items.next(items);
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyGridForDirective, deps: [], target: i0.ɵɵFactoryTarget.Directive });
-    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "19.2.1", type: BizyGridForDirective, isStandalone: true, selector: "[gridFor]", inputs: { gridForOf: "gridForOf" }, ngImport: i0 });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyGridForDirective, decorators: [{
-            type: Directive,
-            args: [{
-                    selector: '[gridFor]',
-                }]
-        }], propDecorators: { gridForOf: [{
-                type: Input,
-                args: ['gridForOf']
             }] } });
 
 class BizyGridComponent {
@@ -2655,7 +2989,7 @@ class BizyGridComponent {
         this.#resizeObserver = new ResizeObserver(() => this.notifier$.next());
         const resizeRef = this.resizeRef ? this.resizeRef : this.renderer.parentNode(this.elementRef.nativeElement) ? this.renderer.parentNode(this.elementRef.nativeElement) : this.elementRef.nativeElement;
         this.#resizeObserver.observe(resizeRef);
-        this.#subscription.add(this.notifier$.pipe(debounceTime(50)).subscribe(() => {
+        this.#subscription.add(this.notifier$.pipe(debounceTime$1(50)).subscribe(() => {
             this.#updateView();
         }));
     };
@@ -2742,6 +3076,48 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
                 type: Input
             }] } });
 
+const COMPONENTS$e = [
+    BizyGridComponent,
+    BizyGridRowComponent
+];
+const DIRECTIVES$2 = [
+    BizyGridForDirective,
+];
+class BizyGridModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyGridModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyGridModule, imports: [BizyGridComponent,
+            BizyGridRowComponent, BizyGridForDirective], exports: [BizyGridComponent,
+            BizyGridRowComponent, BizyGridForDirective] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyGridModule, imports: [BizyGridComponent,
+            BizyGridRowComponent] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyGridModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: COMPONENTS$e.concat(DIRECTIVES$2),
+                    exports: COMPONENTS$e.concat(DIRECTIVES$2),
+                }]
+        }] });
+
+const COMPONENTS$d = [
+    BizyInputComponent,
+    BizyInputOptionComponent
+];
+class BizyInputModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyInputModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyInputModule, imports: [BizyInputComponent,
+            BizyInputOptionComponent], exports: [BizyInputComponent,
+            BizyInputOptionComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyInputModule, imports: [COMPONENTS$d] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyInputModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: COMPONENTS$d,
+                    exports: COMPONENTS$d,
+                }]
+        }] });
+
 class BizyListComponent {
     id = `bizy-list-${Math.random()}`;
     customClass = '';
@@ -2757,17 +3133,21 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
                 type: Input
             }] } });
 
-class BizyMenuTitleComponent {
-    customClass = '';
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyMenuTitleComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.1", type: BizyMenuTitleComponent, isStandalone: true, selector: "bizy-menu-title", inputs: { customClass: "customClass" }, ngImport: i0, template: "<span class=\"bizy-menu-title {{customClass}}\">\n    <ng-content></ng-content>\n</span>\n", styles: [":host{font-size:1rem}.bizy-menu-title{background-color:var(--bizy-menu-title-background-color);color:var(--bizy-menu-title-color);padding:.5rem;cursor:default;text-decoration:underline .1rem var(--bizy-menu-title-underline-color);text-underline-offset:.3rem;display:flex;align-items:center}\n"], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+const COMPONENTS$c = [
+    BizyListComponent,
+];
+class BizyListModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyListModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyListModule, imports: [BizyListComponent], exports: [BizyListComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyListModule, imports: [COMPONENTS$c] });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyMenuTitleComponent, decorators: [{
-            type: Component,
-            args: [{ selector: 'bizy-menu-title', changeDetection: ChangeDetectionStrategy.OnPush, template: "<span class=\"bizy-menu-title {{customClass}}\">\n    <ng-content></ng-content>\n</span>\n", styles: [":host{font-size:1rem}.bizy-menu-title{background-color:var(--bizy-menu-title-background-color);color:var(--bizy-menu-title-color);padding:.5rem;cursor:default;text-decoration:underline .1rem var(--bizy-menu-title-underline-color);text-underline-offset:.3rem;display:flex;align-items:center}\n"] }]
-        }], propDecorators: { customClass: [{
-                type: Input
-            }] } });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyListModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: COMPONENTS$c,
+                    exports: COMPONENTS$c,
+                }]
+        }] });
 
 class BizyMenuOptionComponent {
     id = `bizy-menu-option-${Math.random()}`;
@@ -2882,6 +3262,41 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
             }], onSelect: [{
                 type: Output
             }] } });
+
+class BizyMenuTitleComponent {
+    customClass = '';
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyMenuTitleComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.1", type: BizyMenuTitleComponent, isStandalone: true, selector: "bizy-menu-title", inputs: { customClass: "customClass" }, ngImport: i0, template: "<span class=\"bizy-menu-title {{customClass}}\">\n    <ng-content></ng-content>\n</span>\n", styles: [":host{font-size:1rem}.bizy-menu-title{background-color:var(--bizy-menu-title-background-color);color:var(--bizy-menu-title-color);padding:.5rem;cursor:default;text-decoration:underline .1rem var(--bizy-menu-title-underline-color);text-underline-offset:.3rem;display:flex;align-items:center}\n"], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyMenuTitleComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-menu-title', changeDetection: ChangeDetectionStrategy.OnPush, template: "<span class=\"bizy-menu-title {{customClass}}\">\n    <ng-content></ng-content>\n</span>\n", styles: [":host{font-size:1rem}.bizy-menu-title{background-color:var(--bizy-menu-title-background-color);color:var(--bizy-menu-title-color);padding:.5rem;cursor:default;text-decoration:underline .1rem var(--bizy-menu-title-underline-color);text-underline-offset:.3rem;display:flex;align-items:center}\n"] }]
+        }], propDecorators: { customClass: [{
+                type: Input
+            }] } });
+
+const COMPONENTS$b = [
+    BizyMenuComponent,
+    BizyMenuOptionComponent,
+    BizyMenuTitleComponent
+];
+class BizyMenuModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyMenuModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyMenuModule, imports: [BizyMenuComponent,
+            BizyMenuOptionComponent,
+            BizyMenuTitleComponent], exports: [BizyMenuComponent,
+            BizyMenuOptionComponent,
+            BizyMenuTitleComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyMenuModule, imports: [BizyMenuComponent,
+            BizyMenuOptionComponent] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyMenuModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: COMPONENTS$b,
+                    exports: COMPONENTS$b,
+                }]
+        }] });
 
 const EMPTY_CHART = [0];
 const MIN_CHART_SIZE = 350; // px;
@@ -3147,6 +3562,122 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
                 type: Input
             }] } });
 
+const COMPONENTS$a = [
+    BizyPieChartComponent,
+];
+class BizyPieChartModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyPieChartModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyPieChartModule, imports: [BizyPieChartComponent], exports: [BizyPieChartComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyPieChartModule, imports: [COMPONENTS$a] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyPieChartModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: COMPONENTS$a,
+                    exports: COMPONENTS$a,
+                }]
+        }] });
+
+class BizyPopupWrapperComponent {
+    dynamicComponentContainer;
+    #component = inject(DIALOG_DATA);
+    #dialogRef = inject(DialogRef);
+    #ref = inject(ChangeDetectorRef);
+    ngAfterViewInit() {
+        this.loadDynamicComponent();
+    }
+    loadDynamicComponent() {
+        if (this.#component) {
+            this.dynamicComponentContainer.clear();
+            this.dynamicComponentContainer.createComponent(this.#component);
+            this.#ref.detectChanges();
+        }
+    }
+    close() {
+        this.#dialogRef.close();
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyPopupWrapperComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.1", type: BizyPopupWrapperComponent, isStandalone: true, selector: "bizy-popup-wrapper", viewQueries: [{ propertyName: "dynamicComponentContainer", first: true, predicate: ["dynamicComponentContainer"], descendants: true, read: ViewContainerRef }], ngImport: i0, template: "<div class=\"bizy-popup-wrapper\" cdkDrag>\n\n    <button class=\"bizy-popup-wrapper__drag-button\" cdkDragHandle>\n\n        <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\" class=\"bizy-popup-wrapper__drag-button__icon\">\n            <path d=\"M278.6 9.4c-12.5-12.5-32.8-12.5-45.3 0l-64 64c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l9.4-9.4V224H109.3l9.4-9.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-64 64c-12.5 12.5-12.5 32.8 0 45.3l64 64c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-9.4-9.4H224V402.7l-9.4-9.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l64 64c12.5 12.5 32.8 12.5 45.3 0l64-64c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-9.4 9.4V288H402.7l-9.4 9.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l64-64c12.5-12.5 12.5-32.8 0-45.3l-64-64c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l9.4 9.4H288V109.3l9.4 9.4c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-64-64z\"/>\n        </svg>\n\n    </button>\n\n    <button class=\"bizy-popup-wrapper__close-button\" (click)=\"close()\" (keyup.enter)=\"close()\">\n\n\n        <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 384 512\" class=\"bizy-popup-wrapper__close-button__icon\">\n            <path d=\"M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z\"/>\n        </svg>\n\n    </button>\n\n    <ng-container #dynamicComponentContainer></ng-container>\n\n</div>", styles: [":host{font-size:1rem}.bizy-popup-wrapper{position:relative;background-color:var(--bizy-popup-background-color);min-width:var(--bizy-popup-min-width);width:var(--bizy-popup-width);max-width:var(--bizy-popup-max-width)}.bizy-popup-wrapper__drag-button{position:absolute;left:-.9rem;top:-.9rem;border:.1rem solid var(--bizy-popup-drag-button-border-color);border-radius:50%;padding:.2rem;place-items:center;display:grid;border:.1rem solid #ccc;background-color:var(--bizy-popup-drag-button-background-color);cursor:pointer;transition:transform .2s;z-index:1}.bizy-popup-wrapper__drag-button:hover{transform:scale(1.1)}.bizy-popup-wrapper__drag-button__icon{height:1rem}.bizy-popup-wrapper__drag-button__icon{fill:var(--bizy-popup-drag-button-color)}.bizy-popup-wrapper__close-button{position:absolute;right:-.9rem;top:-.9rem;border:.1rem solid var(--bizy-popup-close-button-border-color);border-radius:50%;padding:.25rem .35rem;place-items:center;display:grid;border:.1rem solid #ccc;background-color:var(--bizy-popup-close-button-background-color);cursor:pointer;transition:transform .2s;z-index:1}.bizy-popup-wrapper__close-button:hover .bizy-popup-wrapper__close-button__icon{transform:scale(1.1)}.bizy-popup-wrapper__close-button:hover .bizy-popup-wrapper__close-button__icon{fill:var(--bizy-popup-close-button-hover-color)}.bizy-popup-wrapper__close-button__icon{height:1rem;transition:fill .2s ease,}.bizy-popup-wrapper__close-button__icon{fill:var(--bizy-popup-close-button-color)}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }, { kind: "ngmodule", type: DialogModule }, { kind: "ngmodule", type: DragDropModule }, { kind: "directive", type: i1$1.CdkDrag, selector: "[cdkDrag]", inputs: ["cdkDragData", "cdkDragLockAxis", "cdkDragRootElement", "cdkDragBoundary", "cdkDragStartDelay", "cdkDragFreeDragPosition", "cdkDragDisabled", "cdkDragConstrainPosition", "cdkDragPreviewClass", "cdkDragPreviewContainer", "cdkDragScale"], outputs: ["cdkDragStarted", "cdkDragReleased", "cdkDragEnded", "cdkDragEntered", "cdkDragExited", "cdkDragDropped", "cdkDragMoved"], exportAs: ["cdkDrag"] }, { kind: "directive", type: i1$1.CdkDragHandle, selector: "[cdkDragHandle]", inputs: ["cdkDragHandleDisabled"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyPopupWrapperComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-popup-wrapper', imports: [CommonModule, DialogModule, DragDropModule], changeDetection: ChangeDetectionStrategy.OnPush, template: "<div class=\"bizy-popup-wrapper\" cdkDrag>\n\n    <button class=\"bizy-popup-wrapper__drag-button\" cdkDragHandle>\n\n        <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\" class=\"bizy-popup-wrapper__drag-button__icon\">\n            <path d=\"M278.6 9.4c-12.5-12.5-32.8-12.5-45.3 0l-64 64c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l9.4-9.4V224H109.3l9.4-9.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-64 64c-12.5 12.5-12.5 32.8 0 45.3l64 64c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-9.4-9.4H224V402.7l-9.4-9.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l64 64c12.5 12.5 32.8 12.5 45.3 0l64-64c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-9.4 9.4V288H402.7l-9.4 9.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l64-64c12.5-12.5 12.5-32.8 0-45.3l-64-64c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l9.4 9.4H288V109.3l9.4 9.4c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-64-64z\"/>\n        </svg>\n\n    </button>\n\n    <button class=\"bizy-popup-wrapper__close-button\" (click)=\"close()\" (keyup.enter)=\"close()\">\n\n\n        <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 384 512\" class=\"bizy-popup-wrapper__close-button__icon\">\n            <path d=\"M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z\"/>\n        </svg>\n\n    </button>\n\n    <ng-container #dynamicComponentContainer></ng-container>\n\n</div>", styles: [":host{font-size:1rem}.bizy-popup-wrapper{position:relative;background-color:var(--bizy-popup-background-color);min-width:var(--bizy-popup-min-width);width:var(--bizy-popup-width);max-width:var(--bizy-popup-max-width)}.bizy-popup-wrapper__drag-button{position:absolute;left:-.9rem;top:-.9rem;border:.1rem solid var(--bizy-popup-drag-button-border-color);border-radius:50%;padding:.2rem;place-items:center;display:grid;border:.1rem solid #ccc;background-color:var(--bizy-popup-drag-button-background-color);cursor:pointer;transition:transform .2s;z-index:1}.bizy-popup-wrapper__drag-button:hover{transform:scale(1.1)}.bizy-popup-wrapper__drag-button__icon{height:1rem}.bizy-popup-wrapper__drag-button__icon{fill:var(--bizy-popup-drag-button-color)}.bizy-popup-wrapper__close-button{position:absolute;right:-.9rem;top:-.9rem;border:.1rem solid var(--bizy-popup-close-button-border-color);border-radius:50%;padding:.25rem .35rem;place-items:center;display:grid;border:.1rem solid #ccc;background-color:var(--bizy-popup-close-button-background-color);cursor:pointer;transition:transform .2s;z-index:1}.bizy-popup-wrapper__close-button:hover .bizy-popup-wrapper__close-button__icon{transform:scale(1.1)}.bizy-popup-wrapper__close-button:hover .bizy-popup-wrapper__close-button__icon{fill:var(--bizy-popup-close-button-hover-color)}.bizy-popup-wrapper__close-button__icon{height:1rem;transition:fill .2s ease,}.bizy-popup-wrapper__close-button__icon{fill:var(--bizy-popup-close-button-color)}\n"] }]
+        }], propDecorators: { dynamicComponentContainer: [{
+                type: ViewChild,
+                args: ['dynamicComponentContainer', { read: ViewContainerRef }]
+            }] } });
+
+class BizyPopupService {
+    #dialog = inject(Dialog);
+    static dialogs = new Set();
+    #data = null;
+    ;
+    open(data, callback) {
+        this.#data = data.data;
+        const dialogRef = this.#dialog.open(BizyPopupWrapperComponent, ({
+            id: data.id,
+            data: data.component,
+            autoFocus: true,
+            hasBackdrop: true,
+            disableClose: data.disableClose ?? false,
+            panelClass: ['bizy-popup', data.customClass]
+        }));
+        BizyPopupService.dialogs.add(dialogRef);
+        dialogRef.closed.pipe(take(1)).subscribe(response => {
+            BizyPopupService.dialogs.delete(dialogRef);
+            if (callback) {
+                callback(response);
+            }
+        });
+    }
+    getData() {
+        return this.#data;
+    }
+    close(data) {
+        let dialogRef = null;
+        if (data && data.id) {
+            dialogRef = Array.from(BizyPopupService.dialogs).find(_dialogRef => _dialogRef.id === data.id);
+        }
+        else {
+            dialogRef = Array.from(BizyPopupService.dialogs).pop();
+        }
+        if (dialogRef) {
+            dialogRef.close(data ? data.response : null);
+            BizyPopupService.dialogs.delete(dialogRef);
+        }
+        this.#data = null;
+    }
+    closeAll() {
+        Array.from(BizyPopupService.dialogs).forEach(_dialogRef => {
+            _dialogRef.close();
+        });
+        BizyPopupService.dialogs.clear();
+        this.#data = null;
+    }
+    openedPopups() {
+        return BizyPopupService.dialogs.size;
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyPopupService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyPopupService });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyPopupService, decorators: [{
+            type: Injectable
+        }] });
+
+class BizyPopupModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyPopupModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyPopupModule, imports: [BizyPopupWrapperComponent], exports: [BizyPopupWrapperComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyPopupModule, providers: [BizyPopupService], imports: [BizyPopupWrapperComponent] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyPopupModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: [BizyPopupWrapperComponent],
+                    exports: [BizyPopupWrapperComponent],
+                    providers: [BizyPopupService]
+                }]
+        }] });
+
 class BizyRadioComponent {
     id = `bizy-radio-${Math.random()}`;
     name;
@@ -3181,20 +3712,40 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
                 type: Output
             }] } });
 
-class BizySidebarFloatingOptionTitleComponent {
-    id = `bizy-sidebar-floating-option-title-${Math.random()}`;
-    customClass = '';
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizySidebarFloatingOptionTitleComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.1", type: BizySidebarFloatingOptionTitleComponent, isStandalone: true, selector: "bizy-sidebar-floating-option-title", inputs: { id: "id", customClass: "customClass" }, ngImport: i0, template: "<span class=\"bizy-sidebar-floating-option-title {{customClass}}\" [id]=\"id\">\n    <ng-content></ng-content>\n</span>\n", styles: [":host{font-size:1rem;background-color:var(--bizy-sidebar-floating-option-title-background-color);position:sticky;top:0;z-index:1}.bizy-sidebar-floating-option-title{background-color:inherit;color:var(--bizy-sidebar-floating-option-title-color);padding:.5rem;cursor:default;text-decoration:underline .1rem var(--bizy-sidebar-floating-option-title-underline-color);text-underline-offset:.2rem;display:flex;align-items:center}\n"], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+const COMPONENTS$9 = [
+    BizyRadioComponent,
+];
+class BizyRadioModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyRadioModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyRadioModule, imports: [BizyRadioComponent], exports: [BizyRadioComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyRadioModule, imports: [COMPONENTS$9] });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizySidebarFloatingOptionTitleComponent, decorators: [{
-            type: Component,
-            args: [{ selector: 'bizy-sidebar-floating-option-title', changeDetection: ChangeDetectionStrategy.OnPush, template: "<span class=\"bizy-sidebar-floating-option-title {{customClass}}\" [id]=\"id\">\n    <ng-content></ng-content>\n</span>\n", styles: [":host{font-size:1rem;background-color:var(--bizy-sidebar-floating-option-title-background-color);position:sticky;top:0;z-index:1}.bizy-sidebar-floating-option-title{background-color:inherit;color:var(--bizy-sidebar-floating-option-title-color);padding:.5rem;cursor:default;text-decoration:underline .1rem var(--bizy-sidebar-floating-option-title-underline-color);text-underline-offset:.2rem;display:flex;align-items:center}\n"] }]
-        }], propDecorators: { id: [{
-                type: Input
-            }], customClass: [{
-                type: Input
-            }] } });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyRadioModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: COMPONENTS$9,
+                    exports: COMPONENTS$9,
+                }]
+        }] });
+
+const COMPONENTS$8 = [
+    BizySelectComponent,
+    BizySelectOptionComponent
+];
+class BizySelectModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizySelectModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizySelectModule, imports: [BizySelectComponent,
+            BizySelectOptionComponent], exports: [BizySelectComponent,
+            BizySelectOptionComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizySelectModule, imports: [COMPONENTS$8] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizySelectModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: COMPONENTS$8,
+                    exports: COMPONENTS$8,
+                }]
+        }] });
 
 class BizySidebarOptionComponent {
     ref;
@@ -3534,6 +4085,48 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
                 type: Input
             }] } });
 
+class BizySidebarFloatingOptionTitleComponent {
+    id = `bizy-sidebar-floating-option-title-${Math.random()}`;
+    customClass = '';
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizySidebarFloatingOptionTitleComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.1", type: BizySidebarFloatingOptionTitleComponent, isStandalone: true, selector: "bizy-sidebar-floating-option-title", inputs: { id: "id", customClass: "customClass" }, ngImport: i0, template: "<span class=\"bizy-sidebar-floating-option-title {{customClass}}\" [id]=\"id\">\n    <ng-content></ng-content>\n</span>\n", styles: [":host{font-size:1rem;background-color:var(--bizy-sidebar-floating-option-title-background-color);position:sticky;top:0;z-index:1}.bizy-sidebar-floating-option-title{background-color:inherit;color:var(--bizy-sidebar-floating-option-title-color);padding:.5rem;cursor:default;text-decoration:underline .1rem var(--bizy-sidebar-floating-option-title-underline-color);text-underline-offset:.2rem;display:flex;align-items:center}\n"], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizySidebarFloatingOptionTitleComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-sidebar-floating-option-title', changeDetection: ChangeDetectionStrategy.OnPush, template: "<span class=\"bizy-sidebar-floating-option-title {{customClass}}\" [id]=\"id\">\n    <ng-content></ng-content>\n</span>\n", styles: [":host{font-size:1rem;background-color:var(--bizy-sidebar-floating-option-title-background-color);position:sticky;top:0;z-index:1}.bizy-sidebar-floating-option-title{background-color:inherit;color:var(--bizy-sidebar-floating-option-title-color);padding:.5rem;cursor:default;text-decoration:underline .1rem var(--bizy-sidebar-floating-option-title-underline-color);text-underline-offset:.2rem;display:flex;align-items:center}\n"] }]
+        }], propDecorators: { id: [{
+                type: Input
+            }], customClass: [{
+                type: Input
+            }] } });
+
+const COMPONENTS$7 = [
+    BizySidebarComponent,
+    BizySidebarFloatingOptionComponent,
+    BizySidebarFloatingOptionTitleComponent,
+    BizySidebarOptionComponent
+];
+class BizySidebarModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizySidebarModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizySidebarModule, imports: [BizySidebarComponent,
+            BizySidebarFloatingOptionComponent,
+            BizySidebarFloatingOptionTitleComponent,
+            BizySidebarOptionComponent], exports: [BizySidebarComponent,
+            BizySidebarFloatingOptionComponent,
+            BizySidebarFloatingOptionTitleComponent,
+            BizySidebarOptionComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizySidebarModule, imports: [BizySidebarComponent,
+            BizySidebarFloatingOptionComponent,
+            BizySidebarOptionComponent] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizySidebarModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: COMPONENTS$7,
+                    exports: COMPONENTS$7,
+                }]
+        }] });
+
 var BIZY_SKELETON_SHAPE;
 (function (BIZY_SKELETON_SHAPE) {
     BIZY_SKELETON_SHAPE["CIRCLE"] = "circle";
@@ -3564,6 +4157,22 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
             }], customClass: [{
                 type: Input
             }] } });
+
+const COMPONENTS$6 = [
+    BizySkeletonComponent,
+];
+class BizySkeletonModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizySkeletonModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizySkeletonModule, imports: [BizySkeletonComponent], exports: [BizySkeletonComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizySkeletonModule, imports: [COMPONENTS$6] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizySkeletonModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: COMPONENTS$6,
+                    exports: COMPONENTS$6,
+                }]
+        }] });
 
 class BizySliderComponent {
     fromSlider;
@@ -3631,6 +4240,59 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
                 type: Input
             }] } });
 
+const COMPONENTS$5 = [
+    BizySliderComponent,
+];
+class BizySliderModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizySliderModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizySliderModule, imports: [BizySliderComponent], exports: [BizySliderComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizySliderModule, imports: [COMPONENTS$5] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizySliderModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: COMPONENTS$5,
+                    exports: COMPONENTS$5,
+                }]
+        }] });
+
+class BizyTableScrollingDirective {
+    viewContainerRef;
+    template;
+    ref;
+    #items = new BehaviorSubject([]);
+    get items$() {
+        return this.#items.asObservable();
+    }
+    set tableForIn(value) {
+        this.#items.next(value);
+    }
+    constructor(viewContainerRef, template, ref) {
+        this.viewContainerRef = viewContainerRef;
+        this.template = template;
+        this.ref = ref;
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTableScrollingDirective, deps: [{ token: ViewContainerRef }, { token: TemplateRef }, { token: ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Directive });
+    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "19.2.1", type: BizyTableScrollingDirective, isStandalone: true, selector: "[tableFor]", inputs: { tableForIn: "tableForIn" }, ngImport: i0 });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTableScrollingDirective, decorators: [{
+            type: Directive,
+            args: [{
+                    selector: '[tableFor]',
+                }]
+        }], ctorParameters: () => [{ type: i0.ViewContainerRef, decorators: [{
+                    type: Inject,
+                    args: [ViewContainerRef]
+                }] }, { type: i0.TemplateRef, decorators: [{
+                    type: Inject,
+                    args: [TemplateRef]
+                }] }, { type: i0.ChangeDetectorRef, decorators: [{
+                    type: Inject,
+                    args: [ChangeDetectorRef]
+                }] }], propDecorators: { tableForIn: [{
+                type: Input
+            }] } });
+
 class BizyTableColumnFixedDirective {
     #elementRef = inject(ElementRef);
     #renderer = inject(Renderer2);
@@ -3686,146 +4348,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
                 args: ['bizyTableColumnFixed']
             }] } });
 
-class BizyTableRowExpandContentComponent {
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTableRowExpandContentComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.1", type: BizyTableRowExpandContentComponent, isStandalone: true, selector: "bizy-table-row-expand-content", ngImport: i0, template: "<ng-content></ng-content>", styles: [":host{font-size:1rem;width:100%;background-color:var(--bizy-table-row-expand-content-background-color);border-bottom-left-radius:.3rem;border-bottom-right-radius:.3rem;padding:.5rem}\n"], changeDetection: i0.ChangeDetectionStrategy.OnPush });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTableRowExpandContentComponent, decorators: [{
-            type: Component,
-            args: [{ selector: 'bizy-table-row-expand-content', changeDetection: ChangeDetectionStrategy.OnPush, template: "<ng-content></ng-content>", styles: [":host{font-size:1rem;width:100%;background-color:var(--bizy-table-row-expand-content-background-color);border-bottom-left-radius:.3rem;border-bottom-right-radius:.3rem;padding:.5rem}\n"] }]
-        }] });
-
-// FIX: This components fixes the bug with Angular CDK virtual scrolling not supporting content projection.
-// https://github.com/angular/components/issues/15277
-class BizyTableScrollingComponent {
-    document;
-    elementRef;
-    ref;
-    viewport;
-    content;
-    #view;
-    items$;
-    itemTemplate;
-    itemSize;
-    #subscription = new Subscription();
-    #scrollTop = 0;
-    constructor(document, elementRef, ref) {
-        this.document = document;
-        this.elementRef = elementRef;
-        this.ref = ref;
-    }
-    /** Called by the virtual-for directive inside of the viewport. */
-    attachView(tableDirective) {
-        if (this.#view) {
-            return;
-        }
-        let itemSize = 30;
-        const rowHeight = getComputedStyle(this.document.documentElement).getPropertyValue('--bizy-table-row-height');
-        const fontSize = getComputedStyle(this.document.documentElement).getPropertyValue('font-size');
-        const gap = Number(fontSize.split('px')[0]) * 0.1;
-        if (rowHeight && rowHeight.includes('rem')) {
-            itemSize = Number(fontSize.split('px')[0]) * Number(rowHeight.split('rem')[0]);
-        }
-        else if (rowHeight && rowHeight.includes('px')) {
-            itemSize = Number(rowHeight.split('px')[0]);
-        }
-        this.itemSize = itemSize + gap;
-        this.items$ = tableDirective.items$;
-        this.itemTemplate = tableDirective.template;
-        this.#view = tableDirective.viewContainerRef;
-        this.#view.createEmbeddedView(this.content);
-        this.ref.detectChanges();
-        this.#subscription.add(fromEvent(this.elementRef.nativeElement, 'scroll', { capture: true }).pipe(debounceTime(100)).subscribe(() => {
-            this.#scrollTop = this.viewport.measureScrollOffset();
-        }));
-        this.#subscription.add(this.items$.pipe(skip(1)).subscribe(() => {
-            if (this.viewport) {
-                this.viewport.scrollToOffset(this.#scrollTop);
-                this.ref.detectChanges();
-            }
-        }));
-    }
-    ngOnDestroy() {
-        this.#subscription.unsubscribe();
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTableScrollingComponent, deps: [{ token: DOCUMENT }, { token: ElementRef }, { token: ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.1", type: BizyTableScrollingComponent, isStandalone: true, selector: "bizy-table-scrolling", viewQueries: [{ propertyName: "viewport", first: true, predicate: CdkVirtualScrollViewport, descendants: true }, { propertyName: "content", first: true, predicate: ["tableScrollingContent"], descendants: true }], ngImport: i0, template: "<cdk-virtual-scroll-viewport \n    [itemSize]=\"itemSize\"\n    [minBufferPx]=\"itemSize + (itemSize * 20)\"\n    [maxBufferPx]=\"itemSize + (itemSize * 40)\">\n    \n    <ng-content></ng-content>\n\n    <ng-template #tableScrollingContent>\n      <ng-template let-item cdkVirtualFor [cdkVirtualForOf]=\"items$ | async\">\n        <ng-template *ngTemplateOutlet=\"itemTemplate; context: { $implicit: item }\"></ng-template>\n      </ng-template>\n    </ng-template>\n</cdk-virtual-scroll-viewport>", styles: ["::ng-deep .cdk-virtual-scrollable{height:100%;width:100%;overflow-y:auto!important;overflow-x:hidden!important;contain:inline-size!important}::ng-deep .cdk-virtual-scrollable::-webkit-scrollbar{width:.5rem;height:.5rem}::ng-deep .cdk-virtual-scrollable::-webkit-scrollbar-thumb{border-radius:1rem;background-color:var(--bizy-table-scroll-bar-color)}::ng-deep .cdk-virtual-scrollable::-webkit-scrollbar-thumb:hover{background-color:var(--bizy-table-scroll-bar-hover-color)}::ng-deep .cdk-virtual-scrollable::-webkit-scrollbar-button{height:1rem}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }, { kind: "directive", type: i1.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "pipe", type: i1.AsyncPipe, name: "async" }, { kind: "ngmodule", type: ScrollingModule }, { kind: "directive", type: i2$3.CdkFixedSizeVirtualScroll, selector: "cdk-virtual-scroll-viewport[itemSize]", inputs: ["itemSize", "minBufferPx", "maxBufferPx"] }, { kind: "directive", type: i2$3.CdkVirtualForOf, selector: "[cdkVirtualFor][cdkVirtualForOf]", inputs: ["cdkVirtualForOf", "cdkVirtualForTrackBy", "cdkVirtualForTemplate", "cdkVirtualForTemplateCacheSize"] }, { kind: "component", type: i2$3.CdkVirtualScrollViewport, selector: "cdk-virtual-scroll-viewport", inputs: ["orientation", "appendOnly"], outputs: ["scrolledIndexChange"] }] });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTableScrollingComponent, decorators: [{
-            type: Component,
-            args: [{ selector: 'bizy-table-scrolling', imports: [CommonModule, ScrollingModule], template: "<cdk-virtual-scroll-viewport \n    [itemSize]=\"itemSize\"\n    [minBufferPx]=\"itemSize + (itemSize * 20)\"\n    [maxBufferPx]=\"itemSize + (itemSize * 40)\">\n    \n    <ng-content></ng-content>\n\n    <ng-template #tableScrollingContent>\n      <ng-template let-item cdkVirtualFor [cdkVirtualForOf]=\"items$ | async\">\n        <ng-template *ngTemplateOutlet=\"itemTemplate; context: { $implicit: item }\"></ng-template>\n      </ng-template>\n    </ng-template>\n</cdk-virtual-scroll-viewport>", styles: ["::ng-deep .cdk-virtual-scrollable{height:100%;width:100%;overflow-y:auto!important;overflow-x:hidden!important;contain:inline-size!important}::ng-deep .cdk-virtual-scrollable::-webkit-scrollbar{width:.5rem;height:.5rem}::ng-deep .cdk-virtual-scrollable::-webkit-scrollbar-thumb{border-radius:1rem;background-color:var(--bizy-table-scroll-bar-color)}::ng-deep .cdk-virtual-scrollable::-webkit-scrollbar-thumb:hover{background-color:var(--bizy-table-scroll-bar-hover-color)}::ng-deep .cdk-virtual-scrollable::-webkit-scrollbar-button{height:1rem}\n"] }]
-        }], ctorParameters: () => [{ type: Document, decorators: [{
-                    type: Inject,
-                    args: [DOCUMENT]
-                }] }, { type: i0.ElementRef, decorators: [{
-                    type: Inject,
-                    args: [ElementRef]
-                }] }, { type: i0.ChangeDetectorRef, decorators: [{
-                    type: Inject,
-                    args: [ChangeDetectorRef]
-                }] }], propDecorators: { viewport: [{
-                type: ViewChild,
-                args: [CdkVirtualScrollViewport]
-            }], content: [{
-                type: ViewChild,
-                args: ['tableScrollingContent']
-            }] } });
-
-class BizyTableScrollingDirective {
-    viewContainerRef;
-    template;
-    ref;
-    #items = new BehaviorSubject([]);
-    get items$() {
-        return this.#items.asObservable();
-    }
-    set tableForIn(value) {
-        this.#items.next(value);
-    }
-    constructor(viewContainerRef, template, ref) {
-        this.viewContainerRef = viewContainerRef;
-        this.template = template;
-        this.ref = ref;
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTableScrollingDirective, deps: [{ token: ViewContainerRef }, { token: TemplateRef }, { token: ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Directive });
-    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "19.2.1", type: BizyTableScrollingDirective, isStandalone: true, selector: "[tableFor]", inputs: { tableForIn: "tableForIn" }, ngImport: i0 });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTableScrollingDirective, decorators: [{
-            type: Directive,
-            args: [{
-                    selector: '[tableFor]',
-                }]
-        }], ctorParameters: () => [{ type: i0.ViewContainerRef, decorators: [{
-                    type: Inject,
-                    args: [ViewContainerRef]
-                }] }, { type: i0.TemplateRef, decorators: [{
-                    type: Inject,
-                    args: [TemplateRef]
-                }] }, { type: i0.ChangeDetectorRef, decorators: [{
-                    type: Inject,
-                    args: [ChangeDetectorRef]
-                }] }], propDecorators: { tableForIn: [{
-                type: Input
-            }] } });
-
-class BizyTableColumnArrowsComponent {
-    order = null;
-    show = false;
-    customClass = '';
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTableColumnArrowsComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.1", type: BizyTableColumnArrowsComponent, isStandalone: true, selector: "bizy-table-column-arrows", inputs: { order: "order", show: "show", customClass: "customClass" }, ngImport: i0, template: "<svg \n    xmlns=\"http://www.w3.org/2000/svg\"\n    viewBox=\"0 0 448 512\"\n    *ngIf=\"order !== 'asc' && order !== 'desc'\"\n    name=\"bizy-table-column-arrows\"\n    class=\"bizy-table-column-arrows bizy-table-column-arrows__down-up animated fade-in {{customClass}}\">\n    <path d=\"M438.6 150.6c12.5-12.5 12.5-32.8 0-45.3l-96-96c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.7 96 32 96C14.3 96 0 110.3 0 128s14.3 32 32 32l306.7 0-41.4 41.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l96-96zm-333.3 352c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 416 416 416c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0 41.4-41.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-96 96c-12.5 12.5-12.5 32.8 0 45.3l96 96z\"/>\n</svg>\n\n<svg \n    xmlns=\"http://www.w3.org/2000/svg\"\n    viewBox=\"0 0 576 512\"\n    *ngIf=\"order === 'desc'\"\n    name=\"bizy-table-column-down-arrow\"\n    class=\"bizy-table-column-arrows animated fade-in {{customClass}}\"\n    [ngClass]=\"{'bizy-table-column-arrows--visible': show}\">\n    <path d=\"M151.6 469.6C145.5 476.2 137 480 128 480s-17.5-3.8-23.6-10.4l-88-96c-11.9-13-11.1-33.3 2-45.2s33.3-11.1 45.2 2L96 365.7V64c0-17.7 14.3-32 32-32s32 14.3 32 32V365.7l32.4-35.4c11.9-13 32.2-13.9 45.2-2s13.9 32.2 2 45.2l-88 96zM320 480c-17.7 0-32-14.3-32-32s14.3-32 32-32h32c17.7 0 32 14.3 32 32s-14.3 32-32 32H320zm0-128c-17.7 0-32-14.3-32-32s14.3-32 32-32h96c17.7 0 32 14.3 32 32s-14.3 32-32 32H320zm0-128c-17.7 0-32-14.3-32-32s14.3-32 32-32H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H320zm0-128c-17.7 0-32-14.3-32-32s14.3-32 32-32H544c17.7 0 32 14.3 32 32s-14.3 32-32 32H320z\"/>\n</svg>\n\n\n<svg \n    xmlns=\"http://www.w3.org/2000/svg\"\n    viewBox=\"0 0 576 512\"\n    *ngIf=\"order === 'asc'\"\n    class=\"bizy-table-column-arrows animated fade-in {{customClass}}\"\n    [ngClass]=\"{'bizy-table-column-arrows--visible': show}\"\n    name=\"bizy-table-column-up-arrow\">\n    <path d=\"M151.6 42.4C145.5 35.8 137 32 128 32s-17.5 3.8-23.6 10.4l-88 96c-11.9 13-11.1 33.3 2 45.2s33.3 11.1 45.2-2L96 146.3V448c0 17.7 14.3 32 32 32s32-14.3 32-32V146.3l32.4 35.4c11.9 13 32.2 13.9 45.2 2s13.9-32.2 2-45.2l-88-96zM320 32c-17.7 0-32 14.3-32 32s14.3 32 32 32h32c17.7 0 32-14.3 32-32s-14.3-32-32-32H320zm0 128c-17.7 0-32 14.3-32 32s14.3 32 32 32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H320zm0 128c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H320zm0 128c-17.7 0-32 14.3-32 32s14.3 32 32 32H544c17.7 0 32-14.3 32-32s-14.3-32-32-32H320z\"/>\n</svg>\n", styles: [":host{font-size:1rem}.bizy-table-column-arrows__down-up{transform:rotate(90deg)}.bizy-table-column-arrows{display:none;font-size:1rem;height:1rem;fill:var(--bizy-table-column-arrows-color)}.bizy-table-column-arrows--visible{display:inline-block}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }, { kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTableColumnArrowsComponent, decorators: [{
-            type: Component,
-            args: [{ selector: 'bizy-table-column-arrows', imports: [CommonModule], changeDetection: ChangeDetectionStrategy.OnPush, template: "<svg \n    xmlns=\"http://www.w3.org/2000/svg\"\n    viewBox=\"0 0 448 512\"\n    *ngIf=\"order !== 'asc' && order !== 'desc'\"\n    name=\"bizy-table-column-arrows\"\n    class=\"bizy-table-column-arrows bizy-table-column-arrows__down-up animated fade-in {{customClass}}\">\n    <path d=\"M438.6 150.6c12.5-12.5 12.5-32.8 0-45.3l-96-96c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.7 96 32 96C14.3 96 0 110.3 0 128s14.3 32 32 32l306.7 0-41.4 41.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l96-96zm-333.3 352c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 416 416 416c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0 41.4-41.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-96 96c-12.5 12.5-12.5 32.8 0 45.3l96 96z\"/>\n</svg>\n\n<svg \n    xmlns=\"http://www.w3.org/2000/svg\"\n    viewBox=\"0 0 576 512\"\n    *ngIf=\"order === 'desc'\"\n    name=\"bizy-table-column-down-arrow\"\n    class=\"bizy-table-column-arrows animated fade-in {{customClass}}\"\n    [ngClass]=\"{'bizy-table-column-arrows--visible': show}\">\n    <path d=\"M151.6 469.6C145.5 476.2 137 480 128 480s-17.5-3.8-23.6-10.4l-88-96c-11.9-13-11.1-33.3 2-45.2s33.3-11.1 45.2 2L96 365.7V64c0-17.7 14.3-32 32-32s32 14.3 32 32V365.7l32.4-35.4c11.9-13 32.2-13.9 45.2-2s13.9 32.2 2 45.2l-88 96zM320 480c-17.7 0-32-14.3-32-32s14.3-32 32-32h32c17.7 0 32 14.3 32 32s-14.3 32-32 32H320zm0-128c-17.7 0-32-14.3-32-32s14.3-32 32-32h96c17.7 0 32 14.3 32 32s-14.3 32-32 32H320zm0-128c-17.7 0-32-14.3-32-32s14.3-32 32-32H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H320zm0-128c-17.7 0-32-14.3-32-32s14.3-32 32-32H544c17.7 0 32 14.3 32 32s-14.3 32-32 32H320z\"/>\n</svg>\n\n\n<svg \n    xmlns=\"http://www.w3.org/2000/svg\"\n    viewBox=\"0 0 576 512\"\n    *ngIf=\"order === 'asc'\"\n    class=\"bizy-table-column-arrows animated fade-in {{customClass}}\"\n    [ngClass]=\"{'bizy-table-column-arrows--visible': show}\"\n    name=\"bizy-table-column-up-arrow\">\n    <path d=\"M151.6 42.4C145.5 35.8 137 32 128 32s-17.5 3.8-23.6 10.4l-88 96c-11.9 13-11.1 33.3 2 45.2s33.3 11.1 45.2-2L96 146.3V448c0 17.7 14.3 32 32 32s32-14.3 32-32V146.3l32.4 35.4c11.9 13 32.2 13.9 45.2 2s13.9-32.2 2-45.2l-88-96zM320 32c-17.7 0-32 14.3-32 32s14.3 32 32 32h32c17.7 0 32-14.3 32-32s-14.3-32-32-32H320zm0 128c-17.7 0-32 14.3-32 32s14.3 32 32 32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H320zm0 128c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H320zm0 128c-17.7 0-32 14.3-32 32s14.3 32 32 32H544c17.7 0 32-14.3 32-32s-14.3-32-32-32H320z\"/>\n</svg>\n", styles: [":host{font-size:1rem}.bizy-table-column-arrows__down-up{transform:rotate(90deg)}.bizy-table-column-arrows{display:none;font-size:1rem;height:1rem;fill:var(--bizy-table-column-arrows-color)}.bizy-table-column-arrows--visible{display:inline-block}\n"] }]
-        }], propDecorators: { order: [{
-                type: Input
-            }], show: [{
-                type: Input
-            }], customClass: [{
-                type: Input
-            }] } });
-
 class BizyTableColumnComponent {
     id = `bizy-table-column-${Math.random()}`;
     customClass = '';
@@ -3852,6 +4374,129 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
                 type: Input
             }], onSelect: [{
                 type: Output
+            }] } });
+
+class BizyTableHeaderComponent {
+    ref;
+    elementRef;
+    columns;
+    id = `bizy-table-header-${Math.random()}`;
+    customClass = '';
+    selected = false;
+    selectable = null;
+    selectedChange = new EventEmitter();
+    onSelect = new EventEmitter();
+    marginRight = 0;
+    constructor(ref, elementRef) {
+        this.ref = ref;
+        this.elementRef = elementRef;
+    }
+    getId = () => {
+        return this.id;
+    };
+    getSelected = () => {
+        return this.selected;
+    };
+    setSelectable = (selectable) => {
+        if (this.selectable === false) {
+            return;
+        }
+        this.selectable = selectable;
+        this.ref.detectChanges();
+    };
+    setMarginRight(margin) {
+        this.marginRight = margin - 5;
+        this.ref.detectChanges();
+    }
+    setMarginLeft(margin) {
+        if (this.columns.length === 0) {
+            return;
+        }
+        this.columns.forEach(_column => {
+            _column.setMarginLeft(margin);
+            this.ref.detectChanges();
+        });
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTableHeaderComponent, deps: [{ token: ChangeDetectorRef }, { token: ElementRef }], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.1", type: BizyTableHeaderComponent, isStandalone: true, selector: "bizy-table-header", inputs: { id: "id", customClass: "customClass", selected: "selected", selectable: "selectable" }, outputs: { selectedChange: "selectedChange", onSelect: "onSelect" }, queries: [{ propertyName: "columns", predicate: BizyTableColumnComponent }], ngImport: i0, template: "<div \n    [id]=\"id\"\n    class=\"bizy-table-header {{customClass}}\">\n\n    <ng-content select=\"bizy-table-column\"></ng-content>\n\n    <span \n        *ngIf=\"selectable !== null\"\n        class=\"bizy-table-header__checkbox-wrapper\"\n        [ngStyle]=\"{right: marginRight + 'px'}\"\n        [ngClass]=\"{'bizy-table-footer__checkbox--shadow': marginRight > 0}\">\n        \n        <bizy-checkbox \n            [selected]=\"selected\"\n            (selectedChange)=\"selectedChange.emit($event)\"\n            (onSelect)=\"onSelect.emit($event)\"\n            [ngClass]=\"{'bizy-table-header__checkbox--hidden': selectable === false}\">\n        </bizy-checkbox>\n    </span>\n\n</div>", styles: [":host{font-size:1rem;width:fit-content;min-width:100%}.bizy-table-header{font-size:1rem;padding:0 .3rem;display:flex;align-items:center;height:var(--bizy-table-header-height);width:fit-content;min-width:var(--bizy-table-width);background-color:var(--bizy-table-header-background-color)}.bizy-table-header__checkbox-wrapper{z-index:1;background-color:inherit;padding:0 10px;display:grid;place-items:center;position:relative;height:100%}.bizy-table-header__checkbox--shadow{box-shadow:-19px 0 28px -9px #00000080}.bizy-table-header__checkbox--hidden{pointer-events:none;visibility:hidden;opacity:0}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }, { kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: i1.NgStyle, selector: "[ngStyle]", inputs: ["ngStyle"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTableHeaderComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-table-header', imports: [CommonModule], changeDetection: ChangeDetectionStrategy.OnPush, template: "<div \n    [id]=\"id\"\n    class=\"bizy-table-header {{customClass}}\">\n\n    <ng-content select=\"bizy-table-column\"></ng-content>\n\n    <span \n        *ngIf=\"selectable !== null\"\n        class=\"bizy-table-header__checkbox-wrapper\"\n        [ngStyle]=\"{right: marginRight + 'px'}\"\n        [ngClass]=\"{'bizy-table-footer__checkbox--shadow': marginRight > 0}\">\n        \n        <bizy-checkbox \n            [selected]=\"selected\"\n            (selectedChange)=\"selectedChange.emit($event)\"\n            (onSelect)=\"onSelect.emit($event)\"\n            [ngClass]=\"{'bizy-table-header__checkbox--hidden': selectable === false}\">\n        </bizy-checkbox>\n    </span>\n\n</div>", styles: [":host{font-size:1rem;width:fit-content;min-width:100%}.bizy-table-header{font-size:1rem;padding:0 .3rem;display:flex;align-items:center;height:var(--bizy-table-header-height);width:fit-content;min-width:var(--bizy-table-width);background-color:var(--bizy-table-header-background-color)}.bizy-table-header__checkbox-wrapper{z-index:1;background-color:inherit;padding:0 10px;display:grid;place-items:center;position:relative;height:100%}.bizy-table-header__checkbox--shadow{box-shadow:-19px 0 28px -9px #00000080}.bizy-table-header__checkbox--hidden{pointer-events:none;visibility:hidden;opacity:0}\n"] }]
+        }], ctorParameters: () => [{ type: i0.ChangeDetectorRef, decorators: [{
+                    type: Inject,
+                    args: [ChangeDetectorRef]
+                }] }, { type: i0.ElementRef, decorators: [{
+                    type: Inject,
+                    args: [ElementRef]
+                }] }], propDecorators: { columns: [{
+                type: ContentChildren,
+                args: [BizyTableColumnComponent]
+            }], id: [{
+                type: Input
+            }], customClass: [{
+                type: Input
+            }], selected: [{
+                type: Input
+            }], selectable: [{
+                type: Input
+            }], selectedChange: [{
+                type: Output
+            }], onSelect: [{
+                type: Output
+            }] } });
+
+class BizyTableFooterComponent {
+    ref;
+    elementRef;
+    columns;
+    id = `bizy-table-footer-${Math.random()}`;
+    customClass = '';
+    marginRight = 0;
+    _selectable = false;
+    constructor(ref, elementRef) {
+        this.ref = ref;
+        this.elementRef = elementRef;
+    }
+    getId = () => {
+        return this.id;
+    };
+    setSelectable = (selectable) => {
+        this._selectable = selectable;
+        this.ref.detectChanges();
+    };
+    setMarginRight(margin) {
+        this.marginRight = margin - 5;
+        this.ref.detectChanges();
+    }
+    setMarginLeft(margin) {
+        if (this.columns.length === 0) {
+            return;
+        }
+        this.columns.forEach(_column => {
+            _column.setMarginLeft(margin);
+            this.ref.detectChanges();
+        });
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTableFooterComponent, deps: [{ token: ChangeDetectorRef }, { token: ElementRef }], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.1", type: BizyTableFooterComponent, isStandalone: true, selector: "bizy-table-footer", inputs: { id: "id", customClass: "customClass" }, queries: [{ propertyName: "columns", predicate: BizyTableColumnComponent }], ngImport: i0, template: "<div \n    [id]=\"id\"\n    class=\"bizy-table-footer {{customClass}}\">\n\n    <ng-content select=\"bizy-table-column\"></ng-content>\n\n\n    <span \n        *ngIf=\"_selectable\"\n        class=\"bizy-table-footer__checkbox-wrapper\"\n        [ngStyle]=\"{right: marginRight + 'px'}\"\n        [ngClass]=\"{'bizy-table-footer__checkbox--shadow': marginRight > 0}\">\n        \n        <bizy-checkbox \n            class=\"bizy-table-footer__checkbox\">\n        </bizy-checkbox>\n    </span>\n    \n</div>", styles: [":host{font-size:1rem;width:fit-content;min-width:100%}.bizy-table-footer{font-size:1rem;padding:0 .3rem;display:flex;align-items:center;height:var(--bizy-table-footer-height);width:fit-content;min-width:var(--bizy-table-width);background-color:var(--bizy-table-footer-background-color)}.bizy-table-footer__checkbox-wrapper{z-index:1;background-color:inherit;padding:0 10px;display:grid;place-items:center;position:relative;height:100%}.bizy-table-footer__checkbox{visibility:hidden;pointer-events:none;opacity:0}.bizy-table-footer__checkbox--shadow{box-shadow:-19px 0 28px -9px #00000080}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }, { kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: i1.NgStyle, selector: "[ngStyle]", inputs: ["ngStyle"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTableFooterComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-table-footer', imports: [CommonModule], changeDetection: ChangeDetectionStrategy.OnPush, template: "<div \n    [id]=\"id\"\n    class=\"bizy-table-footer {{customClass}}\">\n\n    <ng-content select=\"bizy-table-column\"></ng-content>\n\n\n    <span \n        *ngIf=\"_selectable\"\n        class=\"bizy-table-footer__checkbox-wrapper\"\n        [ngStyle]=\"{right: marginRight + 'px'}\"\n        [ngClass]=\"{'bizy-table-footer__checkbox--shadow': marginRight > 0}\">\n        \n        <bizy-checkbox \n            class=\"bizy-table-footer__checkbox\">\n        </bizy-checkbox>\n    </span>\n    \n</div>", styles: [":host{font-size:1rem;width:fit-content;min-width:100%}.bizy-table-footer{font-size:1rem;padding:0 .3rem;display:flex;align-items:center;height:var(--bizy-table-footer-height);width:fit-content;min-width:var(--bizy-table-width);background-color:var(--bizy-table-footer-background-color)}.bizy-table-footer__checkbox-wrapper{z-index:1;background-color:inherit;padding:0 10px;display:grid;place-items:center;position:relative;height:100%}.bizy-table-footer__checkbox{visibility:hidden;pointer-events:none;opacity:0}.bizy-table-footer__checkbox--shadow{box-shadow:-19px 0 28px -9px #00000080}\n"] }]
+        }], ctorParameters: () => [{ type: i0.ChangeDetectorRef, decorators: [{
+                    type: Inject,
+                    args: [ChangeDetectorRef]
+                }] }, { type: i0.ElementRef, decorators: [{
+                    type: Inject,
+                    args: [ElementRef]
+                }] }], propDecorators: { columns: [{
+                type: ContentChildren,
+                args: [BizyTableColumnComponent]
+            }], id: [{
+                type: Input
+            }], customClass: [{
+                type: Input
             }] } });
 
 class BizyTableRowComponent {
@@ -3946,127 +4591,80 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
                 type: Output
             }] } });
 
-class BizyTableFooterComponent {
-    ref;
+// FIX: This components fixes the bug with Angular CDK virtual scrolling not supporting content projection.
+// https://github.com/angular/components/issues/15277
+class BizyTableScrollingComponent {
+    document;
     elementRef;
-    columns;
-    id = `bizy-table-footer-${Math.random()}`;
-    customClass = '';
-    marginRight = 0;
-    _selectable = false;
-    constructor(ref, elementRef) {
-        this.ref = ref;
+    ref;
+    viewport;
+    content;
+    #view;
+    items$;
+    itemTemplate;
+    itemSize;
+    #subscription = new Subscription();
+    #scrollTop = 0;
+    constructor(document, elementRef, ref) {
+        this.document = document;
         this.elementRef = elementRef;
+        this.ref = ref;
     }
-    getId = () => {
-        return this.id;
-    };
-    setSelectable = (selectable) => {
-        this._selectable = selectable;
-        this.ref.detectChanges();
-    };
-    setMarginRight(margin) {
-        this.marginRight = margin - 5;
-        this.ref.detectChanges();
-    }
-    setMarginLeft(margin) {
-        if (this.columns.length === 0) {
+    /** Called by the virtual-for directive inside of the viewport. */
+    attachView(tableDirective) {
+        if (this.#view) {
             return;
         }
-        this.columns.forEach(_column => {
-            _column.setMarginLeft(margin);
-            this.ref.detectChanges();
-        });
+        let itemSize = 30;
+        const rowHeight = getComputedStyle(this.document.documentElement).getPropertyValue('--bizy-table-row-height');
+        const fontSize = getComputedStyle(this.document.documentElement).getPropertyValue('font-size');
+        const gap = Number(fontSize.split('px')[0]) * 0.1;
+        if (rowHeight && rowHeight.includes('rem')) {
+            itemSize = Number(fontSize.split('px')[0]) * Number(rowHeight.split('rem')[0]);
+        }
+        else if (rowHeight && rowHeight.includes('px')) {
+            itemSize = Number(rowHeight.split('px')[0]);
+        }
+        this.itemSize = itemSize + gap;
+        this.items$ = tableDirective.items$;
+        this.itemTemplate = tableDirective.template;
+        this.#view = tableDirective.viewContainerRef;
+        this.#view.createEmbeddedView(this.content);
+        this.ref.detectChanges();
+        this.#subscription.add(fromEvent(this.elementRef.nativeElement, 'scroll', { capture: true }).pipe(debounceTime$1(100)).subscribe(() => {
+            this.#scrollTop = this.viewport.measureScrollOffset();
+        }));
+        this.#subscription.add(this.items$.pipe(skip(1)).subscribe(() => {
+            if (this.viewport) {
+                this.viewport.scrollToOffset(this.#scrollTop);
+                this.ref.detectChanges();
+            }
+        }));
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTableFooterComponent, deps: [{ token: ChangeDetectorRef }, { token: ElementRef }], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.1", type: BizyTableFooterComponent, isStandalone: true, selector: "bizy-table-footer", inputs: { id: "id", customClass: "customClass" }, queries: [{ propertyName: "columns", predicate: BizyTableColumnComponent }], ngImport: i0, template: "<div \n    [id]=\"id\"\n    class=\"bizy-table-footer {{customClass}}\">\n\n    <ng-content select=\"bizy-table-column\"></ng-content>\n\n\n    <span \n        *ngIf=\"_selectable\"\n        class=\"bizy-table-footer__checkbox-wrapper\"\n        [ngStyle]=\"{right: marginRight + 'px'}\"\n        [ngClass]=\"{'bizy-table-footer__checkbox--shadow': marginRight > 0}\">\n        \n        <bizy-checkbox \n            class=\"bizy-table-footer__checkbox\">\n        </bizy-checkbox>\n    </span>\n    \n</div>", styles: [":host{font-size:1rem;width:fit-content;min-width:100%}.bizy-table-footer{font-size:1rem;padding:0 .3rem;display:flex;align-items:center;height:var(--bizy-table-footer-height);width:fit-content;min-width:var(--bizy-table-width);background-color:var(--bizy-table-footer-background-color)}.bizy-table-footer__checkbox-wrapper{z-index:1;background-color:inherit;padding:0 10px;display:grid;place-items:center;position:relative;height:100%}.bizy-table-footer__checkbox{visibility:hidden;pointer-events:none;opacity:0}.bizy-table-footer__checkbox--shadow{box-shadow:-19px 0 28px -9px #00000080}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }, { kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: i1.NgStyle, selector: "[ngStyle]", inputs: ["ngStyle"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+    ngOnDestroy() {
+        this.#subscription.unsubscribe();
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTableScrollingComponent, deps: [{ token: DOCUMENT }, { token: ElementRef }, { token: ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.1", type: BizyTableScrollingComponent, isStandalone: true, selector: "bizy-table-scrolling", viewQueries: [{ propertyName: "viewport", first: true, predicate: CdkVirtualScrollViewport, descendants: true }, { propertyName: "content", first: true, predicate: ["tableScrollingContent"], descendants: true }], ngImport: i0, template: "<cdk-virtual-scroll-viewport \n    [itemSize]=\"itemSize\"\n    [minBufferPx]=\"itemSize + (itemSize * 20)\"\n    [maxBufferPx]=\"itemSize + (itemSize * 40)\">\n    \n    <ng-content></ng-content>\n\n    <ng-template #tableScrollingContent>\n      <ng-template let-item cdkVirtualFor [cdkVirtualForOf]=\"items$ | async\">\n        <ng-template *ngTemplateOutlet=\"itemTemplate; context: { $implicit: item }\"></ng-template>\n      </ng-template>\n    </ng-template>\n</cdk-virtual-scroll-viewport>", styles: ["::ng-deep .cdk-virtual-scrollable{height:100%;width:100%;overflow-y:auto!important;overflow-x:hidden!important;contain:inline-size!important}::ng-deep .cdk-virtual-scrollable::-webkit-scrollbar{width:.5rem;height:.5rem}::ng-deep .cdk-virtual-scrollable::-webkit-scrollbar-thumb{border-radius:1rem;background-color:var(--bizy-table-scroll-bar-color)}::ng-deep .cdk-virtual-scrollable::-webkit-scrollbar-thumb:hover{background-color:var(--bizy-table-scroll-bar-hover-color)}::ng-deep .cdk-virtual-scrollable::-webkit-scrollbar-button{height:1rem}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }, { kind: "directive", type: i1.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "pipe", type: i1.AsyncPipe, name: "async" }, { kind: "ngmodule", type: ScrollingModule }, { kind: "directive", type: i2$3.CdkFixedSizeVirtualScroll, selector: "cdk-virtual-scroll-viewport[itemSize]", inputs: ["itemSize", "minBufferPx", "maxBufferPx"] }, { kind: "directive", type: i2$3.CdkVirtualForOf, selector: "[cdkVirtualFor][cdkVirtualForOf]", inputs: ["cdkVirtualForOf", "cdkVirtualForTrackBy", "cdkVirtualForTemplate", "cdkVirtualForTemplateCacheSize"] }, { kind: "component", type: i2$3.CdkVirtualScrollViewport, selector: "cdk-virtual-scroll-viewport", inputs: ["orientation", "appendOnly"], outputs: ["scrolledIndexChange"] }] });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTableFooterComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTableScrollingComponent, decorators: [{
             type: Component,
-            args: [{ selector: 'bizy-table-footer', imports: [CommonModule], changeDetection: ChangeDetectionStrategy.OnPush, template: "<div \n    [id]=\"id\"\n    class=\"bizy-table-footer {{customClass}}\">\n\n    <ng-content select=\"bizy-table-column\"></ng-content>\n\n\n    <span \n        *ngIf=\"_selectable\"\n        class=\"bizy-table-footer__checkbox-wrapper\"\n        [ngStyle]=\"{right: marginRight + 'px'}\"\n        [ngClass]=\"{'bizy-table-footer__checkbox--shadow': marginRight > 0}\">\n        \n        <bizy-checkbox \n            class=\"bizy-table-footer__checkbox\">\n        </bizy-checkbox>\n    </span>\n    \n</div>", styles: [":host{font-size:1rem;width:fit-content;min-width:100%}.bizy-table-footer{font-size:1rem;padding:0 .3rem;display:flex;align-items:center;height:var(--bizy-table-footer-height);width:fit-content;min-width:var(--bizy-table-width);background-color:var(--bizy-table-footer-background-color)}.bizy-table-footer__checkbox-wrapper{z-index:1;background-color:inherit;padding:0 10px;display:grid;place-items:center;position:relative;height:100%}.bizy-table-footer__checkbox{visibility:hidden;pointer-events:none;opacity:0}.bizy-table-footer__checkbox--shadow{box-shadow:-19px 0 28px -9px #00000080}\n"] }]
-        }], ctorParameters: () => [{ type: i0.ChangeDetectorRef, decorators: [{
+            args: [{ selector: 'bizy-table-scrolling', imports: [CommonModule, ScrollingModule], template: "<cdk-virtual-scroll-viewport \n    [itemSize]=\"itemSize\"\n    [minBufferPx]=\"itemSize + (itemSize * 20)\"\n    [maxBufferPx]=\"itemSize + (itemSize * 40)\">\n    \n    <ng-content></ng-content>\n\n    <ng-template #tableScrollingContent>\n      <ng-template let-item cdkVirtualFor [cdkVirtualForOf]=\"items$ | async\">\n        <ng-template *ngTemplateOutlet=\"itemTemplate; context: { $implicit: item }\"></ng-template>\n      </ng-template>\n    </ng-template>\n</cdk-virtual-scroll-viewport>", styles: ["::ng-deep .cdk-virtual-scrollable{height:100%;width:100%;overflow-y:auto!important;overflow-x:hidden!important;contain:inline-size!important}::ng-deep .cdk-virtual-scrollable::-webkit-scrollbar{width:.5rem;height:.5rem}::ng-deep .cdk-virtual-scrollable::-webkit-scrollbar-thumb{border-radius:1rem;background-color:var(--bizy-table-scroll-bar-color)}::ng-deep .cdk-virtual-scrollable::-webkit-scrollbar-thumb:hover{background-color:var(--bizy-table-scroll-bar-hover-color)}::ng-deep .cdk-virtual-scrollable::-webkit-scrollbar-button{height:1rem}\n"] }]
+        }], ctorParameters: () => [{ type: Document, decorators: [{
                     type: Inject,
-                    args: [ChangeDetectorRef]
+                    args: [DOCUMENT]
                 }] }, { type: i0.ElementRef, decorators: [{
                     type: Inject,
                     args: [ElementRef]
-                }] }], propDecorators: { columns: [{
-                type: ContentChildren,
-                args: [BizyTableColumnComponent]
-            }], id: [{
-                type: Input
-            }], customClass: [{
-                type: Input
-            }] } });
-
-class BizyTableHeaderComponent {
-    ref;
-    elementRef;
-    columns;
-    id = `bizy-table-header-${Math.random()}`;
-    customClass = '';
-    selected = false;
-    selectable = null;
-    selectedChange = new EventEmitter();
-    onSelect = new EventEmitter();
-    marginRight = 0;
-    constructor(ref, elementRef) {
-        this.ref = ref;
-        this.elementRef = elementRef;
-    }
-    getId = () => {
-        return this.id;
-    };
-    getSelected = () => {
-        return this.selected;
-    };
-    setSelectable = (selectable) => {
-        if (this.selectable === false) {
-            return;
-        }
-        this.selectable = selectable;
-        this.ref.detectChanges();
-    };
-    setMarginRight(margin) {
-        this.marginRight = margin - 5;
-        this.ref.detectChanges();
-    }
-    setMarginLeft(margin) {
-        if (this.columns.length === 0) {
-            return;
-        }
-        this.columns.forEach(_column => {
-            _column.setMarginLeft(margin);
-            this.ref.detectChanges();
-        });
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTableHeaderComponent, deps: [{ token: ChangeDetectorRef }, { token: ElementRef }], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.1", type: BizyTableHeaderComponent, isStandalone: true, selector: "bizy-table-header", inputs: { id: "id", customClass: "customClass", selected: "selected", selectable: "selectable" }, outputs: { selectedChange: "selectedChange", onSelect: "onSelect" }, queries: [{ propertyName: "columns", predicate: BizyTableColumnComponent }], ngImport: i0, template: "<div \n    [id]=\"id\"\n    class=\"bizy-table-header {{customClass}}\">\n\n    <ng-content select=\"bizy-table-column\"></ng-content>\n\n    <span \n        *ngIf=\"selectable !== null\"\n        class=\"bizy-table-header__checkbox-wrapper\"\n        [ngStyle]=\"{right: marginRight + 'px'}\"\n        [ngClass]=\"{'bizy-table-footer__checkbox--shadow': marginRight > 0}\">\n        \n        <bizy-checkbox \n            [selected]=\"selected\"\n            (selectedChange)=\"selectedChange.emit($event)\"\n            (onSelect)=\"onSelect.emit($event)\"\n            [ngClass]=\"{'bizy-table-header__checkbox--hidden': selectable === false}\">\n        </bizy-checkbox>\n    </span>\n\n</div>", styles: [":host{font-size:1rem;width:fit-content;min-width:100%}.bizy-table-header{font-size:1rem;padding:0 .3rem;display:flex;align-items:center;height:var(--bizy-table-header-height);width:fit-content;min-width:var(--bizy-table-width);background-color:var(--bizy-table-header-background-color)}.bizy-table-header__checkbox-wrapper{z-index:1;background-color:inherit;padding:0 10px;display:grid;place-items:center;position:relative;height:100%}.bizy-table-header__checkbox--shadow{box-shadow:-19px 0 28px -9px #00000080}.bizy-table-header__checkbox--hidden{pointer-events:none;visibility:hidden;opacity:0}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }, { kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: i1.NgStyle, selector: "[ngStyle]", inputs: ["ngStyle"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTableHeaderComponent, decorators: [{
-            type: Component,
-            args: [{ selector: 'bizy-table-header', imports: [CommonModule], changeDetection: ChangeDetectionStrategy.OnPush, template: "<div \n    [id]=\"id\"\n    class=\"bizy-table-header {{customClass}}\">\n\n    <ng-content select=\"bizy-table-column\"></ng-content>\n\n    <span \n        *ngIf=\"selectable !== null\"\n        class=\"bizy-table-header__checkbox-wrapper\"\n        [ngStyle]=\"{right: marginRight + 'px'}\"\n        [ngClass]=\"{'bizy-table-footer__checkbox--shadow': marginRight > 0}\">\n        \n        <bizy-checkbox \n            [selected]=\"selected\"\n            (selectedChange)=\"selectedChange.emit($event)\"\n            (onSelect)=\"onSelect.emit($event)\"\n            [ngClass]=\"{'bizy-table-header__checkbox--hidden': selectable === false}\">\n        </bizy-checkbox>\n    </span>\n\n</div>", styles: [":host{font-size:1rem;width:fit-content;min-width:100%}.bizy-table-header{font-size:1rem;padding:0 .3rem;display:flex;align-items:center;height:var(--bizy-table-header-height);width:fit-content;min-width:var(--bizy-table-width);background-color:var(--bizy-table-header-background-color)}.bizy-table-header__checkbox-wrapper{z-index:1;background-color:inherit;padding:0 10px;display:grid;place-items:center;position:relative;height:100%}.bizy-table-header__checkbox--shadow{box-shadow:-19px 0 28px -9px #00000080}.bizy-table-header__checkbox--hidden{pointer-events:none;visibility:hidden;opacity:0}\n"] }]
-        }], ctorParameters: () => [{ type: i0.ChangeDetectorRef, decorators: [{
+                }] }, { type: i0.ChangeDetectorRef, decorators: [{
                     type: Inject,
                     args: [ChangeDetectorRef]
-                }] }, { type: i0.ElementRef, decorators: [{
-                    type: Inject,
-                    args: [ElementRef]
-                }] }], propDecorators: { columns: [{
-                type: ContentChildren,
-                args: [BizyTableColumnComponent]
-            }], id: [{
-                type: Input
-            }], customClass: [{
-                type: Input
-            }], selected: [{
-                type: Input
-            }], selectable: [{
-                type: Input
-            }], selectedChange: [{
-                type: Output
-            }], onSelect: [{
-                type: Output
+                }] }], propDecorators: { viewport: [{
+                type: ViewChild,
+                args: [CdkVirtualScrollViewport]
+            }], content: [{
+                type: ViewChild,
+                args: ['tableScrollingContent']
             }] } });
 
 class BizyTableComponent {
@@ -4179,7 +4777,7 @@ class BizyTableComponent {
         this.#resizeObserver = new ResizeObserver(() => this.notifier$.next());
         const resizeRef = this.resizeRef ? this.resizeRef : this.renderer.parentNode(this.elementRef.nativeElement) ? this.renderer.parentNode(this.elementRef.nativeElement) : this.elementRef.nativeElement;
         this.#resizeObserver.observe(resizeRef);
-        this.#subscription.add(this.notifier$.pipe(skip(1), debounceTime(200)).subscribe(() => {
+        this.#subscription.add(this.notifier$.pipe(skip(1), debounceTime$1(200)).subscribe(() => {
             if (this.viewport && this.elementRef.nativeElement.offsetHeight) {
                 const fontSize = getComputedStyle(this.document.documentElement).getPropertyValue('font-size');
                 const gap = Number(fontSize.split('px')[0]) * 0.3;
@@ -4268,6 +4866,82 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
                 type: Input
             }] } });
 
+class BizyTableColumnArrowsComponent {
+    order = null;
+    show = false;
+    customClass = '';
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTableColumnArrowsComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.1", type: BizyTableColumnArrowsComponent, isStandalone: true, selector: "bizy-table-column-arrows", inputs: { order: "order", show: "show", customClass: "customClass" }, ngImport: i0, template: "<svg \n    xmlns=\"http://www.w3.org/2000/svg\"\n    viewBox=\"0 0 448 512\"\n    *ngIf=\"order !== 'asc' && order !== 'desc'\"\n    name=\"bizy-table-column-arrows\"\n    class=\"bizy-table-column-arrows bizy-table-column-arrows__down-up animated fade-in {{customClass}}\">\n    <path d=\"M438.6 150.6c12.5-12.5 12.5-32.8 0-45.3l-96-96c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.7 96 32 96C14.3 96 0 110.3 0 128s14.3 32 32 32l306.7 0-41.4 41.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l96-96zm-333.3 352c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 416 416 416c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0 41.4-41.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-96 96c-12.5 12.5-12.5 32.8 0 45.3l96 96z\"/>\n</svg>\n\n<svg \n    xmlns=\"http://www.w3.org/2000/svg\"\n    viewBox=\"0 0 576 512\"\n    *ngIf=\"order === 'desc'\"\n    name=\"bizy-table-column-down-arrow\"\n    class=\"bizy-table-column-arrows animated fade-in {{customClass}}\"\n    [ngClass]=\"{'bizy-table-column-arrows--visible': show}\">\n    <path d=\"M151.6 469.6C145.5 476.2 137 480 128 480s-17.5-3.8-23.6-10.4l-88-96c-11.9-13-11.1-33.3 2-45.2s33.3-11.1 45.2 2L96 365.7V64c0-17.7 14.3-32 32-32s32 14.3 32 32V365.7l32.4-35.4c11.9-13 32.2-13.9 45.2-2s13.9 32.2 2 45.2l-88 96zM320 480c-17.7 0-32-14.3-32-32s14.3-32 32-32h32c17.7 0 32 14.3 32 32s-14.3 32-32 32H320zm0-128c-17.7 0-32-14.3-32-32s14.3-32 32-32h96c17.7 0 32 14.3 32 32s-14.3 32-32 32H320zm0-128c-17.7 0-32-14.3-32-32s14.3-32 32-32H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H320zm0-128c-17.7 0-32-14.3-32-32s14.3-32 32-32H544c17.7 0 32 14.3 32 32s-14.3 32-32 32H320z\"/>\n</svg>\n\n\n<svg \n    xmlns=\"http://www.w3.org/2000/svg\"\n    viewBox=\"0 0 576 512\"\n    *ngIf=\"order === 'asc'\"\n    class=\"bizy-table-column-arrows animated fade-in {{customClass}}\"\n    [ngClass]=\"{'bizy-table-column-arrows--visible': show}\"\n    name=\"bizy-table-column-up-arrow\">\n    <path d=\"M151.6 42.4C145.5 35.8 137 32 128 32s-17.5 3.8-23.6 10.4l-88 96c-11.9 13-11.1 33.3 2 45.2s33.3 11.1 45.2-2L96 146.3V448c0 17.7 14.3 32 32 32s32-14.3 32-32V146.3l32.4 35.4c11.9 13 32.2 13.9 45.2 2s13.9-32.2 2-45.2l-88-96zM320 32c-17.7 0-32 14.3-32 32s14.3 32 32 32h32c17.7 0 32-14.3 32-32s-14.3-32-32-32H320zm0 128c-17.7 0-32 14.3-32 32s14.3 32 32 32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H320zm0 128c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H320zm0 128c-17.7 0-32 14.3-32 32s14.3 32 32 32H544c17.7 0 32-14.3 32-32s-14.3-32-32-32H320z\"/>\n</svg>\n", styles: [":host{font-size:1rem}.bizy-table-column-arrows__down-up{transform:rotate(90deg)}.bizy-table-column-arrows{display:none;font-size:1rem;height:1rem;fill:var(--bizy-table-column-arrows-color)}.bizy-table-column-arrows--visible{display:inline-block}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }, { kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTableColumnArrowsComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-table-column-arrows', imports: [CommonModule], changeDetection: ChangeDetectionStrategy.OnPush, template: "<svg \n    xmlns=\"http://www.w3.org/2000/svg\"\n    viewBox=\"0 0 448 512\"\n    *ngIf=\"order !== 'asc' && order !== 'desc'\"\n    name=\"bizy-table-column-arrows\"\n    class=\"bizy-table-column-arrows bizy-table-column-arrows__down-up animated fade-in {{customClass}}\">\n    <path d=\"M438.6 150.6c12.5-12.5 12.5-32.8 0-45.3l-96-96c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.7 96 32 96C14.3 96 0 110.3 0 128s14.3 32 32 32l306.7 0-41.4 41.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l96-96zm-333.3 352c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 416 416 416c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0 41.4-41.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-96 96c-12.5 12.5-12.5 32.8 0 45.3l96 96z\"/>\n</svg>\n\n<svg \n    xmlns=\"http://www.w3.org/2000/svg\"\n    viewBox=\"0 0 576 512\"\n    *ngIf=\"order === 'desc'\"\n    name=\"bizy-table-column-down-arrow\"\n    class=\"bizy-table-column-arrows animated fade-in {{customClass}}\"\n    [ngClass]=\"{'bizy-table-column-arrows--visible': show}\">\n    <path d=\"M151.6 469.6C145.5 476.2 137 480 128 480s-17.5-3.8-23.6-10.4l-88-96c-11.9-13-11.1-33.3 2-45.2s33.3-11.1 45.2 2L96 365.7V64c0-17.7 14.3-32 32-32s32 14.3 32 32V365.7l32.4-35.4c11.9-13 32.2-13.9 45.2-2s13.9 32.2 2 45.2l-88 96zM320 480c-17.7 0-32-14.3-32-32s14.3-32 32-32h32c17.7 0 32 14.3 32 32s-14.3 32-32 32H320zm0-128c-17.7 0-32-14.3-32-32s14.3-32 32-32h96c17.7 0 32 14.3 32 32s-14.3 32-32 32H320zm0-128c-17.7 0-32-14.3-32-32s14.3-32 32-32H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H320zm0-128c-17.7 0-32-14.3-32-32s14.3-32 32-32H544c17.7 0 32 14.3 32 32s-14.3 32-32 32H320z\"/>\n</svg>\n\n\n<svg \n    xmlns=\"http://www.w3.org/2000/svg\"\n    viewBox=\"0 0 576 512\"\n    *ngIf=\"order === 'asc'\"\n    class=\"bizy-table-column-arrows animated fade-in {{customClass}}\"\n    [ngClass]=\"{'bizy-table-column-arrows--visible': show}\"\n    name=\"bizy-table-column-up-arrow\">\n    <path d=\"M151.6 42.4C145.5 35.8 137 32 128 32s-17.5 3.8-23.6 10.4l-88 96c-11.9 13-11.1 33.3 2 45.2s33.3 11.1 45.2-2L96 146.3V448c0 17.7 14.3 32 32 32s32-14.3 32-32V146.3l32.4 35.4c11.9 13 32.2 13.9 45.2 2s13.9-32.2 2-45.2l-88-96zM320 32c-17.7 0-32 14.3-32 32s14.3 32 32 32h32c17.7 0 32-14.3 32-32s-14.3-32-32-32H320zm0 128c-17.7 0-32 14.3-32 32s14.3 32 32 32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H320zm0 128c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H320zm0 128c-17.7 0-32 14.3-32 32s14.3 32 32 32H544c17.7 0 32-14.3 32-32s-14.3-32-32-32H320z\"/>\n</svg>\n", styles: [":host{font-size:1rem}.bizy-table-column-arrows__down-up{transform:rotate(90deg)}.bizy-table-column-arrows{display:none;font-size:1rem;height:1rem;fill:var(--bizy-table-column-arrows-color)}.bizy-table-column-arrows--visible{display:inline-block}\n"] }]
+        }], propDecorators: { order: [{
+                type: Input
+            }], show: [{
+                type: Input
+            }], customClass: [{
+                type: Input
+            }] } });
+
+class BizyTableRowExpandContentComponent {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTableRowExpandContentComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.1", type: BizyTableRowExpandContentComponent, isStandalone: true, selector: "bizy-table-row-expand-content", ngImport: i0, template: "<ng-content></ng-content>", styles: [":host{font-size:1rem;width:100%;background-color:var(--bizy-table-row-expand-content-background-color);border-bottom-left-radius:.3rem;border-bottom-right-radius:.3rem;padding:.5rem}\n"], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTableRowExpandContentComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-table-row-expand-content', changeDetection: ChangeDetectionStrategy.OnPush, template: "<ng-content></ng-content>", styles: [":host{font-size:1rem;width:100%;background-color:var(--bizy-table-row-expand-content-background-color);border-bottom-left-radius:.3rem;border-bottom-right-radius:.3rem;padding:.5rem}\n"] }]
+        }] });
+
+const COMPONENTS$4 = [
+    BizyTableComponent,
+    BizyTableColumnComponent,
+    BizyTableColumnArrowsComponent,
+    BizyTableFooterComponent,
+    BizyTableHeaderComponent,
+    BizyTableRowComponent,
+    BizyTableRowExpandContentComponent,
+    BizyTableScrollingComponent
+];
+const DIRECTIVES$1 = [
+    BizyTableScrollingDirective,
+    BizyTableColumnFixedDirective
+];
+class BizyTableModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTableModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyTableModule, imports: [BizyTableComponent,
+            BizyTableColumnComponent,
+            BizyTableColumnArrowsComponent,
+            BizyTableFooterComponent,
+            BizyTableHeaderComponent,
+            BizyTableRowComponent,
+            BizyTableRowExpandContentComponent,
+            BizyTableScrollingComponent, BizyTableScrollingDirective,
+            BizyTableColumnFixedDirective], exports: [BizyTableComponent,
+            BizyTableColumnComponent,
+            BizyTableColumnArrowsComponent,
+            BizyTableFooterComponent,
+            BizyTableHeaderComponent,
+            BizyTableRowComponent,
+            BizyTableRowExpandContentComponent,
+            BizyTableScrollingComponent, BizyTableScrollingDirective,
+            BizyTableColumnFixedDirective] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTableModule, imports: [BizyTableComponent,
+            BizyTableColumnComponent,
+            BizyTableColumnArrowsComponent,
+            BizyTableFooterComponent,
+            BizyTableHeaderComponent,
+            BizyTableRowComponent,
+            BizyTableScrollingComponent] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTableModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: COMPONENTS$4.concat(DIRECTIVES$1),
+                    exports: COMPONENTS$4.concat(DIRECTIVES$1),
+                }]
+        }] });
+
 class BizyTabComponent {
     elementRef;
     id = `bizy-tab-${Math.random()}`;
@@ -4332,7 +5006,7 @@ class BizyTabsComponent {
         this.bizyTabsWrapper.nativeElement.scrollLeft = this.#initialScroll;
         this.#resizeObserver = new ResizeObserver(() => this.#resize$.next());
         this.#resizeObserver.observe(this.bizyTabs.nativeElement);
-        this.#subscription.add(this.#resize$.pipe(debounceTime(100)).subscribe(() => {
+        this.#subscription.add(this.#resize$.pipe(debounceTime$1(100)).subscribe(() => {
             this.#checkButtons();
         }));
     }
@@ -4383,6 +5057,25 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
                 type: Input
             }] } });
 
+const COMPONENTS$3 = [
+    BizyTabsComponent,
+    BizyTabComponent
+];
+class BizyTabsModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTabsModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyTabsModule, imports: [BizyTabsComponent,
+            BizyTabComponent], exports: [BizyTabsComponent,
+            BizyTabComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTabsModule, imports: [COMPONENTS$3] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTabsModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: COMPONENTS$3,
+                    exports: COMPONENTS$3,
+                }]
+        }] });
+
 var BIZY_TAG_TYPE;
 (function (BIZY_TAG_TYPE) {
     BIZY_TAG_TYPE["DEFAULT"] = "default";
@@ -4413,6 +5106,162 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
             }], onSelect: [{
                 type: Output
             }] } });
+
+const COMPONENTS$2 = [
+    BizyTagComponent,
+];
+class BizyTagModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTagModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyTagModule, imports: [BizyTagComponent], exports: [BizyTagComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTagModule, imports: [COMPONENTS$2] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTagModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: COMPONENTS$2,
+                    exports: COMPONENTS$2,
+                }]
+        }] });
+
+var _a;
+var TOAST;
+(function (TOAST) {
+    TOAST["DEFAULT"] = "default";
+    TOAST["SUCCESS"] = "success";
+    TOAST["INFO"] = "info";
+    TOAST["WARNING"] = "warning";
+    TOAST["DANGER"] = "danger";
+})(TOAST || (TOAST = {}));
+class BizyToastService {
+    dialog;
+    static toasts = new Set();
+    duration = 3000;
+    defaultSuccessTitle = 'Operación exitosa';
+    defaultDangerTitle = 'Hubo un problema';
+    constructor(dialog) {
+        this.dialog = dialog;
+    }
+    #open(data) {
+        const id = `bizy-toast-${Math.random()}`;
+        const toastRef = this.dialog.open(BizyToastWrapperComponent, {
+            id,
+            data: {
+                type: data.type,
+                duration: this.duration,
+                id,
+                title: typeof data.data === 'string' ? data.data : data.data.title,
+                msg: typeof data.data === 'string' ? '' : data.data.msg
+            },
+            autoFocus: false,
+            hasBackdrop: false,
+            disableClose: false,
+            panelClass: ['bizy-toast', 'bizy-toast--in']
+        });
+        _a.toasts.add(toastRef);
+    }
+    config(data) {
+        if (!data) {
+            return;
+        }
+        if (data.defaultSuccessTitle) {
+            this.defaultSuccessTitle = data.defaultSuccessTitle;
+        }
+        if (data.defaultDangerTitle) {
+            this.defaultDangerTitle = data.defaultDangerTitle;
+        }
+        if (data.duration) {
+            this.duration = data.duration;
+        }
+    }
+    default(data) {
+        this.#open({ type: TOAST.DEFAULT, data });
+    }
+    info(data) {
+        this.#open({ type: TOAST.INFO, data });
+    }
+    success(data = this.defaultSuccessTitle) {
+        this.#open({ type: TOAST.SUCCESS, data });
+    }
+    warning(data) {
+        this.#open({ type: TOAST.WARNING, data });
+    }
+    danger(data = this.defaultDangerTitle) {
+        this.#open({ type: TOAST.DANGER, data });
+    }
+    close = (id) => {
+        if (!id) {
+            return;
+        }
+        let toastRef = null;
+        toastRef = Array.from(_a.toasts).find(_toastRef => _toastRef.id === id);
+        if (toastRef) {
+            toastRef.removePanelClass('bizy-toast--in');
+            toastRef.addPanelClass('bizy-toast--out');
+            setTimeout(() => {
+                toastRef.close();
+                _a.toasts.delete(toastRef);
+            }, 500);
+        }
+    };
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyToastService, deps: [{ token: Dialog }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyToastService });
+}
+_a = BizyToastService;
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyToastService, decorators: [{
+            type: Injectable
+        }], ctorParameters: () => [{ type: i1$2.Dialog, decorators: [{
+                    type: Inject,
+                    args: [Dialog]
+                }] }] });
+
+class BizyToastWrapperComponent {
+    data;
+    toast;
+    type = TOAST.INFO;
+    title = '';
+    msg = '';
+    id;
+    constructor(data, toast) {
+        this.data = data;
+        this.toast = toast;
+        this.type = this.data.type;
+        this.title = this.data.title;
+        this.msg = this.data.msg;
+        this.id = this.data.id;
+        setTimeout(() => {
+            this.close();
+        }, 3000);
+    }
+    close() {
+        this.toast.close(this.id);
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyToastWrapperComponent, deps: [{ token: DIALOG_DATA }, { token: BizyToastService }], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.1", type: BizyToastWrapperComponent, isStandalone: true, selector: "bizy-toast-wrapper", providers: [BizyToastService], ngImport: i0, template: "<div class=\"bizy-toast-wrapper bizy-toast-wrapper--{{type}}\">\n\n    <button (click)=\"close()\" (keyup.enter)=\"close()\" class=\"bizy-toast-wrapper__close-button\">\n\n        <svg \n            data-name=\"Cancel button\"\n            id=\"bizy-toast-wrapper-close-svg\" \n            viewBox=\"0 0 200 200\"\n            xmlns=\"http://www.w3.org/2000/svg\">\n            <path id=\"bizy-toast-wrapper-close-svg-content\" d=\"M114,100l49-49a9.9,9.9,0,0,0-14-14L100,86,51,37A9.9,9.9,0,0,0,37,51l49,49L37,149a9.9,9.9,0,0,0,14,14l49-49,49,49a9.9,9.9,0,0,0,14-14Z\"/>\n        </svg>\n\n    </button>\n\n\n    <h3 class=\"bizy-toast-wrapper__title bizy-toast-wrapper__title--{{type}}\" *ngIf=\"title\">{{title}}</h3>\n\n    <h5 class=\"bizy-toast-wrapper__msg\" *ngIf=\"msg\">{{msg}}</h5>\n\n\n    <span class=\"bizy-toast__progress bizy-toast__progress--{{type}}\"></span>\n    \n</div>", styles: [":host{font-size:1rem}.bizy-toast-wrapper{position:relative;width:100%;min-width:20rem;height:fit-content;min-height:3rem;border-left:var(--bizy-toast-border-left);border-top-left-radius:.5rem;border-bottom-left-radius:.5rem;display:flex;flex-direction:column;justify-content:center;row-gap:.5rem;padding:.5rem;box-shadow:0 18px 25px #32325d40,0 3px 6px #0000001a}.bizy-toast-wrapper__title{max-width:min(28rem,60vw)}.bizy-toast-wrapper__msg{max-width:min(30rem,70vw)}.bizy-toast-wrapper--default{background-color:var(--bizy-toast-default-background-color, );border-left-color:var(--bizy-toast-default-color)}.bizy-toast-wrapper__title--default{color:var(--bizy-toast-default-color)}.bizy-toast-wrapper--info{background-color:var(--bizy-toast-info-background-color, );border-left-color:var(--bizy-toast-info-color)}.bizy-toast-wrapper__title--info{color:var(--bizy-toast-info-color)}.bizy-toast-wrapper--success{background-color:var(--bizy-toast-success-background-color);border-left-color:var(--bizy-toast-success-color)}.bizy-toast-wrapper__title--success{color:var(--bizy-toast-success-color)}.bizy-toast-wrapper--warning{background-color:var(--bizy-toast-warning-background-color);border-left-color:var(--bizy-toast-warning-color)}.bizy-toast-wrapper__title--warning{color:var(--bizy-toast-warning-color)}.bizy-toast-wrapper--danger{background-color:var(--bizy-toast-danger-background-color);border-left-color:var(--bizy-toast-danger-color)}.bizy-toast-wrapper__title--danger{color:var(--bizy-toast-danger-color)}.bizy-toast-wrapper__close-button{position:absolute;right:.5rem;top:.5rem;border:none;cursor:pointer;background-color:transparent;transition:color .2s;z-index:1}.bizy-toast-wrapper__close-button #bizy-toast-wrapper-close-svg{height:1rem}.bizy-toast-wrapper__close-button #bizy-toast-wrapper-close-svg-content{fill:var(--bizy-toast-close-button-color)}.bizy-toast-wrapper__close-button:hover #bizy-toast-wrapper-close-svg-content{fill:var(--bizy-toast-close-button-hover-color)}.bizy-toast__progress{width:100%;height:.1rem;display:inline-block;position:absolute;bottom:0;left:0;right:0;overflow:hidden}.bizy-toast__progress--default{background-color:var(--bizy-toast-default-color)}.bizy-toast__progress--info{background-color:var(--bizy-toast-info-color)}.bizy-toast__progress--success{background-color:var(--bizy-toast-success-color)}.bizy-toast__progress--warning{background-color:var(--bizy-toast-warning-color)}.bizy-toast__progress--danger{background-color:var(--bizy-toast-danger-color)}.bizy-toast__progress:after{content:\"\";box-sizing:border-box;width:0;height:.1rem;background-color:#fff;position:absolute;top:0;left:0;animation:progress 2.5s linear infinite}@keyframes progress{0%{width:0}to{width:100%}}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }, { kind: "directive", type: i1.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "ngmodule", type: DialogModule }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyToastWrapperComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-toast-wrapper', imports: [CommonModule, DialogModule], providers: [BizyToastService], changeDetection: ChangeDetectionStrategy.OnPush, template: "<div class=\"bizy-toast-wrapper bizy-toast-wrapper--{{type}}\">\n\n    <button (click)=\"close()\" (keyup.enter)=\"close()\" class=\"bizy-toast-wrapper__close-button\">\n\n        <svg \n            data-name=\"Cancel button\"\n            id=\"bizy-toast-wrapper-close-svg\" \n            viewBox=\"0 0 200 200\"\n            xmlns=\"http://www.w3.org/2000/svg\">\n            <path id=\"bizy-toast-wrapper-close-svg-content\" d=\"M114,100l49-49a9.9,9.9,0,0,0-14-14L100,86,51,37A9.9,9.9,0,0,0,37,51l49,49L37,149a9.9,9.9,0,0,0,14,14l49-49,49,49a9.9,9.9,0,0,0,14-14Z\"/>\n        </svg>\n\n    </button>\n\n\n    <h3 class=\"bizy-toast-wrapper__title bizy-toast-wrapper__title--{{type}}\" *ngIf=\"title\">{{title}}</h3>\n\n    <h5 class=\"bizy-toast-wrapper__msg\" *ngIf=\"msg\">{{msg}}</h5>\n\n\n    <span class=\"bizy-toast__progress bizy-toast__progress--{{type}}\"></span>\n    \n</div>", styles: [":host{font-size:1rem}.bizy-toast-wrapper{position:relative;width:100%;min-width:20rem;height:fit-content;min-height:3rem;border-left:var(--bizy-toast-border-left);border-top-left-radius:.5rem;border-bottom-left-radius:.5rem;display:flex;flex-direction:column;justify-content:center;row-gap:.5rem;padding:.5rem;box-shadow:0 18px 25px #32325d40,0 3px 6px #0000001a}.bizy-toast-wrapper__title{max-width:min(28rem,60vw)}.bizy-toast-wrapper__msg{max-width:min(30rem,70vw)}.bizy-toast-wrapper--default{background-color:var(--bizy-toast-default-background-color, );border-left-color:var(--bizy-toast-default-color)}.bizy-toast-wrapper__title--default{color:var(--bizy-toast-default-color)}.bizy-toast-wrapper--info{background-color:var(--bizy-toast-info-background-color, );border-left-color:var(--bizy-toast-info-color)}.bizy-toast-wrapper__title--info{color:var(--bizy-toast-info-color)}.bizy-toast-wrapper--success{background-color:var(--bizy-toast-success-background-color);border-left-color:var(--bizy-toast-success-color)}.bizy-toast-wrapper__title--success{color:var(--bizy-toast-success-color)}.bizy-toast-wrapper--warning{background-color:var(--bizy-toast-warning-background-color);border-left-color:var(--bizy-toast-warning-color)}.bizy-toast-wrapper__title--warning{color:var(--bizy-toast-warning-color)}.bizy-toast-wrapper--danger{background-color:var(--bizy-toast-danger-background-color);border-left-color:var(--bizy-toast-danger-color)}.bizy-toast-wrapper__title--danger{color:var(--bizy-toast-danger-color)}.bizy-toast-wrapper__close-button{position:absolute;right:.5rem;top:.5rem;border:none;cursor:pointer;background-color:transparent;transition:color .2s;z-index:1}.bizy-toast-wrapper__close-button #bizy-toast-wrapper-close-svg{height:1rem}.bizy-toast-wrapper__close-button #bizy-toast-wrapper-close-svg-content{fill:var(--bizy-toast-close-button-color)}.bizy-toast-wrapper__close-button:hover #bizy-toast-wrapper-close-svg-content{fill:var(--bizy-toast-close-button-hover-color)}.bizy-toast__progress{width:100%;height:.1rem;display:inline-block;position:absolute;bottom:0;left:0;right:0;overflow:hidden}.bizy-toast__progress--default{background-color:var(--bizy-toast-default-color)}.bizy-toast__progress--info{background-color:var(--bizy-toast-info-color)}.bizy-toast__progress--success{background-color:var(--bizy-toast-success-color)}.bizy-toast__progress--warning{background-color:var(--bizy-toast-warning-color)}.bizy-toast__progress--danger{background-color:var(--bizy-toast-danger-color)}.bizy-toast__progress:after{content:\"\";box-sizing:border-box;width:0;height:.1rem;background-color:#fff;position:absolute;top:0;left:0;animation:progress 2.5s linear infinite}@keyframes progress{0%{width:0}to{width:100%}}\n"] }]
+        }], ctorParameters: () => [{ type: undefined, decorators: [{
+                    type: Inject,
+                    args: [DIALOG_DATA]
+                }] }, { type: BizyToastService, decorators: [{
+                    type: Inject,
+                    args: [BizyToastService]
+                }] }] });
+
+class BizyToastModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyToastModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyToastModule, imports: [BizyToastWrapperComponent], exports: [BizyToastWrapperComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyToastModule, providers: [BizyToastService], imports: [BizyToastWrapperComponent] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyToastModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: [BizyToastWrapperComponent],
+                    exports: [BizyToastWrapperComponent],
+                    providers: [BizyToastService]
+                }]
+        }] });
 
 class BizyToggleComponent {
     id = `bizy-toggle-${Math.random()}`;
@@ -4445,6 +5294,22 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
                 type: Output
             }] } });
 
+const COMPONENTS$1 = [
+    BizyToggleComponent,
+];
+class BizyToggleModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyToggleModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyToggleModule, imports: [BizyToggleComponent], exports: [BizyToggleComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyToggleModule, imports: [COMPONENTS$1] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyToggleModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: COMPONENTS$1,
+                    exports: COMPONENTS$1,
+                }]
+        }] });
+
 class BizyToolbarComponent {
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyToolbarComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
     static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.1", type: BizyToolbarComponent, isStandalone: true, selector: "bizy-toolbar", ngImport: i0, template: "<div class=\"bizy-toolbar\">\n\n    <span class=\"bizy-toolbar__start\">\n        \n        <ng-content select=\"[slot=start]\"></ng-content>\n\n    </span>\n\n    <span class=\"bizy-toolbar__end\">\n\n        <ng-content select=\"[slot=end]\"></ng-content>\n\n    </span>\n\n</div>\n", styles: [":host{font-size:1rem}.bizy-toolbar{height:var(--bizy-toolbar-height);width:100%;background-color:var(--bizy-toolbar-background-color);display:flex;align-items:center;justify-content:space-between;column-gap:var(--bizy-toolbar-column-gap);padding:var(--bizy-toolbar-padding)}.bizy-toolbar__start{height:100%;display:flex;align-items:center;column-gap:var(--bizy-toolbar-column-gap)}.bizy-toolbar__end{height:100%;display:flex;align-items:center;justify-content:flex-end;column-gap:var(--bizy-toolbar-column-gap)}::ng-deep .bizy-toolbar *[toolbar-option]{height:100%}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
@@ -4452,6 +5317,99 @@ class BizyToolbarComponent {
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyToolbarComponent, decorators: [{
             type: Component,
             args: [{ selector: 'bizy-toolbar', imports: [CommonModule], changeDetection: ChangeDetectionStrategy.OnPush, template: "<div class=\"bizy-toolbar\">\n\n    <span class=\"bizy-toolbar__start\">\n        \n        <ng-content select=\"[slot=start]\"></ng-content>\n\n    </span>\n\n    <span class=\"bizy-toolbar__end\">\n\n        <ng-content select=\"[slot=end]\"></ng-content>\n\n    </span>\n\n</div>\n", styles: [":host{font-size:1rem}.bizy-toolbar{height:var(--bizy-toolbar-height);width:100%;background-color:var(--bizy-toolbar-background-color);display:flex;align-items:center;justify-content:space-between;column-gap:var(--bizy-toolbar-column-gap);padding:var(--bizy-toolbar-padding)}.bizy-toolbar__start{height:100%;display:flex;align-items:center;column-gap:var(--bizy-toolbar-column-gap)}.bizy-toolbar__end{height:100%;display:flex;align-items:center;justify-content:flex-end;column-gap:var(--bizy-toolbar-column-gap)}::ng-deep .bizy-toolbar *[toolbar-option]{height:100%}\n"] }]
+        }] });
+
+const COMPONENTS = [
+    BizyToolbarComponent,
+];
+class BizyToolbarModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyToolbarModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyToolbarModule, imports: [BizyToolbarComponent], exports: [BizyToolbarComponent] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyToolbarModule, imports: [COMPONENTS] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyToolbarModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: COMPONENTS,
+                    exports: COMPONENTS,
+                }]
+        }] });
+
+var LANGUAGE;
+(function (LANGUAGE) {
+    LANGUAGE["SPANISH"] = "es";
+    LANGUAGE["ENGLISH"] = "en";
+})(LANGUAGE || (LANGUAGE = {}));
+class BizyTranslateService {
+    #translate = inject(TranslateService);
+    loadTranslations(...args) {
+        const locales = [...args];
+        locales.forEach(locale => {
+            this.#translate.setTranslation(locale.lang, locale.translations, true);
+        });
+    }
+    addLangs(langs) {
+        this.#translate.addLangs(langs);
+    }
+    getLangs() {
+        return this.#translate.getLangs();
+    }
+    setDefault(lang) {
+        this.#translate.setDefaultLang(lang);
+    }
+    getCurrentLang() {
+        return this.#translate.currentLang;
+    }
+    use(lang) {
+        this.#translate.use(lang);
+    }
+    get(translation) {
+        return this.#translate.instant(translation);
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTranslateService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTranslateService, providedIn: 'root' });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTranslateService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
+        }] });
+
+class BizyTranslatePipe {
+    translate;
+    constructor(translate) {
+        this.translate = translate;
+    }
+    transform(label) {
+        return this.translate.get(label);
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTranslatePipe, deps: [{ token: BizyTranslateService }], target: i0.ɵɵFactoryTarget.Pipe });
+    static ɵpipe = i0.ɵɵngDeclarePipe({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyTranslatePipe, isStandalone: true, name: "translate" });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTranslatePipe, decorators: [{
+            type: Pipe,
+            args: [{
+                    name: 'translate',
+                }]
+        }], ctorParameters: () => [{ type: BizyTranslateService, decorators: [{
+                    type: Inject,
+                    args: [BizyTranslateService]
+                }] }] });
+
+class BizyTranslateModule {
+    static forRoot = TranslateModule.forRoot;
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTranslateModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyTranslateModule, imports: [BizyTranslatePipe], exports: [BizyTranslatePipe] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTranslateModule, providers: [BizyTranslateService] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTranslateModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: [BizyTranslatePipe],
+                    exports: [BizyTranslatePipe],
+                    providers: [BizyTranslateService]
+                }]
         }] });
 
 var BIZY_ANIMATION;
@@ -4518,7 +5476,7 @@ class BizyViewportService {
             height: this.window.innerHeight
         });
         fromEvent(window, 'resize')
-            .pipe(debounceTime$1(200), map((event) => ({
+            .pipe(debounceTime(200), map((event) => ({
             width: event.currentTarget.innerWidth,
             height: event.currentTarget.innerHeight
         })))
@@ -4767,7 +5725,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
             args: [{
                     providedIn: 'root'
                 }]
-        }], ctorParameters: () => [{ type: i1$1.Router, decorators: [{
+        }], ctorParameters: () => [{ type: i1$3.Router, decorators: [{
                     type: Inject,
                     args: [Router]
                 }] }] });
@@ -5333,282 +6291,30 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
                 }]
         }] });
 
-class BizyTranslateModule {
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTranslateModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyTranslateModule, imports: [i1$2.TranslateModule] });
-    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTranslateModule, imports: [TranslateModule.forRoot()] });
+const SERVICES = [
+    BizyAnimationService,
+    BizyViewportService,
+    BizyKeyboardService,
+    BizyExportToCSVService,
+    BizyCacheService,
+    BizyUserAgentService,
+    BizyValidatorService,
+    BizyStorageService,
+    BizyLogService,
+    BizyRouterService,
+    BizyCopyToClipboardService
+];
+class BizyServicesModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyServicesModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyServicesModule });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyServicesModule, providers: SERVICES });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTranslateModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyServicesModule, decorators: [{
             type: NgModule,
             args: [{
-                    imports: [TranslateModule.forRoot()]
+                    providers: SERVICES
                 }]
         }] });
-
-var LANGUAGE;
-(function (LANGUAGE) {
-    LANGUAGE["SPANISH"] = "es";
-    LANGUAGE["ENGLISH"] = "en";
-})(LANGUAGE || (LANGUAGE = {}));
-class BizyTranslateService {
-    translate;
-    constructor(translate) {
-        this.translate = translate;
-    }
-    loadTranslations(...args) {
-        const locales = [...args];
-        locales.forEach(locale => {
-            this.translate.setTranslation(locale.lang, locale.translations, true);
-        });
-    }
-    addLangs(langs) {
-        this.translate.addLangs(langs);
-    }
-    getLangs() {
-        return this.translate.getLangs();
-    }
-    setDefault(lang) {
-        this.translate.setDefaultLang(lang);
-    }
-    getCurrentLang() {
-        return this.translate.currentLang;
-    }
-    use(lang) {
-        this.translate.use(lang);
-    }
-    get(translation) {
-        return this.translate.instant(translation);
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTranslateService, deps: [{ token: TranslateService }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTranslateService, providedIn: 'root' });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTranslateService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }], ctorParameters: () => [{ type: i1$2.TranslateService, decorators: [{
-                    type: Inject,
-                    args: [TranslateService]
-                }] }] });
-
-class BizyPopupWrapperComponent {
-    dynamicComponentContainer;
-    #component = inject(DIALOG_DATA);
-    #dialogRef = inject(DialogRef);
-    #ref = inject(ChangeDetectorRef);
-    ngAfterViewInit() {
-        this.loadDynamicComponent();
-    }
-    loadDynamicComponent() {
-        if (this.#component) {
-            this.dynamicComponentContainer.clear();
-            this.dynamicComponentContainer.createComponent(this.#component);
-            this.#ref.detectChanges();
-        }
-    }
-    close() {
-        this.#dialogRef.close();
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyPopupWrapperComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.1", type: BizyPopupWrapperComponent, isStandalone: true, selector: "bizy-popup-wrapper", viewQueries: [{ propertyName: "dynamicComponentContainer", first: true, predicate: ["dynamicComponentContainer"], descendants: true, read: ViewContainerRef }], ngImport: i0, template: "<div class=\"bizy-popup-wrapper\" cdkDrag>\n\n    <button class=\"bizy-popup-wrapper__drag-button\" cdkDragHandle>\n\n        <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\" class=\"bizy-popup-wrapper__drag-button__icon\">\n            <path d=\"M278.6 9.4c-12.5-12.5-32.8-12.5-45.3 0l-64 64c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l9.4-9.4V224H109.3l9.4-9.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-64 64c-12.5 12.5-12.5 32.8 0 45.3l64 64c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-9.4-9.4H224V402.7l-9.4-9.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l64 64c12.5 12.5 32.8 12.5 45.3 0l64-64c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-9.4 9.4V288H402.7l-9.4 9.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l64-64c12.5-12.5 12.5-32.8 0-45.3l-64-64c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l9.4 9.4H288V109.3l9.4 9.4c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-64-64z\"/>\n        </svg>\n\n    </button>\n\n    <button class=\"bizy-popup-wrapper__close-button\" (click)=\"close()\" (keyup.enter)=\"close()\">\n\n\n        <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 384 512\" class=\"bizy-popup-wrapper__close-button__icon\">\n            <path d=\"M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z\"/>\n        </svg>\n\n    </button>\n\n    <ng-container #dynamicComponentContainer></ng-container>\n\n</div>", styles: [":host{font-size:1rem}.bizy-popup-wrapper{position:relative;background-color:var(--bizy-popup-background-color);min-width:var(--bizy-popup-min-width);width:var(--bizy-popup-width);max-width:var(--bizy-popup-max-width)}.bizy-popup-wrapper__drag-button{position:absolute;left:-.9rem;top:-.9rem;border:.1rem solid var(--bizy-popup-drag-button-border-color);border-radius:50%;padding:.2rem;place-items:center;display:grid;border:.1rem solid #ccc;background-color:var(--bizy-popup-drag-button-background-color);cursor:pointer;transition:transform .2s;z-index:1}.bizy-popup-wrapper__drag-button:hover{transform:scale(1.1)}.bizy-popup-wrapper__drag-button__icon{height:1rem}.bizy-popup-wrapper__drag-button__icon{fill:var(--bizy-popup-drag-button-color)}.bizy-popup-wrapper__close-button{position:absolute;right:-.9rem;top:-.9rem;border:.1rem solid var(--bizy-popup-close-button-border-color);border-radius:50%;padding:.25rem .35rem;place-items:center;display:grid;border:.1rem solid #ccc;background-color:var(--bizy-popup-close-button-background-color);cursor:pointer;transition:transform .2s;z-index:1}.bizy-popup-wrapper__close-button:hover .bizy-popup-wrapper__close-button__icon{transform:scale(1.1)}.bizy-popup-wrapper__close-button:hover .bizy-popup-wrapper__close-button__icon{fill:var(--bizy-popup-close-button-hover-color)}.bizy-popup-wrapper__close-button__icon{height:1rem;transition:fill .2s ease,}.bizy-popup-wrapper__close-button__icon{fill:var(--bizy-popup-close-button-color)}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }, { kind: "ngmodule", type: DialogModule }, { kind: "ngmodule", type: DragDropModule }, { kind: "directive", type: i1$3.CdkDrag, selector: "[cdkDrag]", inputs: ["cdkDragData", "cdkDragLockAxis", "cdkDragRootElement", "cdkDragBoundary", "cdkDragStartDelay", "cdkDragFreeDragPosition", "cdkDragDisabled", "cdkDragConstrainPosition", "cdkDragPreviewClass", "cdkDragPreviewContainer", "cdkDragScale"], outputs: ["cdkDragStarted", "cdkDragReleased", "cdkDragEnded", "cdkDragEntered", "cdkDragExited", "cdkDragDropped", "cdkDragMoved"], exportAs: ["cdkDrag"] }, { kind: "directive", type: i1$3.CdkDragHandle, selector: "[cdkDragHandle]", inputs: ["cdkDragHandleDisabled"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyPopupWrapperComponent, decorators: [{
-            type: Component,
-            args: [{ selector: 'bizy-popup-wrapper', imports: [CommonModule, DialogModule, DragDropModule], changeDetection: ChangeDetectionStrategy.OnPush, template: "<div class=\"bizy-popup-wrapper\" cdkDrag>\n\n    <button class=\"bizy-popup-wrapper__drag-button\" cdkDragHandle>\n\n        <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\" class=\"bizy-popup-wrapper__drag-button__icon\">\n            <path d=\"M278.6 9.4c-12.5-12.5-32.8-12.5-45.3 0l-64 64c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l9.4-9.4V224H109.3l9.4-9.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-64 64c-12.5 12.5-12.5 32.8 0 45.3l64 64c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-9.4-9.4H224V402.7l-9.4-9.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l64 64c12.5 12.5 32.8 12.5 45.3 0l64-64c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-9.4 9.4V288H402.7l-9.4 9.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l64-64c12.5-12.5 12.5-32.8 0-45.3l-64-64c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l9.4 9.4H288V109.3l9.4 9.4c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-64-64z\"/>\n        </svg>\n\n    </button>\n\n    <button class=\"bizy-popup-wrapper__close-button\" (click)=\"close()\" (keyup.enter)=\"close()\">\n\n\n        <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 384 512\" class=\"bizy-popup-wrapper__close-button__icon\">\n            <path d=\"M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z\"/>\n        </svg>\n\n    </button>\n\n    <ng-container #dynamicComponentContainer></ng-container>\n\n</div>", styles: [":host{font-size:1rem}.bizy-popup-wrapper{position:relative;background-color:var(--bizy-popup-background-color);min-width:var(--bizy-popup-min-width);width:var(--bizy-popup-width);max-width:var(--bizy-popup-max-width)}.bizy-popup-wrapper__drag-button{position:absolute;left:-.9rem;top:-.9rem;border:.1rem solid var(--bizy-popup-drag-button-border-color);border-radius:50%;padding:.2rem;place-items:center;display:grid;border:.1rem solid #ccc;background-color:var(--bizy-popup-drag-button-background-color);cursor:pointer;transition:transform .2s;z-index:1}.bizy-popup-wrapper__drag-button:hover{transform:scale(1.1)}.bizy-popup-wrapper__drag-button__icon{height:1rem}.bizy-popup-wrapper__drag-button__icon{fill:var(--bizy-popup-drag-button-color)}.bizy-popup-wrapper__close-button{position:absolute;right:-.9rem;top:-.9rem;border:.1rem solid var(--bizy-popup-close-button-border-color);border-radius:50%;padding:.25rem .35rem;place-items:center;display:grid;border:.1rem solid #ccc;background-color:var(--bizy-popup-close-button-background-color);cursor:pointer;transition:transform .2s;z-index:1}.bizy-popup-wrapper__close-button:hover .bizy-popup-wrapper__close-button__icon{transform:scale(1.1)}.bizy-popup-wrapper__close-button:hover .bizy-popup-wrapper__close-button__icon{fill:var(--bizy-popup-close-button-hover-color)}.bizy-popup-wrapper__close-button__icon{height:1rem;transition:fill .2s ease,}.bizy-popup-wrapper__close-button__icon{fill:var(--bizy-popup-close-button-color)}\n"] }]
-        }], propDecorators: { dynamicComponentContainer: [{
-                type: ViewChild,
-                args: ['dynamicComponentContainer', { read: ViewContainerRef }]
-            }] } });
-
-class BizyPopupService {
-    #dialog = inject(Dialog);
-    static dialogs = new Set();
-    static data = null;
-    ;
-    open(data, callback) {
-        BizyPopupService.data = data.data;
-        const dialogRef = this.#dialog.open(BizyPopupWrapperComponent, ({
-            id: data.id,
-            data: data.component,
-            autoFocus: true,
-            hasBackdrop: true,
-            disableClose: data.disableClose ?? false,
-            panelClass: ['bizy-popup', data.customClass]
-        }));
-        BizyPopupService.dialogs.add(dialogRef);
-        dialogRef.closed.pipe(take(1)).subscribe(response => {
-            BizyPopupService.dialogs.delete(dialogRef);
-            if (callback) {
-                callback(response);
-            }
-        });
-    }
-    getData() {
-        return BizyPopupService.data;
-    }
-    close(data) {
-        let dialogRef = null;
-        if (data && data.id) {
-            dialogRef = Array.from(BizyPopupService.dialogs).find(_dialogRef => _dialogRef.id === data.id);
-        }
-        else {
-            dialogRef = Array.from(BizyPopupService.dialogs).pop();
-        }
-        if (dialogRef) {
-            dialogRef.close(data ? data.response : null);
-            BizyPopupService.dialogs.delete(dialogRef);
-        }
-        BizyPopupService.data = null;
-    }
-    closeAll() {
-        Array.from(BizyPopupService.dialogs).forEach(_dialogRef => {
-            _dialogRef.close();
-        });
-        BizyPopupService.dialogs.clear();
-        BizyPopupService.data = null;
-    }
-    openedPopups() {
-        return BizyPopupService.dialogs.size;
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyPopupService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyPopupService, providedIn: 'root' });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyPopupService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }] });
-
-var _a;
-var TOAST;
-(function (TOAST) {
-    TOAST["DEFAULT"] = "default";
-    TOAST["SUCCESS"] = "success";
-    TOAST["INFO"] = "info";
-    TOAST["WARNING"] = "warning";
-    TOAST["DANGER"] = "danger";
-})(TOAST || (TOAST = {}));
-class BizyToastService {
-    dialog;
-    static toasts = new Set();
-    duration = 3000;
-    defaultSuccessTitle = 'Operación exitosa';
-    defaultDangerTitle = 'Hubo un problema';
-    constructor(dialog) {
-        this.dialog = dialog;
-    }
-    #open(data) {
-        const id = `bizy-toast-${Math.random()}`;
-        const toastRef = this.dialog.open(BizyToastWrapperComponent, {
-            id,
-            data: {
-                type: data.type,
-                duration: this.duration,
-                id,
-                title: typeof data.data === 'string' ? data.data : data.data.title,
-                msg: typeof data.data === 'string' ? '' : data.data.msg
-            },
-            autoFocus: false,
-            hasBackdrop: false,
-            disableClose: false,
-            panelClass: ['bizy-toast', 'bizy-toast--in']
-        });
-        _a.toasts.add(toastRef);
-    }
-    config(data) {
-        if (!data) {
-            return;
-        }
-        if (data.defaultSuccessTitle) {
-            this.defaultSuccessTitle = data.defaultSuccessTitle;
-        }
-        if (data.defaultDangerTitle) {
-            this.defaultDangerTitle = data.defaultDangerTitle;
-        }
-        if (data.duration) {
-            this.duration = data.duration;
-        }
-    }
-    default(data) {
-        this.#open({ type: TOAST.DEFAULT, data });
-    }
-    info(data) {
-        this.#open({ type: TOAST.INFO, data });
-    }
-    success(data = this.defaultSuccessTitle) {
-        this.#open({ type: TOAST.SUCCESS, data });
-    }
-    warning(data) {
-        this.#open({ type: TOAST.WARNING, data });
-    }
-    danger(data = this.defaultDangerTitle) {
-        this.#open({ type: TOAST.DANGER, data });
-    }
-    close = (id) => {
-        if (!id) {
-            return;
-        }
-        let toastRef = null;
-        toastRef = Array.from(_a.toasts).find(_toastRef => _toastRef.id === id);
-        if (toastRef) {
-            toastRef.removePanelClass('bizy-toast--in');
-            toastRef.addPanelClass('bizy-toast--out');
-            setTimeout(() => {
-                toastRef.close();
-                _a.toasts.delete(toastRef);
-            }, 500);
-        }
-    };
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyToastService, deps: [{ token: Dialog }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyToastService, providedIn: 'root' });
-}
-_a = BizyToastService;
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyToastService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }], ctorParameters: () => [{ type: i1$4.Dialog, decorators: [{
-                    type: Inject,
-                    args: [Dialog]
-                }] }] });
-
-class BizyToastWrapperComponent {
-    data;
-    toast;
-    type = TOAST.INFO;
-    title = '';
-    msg = '';
-    id;
-    constructor(data, toast) {
-        this.data = data;
-        this.toast = toast;
-        this.type = this.data.type;
-        this.title = this.data.title;
-        this.msg = this.data.msg;
-        this.id = this.data.id;
-        setTimeout(() => {
-            this.close();
-        }, 3000);
-    }
-    close() {
-        this.toast.close(this.id);
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyToastWrapperComponent, deps: [{ token: DIALOG_DATA }, { token: BizyToastService }], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.1", type: BizyToastWrapperComponent, isStandalone: true, selector: "bizy-toast-wrapper", providers: [BizyToastService], ngImport: i0, template: "<div class=\"bizy-toast-wrapper bizy-toast-wrapper--{{type}}\">\n\n    <button (click)=\"close()\" (keyup.enter)=\"close()\" class=\"bizy-toast-wrapper__close-button\">\n\n        <svg \n            data-name=\"Cancel button\"\n            id=\"bizy-toast-wrapper-close-svg\" \n            viewBox=\"0 0 200 200\"\n            xmlns=\"http://www.w3.org/2000/svg\">\n            <path id=\"bizy-toast-wrapper-close-svg-content\" d=\"M114,100l49-49a9.9,9.9,0,0,0-14-14L100,86,51,37A9.9,9.9,0,0,0,37,51l49,49L37,149a9.9,9.9,0,0,0,14,14l49-49,49,49a9.9,9.9,0,0,0,14-14Z\"/>\n        </svg>\n\n    </button>\n\n\n    <h3 class=\"bizy-toast-wrapper__title bizy-toast-wrapper__title--{{type}}\" *ngIf=\"title\">{{title}}</h3>\n\n    <h5 class=\"bizy-toast-wrapper__msg\" *ngIf=\"msg\">{{msg}}</h5>\n\n\n    <span class=\"bizy-toast__progress bizy-toast__progress--{{type}}\"></span>\n    \n</div>", styles: [":host{font-size:1rem}.bizy-toast-wrapper{position:relative;width:100%;min-width:20rem;height:fit-content;min-height:3rem;border-left:var(--bizy-toast-border-left);border-top-left-radius:.5rem;border-bottom-left-radius:.5rem;display:flex;flex-direction:column;justify-content:center;row-gap:.5rem;padding:.5rem;box-shadow:0 18px 25px #32325d40,0 3px 6px #0000001a}.bizy-toast-wrapper__title{max-width:min(28rem,60vw)}.bizy-toast-wrapper__msg{max-width:min(30rem,70vw)}.bizy-toast-wrapper--default{background-color:var(--bizy-toast-default-background-color, );border-left-color:var(--bizy-toast-default-color)}.bizy-toast-wrapper__title--default{color:var(--bizy-toast-default-color)}.bizy-toast-wrapper--info{background-color:var(--bizy-toast-info-background-color, );border-left-color:var(--bizy-toast-info-color)}.bizy-toast-wrapper__title--info{color:var(--bizy-toast-info-color)}.bizy-toast-wrapper--success{background-color:var(--bizy-toast-success-background-color);border-left-color:var(--bizy-toast-success-color)}.bizy-toast-wrapper__title--success{color:var(--bizy-toast-success-color)}.bizy-toast-wrapper--warning{background-color:var(--bizy-toast-warning-background-color);border-left-color:var(--bizy-toast-warning-color)}.bizy-toast-wrapper__title--warning{color:var(--bizy-toast-warning-color)}.bizy-toast-wrapper--danger{background-color:var(--bizy-toast-danger-background-color);border-left-color:var(--bizy-toast-danger-color)}.bizy-toast-wrapper__title--danger{color:var(--bizy-toast-danger-color)}.bizy-toast-wrapper__close-button{position:absolute;right:.5rem;top:.5rem;border:none;cursor:pointer;background-color:transparent;transition:color .2s;z-index:1}.bizy-toast-wrapper__close-button #bizy-toast-wrapper-close-svg{height:1rem}.bizy-toast-wrapper__close-button #bizy-toast-wrapper-close-svg-content{fill:var(--bizy-toast-close-button-color)}.bizy-toast-wrapper__close-button:hover #bizy-toast-wrapper-close-svg-content{fill:var(--bizy-toast-close-button-hover-color)}.bizy-toast__progress{width:100%;height:.1rem;display:inline-block;position:absolute;bottom:0;left:0;right:0;overflow:hidden}.bizy-toast__progress--default{background-color:var(--bizy-toast-default-color)}.bizy-toast__progress--info{background-color:var(--bizy-toast-info-color)}.bizy-toast__progress--success{background-color:var(--bizy-toast-success-color)}.bizy-toast__progress--warning{background-color:var(--bizy-toast-warning-color)}.bizy-toast__progress--danger{background-color:var(--bizy-toast-danger-color)}.bizy-toast__progress:after{content:\"\";box-sizing:border-box;width:0;height:.1rem;background-color:#fff;position:absolute;top:0;left:0;animation:progress 2.5s linear infinite}@keyframes progress{0%{width:0}to{width:100%}}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }, { kind: "directive", type: i1.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "ngmodule", type: DialogModule }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyToastWrapperComponent, decorators: [{
-            type: Component,
-            args: [{ selector: 'bizy-toast-wrapper', imports: [CommonModule, DialogModule], providers: [BizyToastService], changeDetection: ChangeDetectionStrategy.OnPush, template: "<div class=\"bizy-toast-wrapper bizy-toast-wrapper--{{type}}\">\n\n    <button (click)=\"close()\" (keyup.enter)=\"close()\" class=\"bizy-toast-wrapper__close-button\">\n\n        <svg \n            data-name=\"Cancel button\"\n            id=\"bizy-toast-wrapper-close-svg\" \n            viewBox=\"0 0 200 200\"\n            xmlns=\"http://www.w3.org/2000/svg\">\n            <path id=\"bizy-toast-wrapper-close-svg-content\" d=\"M114,100l49-49a9.9,9.9,0,0,0-14-14L100,86,51,37A9.9,9.9,0,0,0,37,51l49,49L37,149a9.9,9.9,0,0,0,14,14l49-49,49,49a9.9,9.9,0,0,0,14-14Z\"/>\n        </svg>\n\n    </button>\n\n\n    <h3 class=\"bizy-toast-wrapper__title bizy-toast-wrapper__title--{{type}}\" *ngIf=\"title\">{{title}}</h3>\n\n    <h5 class=\"bizy-toast-wrapper__msg\" *ngIf=\"msg\">{{msg}}</h5>\n\n\n    <span class=\"bizy-toast__progress bizy-toast__progress--{{type}}\"></span>\n    \n</div>", styles: [":host{font-size:1rem}.bizy-toast-wrapper{position:relative;width:100%;min-width:20rem;height:fit-content;min-height:3rem;border-left:var(--bizy-toast-border-left);border-top-left-radius:.5rem;border-bottom-left-radius:.5rem;display:flex;flex-direction:column;justify-content:center;row-gap:.5rem;padding:.5rem;box-shadow:0 18px 25px #32325d40,0 3px 6px #0000001a}.bizy-toast-wrapper__title{max-width:min(28rem,60vw)}.bizy-toast-wrapper__msg{max-width:min(30rem,70vw)}.bizy-toast-wrapper--default{background-color:var(--bizy-toast-default-background-color, );border-left-color:var(--bizy-toast-default-color)}.bizy-toast-wrapper__title--default{color:var(--bizy-toast-default-color)}.bizy-toast-wrapper--info{background-color:var(--bizy-toast-info-background-color, );border-left-color:var(--bizy-toast-info-color)}.bizy-toast-wrapper__title--info{color:var(--bizy-toast-info-color)}.bizy-toast-wrapper--success{background-color:var(--bizy-toast-success-background-color);border-left-color:var(--bizy-toast-success-color)}.bizy-toast-wrapper__title--success{color:var(--bizy-toast-success-color)}.bizy-toast-wrapper--warning{background-color:var(--bizy-toast-warning-background-color);border-left-color:var(--bizy-toast-warning-color)}.bizy-toast-wrapper__title--warning{color:var(--bizy-toast-warning-color)}.bizy-toast-wrapper--danger{background-color:var(--bizy-toast-danger-background-color);border-left-color:var(--bizy-toast-danger-color)}.bizy-toast-wrapper__title--danger{color:var(--bizy-toast-danger-color)}.bizy-toast-wrapper__close-button{position:absolute;right:.5rem;top:.5rem;border:none;cursor:pointer;background-color:transparent;transition:color .2s;z-index:1}.bizy-toast-wrapper__close-button #bizy-toast-wrapper-close-svg{height:1rem}.bizy-toast-wrapper__close-button #bizy-toast-wrapper-close-svg-content{fill:var(--bizy-toast-close-button-color)}.bizy-toast-wrapper__close-button:hover #bizy-toast-wrapper-close-svg-content{fill:var(--bizy-toast-close-button-hover-color)}.bizy-toast__progress{width:100%;height:.1rem;display:inline-block;position:absolute;bottom:0;left:0;right:0;overflow:hidden}.bizy-toast__progress--default{background-color:var(--bizy-toast-default-color)}.bizy-toast__progress--info{background-color:var(--bizy-toast-info-color)}.bizy-toast__progress--success{background-color:var(--bizy-toast-success-color)}.bizy-toast__progress--warning{background-color:var(--bizy-toast-warning-color)}.bizy-toast__progress--danger{background-color:var(--bizy-toast-danger-color)}.bizy-toast__progress:after{content:\"\";box-sizing:border-box;width:0;height:.1rem;background-color:#fff;position:absolute;top:0;left:0;animation:progress 2.5s linear infinite}@keyframes progress{0%{width:0}to{width:100%}}\n"] }]
-        }], ctorParameters: () => [{ type: undefined, decorators: [{
-                    type: Inject,
-                    args: [DIALOG_DATA]
-                }] }, { type: BizyToastService, decorators: [{
-                    type: Inject,
-                    args: [BizyToastService]
-                }] }] });
 
 class BizyRepeatPipe {
     transform(value) {
@@ -5833,7 +6539,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
             args: [{
                     name: 'bizySafe'
                 }]
-        }], ctorParameters: () => [{ type: i1$5.DomSanitizer, decorators: [{
+        }], ctorParameters: () => [{ type: i1$4.DomSanitizer, decorators: [{
                     type: Inject,
                     args: [DomSanitizer]
                 }] }] });
@@ -6074,26 +6780,49 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
                     args: [BizyFormatSecondsService]
                 }] }] });
 
-class BizyTranslatePipe {
-    translate;
-    constructor(translate) {
-        this.translate = translate;
-    }
-    transform(label) {
-        return this.translate.get(label);
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTranslatePipe, deps: [{ token: BizyTranslateService }], target: i0.ɵɵFactoryTarget.Pipe });
-    static ɵpipe = i0.ɵɵngDeclarePipe({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyTranslatePipe, isStandalone: true, name: "translate" });
+const PIPES = [
+    BizyRepeatPipe,
+    BizySetToArrayPipe,
+    BizyEnumToArrayPipe,
+    BizySelectedPipe,
+    BizyOrderByPipe,
+    BizyReducePipe,
+    BizySafePipe,
+    BizyAveragePipe,
+    BizySearchPipe,
+    BizyFormatSecondsPipe,
+];
+class BizyPipesModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyPipesModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyPipesModule, imports: [BizyRepeatPipe,
+            BizySetToArrayPipe,
+            BizyEnumToArrayPipe,
+            BizySelectedPipe,
+            BizyOrderByPipe,
+            BizyReducePipe,
+            BizySafePipe,
+            BizyAveragePipe,
+            BizySearchPipe,
+            BizyFormatSecondsPipe], exports: [BizyRepeatPipe,
+            BizySetToArrayPipe,
+            BizyEnumToArrayPipe,
+            BizySelectedPipe,
+            BizyOrderByPipe,
+            BizyReducePipe,
+            BizySafePipe,
+            BizyAveragePipe,
+            BizySearchPipe,
+            BizyFormatSecondsPipe] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyPipesModule, providers: PIPES });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyTranslatePipe, decorators: [{
-            type: Pipe,
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyPipesModule, decorators: [{
+            type: NgModule,
             args: [{
-                    name: 'translate',
+                    imports: PIPES,
+                    exports: PIPES,
+                    providers: PIPES
                 }]
-        }], ctorParameters: () => [{ type: BizyTranslateService, decorators: [{
-                    type: Inject,
-                    args: [BizyTranslateService]
-                }] }] });
+        }] });
 
 class BizyCopyToClipboardDirective {
     elementRef;
@@ -6447,7 +7176,7 @@ class BizyTextEllipsisDirective {
         this.#resizeObserver = new ResizeObserver(() => this.notifier$.next());
         const resizeRef = this.resizeRef ? this.resizeRef : this.#renderer.parentNode(this.#elementRef.nativeElement) ? this.#renderer.parentNode(this.#elementRef.nativeElement) : this.#elementRef.nativeElement;
         this.#resizeObserver.observe(resizeRef);
-        this.#subscription.add(this.notifier$.pipe(skip(1), debounceTime(150)).subscribe(() => {
+        this.#subscription.add(this.notifier$.pipe(skip(1), debounceTime$1(150)).subscribe(() => {
             this.#applyClamp();
         }));
     }
@@ -6718,9 +7447,49 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
                     type: Host
                 }] }] });
 
+const DIRECTIVES = [
+    BizyCopyToClipboardDirective,
+    BizyCurrencyFormatDirective,
+    BizyLoadingDirective,
+    BizyLongPressDirective,
+    BizyOnlyNumbersDirective,
+    BizyOnlyPhoneDigitsDirective,
+    BizyTextEllipsisDirective,
+    BizyTooltipDirective,
+    BizyTrackByIdDirective
+];
+class BizyDirectivesModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyDirectivesModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.1", ngImport: i0, type: BizyDirectivesModule, imports: [BizyCopyToClipboardDirective,
+            BizyCurrencyFormatDirective,
+            BizyLoadingDirective,
+            BizyLongPressDirective,
+            BizyOnlyNumbersDirective,
+            BizyOnlyPhoneDigitsDirective,
+            BizyTextEllipsisDirective,
+            BizyTooltipDirective,
+            BizyTrackByIdDirective], exports: [BizyCopyToClipboardDirective,
+            BizyCurrencyFormatDirective,
+            BizyLoadingDirective,
+            BizyLongPressDirective,
+            BizyOnlyNumbersDirective,
+            BizyOnlyPhoneDigitsDirective,
+            BizyTextEllipsisDirective,
+            BizyTooltipDirective,
+            BizyTrackByIdDirective] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyDirectivesModule });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyDirectivesModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: DIRECTIVES,
+                    exports: DIRECTIVES
+                }]
+        }] });
+
 /**
  * Generated bundle index. Do not edit.
  */
 
-export { BIZY_CALENDAR_DAY, BIZY_CALENDAR_EVENT_ACTION, BIZY_CALENDAR_LANGUAGE, BIZY_CALENDAR_MODE, BIZY_SKELETON_SHAPE, BIZY_TAG_TYPE, BizyAccordionComponent, BizyAnimationService, BizyAveragePipe, BizyBarLineChartComponent, BizyBreadcrumbComponent, BizyButtonComponent, BizyCacheService, BizyCalendarComponent, BizyCardComponent, BizyCheckboxComponent, BizyCopyToClipboardDirective, BizyCopyToClipboardService, BizyCurrencyFormatDirective, BizyDatePickerComponent, BizyEnumToArrayPipe, BizyExportToCSVService, BizyFileUploaderComponent, BizyFileUploaderService, BizyFilterComponent, BizyFilterContentComponent, BizyFilterPipe, BizyFilterSectionCheckboxOptionComponent, BizyFilterSectionComponent, BizyFilterSectionRangeOptionComponent, BizyFilterSectionSearchOptionComponent, BizyFilterSectionsComponent, BizyFormComponent, BizyFormatSecondsPipe, BizyGridComponent, BizyGridForDirective, BizyGridRowComponent, BizyInputComponent, BizyInputOptionComponent, BizyKeyboardService, BizyListComponent, BizyLoadingDirective, BizyLogService, BizyLongPressDirective, BizyMenuComponent, BizyMenuOptionComponent, BizyMenuTitleComponent, BizyOnlyNumbersDirective, BizyOnlyPhoneDigitsDirective, BizyOrderByPipe, BizyPieChartComponent, BizyPopupService, BizyPopupWrapperComponent, BizyRadioComponent, BizyRangeFilterPipe, BizyReducePipe, BizyRepeatPipe, BizyRouterService, BizySafePipe, BizySearchPipe, BizySelectComponent, BizySelectOptionComponent, BizySelectedPipe, BizySetToArrayPipe, BizySidebarComponent, BizySidebarFloatingOptionComponent, BizySidebarFloatingOptionTitleComponent, BizySidebarOptionComponent, BizySkeletonComponent, BizySliderComponent, BizyStorageService, BizyTabComponent, BizyTableColumnArrowsComponent, BizyTableColumnComponent, BizyTableColumnFixedDirective, BizyTableComponent, BizyTableFooterComponent, BizyTableHeaderComponent, BizyTableRowComponent, BizyTableRowExpandContentComponent, BizyTableScrollingComponent, BizyTableScrollingDirective, BizyTabsComponent, BizyTagComponent, BizyTextEllipsisDirective, BizyToastService, BizyToastWrapperComponent, BizyToggleComponent, BizyToolbarComponent, BizyTooltipDirective, BizyTrackByIdDirective, BizyTranslateModule, BizyTranslatePipe, BizyTranslateService, BizyUserAgentService, BizyValidatorService, BizyViewportService, LANGUAGE, LOADING_TYPE };
+export { BIZY_CALENDAR_DAY, BIZY_CALENDAR_EVENT_ACTION, BIZY_CALENDAR_LANGUAGE, BIZY_CALENDAR_MODE, BIZY_SKELETON_SHAPE, BIZY_TAG_TYPE, BizyAccordionComponent, BizyAccordionModule, BizyAnimationService, BizyAudioPlayerComponent, BizyAudioPlayerModule, BizyAveragePipe, BizyBarLineChartComponent, BizyBarLineChartModule, BizyBreadcrumbComponent, BizyBreadcrumbModule, BizyButtonComponent, BizyButtonModule, BizyCacheService, BizyCalendarComponent, BizyCalendarModule, BizyCardComponent, BizyCardModule, BizyCheckboxComponent, BizyCheckboxModule, BizyCopyToClipboardDirective, BizyCopyToClipboardService, BizyCurrencyFormatDirective, BizyDatePickerComponent, BizyDatePickerModule, BizyDirectivesModule, BizyEnumToArrayPipe, BizyExportToCSVService, BizyFileUploaderComponent, BizyFileUploaderModule, BizyFileUploaderService, BizyFilterComponent, BizyFilterContentComponent, BizyFilterModule, BizyFilterPipe, BizyFilterSectionCheckboxOptionComponent, BizyFilterSectionComponent, BizyFilterSectionRangeOptionComponent, BizyFilterSectionSearchOptionComponent, BizyFilterSectionsComponent, BizyFormComponent, BizyFormModule, BizyFormatSecondsPipe, BizyGridComponent, BizyGridForDirective, BizyGridModule, BizyGridRowComponent, BizyInputComponent, BizyInputModule, BizyInputOptionComponent, BizyKeyboardService, BizyListComponent, BizyListModule, BizyLoadingDirective, BizyLogService, BizyLongPressDirective, BizyMenuComponent, BizyMenuModule, BizyMenuOptionComponent, BizyMenuTitleComponent, BizyOnlyNumbersDirective, BizyOnlyPhoneDigitsDirective, BizyOrderByPipe, BizyPieChartComponent, BizyPieChartModule, BizyPipesModule, BizyPopupModule, BizyPopupService, BizyPopupWrapperComponent, BizyRadioComponent, BizyRadioModule, BizyRangeFilterPipe, BizyReducePipe, BizyRepeatPipe, BizyRouterService, BizySafePipe, BizySearchPipe, BizySelectComponent, BizySelectModule, BizySelectOptionComponent, BizySelectedPipe, BizyServicesModule, BizySetToArrayPipe, BizySidebarComponent, BizySidebarFloatingOptionComponent, BizySidebarFloatingOptionTitleComponent, BizySidebarModule, BizySidebarOptionComponent, BizySkeletonComponent, BizySkeletonModule, BizySliderComponent, BizySliderModule, BizyStorageService, BizyTabComponent, BizyTableColumnArrowsComponent, BizyTableColumnComponent, BizyTableColumnFixedDirective, BizyTableComponent, BizyTableFooterComponent, BizyTableHeaderComponent, BizyTableModule, BizyTableRowComponent, BizyTableRowExpandContentComponent, BizyTableScrollingComponent, BizyTableScrollingDirective, BizyTabsComponent, BizyTabsModule, BizyTagComponent, BizyTagModule, BizyTextEllipsisDirective, BizyToastModule, BizyToastService, BizyToastWrapperComponent, BizyToggleComponent, BizyToggleModule, BizyToolbarComponent, BizyToolbarModule, BizyTooltipDirective, BizyTrackByIdDirective, BizyTranslateModule, BizyTranslatePipe, BizyTranslateService, BizyUserAgentService, BizyValidatorService, BizyViewportService, LANGUAGE, LOADING_TYPE, MIME_TYPE };
 //# sourceMappingURL=bizy-core.mjs.map

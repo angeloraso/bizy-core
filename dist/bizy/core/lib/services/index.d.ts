@@ -1,3 +1,4 @@
+export { BizyServicesModule } from './services.module';
 export { BizyAnimationService } from './animation.service';
 export { BizyViewportService } from './viewport.service';
 export { BizyKeyboardService } from './keyboard.service';
@@ -9,7 +10,3 @@ export { BizyStorageService } from "./storage.service";
 export { BizyLogService } from "./log.service";
 export { BizyRouterService } from "./router.service";
 export { BizyCopyToClipboardService } from "./copy-to-clipboard.service";
-export { BizyTranslateService } from './translate';
-export { BizyPopupService, IBizyPopupResponse, BizyPopupWrapperComponent } from './popup';
-export { BizyToastService, BizyToastWrapperComponent } from './toast';
-export { BizyTranslateModule, ILocale, LANGUAGE } from './translate';

@@ -1,1 +1,0 @@
-export { BizyToolbarComponent } from './toolbar.component';
