@@ -1,5 +1,5 @@
 export { BizyServicesModule } from './services.module';
-export { BizyAnimationService } from './animation.service';
+export { BizyAnimationService, BIZY_ANIMATION } from './animation.service';
 export { BizyUserAgentService } from "./user-agent/user-agent.service";
 export { BizyCacheService } from './cache.service';
 export { BizyCopyToClipboardService } from "./copy-to-clipboard.service";
