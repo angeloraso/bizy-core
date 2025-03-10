@@ -6291,18 +6291,55 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
                 }]
         }] });
 
+var BIZY_FORMAT_SECONDS_LANGUAGE;
+(function (BIZY_FORMAT_SECONDS_LANGUAGE) {
+    BIZY_FORMAT_SECONDS_LANGUAGE["SPANISH"] = "es";
+    BIZY_FORMAT_SECONDS_LANGUAGE["ENGLISH"] = "en";
+})(BIZY_FORMAT_SECONDS_LANGUAGE || (BIZY_FORMAT_SECONDS_LANGUAGE = {}));
+var BIZY_FORMAT_SECONDS_FORMAT;
+(function (BIZY_FORMAT_SECONDS_FORMAT) {
+    BIZY_FORMAT_SECONDS_FORMAT["DATE_TIME"] = "date-time";
+    BIZY_FORMAT_SECONDS_FORMAT["TIME"] = "time";
+})(BIZY_FORMAT_SECONDS_FORMAT || (BIZY_FORMAT_SECONDS_FORMAT = {}));
+class BizyFormatSecondsService {
+    #options = {
+        language: BIZY_FORMAT_SECONDS_LANGUAGE.SPANISH,
+        format: BIZY_FORMAT_SECONDS_FORMAT.TIME
+    };
+    getOptions() {
+        return this.#options;
+    }
+    setOptions(options) {
+        if (options && options.language) {
+            this.#options.language = options.language;
+        }
+        if (options && options.format) {
+            this.#options.format = options.format;
+        }
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyFormatSecondsService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyFormatSecondsService, providedIn: 'root' });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyFormatSecondsService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
+        }] });
+
 const SERVICES = [
     BizyAnimationService,
-    BizyViewportService,
-    BizyKeyboardService,
-    BizyExportToCSVService,
-    BizyCacheService,
     BizyUserAgentService,
-    BizyValidatorService,
-    BizyStorageService,
+    BizyCacheService,
+    BizyCopyToClipboardService,
+    BizyExportToCSVService,
+    BizyFormatSecondsService,
+    BizyKeyboardService,
     BizyLogService,
     BizyRouterService,
-    BizyCopyToClipboardService
+    BizyStorageService,
+    BizyValidatorService,
+    BizyViewportService
 ];
 class BizyServicesModule {
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyServicesModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
@@ -6665,42 +6702,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
             type: Pipe,
             args: [{
                     name: 'bizySearch'
-                }]
-        }] });
-
-var BIZY_FORMAT_SECONDS_LANGUAGE;
-(function (BIZY_FORMAT_SECONDS_LANGUAGE) {
-    BIZY_FORMAT_SECONDS_LANGUAGE["SPANISH"] = "es";
-    BIZY_FORMAT_SECONDS_LANGUAGE["ENGLISH"] = "en";
-})(BIZY_FORMAT_SECONDS_LANGUAGE || (BIZY_FORMAT_SECONDS_LANGUAGE = {}));
-var BIZY_FORMAT_SECONDS_FORMAT;
-(function (BIZY_FORMAT_SECONDS_FORMAT) {
-    BIZY_FORMAT_SECONDS_FORMAT["DATE_TIME"] = "date-time";
-    BIZY_FORMAT_SECONDS_FORMAT["TIME"] = "time";
-})(BIZY_FORMAT_SECONDS_FORMAT || (BIZY_FORMAT_SECONDS_FORMAT = {}));
-class BizyFormatSecondsService {
-    #options = {
-        language: BIZY_FORMAT_SECONDS_LANGUAGE.SPANISH,
-        format: BIZY_FORMAT_SECONDS_FORMAT.TIME
-    };
-    getOptions() {
-        return this.#options;
-    }
-    setOptions(options) {
-        if (options && options.language) {
-            this.#options.language = options.language;
-        }
-        if (options && options.format) {
-            this.#options.format = options.format;
-        }
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyFormatSecondsService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyFormatSecondsService, providedIn: 'root' });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyFormatSecondsService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
                 }]
         }] });
 
@@ -7535,5 +7536,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
  * Generated bundle index. Do not edit.
  */
 
-export { BIZY_CALENDAR_DAY, BIZY_CALENDAR_EVENT_ACTION, BIZY_CALENDAR_LANGUAGE, BIZY_CALENDAR_MODE, BIZY_SKELETON_SHAPE, BIZY_TAG_TYPE, BizyAccordionComponent, BizyAccordionModule, BizyAnimationService, BizyAudioPlayerComponent, BizyAudioPlayerModule, BizyAutoFocusDirective, BizyAveragePipe, BizyBarLineChartComponent, BizyBarLineChartModule, BizyBreadcrumbComponent, BizyBreadcrumbModule, BizyButtonComponent, BizyButtonModule, BizyCacheService, BizyCalendarComponent, BizyCalendarModule, BizyCardComponent, BizyCardModule, BizyCheckboxComponent, BizyCheckboxModule, BizyCopyToClipboardDirective, BizyCopyToClipboardService, BizyCurrencyFormatDirective, BizyDatePickerComponent, BizyDatePickerModule, BizyDirectivesModule, BizyEnumToArrayPipe, BizyExportToCSVService, BizyFileUploaderComponent, BizyFileUploaderModule, BizyFileUploaderService, BizyFilterComponent, BizyFilterContentComponent, BizyFilterModule, BizyFilterPipe, BizyFilterSectionCheckboxOptionComponent, BizyFilterSectionComponent, BizyFilterSectionRangeOptionComponent, BizyFilterSectionSearchOptionComponent, BizyFilterSectionsComponent, BizyFormComponent, BizyFormModule, BizyFormatSecondsPipe, BizyGridComponent, BizyGridForDirective, BizyGridModule, BizyGridRowComponent, BizyInputComponent, BizyInputModule, BizyInputOptionComponent, BizyKeyboardService, BizyListComponent, BizyListModule, BizyLoadingDirective, BizyLogService, BizyLongPressDirective, BizyMenuComponent, BizyMenuModule, BizyMenuOptionComponent, BizyMenuTitleComponent, BizyOnlyNumbersDirective, BizyOnlyPhoneDigitsDirective, BizyOrderByPipe, BizyPieChartComponent, BizyPieChartModule, BizyPipesModule, BizyPopupModule, BizyPopupService, BizyPopupWrapperComponent, BizyRadioComponent, BizyRadioModule, BizyRangeFilterPipe, BizyReducePipe, BizyRepeatPipe, BizyRouterService, BizySafePipe, BizySearchPipe, BizySelectComponent, BizySelectModule, BizySelectOptionComponent, BizySelectedPipe, BizyServicesModule, BizySetToArrayPipe, BizySidebarComponent, BizySidebarFloatingOptionComponent, BizySidebarFloatingOptionTitleComponent, BizySidebarModule, BizySidebarOptionComponent, BizySkeletonComponent, BizySkeletonModule, BizySliderComponent, BizySliderModule, BizyStorageService, BizyTabComponent, BizyTableColumnArrowsComponent, BizyTableColumnComponent, BizyTableColumnFixedDirective, BizyTableComponent, BizyTableFooterComponent, BizyTableHeaderComponent, BizyTableModule, BizyTableRowComponent, BizyTableRowExpandContentComponent, BizyTableScrollingComponent, BizyTableScrollingDirective, BizyTabsComponent, BizyTabsModule, BizyTagComponent, BizyTagModule, BizyTextEllipsisDirective, BizyToastModule, BizyToastService, BizyToastWrapperComponent, BizyToggleComponent, BizyToggleModule, BizyToolbarComponent, BizyToolbarModule, BizyTooltipDirective, BizyTrackByIdDirective, BizyTranslateModule, BizyTranslatePipe, BizyTranslateService, BizyUserAgentService, BizyValidatorService, BizyViewportService, LANGUAGE, LOADING_TYPE, MIME_TYPE };
+export { BIZY_CALENDAR_DAY, BIZY_CALENDAR_EVENT_ACTION, BIZY_CALENDAR_LANGUAGE, BIZY_CALENDAR_MODE, BIZY_SKELETON_SHAPE, BIZY_TAG_TYPE, BizyAccordionComponent, BizyAccordionModule, BizyAnimationService, BizyAudioPlayerComponent, BizyAudioPlayerModule, BizyAutoFocusDirective, BizyAveragePipe, BizyBarLineChartComponent, BizyBarLineChartModule, BizyBreadcrumbComponent, BizyBreadcrumbModule, BizyButtonComponent, BizyButtonModule, BizyCacheService, BizyCalendarComponent, BizyCalendarModule, BizyCardComponent, BizyCardModule, BizyCheckboxComponent, BizyCheckboxModule, BizyCopyToClipboardDirective, BizyCopyToClipboardService, BizyCurrencyFormatDirective, BizyDatePickerComponent, BizyDatePickerModule, BizyDirectivesModule, BizyEnumToArrayPipe, BizyExportToCSVService, BizyFileUploaderComponent, BizyFileUploaderModule, BizyFileUploaderService, BizyFilterComponent, BizyFilterContentComponent, BizyFilterModule, BizyFilterPipe, BizyFilterSectionCheckboxOptionComponent, BizyFilterSectionComponent, BizyFilterSectionRangeOptionComponent, BizyFilterSectionSearchOptionComponent, BizyFilterSectionsComponent, BizyFormComponent, BizyFormModule, BizyFormatSecondsPipe, BizyFormatSecondsService, BizyGridComponent, BizyGridForDirective, BizyGridModule, BizyGridRowComponent, BizyInputComponent, BizyInputModule, BizyInputOptionComponent, BizyKeyboardService, BizyListComponent, BizyListModule, BizyLoadingDirective, BizyLogService, BizyLongPressDirective, BizyMenuComponent, BizyMenuModule, BizyMenuOptionComponent, BizyMenuTitleComponent, BizyOnlyNumbersDirective, BizyOnlyPhoneDigitsDirective, BizyOrderByPipe, BizyPieChartComponent, BizyPieChartModule, BizyPipesModule, BizyPopupModule, BizyPopupService, BizyPopupWrapperComponent, BizyRadioComponent, BizyRadioModule, BizyRangeFilterPipe, BizyReducePipe, BizyRepeatPipe, BizyRouterService, BizySafePipe, BizySearchPipe, BizySelectComponent, BizySelectModule, BizySelectOptionComponent, BizySelectedPipe, BizyServicesModule, BizySetToArrayPipe, BizySidebarComponent, BizySidebarFloatingOptionComponent, BizySidebarFloatingOptionTitleComponent, BizySidebarModule, BizySidebarOptionComponent, BizySkeletonComponent, BizySkeletonModule, BizySliderComponent, BizySliderModule, BizyStorageService, BizyTabComponent, BizyTableColumnArrowsComponent, BizyTableColumnComponent, BizyTableColumnFixedDirective, BizyTableComponent, BizyTableFooterComponent, BizyTableHeaderComponent, BizyTableModule, BizyTableRowComponent, BizyTableRowExpandContentComponent, BizyTableScrollingComponent, BizyTableScrollingDirective, BizyTabsComponent, BizyTabsModule, BizyTagComponent, BizyTagModule, BizyTextEllipsisDirective, BizyToastModule, BizyToastService, BizyToastWrapperComponent, BizyToggleComponent, BizyToggleModule, BizyToolbarComponent, BizyToolbarModule, BizyTooltipDirective, BizyTrackByIdDirective, BizyTranslateModule, BizyTranslatePipe, BizyTranslateService, BizyUserAgentService, BizyValidatorService, BizyViewportService, LANGUAGE, LOADING_TYPE, MIME_TYPE };
 //# sourceMappingURL=bizy-core.mjs.map

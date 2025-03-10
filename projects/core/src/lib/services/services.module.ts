@@ -10,19 +10,21 @@ import { BizyStorageService } from './storage.service';
 import { BizyLogService } from './log.service';
 import { BizyRouterService } from './router.service';
 import { BizyCopyToClipboardService } from './copy-to-clipboard.service';
+import { BizyFormatSecondsService } from './format-seconds.service';
 
 const SERVICES: Array<any> = [
   BizyAnimationService,
-  BizyViewportService,
-  BizyKeyboardService,
-  BizyExportToCSVService,
-  BizyCacheService,
   BizyUserAgentService,
-  BizyValidatorService,
-  BizyStorageService,
+  BizyCacheService,
+  BizyCopyToClipboardService,
+  BizyExportToCSVService,
+  BizyFormatSecondsService,
+  BizyKeyboardService,
   BizyLogService,
   BizyRouterService,
-  BizyCopyToClipboardService
+  BizyStorageService,
+  BizyValidatorService,
+  BizyViewportService
 ]
 
 @NgModule({
