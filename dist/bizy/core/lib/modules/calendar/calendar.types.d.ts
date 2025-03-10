@@ -25,6 +25,7 @@ export interface IBizyCalendarEvent {
     customClass?: string;
     meta?: Record<string, unknown>;
     actions?: Array<BIZY_CALENDAR_EVENT_ACTION>;
+    incrementsBadgeTotal?: boolean;
 }
 export declare enum BIZY_CALENDAR_LANGUAGE {
     SPANISH = "es",

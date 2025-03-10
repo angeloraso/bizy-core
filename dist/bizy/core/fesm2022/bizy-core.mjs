@@ -815,6 +815,7 @@ class BizyCalendarComponent {
                 start: new Date(_event.start),
                 end: new Date(_event.end),
                 title: _event.description || '',
+                incrementsBadgeTotal: _event.incrementsBadgeTotal ?? true,
                 color: {
                     primary: _event.color,
                     secondary: _event.backgroundColor
