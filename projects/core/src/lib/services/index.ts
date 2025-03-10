@@ -4,7 +4,7 @@ export { BizyUserAgentService } from "./user-agent/user-agent.service";
 export { BizyCacheService } from './cache.service';
 export { BizyCopyToClipboardService } from "./copy-to-clipboard.service";
 export { BizyExportToCSVService } from './export-to-csv.service';
-export { BizyFormatSecondsService } from './format-seconds.service';
+export { BizyFormatSecondsService, BIZY_FORMAT_SECONDS_LANGUAGE, BIZY_FORMAT_SECONDS_FORMAT} from './format-seconds.service';
 export { BizyKeyboardService } from './keyboard.service';
 export { BizyLogService } from "./log.service";
 export { BizyRouterService } from "./router.service";
