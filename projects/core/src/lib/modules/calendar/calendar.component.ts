@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
 import { BIZY_CALENDAR_MODE, IBizyCalendarEvent, BIZY_CALENDAR_LANGUAGE, BIZY_CALENDAR_EVENT_ACTION, BIZY_CALENDAR_DAY } from './calendar.types';
-import { CalendarA11y, CalendarDateFormatter, CalendarEvent, CalendarEventAction, CalendarEventTitleFormatter, CalendarModule, CalendarUtils, DateAdapter } from 'angular-calendar';
+import { CalendarA11y, CalendarDateFormatter, CalendarEvent, CalendarEventAction, CalendarEventTitleFormatter, CalendarModule, CalendarMonthViewDay, CalendarUtils, DateAdapter } from 'angular-calendar';
 import { Subject } from 'rxjs';
 import { isSameDay, isSameMonth } from 'date-fns';
 import { BizyCalendarFormatter } from './calendar.formatter';
@@ -80,7 +80,6 @@ export class BizyCalendarComponent {
         start: new Date(_event.start),
         end: new Date(_event.end),
         title: _event.description || '',
-        incrementsBadgeTotal: _event.incrementsBadgeTotal ?? true,
         color: {
           primary: _event.color,
           secondary: _event.backgroundColor
@@ -93,11 +92,22 @@ export class BizyCalendarComponent {
             afterEnd: false
         },
         draggable: false,
-        meta: _event.meta
+        meta: {
+          incrementsBadgeTotal: _event.incrementsBadgeTotal ?? true,
+          ..._event.meta
+        }
       }
     })
 
     this._refresh.next();
+  }
+
+  beforeMonthViewRender({ body }: { body: CalendarMonthViewDay[] }): void {
+    body.forEach((day) => {
+      day.badgeTotal = day.events.filter(
+        (event) => event.meta.incrementsBadgeTotal
+      ).length;
+    });
   }
 
   dayClicked({ date, events, isOpen }: { date: Date; events: CalendarEvent[]; isOpen: boolean }): void {

@@ -1,6 +1,6 @@
 import { EventEmitter, TemplateRef } from '@angular/core';
 import { BIZY_CALENDAR_MODE, IBizyCalendarEvent, BIZY_CALENDAR_LANGUAGE, BIZY_CALENDAR_DAY } from './calendar.types';
-import { CalendarEvent } from 'angular-calendar';
+import { CalendarEvent, CalendarMonthViewDay } from 'angular-calendar';
 import { Subject } from 'rxjs';
 import * as i0 from "@angular/core";
 export declare class BizyCalendarComponent {
@@ -36,6 +36,9 @@ export declare class BizyCalendarComponent {
     _calendarEvents: Array<CalendarEvent>;
     _events: Array<IBizyCalendarEvent>;
     set events(events: Array<IBizyCalendarEvent>);
+    beforeMonthViewRender({ body }: {
+        body: CalendarMonthViewDay[];
+    }): void;
     dayClicked({ date, events, isOpen }: {
         date: Date;
         events: CalendarEvent[];

@@ -26,6 +26,7 @@
       [refresh]="_refresh"
       [locale]="language"
       [activeDayIsOpen]="_activeDayIsOpen"
+      (beforeViewRender)="beforeMonthViewRender($event)"
       [excludeDays]="excludeDays"
       (dayClicked)="dayClicked($event.day)"
       (eventClicked)="eventClicked($event.event)">
