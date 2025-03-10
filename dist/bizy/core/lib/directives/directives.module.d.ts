@@ -8,8 +8,9 @@ import * as i6 from "./only-phone-digits.directive";
 import * as i7 from "./text-ellipsis.directive";
 import * as i8 from "./tooltip.directive";
 import * as i9 from "./track-by-id.directive";
+import * as i10 from "./auto-focus.directive";
 export declare class BizyDirectivesModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyDirectivesModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<BizyDirectivesModule, never, [typeof i1.BizyCopyToClipboardDirective, typeof i2.BizyCurrencyFormatDirective, typeof i3.BizyLoadingDirective, typeof i4.BizyLongPressDirective, typeof i5.BizyOnlyNumbersDirective, typeof i6.BizyOnlyPhoneDigitsDirective, typeof i7.BizyTextEllipsisDirective, typeof i8.BizyTooltipDirective, typeof i9.BizyTrackByIdDirective], [typeof i1.BizyCopyToClipboardDirective, typeof i2.BizyCurrencyFormatDirective, typeof i3.BizyLoadingDirective, typeof i4.BizyLongPressDirective, typeof i5.BizyOnlyNumbersDirective, typeof i6.BizyOnlyPhoneDigitsDirective, typeof i7.BizyTextEllipsisDirective, typeof i8.BizyTooltipDirective, typeof i9.BizyTrackByIdDirective]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<BizyDirectivesModule, never, [typeof i1.BizyCopyToClipboardDirective, typeof i2.BizyCurrencyFormatDirective, typeof i3.BizyLoadingDirective, typeof i4.BizyLongPressDirective, typeof i5.BizyOnlyNumbersDirective, typeof i6.BizyOnlyPhoneDigitsDirective, typeof i7.BizyTextEllipsisDirective, typeof i8.BizyTooltipDirective, typeof i9.BizyTrackByIdDirective, typeof i10.BizyAutoFocusDirective], [typeof i1.BizyCopyToClipboardDirective, typeof i2.BizyCurrencyFormatDirective, typeof i3.BizyLoadingDirective, typeof i4.BizyLongPressDirective, typeof i5.BizyOnlyNumbersDirective, typeof i6.BizyOnlyPhoneDigitsDirective, typeof i7.BizyTextEllipsisDirective, typeof i8.BizyTooltipDirective, typeof i9.BizyTrackByIdDirective, typeof i10.BizyAutoFocusDirective]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<BizyDirectivesModule>;
 }

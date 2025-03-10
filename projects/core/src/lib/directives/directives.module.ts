@@ -8,6 +8,7 @@ import { BizyOnlyPhoneDigitsDirective } from './only-phone-digits.directive';
 import { BizyTextEllipsisDirective } from './text-ellipsis.directive';
 import { BizyTooltipDirective } from './tooltip.directive';
 import { BizyTrackByIdDirective } from './track-by-id.directive';
+import { BizyAutoFocusDirective } from './auto-focus.directive';
 
 const DIRECTIVES: Array<any> = [
   BizyCopyToClipboardDirective,
@@ -18,7 +19,8 @@ const DIRECTIVES: Array<any> = [
   BizyOnlyPhoneDigitsDirective,
   BizyTextEllipsisDirective,
   BizyTooltipDirective,
-  BizyTrackByIdDirective
+  BizyTrackByIdDirective,
+  BizyAutoFocusDirective
 ]
 
 @NgModule({
