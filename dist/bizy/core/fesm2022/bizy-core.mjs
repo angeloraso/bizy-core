@@ -3130,11 +3130,11 @@ class BizyListComponent {
     id = `bizy-list-${Math.random()}`;
     customClass = '';
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyListComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.1", type: BizyListComponent, isStandalone: true, selector: "bizy-list", inputs: { id: "id", customClass: "customClass" }, ngImport: i0, template: "<ng-content></ng-content>", styles: [":host{font-size:1rem;height:var(--bizy-list-height);width:var(--bizy-list-width);display:flex;flex-direction:var(--bizy-list-flex-direction);column-gap:var(--bizy-list-column-gap);row-gap:var(--bizy-list-row-gap)}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.1", type: BizyListComponent, isStandalone: true, selector: "bizy-list", inputs: { id: "id", customClass: "customClass" }, ngImport: i0, template: "<ng-content></ng-content>", styles: [":host{font-size:1rem;height:var(--bizy-list-height);width:var(--bizy-list-width);display:flex;flex-direction:var(--bizy-list-flex-direction);column-gap:var(--bizy-list-column-gap);row-gap:var(--bizy-list-row-gap);justify-content:var(--bizy-list-justify-content);align-items:var(--bizy-list-align-items)}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyListComponent, decorators: [{
             type: Component,
-            args: [{ selector: 'bizy-list', imports: [CommonModule], changeDetection: ChangeDetectionStrategy.OnPush, template: "<ng-content></ng-content>", styles: [":host{font-size:1rem;height:var(--bizy-list-height);width:var(--bizy-list-width);display:flex;flex-direction:var(--bizy-list-flex-direction);column-gap:var(--bizy-list-column-gap);row-gap:var(--bizy-list-row-gap)}\n"] }]
+            args: [{ selector: 'bizy-list', imports: [CommonModule], changeDetection: ChangeDetectionStrategy.OnPush, template: "<ng-content></ng-content>", styles: [":host{font-size:1rem;height:var(--bizy-list-height);width:var(--bizy-list-width);display:flex;flex-direction:var(--bizy-list-flex-direction);column-gap:var(--bizy-list-column-gap);row-gap:var(--bizy-list-row-gap);justify-content:var(--bizy-list-justify-content);align-items:var(--bizy-list-align-items)}\n"] }]
         }], propDecorators: { id: [{
                 type: Input
             }], customClass: [{

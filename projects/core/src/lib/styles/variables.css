@@ -114,6 +114,8 @@
     --bizy-list-flex-direction: column;
     --bizy-list-column-gap: 0.5rem;
     --bizy-list-row-gap: 0.5rem;
+    --bizy-list-justify-content: 'flex-start';
+    --bizy-list-align-items: flex-start;
 
     --bizy-loading-bright-color: #fffa;
     --bizy-loading-bar-color: #e5e5e5;

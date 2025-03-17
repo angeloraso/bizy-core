@@ -6,4 +6,6 @@
     flex-direction: var(--bizy-list-flex-direction);
     column-gap: var(--bizy-list-column-gap);
     row-gap: var(--bizy-list-row-gap);
+    justify-content: var(--bizy-list-justify-content);
+    align-items: var(--bizy-list-align-items);
 }
