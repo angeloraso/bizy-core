@@ -5514,8 +5514,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.1", ngImpor
 class BizyKeyboardService {
     document;
     #shiftHolding = new BehaviorSubject(false);
-    get shiftHolding$() {
-        return this.#shiftHolding.asObservable();
+    #controlHolding = new BehaviorSubject(false);
+    get controlHolding$() {
+        return this.#controlHolding.asObservable();
     }
     constructor(document) {
         this.document = document;
@@ -5529,9 +5530,22 @@ class BizyKeyboardService {
                 this.#shiftHolding.next(false);
             }
         });
+        this.document.addEventListener('keydown', (event) => {
+            if (event.ctrlKey && event.key !== 'Control') {
+                this.#controlHolding.next(true);
+            }
+        });
+        this.document.addEventListener('keyup', (event) => {
+            if (event.ctrlKey && event.key !== 'Control') {
+                this.#controlHolding.next(false);
+            }
+        });
     }
     isShiftHolding() {
         return this.#shiftHolding.value;
+    }
+    isControlHolding() {
+        return this.#controlHolding.value;
     }
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyKeyboardService, deps: [{ token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Injectable });
     static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.1", ngImport: i0, type: BizyKeyboardService, providedIn: 'root' });
