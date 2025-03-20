@@ -7,9 +7,10 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class BizyKeyboardService {
   #shiftHolding = new BehaviorSubject<boolean>(false);
+  #controlHolding = new BehaviorSubject<boolean>(false);
 
-  get shiftHolding$(): Observable<boolean> {
-    return this.#shiftHolding.asObservable();
+  get controlHolding$(): Observable<boolean> {
+    return this.#controlHolding.asObservable();
   }
 
   constructor(
@@ -26,9 +27,25 @@ export class BizyKeyboardService {
         this.#shiftHolding.next(false);
       }
     });
+
+    this.document.addEventListener('keydown', (event) => {
+      if (event.ctrlKey && event.key !== 'Control') {
+        this.#controlHolding.next(true);
+      }
+    });
+    
+    this.document.addEventListener('keyup', (event) => {
+      if (event.ctrlKey && event.key !== 'Control') {
+        this.#controlHolding.next(false);
+      }
+    });
   }
 
   isShiftHolding(): boolean {
       return this.#shiftHolding.value;
   }
+
+  isControlHolding(): boolean {
+    return this.#controlHolding.value;
+}
 }
