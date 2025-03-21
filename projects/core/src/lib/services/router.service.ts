@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd, NavigationStart, Router } from '@angular/router';
-import { fromEvent, Observable } from 'rxjs';
+import { fromEvent, merge, Observable } from 'rxjs';
 import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 
 @Injectable({
@@ -14,6 +14,8 @@ export class BizyRouterService {
   transitionsStart$: Observable<ActivatedRouteSnapshot>;
 
   popStateEvent$: Observable<PopStateEvent>;
+
+  routeChange$: Observable<void>;
 
   constructor(@Inject(Router) private router: Router) {
     this.transitionsEnd$ = this.router.events.pipe(
@@ -31,6 +33,8 @@ export class BizyRouterService {
     );
 
     this.popStateEvent$ = fromEvent<PopStateEvent>(window, 'popstate');
+
+    this.routeChange$ = merge(this.transitionsEnd$, this.popStateEvent$).pipe(map(() => void 0));
   }
 
   getURL() {
