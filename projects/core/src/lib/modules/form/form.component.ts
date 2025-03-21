@@ -4,12 +4,13 @@ import { fromEvent, Subscription, take } from 'rxjs';
 import { BizyInputComponent } from '../input/input.component';
 import { BizySelectComponent } from '../select/select.component';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'bizy-form',
   templateUrl: './form.html',
   styleUrls: ['./form.css'],
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyFormComponent implements AfterViewInit, OnDestroy {
@@ -53,6 +54,10 @@ export class BizyFormComponent implements AfterViewInit, OnDestroy {
         event.preventDefault();
       }
     }));
+  }
+
+  onSubmit(event: Event) {
+    event.preventDefault();
   }
 
   ngOnDestroy() {
