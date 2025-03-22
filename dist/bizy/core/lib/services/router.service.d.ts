@@ -7,6 +7,7 @@ export declare class BizyRouterService {
     transitionsEnd$: Observable<ActivatedRouteSnapshot>;
     transitionsStart$: Observable<ActivatedRouteSnapshot>;
     popStateEvent$: Observable<PopStateEvent>;
+    routeChange$: Observable<void>;
     constructor(router: Router);
     getURL(): string;
     getBackPath(): string;
