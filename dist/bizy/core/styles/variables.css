@@ -55,6 +55,9 @@
     --bizy-card-padding: 0.5rem;
     --bizy-card-box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
     --bizy-card-hover-box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+    --bizy-card-header-background-color: transparent;
+    --bizy-card-content-background-color: transparent;
+    --bizy-card-footer-background-color: transparent;
 
     --bizy-calendar-event-color: var(--bizy-dark-default-color);
     --bizy-calendar-event-delete-action-color: var(--bizy-danger-color);
