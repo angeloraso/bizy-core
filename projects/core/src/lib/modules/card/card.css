@@ -50,6 +50,7 @@
     column-gap: 0.5rem;
     height: 100%;
     width: 100%;
+    background-color: var(--bizy-card-content-background-color);
 }
 
 .bizy-card__header:has(> .bizy-card__header__start:empty):has(> .bizy-card__header__end:empty) {
@@ -63,6 +64,7 @@
     grid-template-columns: auto auto;
     align-items: center;
     column-gap: 0.5rem;
+    background-color: var(--bizy-card-header-background-color);
 }
 
 .bizy-card__header__start {
@@ -94,6 +96,7 @@
     grid-template-columns: auto auto;
     align-items: center;
     column-gap: 0.5rem;
+    background-color: var(--bizy-card-footer-background-color);
 }
 
 .bizy-card__footer__start {
