@@ -5634,7 +5634,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.3", ngImpor
 
 class BizyRouterService {
     router;
-    _backPath = '';
+    static backPath = '';
     transitionsEnd$;
     transitionsStart$;
     popStateEvent$;
@@ -5650,7 +5650,7 @@ class BizyRouterService {
         return window.location.pathname;
     }
     getBackPath() {
-        return this._backPath;
+        return BizyRouterService.backPath;
     }
     getId(activatedRoute, param) {
         return activatedRoute.snapshot.paramMap.get(param);
@@ -5668,10 +5668,10 @@ class BizyRouterService {
     }
     goTo(data) {
         if (data.replace) {
-            this._backPath = '';
+            BizyRouterService.backPath = '';
         }
         else {
-            this._backPath = this.getURL();
+            BizyRouterService.backPath = this.getURL();
         }
         if (data.path[0] === '/') {
             this.router.navigateByUrl(`${data.path}${this._serialize(data.params)}`, { replaceUrl: data.replace ?? false, skipLocationChange: data.skip ?? false });
@@ -5683,9 +5683,9 @@ class BizyRouterService {
         this.router.navigateByUrl(`${url}/${data.path}${this._serialize(data.params)}`, { replaceUrl: data.replace ?? false, skipLocationChange: data.skip ?? false });
     }
     goBack(data) {
-        if (this._backPath) {
+        if (BizyRouterService.backPath) {
             history.back();
-            this._backPath = '';
+            BizyRouterService.backPath = '';
         }
         else if (data && data.path) {
             this.router.navigateByUrl(data.path, { replaceUrl: true });

@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import * as i0 from "@angular/core";
 export declare class BizyRouterService {
     private router;
-    private _backPath;
+    static backPath: string;
     transitionsEnd$: Observable<ActivatedRouteSnapshot>;
     transitionsStart$: Observable<ActivatedRouteSnapshot>;
     popStateEvent$: Observable<PopStateEvent>;
