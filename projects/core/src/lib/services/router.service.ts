@@ -7,7 +7,7 @@ import { distinctUntilChanged, filter, map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class BizyRouterService {
-  private _backPath = '';
+  static backPath = '';
 
   transitionsEnd$: Observable<ActivatedRouteSnapshot>;
 
@@ -42,7 +42,7 @@ export class BizyRouterService {
   }
 
   getBackPath() {
-    return this._backPath;
+    return BizyRouterService.backPath;
   }
 
   getId(activatedRoute: ActivatedRoute, param: string): string | null {
@@ -66,9 +66,9 @@ export class BizyRouterService {
 
   goTo(data: { path: string; params?: Record<string, string>, replace?: boolean, skip?: boolean }) {
     if (data.replace) {
-      this._backPath = '';
+      BizyRouterService.backPath = '';
     } else {
-      this._backPath = this.getURL();
+      BizyRouterService.backPath = this.getURL();
     }
 
     if (data.path[0] === '/') {
@@ -84,9 +84,9 @@ export class BizyRouterService {
   }
 
   goBack(data?: {path: string}) {
-    if (this._backPath) {
+    if (BizyRouterService.backPath) {
       history.back();
-      this._backPath = '';
+      BizyRouterService.backPath = '';
     } else if (data && data.path) {
       this.router.navigateByUrl(data.path, { replaceUrl: true });
     } else {
