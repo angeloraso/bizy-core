@@ -5495,28 +5495,31 @@ class BizyKeyboardService {
     document;
     #shiftHolding = new BehaviorSubject(false);
     #controlHolding = new BehaviorSubject(false);
+    get shiftHolding$() {
+        return this.#shiftHolding.asObservable();
+    }
     get controlHolding$() {
         return this.#controlHolding.asObservable();
     }
     constructor(document) {
         this.document = document;
+        this.document.addEventListener('visibilitychange', () => {
+            this.#shiftHolding.next(false);
+            this.#controlHolding.next(false);
+        });
         this.document.addEventListener('keydown', (event) => {
             if (event.key === 'Shift') {
                 this.#shiftHolding.next(true);
+            }
+            if (event.key === 'Meta' || event.key === 'Control') {
+                this.#controlHolding.next(true);
             }
         });
         this.document.addEventListener('keyup', (event) => {
             if (event.key === 'Shift') {
                 this.#shiftHolding.next(false);
             }
-        });
-        this.document.addEventListener('keydown', (event) => {
-            if (event.ctrlKey && event.key !== 'Control') {
-                this.#controlHolding.next(true);
-            }
-        });
-        this.document.addEventListener('keyup', (event) => {
-            if (event.ctrlKey && event.key !== 'Control') {
+            if (event.key === 'Meta' || event.key === 'Control') {
                 this.#controlHolding.next(false);
             }
         });
