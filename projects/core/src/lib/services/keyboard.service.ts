@@ -9,6 +9,10 @@ export class BizyKeyboardService {
   #shiftHolding = new BehaviorSubject<boolean>(false);
   #controlHolding = new BehaviorSubject<boolean>(false);
 
+  get shiftHolding$(): Observable<boolean> {
+    return this.#shiftHolding.asObservable();
+  }
+
   get controlHolding$(): Observable<boolean> {
     return this.#controlHolding.asObservable();
   }
@@ -16,9 +20,18 @@ export class BizyKeyboardService {
   constructor(
     @Inject(DOCUMENT) private document: Document
   ) {
+    this.document.addEventListener('visibilitychange', () => {
+      this.#shiftHolding.next(false);
+      this.#controlHolding.next(false);
+    });
+
     this.document.addEventListener('keydown', (event) => {
       if (event.key === 'Shift') {
         this.#shiftHolding.next(true);
+      }
+
+      if (event.key === 'Meta' || event.key === 'Control') {
+        this.#controlHolding.next(true);
       }
     });
     
@@ -26,16 +39,8 @@ export class BizyKeyboardService {
       if (event.key === 'Shift') {
         this.#shiftHolding.next(false);
       }
-    });
 
-    this.document.addEventListener('keydown', (event) => {
-      if (event.ctrlKey && event.key !== 'Control') {
-        this.#controlHolding.next(true);
-      }
-    });
-    
-    this.document.addEventListener('keyup', (event) => {
-      if (event.ctrlKey && event.key !== 'Control') {
+      if (event.key === 'Meta' || event.key === 'Control') {
         this.#controlHolding.next(false);
       }
     });
@@ -47,5 +52,5 @@ export class BizyKeyboardService {
 
   isControlHolding(): boolean {
     return this.#controlHolding.value;
-}
+  }
 }
