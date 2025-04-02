@@ -1,5 +1,7 @@
 :host {
     font-size: 1rem;
+    height: 100%;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
 }
