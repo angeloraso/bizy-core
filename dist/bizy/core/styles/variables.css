@@ -241,6 +241,7 @@
     --bizy-tab-border-radius: 0;
     --bizy-tab-padding: 0.5rem 1rem;
     --bizy-tab-row-gap: 0;
+    --bizy-tab-flex: none;
     --bizy-tab-background-color: #f3f3f3;
     --bizy-tab-color: var(--bizy-default-color);
     --bizy-tab-selected-color: var(--bizy-accent-color);
