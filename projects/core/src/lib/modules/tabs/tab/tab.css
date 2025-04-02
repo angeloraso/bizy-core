@@ -22,6 +22,11 @@
     cursor: pointer;
 }
 
+::ng-deep .bizy-tab * {
+    color: var(--bizy-tab-color);
+    background-color: var(--bizy-tab-background-color);
+}
+
 .bizy-tab--selected {
     color: var(--bizy-tab-selected-color);
     background-color: var(--bizy-tab-selected-background-color);
