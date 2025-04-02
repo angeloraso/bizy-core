@@ -32,6 +32,11 @@
     background-color: var(--bizy-tab-selected-background-color);
 }
 
+::ng-deep .bizy-tab--selected * {
+    color: var(--bizy-tab-selected-color);
+    background-color: var(--bizy-tab-selected-background-color);
+}
+
 .bizy-tab--disabled {
     pointer-events: none;
     opacity: 0.5;
