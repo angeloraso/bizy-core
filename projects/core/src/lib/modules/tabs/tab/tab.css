@@ -9,6 +9,7 @@
     min-width: fit-content;
     display: flex;
     flex-direction: column;
+    row-gap: var(--bizy-tab-row-gap);
     align-items: center;
     text-wrap: nowrap;
     border-top: var(--bizy-tab-border-top);
