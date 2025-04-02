@@ -240,7 +240,7 @@
     --bizy-tab-border-bottom:  0.1rem solid #ddd;
     --bizy-tab-border-radius: 0;
     --bizy-tab-padding: 0.5rem 1rem;
-    --bizy-tab-background-color: transparent;
+    --bizy-tab-background-color: #f3f3f3;
     --bizy-tab-color: var(--bizy-default-color);
     --bizy-tab-selected-color: var(--bizy-accent-color);
     --bizy-tab-selected-background-color: #fff;
