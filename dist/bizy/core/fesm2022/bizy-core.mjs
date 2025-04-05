@@ -6675,18 +6675,25 @@ class BizySearchPipe {
         }
         const getFn = (item, keys) => {
             const value = keys.reduce((acc, key) => acc && acc[key], item);
-            return typeof value === 'string' ? this.#removeAccentsAndDiacritics(value) : value;
+            return typeof value === 'string' ? this.#removeAccentsAndDiacritics(value) : String(value);
+        };
+        const isNumber = (number) => {
+            const regex = /^[0-9]*$/;
+            return regex.test(String(number).toLowerCase());
+        };
+        const isEmail = (email) => {
+            const regex = /^(([^ñ<>()[\]\\.,;:\s@"]+(\.[^ñ<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return regex.test(String(email).toLowerCase());
         };
         // Remove empty items
         search = search.filter(n => n);
         search.forEach(_keyword => {
-            // Apply perfect match if "search" is a number or is an email
-            const searchIsText = isNaN(Number(_keyword)) && !String(_keyword).includes('@');
-            if (searchIsText) {
+            if (!isNumber(_keyword) && !isEmail(_keyword)) {
                 this.searchPipeOptions = new BizySearchPipeOptions({ ...options, getFn }, _keys);
                 this.fuse = new Fuse(items, this.searchPipeOptions);
             }
             else {
+                // Apply perfect match if "search" is a number or is an email
                 this.searchPipeOptions = new BizySearchPipeOptions({ ...options, ...this.perfectMatch, getFn }, _keys);
                 this.fuse = new Fuse(items, this.searchPipeOptions);
             }
