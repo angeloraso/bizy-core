@@ -793,7 +793,7 @@ class BizyCalendarComponent {
     _viewDate = new Date();
     _activeDayIsOpen = false;
     _refresh = new Subject();
-    viewDate(viewDate) {
+    set viewDate(viewDate) {
         if (!viewDate) {
             return;
         }

@@ -32,7 +32,7 @@ export declare class BizyCalendarComponent {
     _viewDate: Date;
     _activeDayIsOpen: boolean;
     _refresh: Subject<void>;
-    viewDate(viewDate: number): void;
+    set viewDate(viewDate: number);
     _calendarEvents: Array<CalendarEvent>;
     _events: Array<IBizyCalendarEvent>;
     set events(events: Array<IBizyCalendarEvent>);
