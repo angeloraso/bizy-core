@@ -54,7 +54,7 @@ export class BizyCalendarComponent {
 
   _refresh = new Subject<void>();
 
-  @Input() viewDate(viewDate: number) {
+  @Input() set viewDate(viewDate: number) {
     if (!viewDate) {
       return;
     }
