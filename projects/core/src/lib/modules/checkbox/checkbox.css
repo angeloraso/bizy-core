@@ -23,6 +23,8 @@
 
 .bizy-checkbox__input {
     position: relative;
+    min-width: 1rem;
+    min-height: 1rem;
     width: 1rem;
     height: 1rem;
     color: var(--bizy-checkbox-border-color);
