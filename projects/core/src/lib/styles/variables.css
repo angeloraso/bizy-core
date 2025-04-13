@@ -40,11 +40,12 @@
     --bizy-breadcrumb-link-color: var(--bizy-info-color);
     --bizy-breadcrumb-path-color: var(--bizy-default-color);
     
-    --bizy-button-color: #fff;
     --bizy-button-background-color: var(--bizy-default-color);
-    --bizy-button-padding: 0.5rem;
-    --bizy-button-border-radius: 0.3rem;
     --bizy-button-border: none;
+    --bizy-button-border-radius: 0.3rem;
+    --bizy-button-color: #fff;
+    --bizy-button-min-width: 2rem;
+    --bizy-button-padding: 0.5rem;
 
     --bizy-card-background-color: #fff;
     --bizy-card-cursor: default;
