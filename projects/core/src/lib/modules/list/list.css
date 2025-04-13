@@ -2,7 +2,7 @@
     font-size: 1rem;
     height: var(--bizy-list-height);
     width: var(--bizy-list-width);
-    display: flex;
+    display: var(--bizy-list-display);
     flex-direction: var(--bizy-list-flex-direction);
     column-gap: var(--bizy-list-column-gap);
     row-gap: var(--bizy-list-row-gap);

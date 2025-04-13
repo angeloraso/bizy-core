@@ -114,6 +114,7 @@
 
     --bizy-list-height: fit-content;
     --bizy-list-width: 100%;
+    --bizy-list-display: flex;
     --bizy-list-flex-direction: column;
     --bizy-list-column-gap: 0.5rem;
     --bizy-list-row-gap: 0.5rem;
