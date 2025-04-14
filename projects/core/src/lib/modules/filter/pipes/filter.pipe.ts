@@ -49,10 +49,33 @@ export class BizyFilterPipe implements PipeTransform {
       output = output.concat(res);
     });
 
-    let map = new Map();
-    output.forEach(obj => map.set(JSON.stringify(obj), obj));
-    const uniqueArray = Array.from(map.values());
+    function deepEqual(a, b, seen = new WeakMap()) {
+      if (a === b) return true;
+      if (typeof a !== "object" || typeof b !== "object" || a === null || b === null) return false;
+    
+      // Circular reference check
+      if (seen.has(a)) return seen.get(a) === b;
+      seen.set(a, b);
+    
+      const aKeys = Object.keys(a);
+      const bKeys = Object.keys(b);
+    
+      if (aKeys.length !== bKeys.length) return false;
+    
+      for (let key of aKeys) {
+        if (!bKeys.includes(key)) return false;
+        if (!deepEqual(a[key], b[key], seen)) return false;
+      }
+    
+      return true;
+    }
+    
+    function uniqueObjects(items: Array<T>) {
+      return items.filter((obj, index, self) =>
+        index === self.findIndex(other => deepEqual(obj, other))
+      );
+    }
 
-    return uniqueArray;
+    return uniqueObjects(output);
   }
 }
