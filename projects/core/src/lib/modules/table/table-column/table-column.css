@@ -2,7 +2,7 @@
     font-size: 1rem;
     flex: 1;
     background-color: inherit;
-    height: var(--bizy-table-row-height);
+    min-height: var(--bizy-table-row-height);
     display: flex;
     -webkit-user-select: text;
     -moz-user-select: text;
