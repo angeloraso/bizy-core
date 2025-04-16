@@ -49,7 +49,7 @@
 
 .bizy-menu__options {
     background-color: var(--bizy-menu-background-color);
-    min-width: fit-content;
+    min-width: var(--bizy-menu-min-width);
     max-width: var(--bizy-menu-max-width);
     max-height: var(--bizy-menu-max-height);
     overflow-y: auto;

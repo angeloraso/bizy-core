@@ -29,6 +29,8 @@ export class BizyMenuComponent {
 
   #subscription = new Subscription();
 
+  readonly bizyMenuOptionsId = 'bizyMenuOptionsId';
+
   _onSelect(event: any) {
     if (this.disabled) {
       return;
@@ -51,6 +53,10 @@ export class BizyMenuComponent {
     if (this.opened) {
       this.#subscription = new Subscription();
       this.#subscription.add(fromEvent(window, 'scroll', { capture: true }).subscribe(() => {
+        if (event && event.target && event.target.id && (event.target.id === this.id || event.target.id === this.bizyMenuOptionsId)) {
+          return;
+        }
+
         this.opened = false;
         this.#ref.detectChanges();
         this.#subscription.unsubscribe();
