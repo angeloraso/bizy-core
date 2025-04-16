@@ -13,6 +13,7 @@ export declare class BizyMenuComponent {
     opened: boolean;
     onSelect: EventEmitter<PointerEvent>;
     _menuWidth: number;
+    readonly bizyMenuOptionsId = "bizyMenuOptionsId";
     _onSelect(event: any): void;
     selectButton(event: any): void;
     close: (event: Event & {
