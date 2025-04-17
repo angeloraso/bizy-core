@@ -1,3 +1,4 @@
+export { BizyExtractNumbersPipe } from "./extractNumbers.pipe";
 export { BizyPipesModule } from "./pipes.module";
 export { BizyRepeatPipe } from "./repeat.pipe";
 export { BizySetToArrayPipe } from "./set-to-array.pipe";
