@@ -17,6 +17,7 @@ export * from './menu';
 export * from './pie-chart';
 export * from './popup';
 export * from './radio';
+export * from './section';
 export * from './select';
 export * from './sidebar';
 export * from './skeleton';
