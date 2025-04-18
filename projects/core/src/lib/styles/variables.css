@@ -172,6 +172,8 @@
     --bizy-section-margin-bottom: center;
     --bizy-section-flex-wrap: wrap;
 
+    --bizy-section-start-height: fit-content;
+    --bizy-section-start-width: 100%;
     --bizy-section-start-flex: 1;
     --bizy-section-start-background-color: transparent;
     --bizy-section-start-justify-content: flex-start;
@@ -180,6 +182,8 @@
     --bizy-section-start-row-gap: 1rem;
 
     --bizy-section-center-flex: 1;
+    --bizy-section-center-height: fit-content;
+    --bizy-section-center-width: 100%;
     --bizy-section-center-background-color: transparent;
     --bizy-section-center-justify-content: center;
     --bizy-section-center-align-items: center;
@@ -187,6 +191,8 @@
     --bizy-section-center-row-gap: 1rem;
 
     --bizy-section-end-flex: 1;
+    --bizy-section-end-height: fit-content;
+    --bizy-section-end-width: 100%;
     --bizy-section-end-background-color: transparent;
     --bizy-section-end-justify-content: flex-end;
     --bizy-section-end-align-items: center;

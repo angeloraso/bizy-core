@@ -1,0 +1,12 @@
+:host {
+    font-size: 1rem;
+    display: flex;
+    flex: var(--bizy-section-center-flex);
+    height: var(--bizy-section-center-height);
+    width: var(--bizy-section-center-width);
+    background-color: var(--bizy-section-center-background-color);
+    justify-content: var(--bizy-section-center-justify-content);
+    align-items: var(--bizy-section-center-align-items);
+    column-gap: var(--bizy-section-center-column-gap);
+    row-gap: var(--bizy-section-center-row-gap);
+}
