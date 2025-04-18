@@ -4,6 +4,7 @@
 
 .bizy-popup-wrapper {
     position: relative;
+    padding: var(--bizy-popup-padding);;
     background-color: var(--bizy-popup-background-color);
     min-width: var(--bizy-popup-min-width);
     width: var(--bizy-popup-width);
