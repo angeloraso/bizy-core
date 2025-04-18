@@ -115,7 +115,6 @@
 
     --bizy-list-height: fit-content;
     --bizy-list-width: 100%;
-    --bizy-list-display: flex;
     --bizy-list-flex-direction: column;
     --bizy-list-column-gap: 0.5rem;
     --bizy-list-row-gap: 0.5rem;
@@ -161,6 +160,38 @@
     --bizy-popup-close-button-hover-color: #e76565;
 
     --bizy-radio-color: var(--bizy-accent-color);
+
+    --bizy-section-height: fit-content;
+    --bizy-section-width: 100%;
+    --bizy-section-background-color: transparent;
+    --bizy-section-flex-direction: row;
+    --bizy-section-column-gap: 1rem;
+    --bizy-section-row-gap: 1rem;
+    --bizy-section-justify-content: space-between;
+    --bizy-section-align-items: center;
+    --bizy-section-margin-bottom: center;
+    --bizy-section-flex-wrap: wrap;
+
+    --bizy-section-start-flex: 1;
+    --bizy-section-start-background-color: transparent;
+    --bizy-section-start-justify-content: flex-start;
+    --bizy-section-start-align-items: center;
+    --bizy-section-start-column-gap: 1rem;
+    --bizy-section-start-row-gap: 1rem;
+
+    --bizy-section-center-flex: 1;
+    --bizy-section-center-background-color: transparent;
+    --bizy-section-center-justify-content: center;
+    --bizy-section-center-align-items: center;
+    --bizy-section-center-column-gap: 1rem;
+    --bizy-section-center-row-gap: 1rem;
+
+    --bizy-section-end-flex: 1;
+    --bizy-section-end-background-color: transparent;
+    --bizy-section-end-justify-content: flex-end;
+    --bizy-section-end-align-items: center;
+    --bizy-section-end-column-gap: 1rem;
+    --bizy-section-end-row-gap: 1rem;
 
     --bizy-select-height: 20rem;
     --bizy-select-width: 100%;
