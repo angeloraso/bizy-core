@@ -6,7 +6,11 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   templateUrl: './list.html',
   styleUrls: ['./list.css'],
   imports: [CommonModule],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { 
+    '[id]': 'id',
+    '[class]': 'customClass'
+  }
 })
 export class BizyListComponent {
   @Input() id: string = `bizy-list-${Math.random()}`;
