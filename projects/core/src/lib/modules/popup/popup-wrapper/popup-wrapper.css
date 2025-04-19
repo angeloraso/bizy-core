@@ -4,23 +4,22 @@
 
 .bizy-popup-wrapper {
     position: relative;
-    padding: var(--bizy-popup-padding);;
+    padding: var(--bizy-popup-padding);
     background-color: var(--bizy-popup-background-color);
     min-width: var(--bizy-popup-min-width);
     width: var(--bizy-popup-width);
-    max-width: var(--bizy-popup-max-width);;
+    max-width: var(--bizy-popup-max-width);
 }
 
 .bizy-popup-wrapper__drag-button {
     position: absolute;
     left: -0.9rem;
     top: -0.9rem;
-    border: 0.1rem solid var(--bizy-popup-drag-button-border-color);
+    border: var(--bizy-popup-drag-button-border);
     border-radius: 50%;
     padding: 0.2rem;
     place-items: center;
     display: grid;
-    border: .1rem solid #ccc;
     background-color: var(--bizy-popup-drag-button-background-color);
     cursor: pointer;
     transition: transform .2s;
@@ -43,12 +42,11 @@
     position: absolute;
     right: -0.9rem;
     top: -0.9rem;
-    border: 0.1rem solid var(--bizy-popup-close-button-border-color);
+    border: var(--bizy-popup-close-button-border);
     border-radius: 50%;
     padding: 0.25rem 0.35rem;
     place-items: center;
     display: grid;
-    border: .1rem solid #ccc;
     background-color: var(--bizy-popup-close-button-background-color);
     cursor: pointer;
     transition: transform .2s;

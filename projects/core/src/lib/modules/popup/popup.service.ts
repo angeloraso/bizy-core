@@ -3,16 +3,18 @@ import { inject, Injectable } from "@angular/core";
 import { take } from "rxjs";
 import { BizyPopupWrapperComponent } from "./popup-wrapper/popup-wrapper.component";
 import { Dialog, DialogRef } from '@angular/cdk/dialog';
+import { BizyFullScreenPopupWrapperComponent } from "./full-screen-popup-wrapper/full-screen-popup-wrapper.component";
 
 @Injectable()
 export class BizyPopupService {
   readonly #dialog = inject(Dialog);
-  static dialogs = new Set<DialogRef<unknown, BizyPopupWrapperComponent<unknown>>>();
-  #data: unknown = null;;
+  static dialogs = new Set<DialogRef<unknown, any>>();
+  #data: unknown = null;
   
-  open<R>(data: {component: ComponentType<unknown>, data?: unknown, customClass?: string, disableClose?: boolean, id?: string}, callback?: (res: R) => void) {
+  open<R>(data: {component: ComponentType<unknown>, data?: unknown, customClass?: string, fullScreen?: boolean, disableClose?: boolean, id?: string}, callback?: (res: R) => void) {
     this.#data = data.data;
-    const dialogRef = this.#dialog.open(BizyPopupWrapperComponent, ({
+    const component: ComponentType<unknown> = data.fullScreen ? BizyFullScreenPopupWrapperComponent : BizyPopupWrapperComponent;
+    const dialogRef = this.#dialog.open(component, ({
       id: data.id,
       data: data.component,
       autoFocus: true,
@@ -36,7 +38,7 @@ export class BizyPopupService {
   }
 
   close(data?: {id?: string, response?: unknown}) {
-    let dialogRef: DialogRef<unknown, BizyPopupWrapperComponent<unknown>> | null = null;
+    let dialogRef: DialogRef<unknown, any> | null = null;
     if (data && data.id) {
       dialogRef = Array.from(BizyPopupService.dialogs).find(_dialogRef => _dialogRef.id === data.id);
     } else {
