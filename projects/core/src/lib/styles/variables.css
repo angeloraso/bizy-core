@@ -160,8 +160,13 @@
     --bizy-popup-close-button-color: var(--bizy-default-color);
     --bizy-popup-close-button-hover-color: var(--bizy-danger-color);
 
+    --bizy-popup-full-screen-background-color: #fff;
+    --bizy-popup-full-screen-padding: 0.5rem;
+    --bizy-popup-full-screen-border-radius: 1rem;
     --bizy-popup-full-screen-close-button-border: transparent;
-    --bizy-popup-full-screen-close-button-background-color: #fff;
+    --bizy-popup-full-screen-close-button-background-color: transparent;
+    --bizy-popup-full-screen-close-button-color: var(--bizy-default-color);
+    --bizy-popup-full-screen-close-button-hover-color: var(--bizy-danger-color);
 
     --bizy-radio-color: var(--bizy-accent-color);
 

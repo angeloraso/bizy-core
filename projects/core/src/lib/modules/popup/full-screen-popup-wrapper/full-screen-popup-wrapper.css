@@ -14,7 +14,7 @@
     height: 100%;
     width: 100%;
     border-top-left-radius: var(--bizy-popup-full-screen-border-radius);
-    border-top-right-radius: var(--bizy-popup-border-radius);
+    border-top-right-radius: var(--bizy-popup-full-screen-border-radius);
 }
 
 .bizy-full-screen-popup-wrapper__close-button {

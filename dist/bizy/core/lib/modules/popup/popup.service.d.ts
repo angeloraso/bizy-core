@@ -1,14 +1,14 @@
 import { ComponentType } from "@angular/cdk/portal";
-import { BizyPopupWrapperComponent } from "./popup-wrapper/popup-wrapper.component";
 import { DialogRef } from '@angular/cdk/dialog';
 import * as i0 from "@angular/core";
 export declare class BizyPopupService {
     #private;
-    static dialogs: Set<DialogRef<unknown, BizyPopupWrapperComponent<unknown>>>;
+    static dialogs: Set<DialogRef<unknown, any>>;
     open<R>(data: {
         component: ComponentType<unknown>;
         data?: unknown;
         customClass?: string;
+        fullScreen?: boolean;
         disableClose?: boolean;
         id?: string;
     }, callback?: (res: R) => void): void;
