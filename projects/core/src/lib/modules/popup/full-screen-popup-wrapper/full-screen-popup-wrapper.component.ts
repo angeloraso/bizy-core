@@ -3,6 +3,7 @@ import { ComponentType } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, ViewChild, ViewContainerRef, inject } from '@angular/core';
 import { BIZY_ANIMATION, BizyAnimationService } from '../../../services';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'bizy-full-screen-popup-wrapper',
@@ -34,17 +35,22 @@ export class BizyFullScreenPopupWrapperComponent<T> {
       this.dynamicComponentContainer.clear();
       this.dynamicComponentContainer.createComponent(this.#component);
 
+      this.#dialogRef.closed.pipe(take(1)).subscribe(async () => {
+        try {
+          this.loading = true;
+          if (this.#elementRef) {
+            await this.#animation.setAnimation(this.#elementRef.nativeElement, BIZY_ANIMATION.SLIDE_OUT_DOWN);
+          }
+        } finally {
+          this.loading = false;
+        }
+      });
+
       this.#ref.detectChanges();
     }
   }
 
   async close() {
-    try {
-      this.loading = true;
-      await this.#animation.setAnimation(this.#elementRef.nativeElement, BIZY_ANIMATION.SLIDE_OUT_DOWN);
-      this.#dialogRef.close();
-    } finally {
-      this.loading = false;
-    }
+    this.#dialogRef.close();
   }
 }
