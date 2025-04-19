@@ -34,6 +34,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import * as i1$2 from '@angular/router';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import * as i1$4 from '@angular/platform-browser';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -4027,242 +4028,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.7", ngImpor
                     args: [BizyRouterService]
                 }] }] });
 
-/**
- * Copyright 2020 Google LLC
- *
- * Licensed under the Apache License, Version 2.0 (the 'License');
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an 'AS IS' BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-// This function's role is to enable smooth transition to the brave new world of
-// User-Agent Client Hints. If you have legacy code that relies on
-// `navigator.userAgent` and which relies on entropy that will go away by
-// default, you *need* to refactor it to use UA-CH. This function is to be used
-// as a stop gap, to enable smooth transition during that period.
-/**
-* @param {string[]} hints
-* @return {Promise<string|undefined>} A Promise that resolves to a string if a
-*   UA could be synthesized from client hints, otherwise undefined.
-*/
-async function getUserAgentUsingClientHints(hints) {
-    // Helper functions for platform specific strings
-    const GetCrosSpecificString = (values) => {
-        let osCPUFragment = '';
-        if (values.bitness == '64') {
-            if (values.architecture == 'x86') {
-                osCPUFragment = 'x86_64';
-            }
-            else if (values.architecture == 'arm') {
-                osCPUFragment = 'aarch64';
-            }
-        }
-        else if (values.architecture == 'arm' && values.bitness == '32') {
-            osCPUFragment = 'armv7l';
-        }
-        if (osCPUFragment == '') {
-            return `X11; CrOS ${values.platformVersion}`;
-        }
-        return `X11; CrOS ${osCPUFragment} ${values.platformVersion}`;
-    };
-    const GetWindowsSpecificString = (values) => {
-        let osCPUFragment = '';
-        if (values.architecture == 'x86' && values.bitness == '64') {
-            osCPUFragment = '; Win64; x64';
-        }
-        else if (values.architecture == 'arm') {
-            osCPUFragment = '; ARM';
-        }
-        else if (values.wow64 === true) {
-            osCPUFragment = '; WOW64';
-        }
-        return `Windows NT ${getWindowsPlatformVersion(values.platformVersion)}${osCPUFragment}`;
-    };
-    const GetMacSpecificString = (values) => {
-        let newUA = 'Macintosh;';
-        newUA += values.architecture === 'arm' ? ' ARM ' : ' Intel ';
-        newUA += 'Mac OS X ';
-        let macVersion = values.platformVersion;
-        if (macVersion.indexOf('.') > -1) {
-            macVersion = macVersion.split('.').join('_');
-        }
-        newUA += macVersion;
-        return newUA;
-    };
-    const GetAndroidSpecificString = (values) => {
-        let newUA = 'Linux; Android ';
-        newUA += values.platformVersion;
-        if (values.model) {
-            newUA += '; ';
-            newUA += values.model;
-        }
-        return newUA;
-    };
-    const Initialize = (values) => {
-        if (!values.architecture) {
-            values.architecture = 'x86';
-        }
-        if (!values.bitness) {
-            values.bitness = '64';
-        }
-        if (!values.model) {
-            values.model = '';
-        }
-        if (!values.platform) {
-            values.platform = 'Windows';
-        }
-        if (!values.platformVersion) {
-            values.platformVersion = '10.0';
-        }
-        if (!values.wow64) {
-            values.wow64 = false;
-        }
-        return values;
-    };
-    // @ts-ignore-error
-    if (!navigator.userAgentData) {
-        return Promise.resolve('');
-    }
-    // Verify that this is a Chromium-based browser
-    let isChromium = false;
-    let chromiumVersion;
-    // eslint-disable-next-line prefer-regex-literals
-    const isChromeUAPattern = new RegExp('AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/\\d+.\\d+.\\d+.\\d+ (Mobile )?Safari/537.36$');
-    // @ts-ignore-error
-    navigator.userAgentData.brands.forEach(value => {
-        if (value.brand == 'Chromium') {
-            // Let's double check the UA string as well, so we don't accidentally
-            // capture a headless browser or friendly bot (which should report as
-            // HeadlessChrome or something entirely different).
-            isChromium = isChromeUAPattern.test(navigator.userAgent);
-            chromiumVersion = value.version;
-        }
-    });
-    // @ts-ignore
-    if (!isChromium || chromiumVersion < 100) {
-        // If this is not a Chromium-based browser, the UA string should be very
-        // different. Or, if this is a Chromium lower than 100, it doesn't have
-        // all the hints we rely on. So let's bail.
-        return Promise.resolve('');
-    }
-    // Main logic
-    return new Promise(resolve => {
-        // @ts-ignore-error
-        navigator.userAgentData.getHighEntropyValues(hints).then(values => {
-            let initialValues = {
-                // @ts-ignore-error
-                platform: navigator.userAgentData?.platform,
-                version: chromiumVersion
-            };
-            values = Object.assign(initialValues, values);
-            values = Initialize(values);
-            let newUA = 'Mozilla/5.0 (';
-            if (['Chrome OS', 'Chromium OS'].includes(values.platform)) {
-                newUA += GetCrosSpecificString(values);
-            }
-            else if (values.platform == 'Windows') {
-                newUA += GetWindowsSpecificString(values);
-            }
-            else if (values.platform == 'macOS') {
-                newUA += GetMacSpecificString(values);
-            }
-            else if (values.platform == 'Android') {
-                newUA += GetAndroidSpecificString(values);
-            }
-            else {
-                newUA += 'X11; Linux x86_64';
-            }
-            newUA += ') AppleWebKit/537.36 (KHTML, like Gecko) Chrome/';
-            newUA += getVersion(values?.fullVersionList, initialValues.version);
-            // @ts-ignore-error
-            if (navigator.userAgentData.mobile) {
-                newUA += ' Mobile';
-            }
-            newUA += ' Safari/537.36';
-            resolve(newUA);
-        });
-    });
-}
-function getVersion(fullVersionList, majorVersion) {
-    // If we don't get a fullVersionList, or it's somehow undefined, return
-    // the reduced version number.
-    return (fullVersionList?.find((item) => item.brand == 'Google Chrome')?.version ||
-        `${majorVersion}.0.0.0`);
-}
-function getWindowsPlatformVersion(platformVersion) {
-    // https://wicg.github.io/ua-client-hints/#get-the-legacy-windows-version-number
-    const versionMap = new Map([
-        ['0.3.0', '6.3'], // Windows 8.1
-        ['0.2.0', '6.2'], // Windows 8
-        ['0.1.0', '6.1'] // Windows 7
-    ]);
-    if (versionMap.has(platformVersion)) {
-        return versionMap.get(platformVersion);
-    }
-    // Windows 10 and above send "Windows NT 10.0"
-    return '10.0';
-}
-/**
-   * @param {string[]} hints
-   * @return {Promise<string|undefined>} A Promise that resolves on overriding the
-   *   navigator.userAgent string.
-   */
-async function overrideUserAgentUsingClientHints(hints) {
-    return new Promise(resolve => {
-        getUserAgentUsingClientHints(hints).then(newUA => {
-            if (newUA) {
-                // Got a new UA value. Now override `navigator.userAgent`.
-                Object.defineProperty(navigator, 'userAgent', {
-                    value: newUA,
-                    writable: false,
-                    configurable: true
-                });
-            }
-            else {
-                newUA = navigator.userAgent;
-            }
-            resolve(newUA);
-        });
-    });
-}
-const exportedForTests = { getVersion, getWindowsPlatformVersion };
-
-class BizyUserAgentService {
-    get() {
-        return new Promise(resolve => {
-            overrideUserAgentUsingClientHints([
-                'architecture',
-                'bitness',
-                'model',
-                'platformVersion',
-                'uaFullVersion',
-                'fullVersionList'
-            ])
-                .then(userAgent => {
-                resolve(userAgent);
-            })
-                .catch(() => {
-                resolve(window.navigator.userAgent);
-            });
-        });
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.7", ngImport: i0, type: BizyUserAgentService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.7", ngImport: i0, type: BizyUserAgentService, providedIn: 'root' });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.7", ngImport: i0, type: BizyUserAgentService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }] });
-
 class BizyValidatorService {
     isEmail(email) {
         const regex = /^(([^ñ<>()[\]\\.,;:\s@"]+(\.[^ñ<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -4562,9 +4327,247 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.7", ngImpor
                 }]
         }] });
 
+/**
+ * Copyright 2020 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the 'License');
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an 'AS IS' BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+// This function's role is to enable smooth transition to the brave new world of
+// User-Agent Client Hints. If you have legacy code that relies on
+// `navigator.userAgent` and which relies on entropy that will go away by
+// default, you *need* to refactor it to use UA-CH. This function is to be used
+// as a stop gap, to enable smooth transition during that period.
+/**
+* @param {string[]} hints
+* @return {Promise<string|undefined>} A Promise that resolves to a string if a
+*   UA could be synthesized from client hints, otherwise undefined.
+*/
+async function getUserAgentUsingClientHints(hints) {
+    // Helper functions for platform specific strings
+    const GetCrosSpecificString = (values) => {
+        let osCPUFragment = '';
+        if (values.bitness == '64') {
+            if (values.architecture == 'x86') {
+                osCPUFragment = 'x86_64';
+            }
+            else if (values.architecture == 'arm') {
+                osCPUFragment = 'aarch64';
+            }
+        }
+        else if (values.architecture == 'arm' && values.bitness == '32') {
+            osCPUFragment = 'armv7l';
+        }
+        if (osCPUFragment == '') {
+            return `X11; CrOS ${values.platformVersion}`;
+        }
+        return `X11; CrOS ${osCPUFragment} ${values.platformVersion}`;
+    };
+    const GetWindowsSpecificString = (values) => {
+        let osCPUFragment = '';
+        if (values.architecture == 'x86' && values.bitness == '64') {
+            osCPUFragment = '; Win64; x64';
+        }
+        else if (values.architecture == 'arm') {
+            osCPUFragment = '; ARM';
+        }
+        else if (values.wow64 === true) {
+            osCPUFragment = '; WOW64';
+        }
+        return `Windows NT ${getWindowsPlatformVersion(values.platformVersion)}${osCPUFragment}`;
+    };
+    const GetMacSpecificString = (values) => {
+        let newUA = 'Macintosh;';
+        newUA += values.architecture === 'arm' ? ' ARM ' : ' Intel ';
+        newUA += 'Mac OS X ';
+        let macVersion = values.platformVersion;
+        if (macVersion.indexOf('.') > -1) {
+            macVersion = macVersion.split('.').join('_');
+        }
+        newUA += macVersion;
+        return newUA;
+    };
+    const GetAndroidSpecificString = (values) => {
+        let newUA = 'Linux; Android ';
+        newUA += values.platformVersion;
+        if (values.model) {
+            newUA += '; ';
+            newUA += values.model;
+        }
+        return newUA;
+    };
+    const Initialize = (values) => {
+        if (!values.architecture) {
+            values.architecture = 'x86';
+        }
+        if (!values.bitness) {
+            values.bitness = '64';
+        }
+        if (!values.model) {
+            values.model = '';
+        }
+        if (!values.platform) {
+            values.platform = 'Windows';
+        }
+        if (!values.platformVersion) {
+            values.platformVersion = '10.0';
+        }
+        if (!values.wow64) {
+            values.wow64 = false;
+        }
+        return values;
+    };
+    // @ts-ignore-error
+    if (!navigator.userAgentData) {
+        return Promise.resolve('');
+    }
+    // Verify that this is a Chromium-based browser
+    let isChromium = false;
+    let chromiumVersion;
+    // eslint-disable-next-line prefer-regex-literals
+    const isChromeUAPattern = new RegExp('AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/\\d+.\\d+.\\d+.\\d+ (Mobile )?Safari/537.36$');
+    // @ts-ignore-error
+    navigator.userAgentData.brands.forEach(value => {
+        if (value.brand == 'Chromium') {
+            // Let's double check the UA string as well, so we don't accidentally
+            // capture a headless browser or friendly bot (which should report as
+            // HeadlessChrome or something entirely different).
+            isChromium = isChromeUAPattern.test(navigator.userAgent);
+            chromiumVersion = value.version;
+        }
+    });
+    // @ts-ignore
+    if (!isChromium || chromiumVersion < 100) {
+        // If this is not a Chromium-based browser, the UA string should be very
+        // different. Or, if this is a Chromium lower than 100, it doesn't have
+        // all the hints we rely on. So let's bail.
+        return Promise.resolve('');
+    }
+    // Main logic
+    return new Promise(resolve => {
+        // @ts-ignore-error
+        navigator.userAgentData.getHighEntropyValues(hints).then(values => {
+            let initialValues = {
+                // @ts-ignore-error
+                platform: navigator.userAgentData?.platform,
+                version: chromiumVersion
+            };
+            values = Object.assign(initialValues, values);
+            values = Initialize(values);
+            let newUA = 'Mozilla/5.0 (';
+            if (['Chrome OS', 'Chromium OS'].includes(values.platform)) {
+                newUA += GetCrosSpecificString(values);
+            }
+            else if (values.platform == 'Windows') {
+                newUA += GetWindowsSpecificString(values);
+            }
+            else if (values.platform == 'macOS') {
+                newUA += GetMacSpecificString(values);
+            }
+            else if (values.platform == 'Android') {
+                newUA += GetAndroidSpecificString(values);
+            }
+            else {
+                newUA += 'X11; Linux x86_64';
+            }
+            newUA += ') AppleWebKit/537.36 (KHTML, like Gecko) Chrome/';
+            newUA += getVersion(values?.fullVersionList, initialValues.version);
+            // @ts-ignore-error
+            if (navigator.userAgentData.mobile) {
+                newUA += ' Mobile';
+            }
+            newUA += ' Safari/537.36';
+            resolve(newUA);
+        });
+    });
+}
+function getVersion(fullVersionList, majorVersion) {
+    // If we don't get a fullVersionList, or it's somehow undefined, return
+    // the reduced version number.
+    return (fullVersionList?.find((item) => item.brand == 'Google Chrome')?.version ||
+        `${majorVersion}.0.0.0`);
+}
+function getWindowsPlatformVersion(platformVersion) {
+    // https://wicg.github.io/ua-client-hints/#get-the-legacy-windows-version-number
+    const versionMap = new Map([
+        ['0.3.0', '6.3'], // Windows 8.1
+        ['0.2.0', '6.2'], // Windows 8
+        ['0.1.0', '6.1'] // Windows 7
+    ]);
+    if (versionMap.has(platformVersion)) {
+        return versionMap.get(platformVersion);
+    }
+    // Windows 10 and above send "Windows NT 10.0"
+    return '10.0';
+}
+/**
+   * @param {string[]} hints
+   * @return {Promise<string|undefined>} A Promise that resolves on overriding the
+   *   navigator.userAgent string.
+   */
+async function overrideUserAgentUsingClientHints(hints) {
+    return new Promise(resolve => {
+        getUserAgentUsingClientHints(hints).then(newUA => {
+            if (newUA) {
+                // Got a new UA value. Now override `navigator.userAgent`.
+                Object.defineProperty(navigator, 'userAgent', {
+                    value: newUA,
+                    writable: false,
+                    configurable: true
+                });
+            }
+            else {
+                newUA = navigator.userAgent;
+            }
+            resolve(newUA);
+        });
+    });
+}
+const exportedForTests = { getVersion, getWindowsPlatformVersion };
+
+class BizyDeviceService {
+    #device = inject(DeviceDetectorService);
+    async getUserAgent() {
+        try {
+            const userAgent = await overrideUserAgentUsingClientHints([
+                'architecture',
+                'bitness',
+                'model',
+                'platformVersion',
+                'uaFullVersion',
+                'fullVersionList'
+            ]);
+            return userAgent;
+        }
+        catch {
+            return window.navigator.userAgent;
+        }
+    }
+    isMobile = () => this.#device.isMobile();
+    isTablet = () => this.#device.isTablet();
+    isDesktop = () => this.#device.isDesktop();
+    isPortrait = () => this.#device.orientation === 'portrait';
+    isLandscape = () => this.#device.orientation === 'landscape';
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.7", ngImport: i0, type: BizyDeviceService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.7", ngImport: i0, type: BizyDeviceService, providedIn: 'root' });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.7", ngImport: i0, type: BizyDeviceService, decorators: [{
+            type: Injectable,
+            args: [{ providedIn: 'root' }]
+        }] });
+
 const SERVICES = [
     BizyAnimationService,
-    BizyUserAgentService,
+    BizyDeviceService,
     BizyCacheService,
     BizyCopyToClipboardService,
     BizyExportToCSVService,
@@ -7746,5 +7749,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.7", ngImpor
  * Generated bundle index. Do not edit.
  */
 
-export { BIZY_ANIMATION, BIZY_CALENDAR_DAY, BIZY_CALENDAR_EVENT_ACTION, BIZY_CALENDAR_LANGUAGE, BIZY_CALENDAR_MODE, BIZY_FORMAT_SECONDS_FORMAT, BIZY_FORMAT_SECONDS_LANGUAGE, BIZY_SKELETON_SHAPE, BIZY_TAG_TYPE, BizyAccordionComponent, BizyAccordionModule, BizyAnimationService, BizyAudioPlayerComponent, BizyAudioPlayerModule, BizyAutoFocusDirective, BizyAveragePipe, BizyBarLineChartComponent, BizyBarLineChartModule, BizyBreadcrumbComponent, BizyBreadcrumbModule, BizyButtonComponent, BizyButtonModule, BizyCacheService, BizyCalendarComponent, BizyCalendarModule, BizyCardComponent, BizyCardModule, BizyCheckboxComponent, BizyCheckboxModule, BizyCopyToClipboardDirective, BizyCopyToClipboardService, BizyCurrencyFormatDirective, BizyDatePickerComponent, BizyDatePickerModule, BizyDirectivesModule, BizyEnumToArrayPipe, BizyExportToCSVService, BizyExtractNumbersPipe, BizyFileUploaderComponent, BizyFileUploaderModule, BizyFileUploaderService, BizyFilterComponent, BizyFilterContentComponent, BizyFilterModule, BizyFilterPipe, BizyFilterSectionCheckboxOptionComponent, BizyFilterSectionComponent, BizyFilterSectionRangeOptionComponent, BizyFilterSectionSearchOptionComponent, BizyFilterSectionsComponent, BizyFormComponent, BizyFormModule, BizyFormatSecondsPipe, BizyFormatSecondsService, BizyFullScreenPopupWrapperComponent, BizyGridComponent, BizyGridForDirective, BizyGridModule, BizyGridRowComponent, BizyInputComponent, BizyInputModule, BizyInputOptionComponent, BizyKeyboardService, BizyListComponent, BizyListModule, BizyLoadingDirective, BizyLogService, BizyLongPressDirective, BizyMenuComponent, BizyMenuModule, BizyMenuOptionComponent, BizyMenuTitleComponent, BizyOnlyNumbersDirective, BizyOnlyPhoneDigitsDirective, BizyOrderByPipe, BizyPieChartComponent, BizyPieChartModule, BizyPipesModule, BizyPopupModule, BizyPopupService, BizyPopupWrapperComponent, BizyRadioComponent, BizyRadioModule, BizyRangeFilterPipe, BizyReducePipe, BizyRepeatPipe, BizyRouterService, BizySafePipe, BizySearchPipe, BizySectionCenterComponent, BizySectionComponent, BizySectionEndComponent, BizySectionModule, BizySectionStartComponent, BizySelectComponent, BizySelectModule, BizySelectOptionComponent, BizySelectedPipe, BizyServicesModule, BizySetToArrayPipe, BizySidebarComponent, BizySidebarFloatingOptionComponent, BizySidebarFloatingOptionTitleComponent, BizySidebarModule, BizySidebarOptionComponent, BizySkeletonComponent, BizySkeletonModule, BizySliderComponent, BizySliderModule, BizyStorageService, BizyTabComponent, BizyTableColumnArrowsComponent, BizyTableColumnComponent, BizyTableColumnFixedDirective, BizyTableComponent, BizyTableFooterComponent, BizyTableHeaderComponent, BizyTableModule, BizyTableRowComponent, BizyTableRowExpandContentComponent, BizyTableScrollingComponent, BizyTableScrollingDirective, BizyTabsComponent, BizyTabsModule, BizyTagComponent, BizyTagModule, BizyTextEllipsisDirective, BizyToastModule, BizyToastService, BizyToastWrapperComponent, BizyToggleComponent, BizyToggleModule, BizyToolbarComponent, BizyToolbarModule, BizyTooltipDirective, BizyTrackByIdDirective, BizyTranslateModule, BizyTranslatePipe, BizyTranslateService, BizyUserAgentService, BizyValidatorService, BizyViewportService, LANGUAGE, LOADING_TYPE, MIME_TYPE };
+export { BIZY_ANIMATION, BIZY_CALENDAR_DAY, BIZY_CALENDAR_EVENT_ACTION, BIZY_CALENDAR_LANGUAGE, BIZY_CALENDAR_MODE, BIZY_FORMAT_SECONDS_FORMAT, BIZY_FORMAT_SECONDS_LANGUAGE, BIZY_SKELETON_SHAPE, BIZY_TAG_TYPE, BizyAccordionComponent, BizyAccordionModule, BizyAnimationService, BizyAudioPlayerComponent, BizyAudioPlayerModule, BizyAutoFocusDirective, BizyAveragePipe, BizyBarLineChartComponent, BizyBarLineChartModule, BizyBreadcrumbComponent, BizyBreadcrumbModule, BizyButtonComponent, BizyButtonModule, BizyCacheService, BizyCalendarComponent, BizyCalendarModule, BizyCardComponent, BizyCardModule, BizyCheckboxComponent, BizyCheckboxModule, BizyCopyToClipboardDirective, BizyCopyToClipboardService, BizyCurrencyFormatDirective, BizyDatePickerComponent, BizyDatePickerModule, BizyDeviceService, BizyDirectivesModule, BizyEnumToArrayPipe, BizyExportToCSVService, BizyExtractNumbersPipe, BizyFileUploaderComponent, BizyFileUploaderModule, BizyFileUploaderService, BizyFilterComponent, BizyFilterContentComponent, BizyFilterModule, BizyFilterPipe, BizyFilterSectionCheckboxOptionComponent, BizyFilterSectionComponent, BizyFilterSectionRangeOptionComponent, BizyFilterSectionSearchOptionComponent, BizyFilterSectionsComponent, BizyFormComponent, BizyFormModule, BizyFormatSecondsPipe, BizyFormatSecondsService, BizyFullScreenPopupWrapperComponent, BizyGridComponent, BizyGridForDirective, BizyGridModule, BizyGridRowComponent, BizyInputComponent, BizyInputModule, BizyInputOptionComponent, BizyKeyboardService, BizyListComponent, BizyListModule, BizyLoadingDirective, BizyLogService, BizyLongPressDirective, BizyMenuComponent, BizyMenuModule, BizyMenuOptionComponent, BizyMenuTitleComponent, BizyOnlyNumbersDirective, BizyOnlyPhoneDigitsDirective, BizyOrderByPipe, BizyPieChartComponent, BizyPieChartModule, BizyPipesModule, BizyPopupModule, BizyPopupService, BizyPopupWrapperComponent, BizyRadioComponent, BizyRadioModule, BizyRangeFilterPipe, BizyReducePipe, BizyRepeatPipe, BizyRouterService, BizySafePipe, BizySearchPipe, BizySectionCenterComponent, BizySectionComponent, BizySectionEndComponent, BizySectionModule, BizySectionStartComponent, BizySelectComponent, BizySelectModule, BizySelectOptionComponent, BizySelectedPipe, BizyServicesModule, BizySetToArrayPipe, BizySidebarComponent, BizySidebarFloatingOptionComponent, BizySidebarFloatingOptionTitleComponent, BizySidebarModule, BizySidebarOptionComponent, BizySkeletonComponent, BizySkeletonModule, BizySliderComponent, BizySliderModule, BizyStorageService, BizyTabComponent, BizyTableColumnArrowsComponent, BizyTableColumnComponent, BizyTableColumnFixedDirective, BizyTableComponent, BizyTableFooterComponent, BizyTableHeaderComponent, BizyTableModule, BizyTableRowComponent, BizyTableRowExpandContentComponent, BizyTableScrollingComponent, BizyTableScrollingDirective, BizyTabsComponent, BizyTabsModule, BizyTagComponent, BizyTagModule, BizyTextEllipsisDirective, BizyToastModule, BizyToastService, BizyToastWrapperComponent, BizyToggleComponent, BizyToggleModule, BizyToolbarComponent, BizyToolbarModule, BizyTooltipDirective, BizyTrackByIdDirective, BizyTranslateModule, BizyTranslatePipe, BizyTranslateService, BizyValidatorService, BizyViewportService, LANGUAGE, LOADING_TYPE, MIME_TYPE };
 //# sourceMappingURL=bizy-core.mjs.map

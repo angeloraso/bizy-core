@@ -1,6 +1,6 @@
 {
   "name": "@bizy/core",
-  "version": "19.10.5",
+  "version": "19.11.0",
   "peerDependencies": {
     "@angular/animations": "19.2.7",
     "@angular/cdk": "19.2.10",
@@ -23,6 +23,7 @@
     "fuse.js": "7.1.0",
     "html2canvas": "1.4.1",
     "rxjs": "7.8.2",
+    "ngx-device-detector": "9.0.0",
     "zone.js": "0.15.0"
   },
   "dependencies": {
