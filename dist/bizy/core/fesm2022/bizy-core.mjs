@@ -29,11 +29,11 @@ import { TemplatePortal, PortalModule } from '@angular/cdk/portal';
 import { ScrollingModule, CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import * as i1$3 from '@angular/cdk/dialog';
 import { DIALOG_DATA, DialogRef, DialogModule, Dialog } from '@angular/cdk/dialog';
-import * as i1$1 from '@angular/cdk/drag-drop';
-import { DragDropModule } from '@angular/cdk/drag-drop';
-import * as i1$2 from '@angular/router';
+import * as i1$1 from '@angular/router';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Clipboard } from '@angular/cdk/clipboard';
+import * as i1$2 from '@angular/cdk/drag-drop';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import * as i1$4 from '@angular/platform-browser';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -3594,68 +3594,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.7", ngImpor
                 }]
         }] });
 
-class BizyFullScreenPopupWrapperComponent {
-    dynamicComponentContainer;
-    #component = inject(DIALOG_DATA);
-    #dialogRef = inject(DialogRef);
-    #ref = inject(ChangeDetectorRef);
-    disabled = false;
-    ngAfterViewInit() {
-        this.loadDynamicComponent();
-    }
-    loadDynamicComponent() {
-        if (this.#component) {
-            this.dynamicComponentContainer.clear();
-            this.dynamicComponentContainer.createComponent(this.#component);
-            this.#ref.detectChanges();
-        }
-    }
-    async close() {
-        this.disabled = true;
-        this.#dialogRef.close();
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.7", ngImport: i0, type: BizyFullScreenPopupWrapperComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.7", type: BizyFullScreenPopupWrapperComponent, isStandalone: true, selector: "bizy-full-screen-popup-wrapper", host: { classAttribute: "animated slide-in-up" }, viewQueries: [{ propertyName: "dynamicComponentContainer", first: true, predicate: ["dynamicComponentContainer"], descendants: true, read: ViewContainerRef }], ngImport: i0, template: "<div class=\"bizy-full-screen-popup-wrapper\" [ngClass]=\"{'bizy-full-screen-popup-wrapper--disabled': disabled}\">\n\n    <button class=\"bizy-full-screen-popup-wrapper__close-button\" (click)=\"close()\" (keyup.enter)=\"close()\">\n\n\n        <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 384 512\" class=\"bizy-full-screen-popup-wrapper__close-button__icon\">\n            <path d=\"M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z\"/>\n        </svg>\n\n    </button>\n\n    <ng-container #dynamicComponentContainer></ng-container>\n\n</div>", styles: [":host{font-size:1rem;height:95vh;width:100vw;display:inline-block;position:relative;top:2.5vh}.bizy-full-screen-popup-wrapper--disabled{pointer-events:none;cursor:default}.bizy-full-screen-popup-wrapper{position:relative;padding:var(--bizy-popup-full-screen-padding);background-color:var(--bizy-popup-full-screen-background-color);height:100%;width:100%;border-top-left-radius:var(--bizy-popup-full-screen-border-radius);border-top-right-radius:var(--bizy-popup-full-screen-border-radius)}.bizy-full-screen-popup-wrapper__close-button{position:absolute;right:1rem;top:1rem;border:var(--bizy-popup-full-screen-close-button-border);border-radius:50%;padding:.25rem .35rem;place-items:center;display:grid;background-color:var(--bizy-popup-full-screen-close-button-background-color);cursor:pointer;transition:transform .2s;z-index:1}.bizy-full-screen-popup-wrapper__close-button:hover .bizy-full-screen-popup-wrapper__close-button__icon{transform:scale(1.1)}.bizy-full-screen-popup-wrapper__close-button:hover .bizy-full-screen-popup-wrapper__close-button__icon{fill:var(--bizy-popup-full-screen-close-button-hover-color)}.bizy-full-screen-popup-wrapper__close-button__icon{height:1rem;transition:fill .2s ease,}.bizy-full-screen-popup-wrapper__close-button__icon{fill:var(--bizy-popup-full-screen-close-button-color)}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }, { kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "ngmodule", type: DialogModule }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.7", ngImport: i0, type: BizyFullScreenPopupWrapperComponent, decorators: [{
-            type: Component,
-            args: [{ selector: 'bizy-full-screen-popup-wrapper', imports: [CommonModule, DialogModule], changeDetection: ChangeDetectionStrategy.OnPush, host: {
-                        'class': 'animated slide-in-up'
-                    }, template: "<div class=\"bizy-full-screen-popup-wrapper\" [ngClass]=\"{'bizy-full-screen-popup-wrapper--disabled': disabled}\">\n\n    <button class=\"bizy-full-screen-popup-wrapper__close-button\" (click)=\"close()\" (keyup.enter)=\"close()\">\n\n\n        <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 384 512\" class=\"bizy-full-screen-popup-wrapper__close-button__icon\">\n            <path d=\"M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z\"/>\n        </svg>\n\n    </button>\n\n    <ng-container #dynamicComponentContainer></ng-container>\n\n</div>", styles: [":host{font-size:1rem;height:95vh;width:100vw;display:inline-block;position:relative;top:2.5vh}.bizy-full-screen-popup-wrapper--disabled{pointer-events:none;cursor:default}.bizy-full-screen-popup-wrapper{position:relative;padding:var(--bizy-popup-full-screen-padding);background-color:var(--bizy-popup-full-screen-background-color);height:100%;width:100%;border-top-left-radius:var(--bizy-popup-full-screen-border-radius);border-top-right-radius:var(--bizy-popup-full-screen-border-radius)}.bizy-full-screen-popup-wrapper__close-button{position:absolute;right:1rem;top:1rem;border:var(--bizy-popup-full-screen-close-button-border);border-radius:50%;padding:.25rem .35rem;place-items:center;display:grid;background-color:var(--bizy-popup-full-screen-close-button-background-color);cursor:pointer;transition:transform .2s;z-index:1}.bizy-full-screen-popup-wrapper__close-button:hover .bizy-full-screen-popup-wrapper__close-button__icon{transform:scale(1.1)}.bizy-full-screen-popup-wrapper__close-button:hover .bizy-full-screen-popup-wrapper__close-button__icon{fill:var(--bizy-popup-full-screen-close-button-hover-color)}.bizy-full-screen-popup-wrapper__close-button__icon{height:1rem;transition:fill .2s ease,}.bizy-full-screen-popup-wrapper__close-button__icon{fill:var(--bizy-popup-full-screen-close-button-color)}\n"] }]
-        }], propDecorators: { dynamicComponentContainer: [{
-                type: ViewChild,
-                args: ['dynamicComponentContainer', { read: ViewContainerRef }]
-            }] } });
-
-class BizyPopupWrapperComponent {
-    dynamicComponentContainer;
-    #component = inject(DIALOG_DATA);
-    #dialogRef = inject(DialogRef);
-    #ref = inject(ChangeDetectorRef);
-    ngAfterViewInit() {
-        this.loadDynamicComponent();
-    }
-    loadDynamicComponent() {
-        if (this.#component) {
-            this.dynamicComponentContainer.clear();
-            this.dynamicComponentContainer.createComponent(this.#component);
-            this.#ref.detectChanges();
-        }
-    }
-    close() {
-        this.#dialogRef.close();
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.7", ngImport: i0, type: BizyPopupWrapperComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.7", type: BizyPopupWrapperComponent, isStandalone: true, selector: "bizy-popup-wrapper", viewQueries: [{ propertyName: "dynamicComponentContainer", first: true, predicate: ["dynamicComponentContainer"], descendants: true, read: ViewContainerRef }], ngImport: i0, template: "<div class=\"bizy-popup-wrapper\" cdkDrag>\n\n    <button class=\"bizy-popup-wrapper__drag-button\" cdkDragHandle>\n\n        <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\" class=\"bizy-popup-wrapper__drag-button__icon\">\n            <path d=\"M278.6 9.4c-12.5-12.5-32.8-12.5-45.3 0l-64 64c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l9.4-9.4V224H109.3l9.4-9.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-64 64c-12.5 12.5-12.5 32.8 0 45.3l64 64c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-9.4-9.4H224V402.7l-9.4-9.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l64 64c12.5 12.5 32.8 12.5 45.3 0l64-64c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-9.4 9.4V288H402.7l-9.4 9.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l64-64c12.5-12.5 12.5-32.8 0-45.3l-64-64c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l9.4 9.4H288V109.3l9.4 9.4c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-64-64z\"/>\n        </svg>\n\n    </button>\n\n    <button class=\"bizy-popup-wrapper__close-button\" (click)=\"close()\" (keyup.enter)=\"close()\">\n\n\n        <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 384 512\" class=\"bizy-popup-wrapper__close-button__icon\">\n            <path d=\"M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z\"/>\n        </svg>\n\n    </button>\n\n    <ng-container #dynamicComponentContainer></ng-container>\n\n</div>", styles: [":host{font-size:1rem}.bizy-popup-wrapper{position:relative;padding:var(--bizy-popup-padding);background-color:var(--bizy-popup-background-color);min-width:var(--bizy-popup-min-width);width:var(--bizy-popup-width);max-width:var(--bizy-popup-max-width)}.bizy-popup-wrapper__drag-button{position:absolute;left:-.9rem;top:-.9rem;border:var(--bizy-popup-drag-button-border);border-radius:50%;padding:.2rem;place-items:center;display:grid;background-color:var(--bizy-popup-drag-button-background-color);cursor:pointer;transition:transform .2s;z-index:1}.bizy-popup-wrapper__drag-button:hover{transform:scale(1.1)}.bizy-popup-wrapper__drag-button__icon{height:1rem}.bizy-popup-wrapper__drag-button__icon{fill:var(--bizy-popup-drag-button-color)}.bizy-popup-wrapper__close-button{position:absolute;right:-.9rem;top:-.9rem;border:var(--bizy-popup-close-button-border);border-radius:50%;padding:.25rem .35rem;place-items:center;display:grid;background-color:var(--bizy-popup-close-button-background-color);cursor:pointer;transition:transform .2s;z-index:1}.bizy-popup-wrapper__close-button:hover .bizy-popup-wrapper__close-button__icon{transform:scale(1.1)}.bizy-popup-wrapper__close-button:hover .bizy-popup-wrapper__close-button__icon{fill:var(--bizy-popup-close-button-hover-color)}.bizy-popup-wrapper__close-button__icon{height:1rem;transition:fill .2s ease,}.bizy-popup-wrapper__close-button__icon{fill:var(--bizy-popup-close-button-color)}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }, { kind: "ngmodule", type: DialogModule }, { kind: "ngmodule", type: DragDropModule }, { kind: "directive", type: i1$1.CdkDrag, selector: "[cdkDrag]", inputs: ["cdkDragData", "cdkDragLockAxis", "cdkDragRootElement", "cdkDragBoundary", "cdkDragStartDelay", "cdkDragFreeDragPosition", "cdkDragDisabled", "cdkDragConstrainPosition", "cdkDragPreviewClass", "cdkDragPreviewContainer", "cdkDragScale"], outputs: ["cdkDragStarted", "cdkDragReleased", "cdkDragEnded", "cdkDragEntered", "cdkDragExited", "cdkDragDropped", "cdkDragMoved"], exportAs: ["cdkDrag"] }, { kind: "directive", type: i1$1.CdkDragHandle, selector: "[cdkDragHandle]", inputs: ["cdkDragHandleDisabled"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.7", ngImport: i0, type: BizyPopupWrapperComponent, decorators: [{
-            type: Component,
-            args: [{ selector: 'bizy-popup-wrapper', imports: [CommonModule, DialogModule, DragDropModule], changeDetection: ChangeDetectionStrategy.OnPush, template: "<div class=\"bizy-popup-wrapper\" cdkDrag>\n\n    <button class=\"bizy-popup-wrapper__drag-button\" cdkDragHandle>\n\n        <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\" class=\"bizy-popup-wrapper__drag-button__icon\">\n            <path d=\"M278.6 9.4c-12.5-12.5-32.8-12.5-45.3 0l-64 64c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l9.4-9.4V224H109.3l9.4-9.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-64 64c-12.5 12.5-12.5 32.8 0 45.3l64 64c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-9.4-9.4H224V402.7l-9.4-9.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l64 64c12.5 12.5 32.8 12.5 45.3 0l64-64c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-9.4 9.4V288H402.7l-9.4 9.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l64-64c12.5-12.5 12.5-32.8 0-45.3l-64-64c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l9.4 9.4H288V109.3l9.4 9.4c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-64-64z\"/>\n        </svg>\n\n    </button>\n\n    <button class=\"bizy-popup-wrapper__close-button\" (click)=\"close()\" (keyup.enter)=\"close()\">\n\n\n        <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 384 512\" class=\"bizy-popup-wrapper__close-button__icon\">\n            <path d=\"M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z\"/>\n        </svg>\n\n    </button>\n\n    <ng-container #dynamicComponentContainer></ng-container>\n\n</div>", styles: [":host{font-size:1rem}.bizy-popup-wrapper{position:relative;padding:var(--bizy-popup-padding);background-color:var(--bizy-popup-background-color);min-width:var(--bizy-popup-min-width);width:var(--bizy-popup-width);max-width:var(--bizy-popup-max-width)}.bizy-popup-wrapper__drag-button{position:absolute;left:-.9rem;top:-.9rem;border:var(--bizy-popup-drag-button-border);border-radius:50%;padding:.2rem;place-items:center;display:grid;background-color:var(--bizy-popup-drag-button-background-color);cursor:pointer;transition:transform .2s;z-index:1}.bizy-popup-wrapper__drag-button:hover{transform:scale(1.1)}.bizy-popup-wrapper__drag-button__icon{height:1rem}.bizy-popup-wrapper__drag-button__icon{fill:var(--bizy-popup-drag-button-color)}.bizy-popup-wrapper__close-button{position:absolute;right:-.9rem;top:-.9rem;border:var(--bizy-popup-close-button-border);border-radius:50%;padding:.25rem .35rem;place-items:center;display:grid;background-color:var(--bizy-popup-close-button-background-color);cursor:pointer;transition:transform .2s;z-index:1}.bizy-popup-wrapper__close-button:hover .bizy-popup-wrapper__close-button__icon{transform:scale(1.1)}.bizy-popup-wrapper__close-button:hover .bizy-popup-wrapper__close-button__icon{fill:var(--bizy-popup-close-button-hover-color)}.bizy-popup-wrapper__close-button__icon{height:1rem;transition:fill .2s ease,}.bizy-popup-wrapper__close-button__icon{fill:var(--bizy-popup-close-button-color)}\n"] }]
-        }], propDecorators: { dynamicComponentContainer: [{
-                type: ViewChild,
-                args: ['dynamicComponentContainer', { read: ViewContainerRef }]
-            }] } });
-
 var BIZY_ANIMATION;
 (function (BIZY_ANIMATION) {
     BIZY_ANIMATION["FADE_IN"] = "fade-in";
@@ -3990,7 +3928,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.7", ngImpor
             args: [{
                     providedIn: 'root'
                 }]
-        }], ctorParameters: () => [{ type: i1$2.Router, decorators: [{
+        }], ctorParameters: () => [{ type: i1$1.Router, decorators: [{
                     type: Inject,
                     args: [Router]
                 }] }] });
@@ -4617,6 +4555,76 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.7", ngImpor
                     providers: SERVICES
                 }]
         }] });
+
+class BizyFullScreenPopupWrapperComponent {
+    dynamicComponentContainer;
+    #animation = inject(BizyAnimationService);
+    #elementRef = inject(ElementRef);
+    #component = inject(DIALOG_DATA);
+    #dialogRef = inject(DialogRef);
+    #ref = inject(ChangeDetectorRef);
+    disabled = false;
+    ngAfterViewInit() {
+        this.loadDynamicComponent();
+    }
+    loadDynamicComponent() {
+        if (this.#component) {
+            this.dynamicComponentContainer.clear();
+            this.dynamicComponentContainer.createComponent(this.#component);
+            this.#ref.detectChanges();
+        }
+    }
+    async close() {
+        try {
+            this.disabled = false;
+            await this.#animation.setAnimation(this.#elementRef.nativeElement, BIZY_ANIMATION.SLIDE_OUT_DOWN);
+            this.#dialogRef.close();
+        }
+        finally {
+            this.disabled = false;
+        }
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.7", ngImport: i0, type: BizyFullScreenPopupWrapperComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.7", type: BizyFullScreenPopupWrapperComponent, isStandalone: true, selector: "bizy-full-screen-popup-wrapper", host: { classAttribute: "animated slide-in-up" }, viewQueries: [{ propertyName: "dynamicComponentContainer", first: true, predicate: ["dynamicComponentContainer"], descendants: true, read: ViewContainerRef }], ngImport: i0, template: "<div class=\"bizy-full-screen-popup-wrapper\" [ngClass]=\"{'bizy-full-screen-popup-wrapper--disabled': disabled}\">\n\n    <button class=\"bizy-full-screen-popup-wrapper__close-button\" (click)=\"close()\" (keyup.enter)=\"close()\">\n\n\n        <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 384 512\" class=\"bizy-full-screen-popup-wrapper__close-button__icon\">\n            <path d=\"M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z\"/>\n        </svg>\n\n    </button>\n\n    <ng-container #dynamicComponentContainer></ng-container>\n\n</div>", styles: [":host{font-size:1rem;height:95vh;width:100vw;display:inline-block;position:relative;top:2.5vh}.bizy-full-screen-popup-wrapper--disabled{pointer-events:none;cursor:default}.bizy-full-screen-popup-wrapper{position:relative;padding:var(--bizy-popup-full-screen-padding);background-color:var(--bizy-popup-full-screen-background-color);height:100%;width:100%;border-top-left-radius:var(--bizy-popup-full-screen-border-radius);border-top-right-radius:var(--bizy-popup-full-screen-border-radius)}.bizy-full-screen-popup-wrapper__close-button{position:absolute;right:1rem;top:1rem;border:var(--bizy-popup-full-screen-close-button-border);border-radius:50%;padding:.25rem .35rem;place-items:center;display:grid;background-color:var(--bizy-popup-full-screen-close-button-background-color);cursor:pointer;transition:transform .2s;z-index:1}.bizy-full-screen-popup-wrapper__close-button:hover .bizy-full-screen-popup-wrapper__close-button__icon{transform:scale(1.1)}.bizy-full-screen-popup-wrapper__close-button:hover .bizy-full-screen-popup-wrapper__close-button__icon{fill:var(--bizy-popup-full-screen-close-button-hover-color)}.bizy-full-screen-popup-wrapper__close-button__icon{height:1rem;transition:fill .2s ease,}.bizy-full-screen-popup-wrapper__close-button__icon{fill:var(--bizy-popup-full-screen-close-button-color)}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }, { kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "ngmodule", type: DialogModule }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.7", ngImport: i0, type: BizyFullScreenPopupWrapperComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-full-screen-popup-wrapper', imports: [CommonModule, DialogModule], changeDetection: ChangeDetectionStrategy.OnPush, host: {
+                        'class': 'animated slide-in-up'
+                    }, template: "<div class=\"bizy-full-screen-popup-wrapper\" [ngClass]=\"{'bizy-full-screen-popup-wrapper--disabled': disabled}\">\n\n    <button class=\"bizy-full-screen-popup-wrapper__close-button\" (click)=\"close()\" (keyup.enter)=\"close()\">\n\n\n        <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 384 512\" class=\"bizy-full-screen-popup-wrapper__close-button__icon\">\n            <path d=\"M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z\"/>\n        </svg>\n\n    </button>\n\n    <ng-container #dynamicComponentContainer></ng-container>\n\n</div>", styles: [":host{font-size:1rem;height:95vh;width:100vw;display:inline-block;position:relative;top:2.5vh}.bizy-full-screen-popup-wrapper--disabled{pointer-events:none;cursor:default}.bizy-full-screen-popup-wrapper{position:relative;padding:var(--bizy-popup-full-screen-padding);background-color:var(--bizy-popup-full-screen-background-color);height:100%;width:100%;border-top-left-radius:var(--bizy-popup-full-screen-border-radius);border-top-right-radius:var(--bizy-popup-full-screen-border-radius)}.bizy-full-screen-popup-wrapper__close-button{position:absolute;right:1rem;top:1rem;border:var(--bizy-popup-full-screen-close-button-border);border-radius:50%;padding:.25rem .35rem;place-items:center;display:grid;background-color:var(--bizy-popup-full-screen-close-button-background-color);cursor:pointer;transition:transform .2s;z-index:1}.bizy-full-screen-popup-wrapper__close-button:hover .bizy-full-screen-popup-wrapper__close-button__icon{transform:scale(1.1)}.bizy-full-screen-popup-wrapper__close-button:hover .bizy-full-screen-popup-wrapper__close-button__icon{fill:var(--bizy-popup-full-screen-close-button-hover-color)}.bizy-full-screen-popup-wrapper__close-button__icon{height:1rem;transition:fill .2s ease,}.bizy-full-screen-popup-wrapper__close-button__icon{fill:var(--bizy-popup-full-screen-close-button-color)}\n"] }]
+        }], propDecorators: { dynamicComponentContainer: [{
+                type: ViewChild,
+                args: ['dynamicComponentContainer', { read: ViewContainerRef }]
+            }] } });
+
+class BizyPopupWrapperComponent {
+    dynamicComponentContainer;
+    #component = inject(DIALOG_DATA);
+    #dialogRef = inject(DialogRef);
+    #ref = inject(ChangeDetectorRef);
+    ngAfterViewInit() {
+        this.loadDynamicComponent();
+    }
+    loadDynamicComponent() {
+        if (this.#component) {
+            this.dynamicComponentContainer.clear();
+            this.dynamicComponentContainer.createComponent(this.#component);
+            this.#ref.detectChanges();
+        }
+    }
+    close() {
+        this.#dialogRef.close();
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.7", ngImport: i0, type: BizyPopupWrapperComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.7", type: BizyPopupWrapperComponent, isStandalone: true, selector: "bizy-popup-wrapper", viewQueries: [{ propertyName: "dynamicComponentContainer", first: true, predicate: ["dynamicComponentContainer"], descendants: true, read: ViewContainerRef }], ngImport: i0, template: "<div class=\"bizy-popup-wrapper\" cdkDrag>\n\n    <button class=\"bizy-popup-wrapper__drag-button\" cdkDragHandle>\n\n        <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\" class=\"bizy-popup-wrapper__drag-button__icon\">\n            <path d=\"M278.6 9.4c-12.5-12.5-32.8-12.5-45.3 0l-64 64c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l9.4-9.4V224H109.3l9.4-9.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-64 64c-12.5 12.5-12.5 32.8 0 45.3l64 64c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-9.4-9.4H224V402.7l-9.4-9.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l64 64c12.5 12.5 32.8 12.5 45.3 0l64-64c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-9.4 9.4V288H402.7l-9.4 9.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l64-64c12.5-12.5 12.5-32.8 0-45.3l-64-64c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l9.4 9.4H288V109.3l9.4 9.4c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-64-64z\"/>\n        </svg>\n\n    </button>\n\n    <button class=\"bizy-popup-wrapper__close-button\" (click)=\"close()\" (keyup.enter)=\"close()\">\n\n\n        <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 384 512\" class=\"bizy-popup-wrapper__close-button__icon\">\n            <path d=\"M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z\"/>\n        </svg>\n\n    </button>\n\n    <ng-container #dynamicComponentContainer></ng-container>\n\n</div>", styles: [":host{font-size:1rem}.bizy-popup-wrapper{position:relative;padding:var(--bizy-popup-padding);background-color:var(--bizy-popup-background-color);min-width:var(--bizy-popup-min-width);width:var(--bizy-popup-width);max-width:var(--bizy-popup-max-width)}.bizy-popup-wrapper__drag-button{position:absolute;left:-.9rem;top:-.9rem;border:var(--bizy-popup-drag-button-border);border-radius:50%;padding:.2rem;place-items:center;display:grid;background-color:var(--bizy-popup-drag-button-background-color);cursor:pointer;transition:transform .2s;z-index:1}.bizy-popup-wrapper__drag-button:hover{transform:scale(1.1)}.bizy-popup-wrapper__drag-button__icon{height:1rem}.bizy-popup-wrapper__drag-button__icon{fill:var(--bizy-popup-drag-button-color)}.bizy-popup-wrapper__close-button{position:absolute;right:-.9rem;top:-.9rem;border:var(--bizy-popup-close-button-border);border-radius:50%;padding:.25rem .35rem;place-items:center;display:grid;background-color:var(--bizy-popup-close-button-background-color);cursor:pointer;transition:transform .2s;z-index:1}.bizy-popup-wrapper__close-button:hover .bizy-popup-wrapper__close-button__icon{transform:scale(1.1)}.bizy-popup-wrapper__close-button:hover .bizy-popup-wrapper__close-button__icon{fill:var(--bizy-popup-close-button-hover-color)}.bizy-popup-wrapper__close-button__icon{height:1rem;transition:fill .2s ease,}.bizy-popup-wrapper__close-button__icon{fill:var(--bizy-popup-close-button-color)}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }, { kind: "ngmodule", type: DialogModule }, { kind: "ngmodule", type: DragDropModule }, { kind: "directive", type: i1$2.CdkDrag, selector: "[cdkDrag]", inputs: ["cdkDragData", "cdkDragLockAxis", "cdkDragRootElement", "cdkDragBoundary", "cdkDragStartDelay", "cdkDragFreeDragPosition", "cdkDragDisabled", "cdkDragConstrainPosition", "cdkDragPreviewClass", "cdkDragPreviewContainer", "cdkDragScale"], outputs: ["cdkDragStarted", "cdkDragReleased", "cdkDragEnded", "cdkDragEntered", "cdkDragExited", "cdkDragDropped", "cdkDragMoved"], exportAs: ["cdkDrag"] }, { kind: "directive", type: i1$2.CdkDragHandle, selector: "[cdkDragHandle]", inputs: ["cdkDragHandleDisabled"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.7", ngImport: i0, type: BizyPopupWrapperComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'bizy-popup-wrapper', imports: [CommonModule, DialogModule, DragDropModule], changeDetection: ChangeDetectionStrategy.OnPush, template: "<div class=\"bizy-popup-wrapper\" cdkDrag>\n\n    <button class=\"bizy-popup-wrapper__drag-button\" cdkDragHandle>\n\n        <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\" class=\"bizy-popup-wrapper__drag-button__icon\">\n            <path d=\"M278.6 9.4c-12.5-12.5-32.8-12.5-45.3 0l-64 64c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l9.4-9.4V224H109.3l9.4-9.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-64 64c-12.5 12.5-12.5 32.8 0 45.3l64 64c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-9.4-9.4H224V402.7l-9.4-9.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l64 64c12.5 12.5 32.8 12.5 45.3 0l64-64c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-9.4 9.4V288H402.7l-9.4 9.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l64-64c12.5-12.5 12.5-32.8 0-45.3l-64-64c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l9.4 9.4H288V109.3l9.4 9.4c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-64-64z\"/>\n        </svg>\n\n    </button>\n\n    <button class=\"bizy-popup-wrapper__close-button\" (click)=\"close()\" (keyup.enter)=\"close()\">\n\n\n        <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 384 512\" class=\"bizy-popup-wrapper__close-button__icon\">\n            <path d=\"M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z\"/>\n        </svg>\n\n    </button>\n\n    <ng-container #dynamicComponentContainer></ng-container>\n\n</div>", styles: [":host{font-size:1rem}.bizy-popup-wrapper{position:relative;padding:var(--bizy-popup-padding);background-color:var(--bizy-popup-background-color);min-width:var(--bizy-popup-min-width);width:var(--bizy-popup-width);max-width:var(--bizy-popup-max-width)}.bizy-popup-wrapper__drag-button{position:absolute;left:-.9rem;top:-.9rem;border:var(--bizy-popup-drag-button-border);border-radius:50%;padding:.2rem;place-items:center;display:grid;background-color:var(--bizy-popup-drag-button-background-color);cursor:pointer;transition:transform .2s;z-index:1}.bizy-popup-wrapper__drag-button:hover{transform:scale(1.1)}.bizy-popup-wrapper__drag-button__icon{height:1rem}.bizy-popup-wrapper__drag-button__icon{fill:var(--bizy-popup-drag-button-color)}.bizy-popup-wrapper__close-button{position:absolute;right:-.9rem;top:-.9rem;border:var(--bizy-popup-close-button-border);border-radius:50%;padding:.25rem .35rem;place-items:center;display:grid;background-color:var(--bizy-popup-close-button-background-color);cursor:pointer;transition:transform .2s;z-index:1}.bizy-popup-wrapper__close-button:hover .bizy-popup-wrapper__close-button__icon{transform:scale(1.1)}.bizy-popup-wrapper__close-button:hover .bizy-popup-wrapper__close-button__icon{fill:var(--bizy-popup-close-button-hover-color)}.bizy-popup-wrapper__close-button__icon{height:1rem;transition:fill .2s ease,}.bizy-popup-wrapper__close-button__icon{fill:var(--bizy-popup-close-button-color)}\n"] }]
+        }], propDecorators: { dynamicComponentContainer: [{
+                type: ViewChild,
+                args: ['dynamicComponentContainer', { read: ViewContainerRef }]
+            }] } });
 
 class BizyPopupService {
     #animation = inject(BizyAnimationService);

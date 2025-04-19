@@ -3,6 +3,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ComponentType } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild, ViewContainerRef, inject } from '@angular/core';
+import { BizyPopupService } from '../popup.service';
 
 @Component({
   selector: 'bizy-popup-wrapper',
@@ -16,7 +17,10 @@ export class BizyPopupWrapperComponent<T> {
 
   readonly #component: ComponentType<T> = inject(DIALOG_DATA);
   readonly #dialogRef: DialogRef<void> = inject(DialogRef);
+  readonly #popup = inject(BizyPopupService);
   readonly #ref = inject(ChangeDetectorRef);
+
+  disabled: boolean = false;
 
   ngAfterViewInit() {
     this.loadDynamicComponent();
@@ -30,7 +34,8 @@ export class BizyPopupWrapperComponent<T> {
     }
   }
 
-  close() {
-    this.#dialogRef.close();
+  async close() {
+    this.disabled = true;
+    this.#popup.close({id: this.#dialogRef.id});
   }
 }
