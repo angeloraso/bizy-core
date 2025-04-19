@@ -16,7 +16,7 @@ export declare class BizyPopupService {
     close(data?: {
         id?: string;
         response?: unknown;
-    }): void;
+    }): Promise<void>;
     closeAll(): void;
     openedPopups(): number;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyPopupService, never>;

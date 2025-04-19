@@ -3,7 +3,7 @@ import * as i0 from "@angular/core";
 export declare class BizyFullScreenPopupWrapperComponent<T> {
     #private;
     dynamicComponentContainer: ViewContainerRef;
-    loading: boolean;
+    disabled: boolean;
     ngAfterViewInit(): void;
     loadDynamicComponent(): void;
     close(): Promise<void>;
