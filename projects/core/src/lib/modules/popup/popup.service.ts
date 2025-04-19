@@ -22,7 +22,7 @@ export class BizyPopupService {
       autoFocus: true,
       hasBackdrop: true,
       disableClose: data.disableClose ?? true,
-      panelClass: ['bizy-popup', data.customClass] 
+      panelClass: [data.fullScreen ? 'bizy-popup' : '', data.customClass] 
     }));
 
     BizyPopupService.dialogs.add(dialogRef);
