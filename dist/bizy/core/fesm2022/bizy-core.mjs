@@ -4602,7 +4602,7 @@ class BizyPopupService {
             autoFocus: true,
             hasBackdrop: true,
             disableClose: data.disableClose ?? true,
-            panelClass: ['bizy-popup', data.customClass]
+            panelClass: [!data.fullScreen ? 'bizy-popup' : '', data.customClass]
         }));
         BizyPopupService.dialogs.add(dialogRef);
         dialogRef.closed.pipe(take(1)).subscribe(response => {
