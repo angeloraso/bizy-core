@@ -1,4 +1,4 @@
-<div class="bizy-full-screen-popup-wrapper">
+<div class="bizy-full-screen-popup-wrapper" [ngClass]="{'bizy-full-screen-popup-wrapper--disabled': loading}">
 
     <button class="bizy-full-screen-popup-wrapper__close-button" (click)="close()" (keyup.enter)="close()">
 

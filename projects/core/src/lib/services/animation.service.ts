@@ -11,6 +11,8 @@ export enum BIZY_ANIMATION {
   SLIDE_IN_RIGHT = 'slide-in-right',
   SLIDE_IN_DOWN = 'slide-in-down',
   SLIDE_IN_LEFT = 'slide-in-left',
+  SLIDE_OUT_UP = 'slide-out-up',
+  SLIDE_OUT_DOWN = 'slide-out-down',
   SLIDE_OUT_RIGHT = 'slide-out-right',
   SLIDE_OUT_LEFT = 'slide-out-left',
 }
