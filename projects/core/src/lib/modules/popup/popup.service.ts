@@ -4,9 +4,11 @@ import { take } from "rxjs";
 import { BizyPopupWrapperComponent } from "./popup-wrapper/popup-wrapper.component";
 import { Dialog, DialogRef } from '@angular/cdk/dialog';
 import { BizyFullScreenPopupWrapperComponent } from "./full-screen-popup-wrapper/full-screen-popup-wrapper.component";
+import { BIZY_ANIMATION, BizyAnimationService } from "../../services";
 
 @Injectable()
 export class BizyPopupService {
+  readonly #animation = inject(BizyAnimationService);
   readonly #dialog = inject(Dialog);
   static dialogs = new Set<DialogRef<unknown, any>>();
   #data: unknown = null;
@@ -19,7 +21,7 @@ export class BizyPopupService {
       data: data.component,
       autoFocus: true,
       hasBackdrop: true,
-      disableClose: data.disableClose ?? false,
+      disableClose: data.disableClose ?? true,
       panelClass: ['bizy-popup', data.customClass] 
     }));
 
@@ -37,7 +39,7 @@ export class BizyPopupService {
     return this.#data as D;
   }
 
-  close(data?: {id?: string, response?: unknown}) {
+  async close(data?: {id?: string, response?: unknown}) {
     let dialogRef: DialogRef<unknown, any> | null = null;
     if (data && data.id) {
       dialogRef = Array.from(BizyPopupService.dialogs).find(_dialogRef => _dialogRef.id === data.id);
@@ -46,6 +48,8 @@ export class BizyPopupService {
     }
 
     if (dialogRef) {
+      const nativeElement = dialogRef.overlayRef.overlayElement;
+      await this.#animation.setAnimation(nativeElement, BIZY_ANIMATION.SLIDE_OUT_DOWN);
       dialogRef.close(data ? data.response : null);
       BizyPopupService.dialogs.delete(dialogRef);
     }
