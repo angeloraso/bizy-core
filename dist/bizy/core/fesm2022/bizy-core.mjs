@@ -4624,8 +4624,10 @@ class BizyPopupService {
             dialogRef = Array.from(BizyPopupService.dialogs).pop();
         }
         if (dialogRef) {
-            const nativeElement = dialogRef.overlayRef.overlayElement;
-            await this.#animation.setAnimation(nativeElement, BIZY_ANIMATION.SLIDE_OUT_DOWN);
+            if (dialogRef.componentInstance instanceof BizyFullScreenPopupWrapperComponent) {
+                const nativeElement = dialogRef.overlayRef.overlayElement;
+                await this.#animation.setAnimation(nativeElement, BIZY_ANIMATION.SLIDE_OUT_DOWN);
+            }
             dialogRef.close(data ? data.response : null);
             BizyPopupService.dialogs.delete(dialogRef);
         }
