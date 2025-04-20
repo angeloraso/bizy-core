@@ -4628,9 +4628,9 @@ class BizyPopupService {
             dialogRef = Array.from(BizyPopupService.dialogs).pop();
         }
         if (dialogRef) {
-            if (dialogRef.componentInstance instanceof BizyFullScreenPopupWrapperComponent) {
-                const nativeElement = dialogRef.overlayRef.overlayElement;
-                await this.#animation.setAnimation(nativeElement.children[1].firstChild, BIZY_ANIMATION.SLIDE_OUT_DOWN);
+            if (dialogRef.componentInstance instanceof BizyFullScreenPopupWrapperComponent && dialogRef.overlayRef && dialogRef.overlayRef.overlayElement) {
+                const nativeElement = dialogRef.overlayRef.overlayElement.querySelector('bizy-full-screen-popup-wrapper');
+                await this.#animation.setAnimation(nativeElement, BIZY_ANIMATION.SLIDE_OUT_DOWN);
             }
             dialogRef.close(data ? data.response : null);
             BizyPopupService.dialogs.delete(dialogRef);
