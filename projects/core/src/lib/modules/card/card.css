@@ -5,8 +5,8 @@
 }
 
 .bizy-card {
-    height: 100%;
-    width: 100%;
+    height: inherit;
+    width: inherit;
     cursor: var(--bizy-card-cursor);
     border: var(--bizy-card-border);
     border-radius: var(--bizy-card-border-radius);
