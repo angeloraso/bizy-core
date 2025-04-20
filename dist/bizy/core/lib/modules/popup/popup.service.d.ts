@@ -7,7 +7,7 @@ export declare class BizyPopupService {
     open<R>(data: {
         component: ComponentType<unknown>;
         data?: unknown;
-        customClass?: string;
+        customClass?: Array<string> | string;
         fullScreen?: boolean;
         disableClose?: boolean;
         id?: string;
