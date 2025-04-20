@@ -1,5 +1,16 @@
 :host {
     font-size: 1rem;
+    position: fixed !important;
+    top: 50%;
+    left: 50%;
+    right: 50%;
+    bottom: 50%;
+    transform: translate(-50%, -50%);
+    min-height: 150px;
+    min-width: 150px;
+    width: fit-content;
+    height: fit-content;
+    z-index: 10;
 }
 
 .bizy-popup-wrapper {

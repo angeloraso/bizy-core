@@ -4,16 +4,17 @@ import { take } from "rxjs";
 import { BizyPopupWrapperComponent } from "./popup-wrapper/popup-wrapper.component";
 import { Dialog, DialogRef } from '@angular/cdk/dialog';
 import { BizyFullScreenPopupWrapperComponent } from "./full-screen-popup-wrapper/full-screen-popup-wrapper.component";
-import { BIZY_ANIMATION, BizyAnimationService } from "../../services";
+import { BIZY_ANIMATION, BizyAnimationService, BizyValidatorService } from "../../services";
 
 @Injectable()
 export class BizyPopupService {
   readonly #animation = inject(BizyAnimationService);
+  readonly #validator = inject(BizyValidatorService);
   readonly #dialog = inject(Dialog);
   static dialogs = new Set<DialogRef<unknown, any>>();
   #data: unknown = null;
   
-  open<R>(data: {component: ComponentType<unknown>, data?: unknown, customClass?: string, fullScreen?: boolean, disableClose?: boolean, id?: string}, callback?: (res: R) => void) {
+  open<R>(data: {component: ComponentType<unknown>, data?: unknown, customClass?: Array<string> | string, fullScreen?: boolean, disableClose?: boolean, id?: string}, callback?: (res: R) => void) {
     this.#data = data.data;
     const component: ComponentType<unknown> = data.fullScreen ? BizyFullScreenPopupWrapperComponent : BizyPopupWrapperComponent;
     const dialogRef = this.#dialog.open(component, ({
@@ -22,7 +23,7 @@ export class BizyPopupService {
       autoFocus: true,
       hasBackdrop: true,
       disableClose: data.disableClose ?? true,
-      panelClass: [!data.fullScreen ? 'bizy-popup' : '', data.customClass] 
+      panelClass: Array.isArray(data.customClass) ? data.customClass : this.#validator.isString(data.customClass) ? [data.customClass] : []
     }));
 
     BizyPopupService.dialogs.add(dialogRef);
@@ -48,12 +49,10 @@ export class BizyPopupService {
     }
 
     if (dialogRef) {
-
       if (dialogRef.componentInstance instanceof BizyFullScreenPopupWrapperComponent) {
         const nativeElement = dialogRef.overlayRef.overlayElement;
-        await this.#animation.setAnimation(nativeElement, BIZY_ANIMATION.SLIDE_OUT_DOWN);
+        await this.#animation.setAnimation(<HTMLElement>nativeElement.children[1].firstChild, BIZY_ANIMATION.SLIDE_OUT_DOWN);
       }
-
       dialogRef.close(data ? data.response : null);
       BizyPopupService.dialogs.delete(dialogRef);
     }
