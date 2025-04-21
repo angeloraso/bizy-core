@@ -8,11 +8,9 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { 
-    '[id]': 'id',
-    '[class]': 'customClass'
+    '[id]': 'id'
   }
 })
 export class BizySectionStartComponent {
   @Input() id: string = `bizy-section-start-${Math.random()}`;
-  @Input() customClass: string = '';
 }

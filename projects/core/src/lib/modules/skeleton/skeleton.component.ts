@@ -7,7 +7,12 @@ import { CommonModule } from '@angular/common';
   templateUrl: './skeleton.html',
   styleUrls: ['./skeleton.css'],
   imports: [CommonModule],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '[id]': 'id',
+    '[style.width]': 'width',
+    '[style.height]': 'height'
+  }
 })
 export class BizySkeletonComponent {
   @Input() id: string = `bizy-skeleton-${Math.random()}`;
