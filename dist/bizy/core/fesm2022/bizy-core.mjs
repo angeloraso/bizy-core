@@ -3130,19 +3130,15 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.7", ngImpor
 
 class BizyListComponent {
     id = `bizy-list-${Math.random()}`;
-    customClass = '';
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.7", ngImport: i0, type: BizyListComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.7", type: BizyListComponent, isStandalone: true, selector: "bizy-list", inputs: { id: "id", customClass: "customClass" }, host: { properties: { "id": "id", "class": "customClass" } }, ngImport: i0, template: "<ng-content></ng-content>", styles: [":host{font-size:1rem;height:var(--bizy-list-height);overflow:auto;width:var(--bizy-list-width);display:flex;flex-direction:var(--bizy-list-flex-direction);column-gap:var(--bizy-list-column-gap);row-gap:var(--bizy-list-row-gap);justify-content:var(--bizy-list-justify-content);align-items:var(--bizy-list-align-items)}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.7", type: BizyListComponent, isStandalone: true, selector: "bizy-list", inputs: { id: "id" }, host: { properties: { "id": "id" } }, ngImport: i0, template: "<ng-content></ng-content>", styles: [":host{font-size:1rem;height:var(--bizy-list-height);overflow:auto;width:var(--bizy-list-width);display:flex;flex-direction:var(--bizy-list-flex-direction);column-gap:var(--bizy-list-column-gap);row-gap:var(--bizy-list-row-gap);justify-content:var(--bizy-list-justify-content);align-items:var(--bizy-list-align-items)}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.7", ngImport: i0, type: BizyListComponent, decorators: [{
             type: Component,
             args: [{ selector: 'bizy-list', imports: [CommonModule], changeDetection: ChangeDetectionStrategy.OnPush, host: {
-                        '[id]': 'id',
-                        '[class]': 'customClass'
+                        '[id]': 'id'
                     }, template: "<ng-content></ng-content>", styles: [":host{font-size:1rem;height:var(--bizy-list-height);overflow:auto;width:var(--bizy-list-width);display:flex;flex-direction:var(--bizy-list-flex-direction);column-gap:var(--bizy-list-column-gap);row-gap:var(--bizy-list-row-gap);justify-content:var(--bizy-list-justify-content);align-items:var(--bizy-list-align-items)}\n"] }]
         }], propDecorators: { id: [{
-                type: Input
-            }], customClass: [{
                 type: Input
             }] } });
 
@@ -4760,73 +4756,57 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.7", ngImpor
 
 class BizySectionComponent {
     id = `bizy-section-${Math.random()}`;
-    customClass = '';
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.7", ngImport: i0, type: BizySectionComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.7", type: BizySectionComponent, isStandalone: true, selector: "bizy-section", inputs: { id: "id", customClass: "customClass" }, host: { properties: { "id": "id", "class": "customClass" } }, ngImport: i0, template: "<ng-content select=\"bizy-section-start\"></ng-content>\n\n\n<ng-content select=\"bizy-section-center\"></ng-content>\n\n\n<ng-content select=\"bizy-section-end\"></ng-content>\n", styles: [":host{font-size:1rem;display:flex;height:var(--bizy-section-height);width:var(--bizy-section-width);background-color:var(--bizy-section-background-color);flex-direction:var(--bizy-section-flex-direction);column-gap:var(--bizy-section-column-gap);row-gap:var(--bizy-section-row-gap);justify-content:var(--bizy-section-justify-content);align-items:var(--bizy-section-align-items);flex-wrap:var(--bizy-section-flex-wrap)}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.7", type: BizySectionComponent, isStandalone: true, selector: "bizy-section", inputs: { id: "id" }, host: { properties: { "id": "id" } }, ngImport: i0, template: "<ng-content select=\"bizy-section-start\"></ng-content>\n\n\n<ng-content select=\"bizy-section-center\"></ng-content>\n\n\n<ng-content select=\"bizy-section-end\"></ng-content>\n", styles: [":host{font-size:1rem;display:flex;height:var(--bizy-section-height);width:var(--bizy-section-width);background-color:var(--bizy-section-background-color);flex-direction:var(--bizy-section-flex-direction);column-gap:var(--bizy-section-column-gap);row-gap:var(--bizy-section-row-gap);justify-content:var(--bizy-section-justify-content);align-items:var(--bizy-section-align-items);flex-wrap:var(--bizy-section-flex-wrap)}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.7", ngImport: i0, type: BizySectionComponent, decorators: [{
             type: Component,
             args: [{ selector: 'bizy-section', imports: [CommonModule], changeDetection: ChangeDetectionStrategy.OnPush, host: {
-                        '[id]': 'id',
-                        '[class]': 'customClass'
+                        '[id]': 'id'
                     }, template: "<ng-content select=\"bizy-section-start\"></ng-content>\n\n\n<ng-content select=\"bizy-section-center\"></ng-content>\n\n\n<ng-content select=\"bizy-section-end\"></ng-content>\n", styles: [":host{font-size:1rem;display:flex;height:var(--bizy-section-height);width:var(--bizy-section-width);background-color:var(--bizy-section-background-color);flex-direction:var(--bizy-section-flex-direction);column-gap:var(--bizy-section-column-gap);row-gap:var(--bizy-section-row-gap);justify-content:var(--bizy-section-justify-content);align-items:var(--bizy-section-align-items);flex-wrap:var(--bizy-section-flex-wrap)}\n"] }]
         }], propDecorators: { id: [{
-                type: Input
-            }], customClass: [{
                 type: Input
             }] } });
 
 class BizySectionStartComponent {
     id = `bizy-section-start-${Math.random()}`;
-    customClass = '';
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.7", ngImport: i0, type: BizySectionStartComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.7", type: BizySectionStartComponent, isStandalone: true, selector: "bizy-section-start", inputs: { id: "id", customClass: "customClass" }, host: { properties: { "id": "id", "class": "customClass" } }, ngImport: i0, template: "<ng-content></ng-content>", styles: [":host{font-size:1rem;display:flex;flex:var(--bizy-section-start-flex);height:var(--bizy-section-start-height);width:var(--bizy-section-start-width);background-color:var(--bizy-section-start-background-color);justify-content:var(--bizy-section-start-justify-content);align-items:var(--bizy-section-start-align-items);column-gap:var(--bizy-section-start-column-gap);row-gap:var(--bizy-section-start-row-gap)}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.7", type: BizySectionStartComponent, isStandalone: true, selector: "bizy-section-start", inputs: { id: "id" }, host: { properties: { "id": "id" } }, ngImport: i0, template: "<ng-content></ng-content>", styles: [":host{font-size:1rem;display:flex;flex:var(--bizy-section-start-flex);height:var(--bizy-section-start-height);width:var(--bizy-section-start-width);background-color:var(--bizy-section-start-background-color);justify-content:var(--bizy-section-start-justify-content);align-items:var(--bizy-section-start-align-items);column-gap:var(--bizy-section-start-column-gap);row-gap:var(--bizy-section-start-row-gap)}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.7", ngImport: i0, type: BizySectionStartComponent, decorators: [{
             type: Component,
             args: [{ selector: 'bizy-section-start', imports: [CommonModule], changeDetection: ChangeDetectionStrategy.OnPush, host: {
-                        '[id]': 'id',
-                        '[class]': 'customClass'
+                        '[id]': 'id'
                     }, template: "<ng-content></ng-content>", styles: [":host{font-size:1rem;display:flex;flex:var(--bizy-section-start-flex);height:var(--bizy-section-start-height);width:var(--bizy-section-start-width);background-color:var(--bizy-section-start-background-color);justify-content:var(--bizy-section-start-justify-content);align-items:var(--bizy-section-start-align-items);column-gap:var(--bizy-section-start-column-gap);row-gap:var(--bizy-section-start-row-gap)}\n"] }]
         }], propDecorators: { id: [{
-                type: Input
-            }], customClass: [{
                 type: Input
             }] } });
 
 class BizySectionCenterComponent {
     id = `bizy-center-start-${Math.random()}`;
-    customClass = '';
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.7", ngImport: i0, type: BizySectionCenterComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.7", type: BizySectionCenterComponent, isStandalone: true, selector: "bizy-section-center", inputs: { id: "id", customClass: "customClass" }, host: { properties: { "id": "id", "class": "customClass" } }, ngImport: i0, template: "<ng-content></ng-content>", styles: [":host{font-size:1rem;display:flex;flex:var(--bizy-section-center-flex);height:var(--bizy-section-center-height);width:var(--bizy-section-center-width);background-color:var(--bizy-section-center-background-color);justify-content:var(--bizy-section-center-justify-content);align-items:var(--bizy-section-center-align-items);column-gap:var(--bizy-section-center-column-gap);row-gap:var(--bizy-section-center-row-gap)}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.7", type: BizySectionCenterComponent, isStandalone: true, selector: "bizy-section-center", inputs: { id: "id" }, host: { properties: { "id": "id" } }, ngImport: i0, template: "<ng-content></ng-content>", styles: [":host{font-size:1rem;display:flex;flex:var(--bizy-section-center-flex);height:var(--bizy-section-center-height);width:var(--bizy-section-center-width);background-color:var(--bizy-section-center-background-color);justify-content:var(--bizy-section-center-justify-content);align-items:var(--bizy-section-center-align-items);column-gap:var(--bizy-section-center-column-gap);row-gap:var(--bizy-section-center-row-gap)}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.7", ngImport: i0, type: BizySectionCenterComponent, decorators: [{
             type: Component,
             args: [{ selector: 'bizy-section-center', imports: [CommonModule], changeDetection: ChangeDetectionStrategy.OnPush, host: {
-                        '[id]': 'id',
-                        '[class]': 'customClass'
+                        '[id]': 'id'
                     }, template: "<ng-content></ng-content>", styles: [":host{font-size:1rem;display:flex;flex:var(--bizy-section-center-flex);height:var(--bizy-section-center-height);width:var(--bizy-section-center-width);background-color:var(--bizy-section-center-background-color);justify-content:var(--bizy-section-center-justify-content);align-items:var(--bizy-section-center-align-items);column-gap:var(--bizy-section-center-column-gap);row-gap:var(--bizy-section-center-row-gap)}\n"] }]
         }], propDecorators: { id: [{
-                type: Input
-            }], customClass: [{
                 type: Input
             }] } });
 
 class BizySectionEndComponent {
     id = `bizy-section-end-${Math.random()}`;
-    customClass = '';
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.7", ngImport: i0, type: BizySectionEndComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.7", type: BizySectionEndComponent, isStandalone: true, selector: "bizy-section-end", inputs: { id: "id", customClass: "customClass" }, host: { properties: { "id": "id", "class": "customClass" } }, ngImport: i0, template: "<ng-content></ng-content>", styles: [":host{font-size:1rem;display:flex;flex:var(--bizy-section-end-flex);height:var(--bizy-section-end-height);width:var(--bizy-section-end-width);background-color:var(--bizy-section-end-background-color);justify-content:var(--bizy-section-end-justify-content);align-items:var(--bizy-section-end-align-items);column-gap:var(--bizy-section-end-column-gap);row-gap:var(--bizy-section-end-row-gap)}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.7", type: BizySectionEndComponent, isStandalone: true, selector: "bizy-section-end", inputs: { id: "id" }, host: { properties: { "id": "id" } }, ngImport: i0, template: "<ng-content></ng-content>", styles: [":host{font-size:1rem;display:flex;flex:var(--bizy-section-end-flex);height:var(--bizy-section-end-height);width:var(--bizy-section-end-width);background-color:var(--bizy-section-end-background-color);justify-content:var(--bizy-section-end-justify-content);align-items:var(--bizy-section-end-align-items);column-gap:var(--bizy-section-end-column-gap);row-gap:var(--bizy-section-end-row-gap)}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.7", ngImport: i0, type: BizySectionEndComponent, decorators: [{
             type: Component,
             args: [{ selector: 'bizy-section-end', imports: [CommonModule], changeDetection: ChangeDetectionStrategy.OnPush, host: {
-                        '[id]': 'id',
-                        '[class]': 'customClass'
+                        '[id]': 'id'
                     }, template: "<ng-content></ng-content>", styles: [":host{font-size:1rem;display:flex;flex:var(--bizy-section-end-flex);height:var(--bizy-section-end-height);width:var(--bizy-section-end-width);background-color:var(--bizy-section-end-background-color);justify-content:var(--bizy-section-end-justify-content);align-items:var(--bizy-section-end-align-items);column-gap:var(--bizy-section-end-column-gap);row-gap:var(--bizy-section-end-row-gap)}\n"] }]
         }], propDecorators: { id: [{
-                type: Input
-            }], customClass: [{
                 type: Input
             }] } });
 
@@ -5268,11 +5248,15 @@ class BizySkeletonComponent {
     customClass = '';
     BIZY_SKELETON_SHAPE = BIZY_SKELETON_SHAPE;
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.7", ngImport: i0, type: BizySkeletonComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.7", type: BizySkeletonComponent, isStandalone: true, selector: "bizy-skeleton", inputs: { id: "id", shape: "shape", height: "height", width: "width", customClass: "customClass" }, ngImport: i0, template: "<span \n    [id]=\"id\"\n    class=\"bizy-skeleton {{customClass}}\"\n    [ngClass]=\"{'bizy-skeleton--circle': shape === BIZY_SKELETON_SHAPE.CIRCLE}\"\n    [ngStyle]=\"{'width': width, 'height': height}\">\n</span>", styles: [":host{font-size:1rem}.bizy-skeleton{height:var(--bizy-skeleton-height);width:var(--bizy-skeleton-width);display:inline-block;background:linear-gradient(90deg,#eee 25%,#f5f5f5,#eee 75%);background-size:200% 100%;animation:bizy-skeleton-animation 1.5s infinite linear}.bizy-skeleton--circle{border-radius:50%}@keyframes bizy-skeleton-animation{0%{background-position:-200% 0}to{background-position:200% 0}}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }, { kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1.NgStyle, selector: "[ngStyle]", inputs: ["ngStyle"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.7", type: BizySkeletonComponent, isStandalone: true, selector: "bizy-skeleton", inputs: { id: "id", shape: "shape", height: "height", width: "width", customClass: "customClass" }, host: { properties: { "id": "id", "style.width": "width", "style.height": "height" } }, ngImport: i0, template: "<span \n    class=\"bizy-skeleton {{customClass}}\"\n    [ngClass]=\"{'bizy-skeleton--circle': shape === BIZY_SKELETON_SHAPE.CIRCLE}\">\n</span>", styles: [":host{font-size:1rem;height:var(--bizy-skeleton-height);width:var(--bizy-skeleton-width)}.bizy-skeleton{height:inherit;width:inherit;display:inline-block;background:linear-gradient(90deg,#eee 25%,#f5f5f5,#eee 75%);background-size:200% 100%;animation:bizy-skeleton-animation 1.5s infinite linear}.bizy-skeleton--circle{border-radius:50%}@keyframes bizy-skeleton-animation{0%{background-position:-200% 0}to{background-position:200% 0}}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }, { kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.7", ngImport: i0, type: BizySkeletonComponent, decorators: [{
             type: Component,
-            args: [{ selector: 'bizy-skeleton', imports: [CommonModule], changeDetection: ChangeDetectionStrategy.OnPush, template: "<span \n    [id]=\"id\"\n    class=\"bizy-skeleton {{customClass}}\"\n    [ngClass]=\"{'bizy-skeleton--circle': shape === BIZY_SKELETON_SHAPE.CIRCLE}\"\n    [ngStyle]=\"{'width': width, 'height': height}\">\n</span>", styles: [":host{font-size:1rem}.bizy-skeleton{height:var(--bizy-skeleton-height);width:var(--bizy-skeleton-width);display:inline-block;background:linear-gradient(90deg,#eee 25%,#f5f5f5,#eee 75%);background-size:200% 100%;animation:bizy-skeleton-animation 1.5s infinite linear}.bizy-skeleton--circle{border-radius:50%}@keyframes bizy-skeleton-animation{0%{background-position:-200% 0}to{background-position:200% 0}}\n"] }]
+            args: [{ selector: 'bizy-skeleton', imports: [CommonModule], changeDetection: ChangeDetectionStrategy.OnPush, host: {
+                        '[id]': 'id',
+                        '[style.width]': 'width',
+                        '[style.height]': 'height'
+                    }, template: "<span \n    class=\"bizy-skeleton {{customClass}}\"\n    [ngClass]=\"{'bizy-skeleton--circle': shape === BIZY_SKELETON_SHAPE.CIRCLE}\">\n</span>", styles: [":host{font-size:1rem;height:var(--bizy-skeleton-height);width:var(--bizy-skeleton-width)}.bizy-skeleton{height:inherit;width:inherit;display:inline-block;background:linear-gradient(90deg,#eee 25%,#f5f5f5,#eee 75%);background-size:200% 100%;animation:bizy-skeleton-animation 1.5s infinite linear}.bizy-skeleton--circle{border-radius:50%}@keyframes bizy-skeleton-animation{0%{background-position:-200% 0}to{background-position:200% 0}}\n"] }]
         }], propDecorators: { id: [{
                 type: Input
             }], shape: [{
