@@ -50,7 +50,11 @@
     --bizy-card-background-color: #fff;
     --bizy-card-cursor: default;
     --bizy-card-height: 100%;
+    --bizy-card-min-height: auto;
+    --bizy-card-max-height: auto;
     --bizy-card-width: 100%;
+    --bizy-card-min-width: auto;
+    --bizy-card-max-width: auto;
     --bizy-card-border: none;
     --bizy-card-border-radius: 0.3rem;
     --bizy-card-padding: 0.5rem;
