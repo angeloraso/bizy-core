@@ -1,7 +1,11 @@
 :host {
     font-size: 1rem;
     height: var(--bizy-card-height);
+    min-height: var(--bizy-card-min-height);
+    max-height: var(--bizy-card-max-height);
     width: var(--bizy-card-width);
+    min-width: var(--bizy-card-min-width);
+    max-width: var(--bizy-card-max-width);
 }
 
 .bizy-card {
