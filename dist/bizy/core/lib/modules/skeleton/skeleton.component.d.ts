@@ -6,6 +6,7 @@ export declare class BizySkeletonComponent {
     height: string;
     width: string;
     customClass: string;
+    readonly BIZY_SKELETON_SHAPE: typeof BIZY_SKELETON_SHAPE;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizySkeletonComponent, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<BizySkeletonComponent, "bizy-skeleton", never, { "id": { "alias": "id"; "required": false; }; "shape": { "alias": "shape"; "required": false; }; "height": { "alias": "height"; "required": false; }; "width": { "alias": "width"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; }, {}, never, never, true, never>;
 }

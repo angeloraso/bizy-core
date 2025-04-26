@@ -5246,6 +5246,7 @@ class BizySkeletonComponent {
     height;
     width;
     customClass = '';
+    BIZY_SKELETON_SHAPE = BIZY_SKELETON_SHAPE;
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.7", ngImport: i0, type: BizySkeletonComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
     static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.7", type: BizySkeletonComponent, isStandalone: true, selector: "bizy-skeleton", inputs: { id: "id", shape: "shape", height: "height", width: "width", customClass: "customClass" }, host: { properties: { "id": "id", "style.width": "width", "style.height": "height", "class": "customClass", "class.bizy-skeleton--circle": "shape === BIZY_SKELETON_SHAPE.CIRCLE" } }, ngImport: i0, template: "", styles: [":host{font-size:1rem;height:var(--bizy-skeleton-height);width:var(--bizy-skeleton-width);display:inline-block;background:linear-gradient(90deg,#eee 25%,#f5f5f5,#eee 75%);background-size:200% 100%;animation:bizy-skeleton-animation 1.5s infinite linear}.bizy-skeleton--circle{border-radius:50%}@keyframes bizy-skeleton-animation{0%{background-position:-200% 0}to{background-position:200% 0}}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
