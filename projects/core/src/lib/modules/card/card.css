@@ -76,16 +76,15 @@
 }
 
 .bizy-card__header__start {
-    justify-self: start;
+    justify-content: flex-start;
 }
 
 .bizy-card__header__end {
-    justify-self: end;
+    justify-content: flex-end;
 }
 
 .bizy-card__slot {
-    width: fit-content;
-    max-width: -webkit-fill-available;
+    width: 100%;
     display: flex;
     align-items: center;
     column-gap: 0.5rem;
@@ -108,10 +107,10 @@
 }
 
 .bizy-card__footer__start {
-    justify-self: start;
+    justify-content: flex-start;
 }
 
 .bizy-card__footer__end {
-    justify-self: end;
+    justify-content: flex-end;
 }
 
