@@ -40,15 +40,21 @@
     --bizy-breadcrumb-link-color: var(--bizy-info-color);
     --bizy-breadcrumb-path-color: var(--bizy-default-color);
     
+    --bizy-button-height: fit-content;
+    --bizy-button-min-height: 1rem;
+    --bizy-button-max-height: 100%;
+    --bizy-button-width: fit-content;
+    --bizy-button-min-width: 2rem;
+    --bizy-button-max-width: 100%;
     --bizy-button-background-color: var(--bizy-default-color);
     --bizy-button-border: none;
     --bizy-button-border-radius: 0.3rem;
     --bizy-button-color: #fff;
-    --bizy-button-min-width: 2rem;
     --bizy-button-padding: 0.5rem;
 
     --bizy-card-background-color: #fff;
     --bizy-card-cursor: default;
+    --bizy-card-height: 100%;
     --bizy-card-height: 100%;
     --bizy-card-min-height: auto;
     --bizy-card-max-height: auto;

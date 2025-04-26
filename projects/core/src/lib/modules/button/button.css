@@ -1,15 +1,24 @@
 :host {
     font-size: 1rem;
+    height: var(--bizy-button-height);
+    width: var(--bizy-button-width);
+    min-height: var(--bizy-button-min-height);
+    min-width: var(--bizy-button-min-width);
+    max-height: var(--bizy-button-max-height);
+    max-width: var(--bizy-button-max-width);
 }
 
 .bizy-button {
+    height: inherit;
+    width: inherit;
+    min-height: inherit;
+    min-width: inherit;
+    max-height: inherit;
+    max-width: inherit;
     display: flex;
     justify-content: space-between;
     align-items: center;
     column-gap: 0.5rem;
-    width: 100%;
-    min-width: var(--bizy-button-min-width);
-    height: 100%;
     padding: var(--bizy-button-padding);
     border-radius: var(--bizy-button-border-radius);
     border: var(--bizy-button-border);
