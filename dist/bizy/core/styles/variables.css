@@ -41,10 +41,10 @@
     --bizy-breadcrumb-path-color: var(--bizy-default-color);
     
     --bizy-button-height: fit-content;
-    --bizy-button-min-height: 1rem;
+    --bizy-button-min-height: auto;
     --bizy-button-max-height: 100%;
     --bizy-button-width: fit-content;
-    --bizy-button-min-width: 2rem;
+    --bizy-button-min-width: auto;
     --bizy-button-max-width: 100%;
     --bizy-button-background-color: var(--bizy-default-color);
     --bizy-button-border: none;
