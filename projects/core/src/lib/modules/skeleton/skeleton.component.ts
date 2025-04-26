@@ -11,7 +11,9 @@ import { CommonModule } from '@angular/common';
   host: {
     '[id]': 'id',
     '[style.width]': 'width',
+    '[style.min-width]': 'width',
     '[style.height]': 'height',
+    '[style.min-height]': 'height',
     '[class]': 'customClass',
     '[style.border-radius]': 'shape === BIZY_SKELETON_SHAPE.CIRCLE ? "50%" : "0"'
   }
