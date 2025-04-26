@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
     '[style.width]': 'width',
     '[style.height]': 'height',
     '[class]': 'customClass',
-    '[class.bizy-skeleton--circle]': 'shape === BIZY_SKELETON_SHAPE.CIRCLE'
+    '[style.border-radius]': 'shape === BIZY_SKELETON_SHAPE.CIRCLE ? "50%" : "0"'
   }
 })
 export class BizySkeletonComponent {

@@ -8,10 +8,6 @@
     animation: bizy-skeleton-animation 1.5s infinite linear;
 }
 
-.bizy-skeleton--circle {
-    border-radius: 50%;
-}
-
 @keyframes bizy-skeleton-animation {
     0% {
         background-position: -200% 0;
