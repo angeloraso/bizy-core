@@ -11,7 +11,9 @@ import { CommonModule } from '@angular/common';
   host: {
     '[id]': 'id',
     '[style.width]': 'width',
-    '[style.height]': 'height'
+    '[style.height]': 'height',
+    '[class]': 'customClass',
+    '[class.bizy-skeleton--circle]': 'shape === BIZY_SKELETON_SHAPE.CIRCLE'
   }
 })
 export class BizySkeletonComponent {
@@ -20,6 +22,4 @@ export class BizySkeletonComponent {
   @Input() height: string;
   @Input() width: string;
   @Input() customClass: string = '';
-
-  readonly BIZY_SKELETON_SHAPE = BIZY_SKELETON_SHAPE;
 }
