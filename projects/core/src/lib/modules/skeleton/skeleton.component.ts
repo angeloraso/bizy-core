@@ -22,4 +22,6 @@ export class BizySkeletonComponent {
   @Input() height: string;
   @Input() width: string;
   @Input() customClass: string = '';
+
+  readonly BIZY_SKELETON_SHAPE = BIZY_SKELETON_SHAPE;
 }
