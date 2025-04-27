@@ -10,6 +10,7 @@ export declare class BizyFormComponent {
     id: string;
     customClass: string;
     onSubmit(event: Event): void;
+    setTouched: () => void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyFormComponent, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<BizyFormComponent, "bizy-form", never, { "id": { "alias": "id"; "required": false; }; "customClass": { "alias": "customClass"; "required": false; }; }, {}, ["inputs", "selects", "datePickers"], ["*"], true, never>;
 }
