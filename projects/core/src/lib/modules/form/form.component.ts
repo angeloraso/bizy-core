@@ -20,6 +20,11 @@ export class BizyFormComponent {
   @Input() customClass: string = '';
 
   onSubmit(event: Event) {
+    this.setTouched();
+    event.preventDefault();
+  }
+
+  setTouched = () => {
     if (this.inputs.length > 0) {
       this.inputs.forEach(component => {
         component.setTouched(true);
@@ -37,7 +42,5 @@ export class BizyFormComponent {
         component.setTouched(true);
       });
     }
-
-    event.preventDefault();
   }
 }
