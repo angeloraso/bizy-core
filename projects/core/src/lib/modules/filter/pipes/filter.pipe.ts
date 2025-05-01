@@ -1,22 +1,32 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { inject, Pipe, PipeTransform } from '@angular/core';
+import { BizyValidatorService } from '../../../services';
 
 @Pipe({
   name: 'bizyFilter'
 })
 export class BizyFilterPipe implements PipeTransform {
+  readonly validator = inject(BizyValidatorService);
+
   transform<T>(
     items: Array<T>,
     property: string,
-    states: Array<{ id: string | number | boolean; selected: boolean }>
+    states: string | number | boolean | Array<{ id: string | number | boolean; selected: boolean }>
   ): Array<T> {
     if (!items || items.length === 0) {
       return [];
     }
 
-    if (!property || !states || states.length === 0) {
+    if (!property || typeof states === 'undefined' || states === null) {
       return items;
     }
 
+    if (!Array.isArray(states)) {
+      return items.filter(_item => _item[property] === states);
+    }
+
+    if (states.length === 0) {
+      return items;
+    }
 
     const _selected = states.filter(_state => _state.selected);
     if (_selected.length === states.length) {
