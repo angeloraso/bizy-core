@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { EventEmitter, ChangeDetectorRef, Output, Input, Inject, ChangeDetectionStrategy, Component, NgModule, Renderer2, ElementRef, Injectable, Directive, ViewChild, ContentChildren, inject, ContentChild, Pipe, ViewContainerRef, TemplateRef, RendererFactory2, HostListener, Host } from '@angular/core';
+import { EventEmitter, ChangeDetectorRef, Output, Input, Inject, ChangeDetectionStrategy, Component, NgModule, Renderer2, ElementRef, Injectable, Directive, ViewChild, ContentChildren, inject, ContentChild, RendererFactory2, Pipe, ViewContainerRef, TemplateRef, HostListener, Host } from '@angular/core';
 import * as i1 from '@angular/common';
 import { CommonModule, DOCUMENT, registerLocaleData, DatePipe } from '@angular/common';
 import { Subject, Subscription, BehaviorSubject, filter, take, skip, auditTime, throttleTime, debounceTime as debounceTime$1, interval, fromEvent, merge, timer, of } from 'rxjs';
@@ -24,17 +24,17 @@ import es_ES from '@uppy/locales/lib/es_ES';
 import en_US from '@uppy/locales/lib/en_US';
 import Dashboard from '@uppy/dashboard';
 import XHRUpload from '@uppy/xhr-upload';
+import * as i1$1 from '@angular/router';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import * as i3 from '@angular/cdk/portal';
 import { TemplatePortal, PortalModule } from '@angular/cdk/portal';
 import { ScrollingModule, CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import * as i1$3 from '@angular/cdk/dialog';
 import { DIALOG_DATA, DialogRef, DialogModule, Dialog } from '@angular/cdk/dialog';
-import * as i1$1 from '@angular/cdk/drag-drop';
+import * as i1$2 from '@angular/cdk/drag-drop';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import * as i1$2 from '@angular/router';
-import { NavigationEnd, NavigationStart, Router } from '@angular/router';
-import { Clipboard } from '@angular/cdk/clipboard';
-import { DeviceDetectorService } from 'ngx-device-detector';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import * as i1$4 from '@angular/platform-browser';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -2488,12 +2488,983 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImpor
             args: [{ selector: 'bizy-filter-content', changeDetection: ChangeDetectionStrategy.OnPush, template: "<ng-content></ng-content>", styles: [":host{font-size:1rem}\n"] }]
         }] });
 
+var BIZY_ANIMATION;
+(function (BIZY_ANIMATION) {
+    BIZY_ANIMATION["FADE_IN"] = "fade-in";
+    BIZY_ANIMATION["FADE_OUT"] = "fade-out";
+    BIZY_ANIMATION["FADE_IN_UP"] = "fade-in-up";
+    BIZY_ANIMATION["FADE_IN_RIGHT"] = "fade-in-right";
+    BIZY_ANIMATION["FADE_IN_DOWN"] = "fade-in-down";
+    BIZY_ANIMATION["FADE_IN_LEFT"] = "fade-in-left";
+    BIZY_ANIMATION["SLIDE_IN_UP"] = "slide-in-up";
+    BIZY_ANIMATION["SLIDE_IN_RIGHT"] = "slide-in-right";
+    BIZY_ANIMATION["SLIDE_IN_DOWN"] = "slide-in-down";
+    BIZY_ANIMATION["SLIDE_IN_LEFT"] = "slide-in-left";
+    BIZY_ANIMATION["SLIDE_OUT_UP"] = "slide-out-up";
+    BIZY_ANIMATION["SLIDE_OUT_DOWN"] = "slide-out-down";
+    BIZY_ANIMATION["SLIDE_OUT_RIGHT"] = "slide-out-right";
+    BIZY_ANIMATION["SLIDE_OUT_LEFT"] = "slide-out-left";
+})(BIZY_ANIMATION || (BIZY_ANIMATION = {}));
+class BizyAnimationService {
+    rendererFactory;
+    #renderer;
+    constructor(rendererFactory) {
+        this.rendererFactory = rendererFactory;
+        this.#renderer = this.rendererFactory.createRenderer(null, null);
+    }
+    setAnimation(element, animation) {
+        return new Promise(resolve => {
+            if (!element || !animation || !this.#renderer) {
+                return;
+            }
+            const root = this.#renderer.selectRootElement(':root', true);
+            const animationTimeout = getComputedStyle(root).getPropertyValue('--bizy-animation-timeout').trim();
+            this.#renderer.addClass(element, 'animated');
+            this.#renderer.addClass(element, animation);
+            setTimeout(() => {
+                this.#renderer.removeClass(element, 'animated');
+                this.#renderer.removeClass(element, animation);
+                resolve();
+            }, Number(animationTimeout.match(/\d/g).join('')));
+        });
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyAnimationService, deps: [{ token: RendererFactory2 }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyAnimationService, providedIn: 'root' });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyAnimationService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
+        }], ctorParameters: () => [{ type: i0.RendererFactory2, decorators: [{
+                    type: Inject,
+                    args: [RendererFactory2]
+                }] }] });
+
+class BizyViewportService {
+    window;
+    #viewportSizeChanged;
+    get sizeChange$() {
+        return this.#viewportSizeChanged.asObservable();
+    }
+    constructor(window) {
+        this.window = window;
+        this.#viewportSizeChanged = new BehaviorSubject({
+            width: this.window.innerWidth,
+            height: this.window.innerHeight
+        });
+        fromEvent(window, 'resize')
+            .pipe(debounceTime(200), map((event) => ({
+            width: event.currentTarget.innerWidth,
+            height: event.currentTarget.innerHeight
+        })))
+            .subscribe(windowSize => {
+            this.#viewportSizeChanged.next(windowSize);
+        });
+    }
+    width() {
+        return this.window.screen.availWidth;
+    }
+    height() {
+        return this.window.screen.availHeight;
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyViewportService, deps: [{ token: Window }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyViewportService, providedIn: 'root' });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyViewportService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
+        }], ctorParameters: () => [{ type: Window, decorators: [{
+                    type: Inject,
+                    args: [Window]
+                }] }] });
+
+class BizyKeyboardService {
+    document;
+    #shiftHolding = new BehaviorSubject(false);
+    #controlHolding = new BehaviorSubject(false);
+    get shiftHolding$() {
+        return this.#shiftHolding.asObservable();
+    }
+    get controlHolding$() {
+        return this.#controlHolding.asObservable();
+    }
+    constructor(document) {
+        this.document = document;
+        this.document.addEventListener('visibilitychange', () => {
+            this.#shiftHolding.next(false);
+            this.#controlHolding.next(false);
+        });
+        this.document.addEventListener('keydown', (event) => {
+            if (event.key === 'Shift') {
+                this.#shiftHolding.next(true);
+            }
+            if (event.key === 'Meta' || event.key === 'Control') {
+                this.#controlHolding.next(true);
+            }
+        });
+        this.document.addEventListener('keyup', (event) => {
+            if (event.key === 'Shift') {
+                this.#shiftHolding.next(false);
+            }
+            if (event.key === 'Meta' || event.key === 'Control') {
+                this.#controlHolding.next(false);
+            }
+        });
+    }
+    isShiftHolding() {
+        return this.#shiftHolding.value;
+    }
+    isControlHolding() {
+        return this.#controlHolding.value;
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyKeyboardService, deps: [{ token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyKeyboardService, providedIn: 'root' });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyKeyboardService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
+        }], ctorParameters: () => [{ type: Document, decorators: [{
+                    type: Inject,
+                    args: [DOCUMENT]
+                }] }] });
+
+class BizyExportToCSVService {
+    document;
+    rendererFactory;
+    #loading = false;
+    #renderer;
+    constructor(document, rendererFactory) {
+        this.document = document;
+        this.rendererFactory = rendererFactory;
+        this.#renderer = this.rendererFactory.createRenderer(null, null);
+    }
+    download(data) {
+        if (this.#loading || !data.items || !Array.isArray(data.items) || !data.model) {
+            return;
+        }
+        try {
+            this.#loading = true;
+            const csv = this.getCSV(data);
+            if (!data.fileName) {
+                data.fileName = 'bizy-csv';
+            }
+            this.#downloadCSV({ csv, fileName: data.fileName });
+        }
+        finally {
+            this.#loading = false;
+        }
+    }
+    getCSV(data) {
+        let csv = '';
+        function escapeCommas(str) {
+            return str.includes(',') ? `"${str}"` : str;
+        }
+        for (const key in data.model) {
+            if (key) {
+                csv += `${data.model[key]},`;
+            }
+        }
+        data.items.forEach(_item => {
+            // Remove the last character (',')
+            csv = csv.slice(0, -1);
+            csv += '\n';
+            for (const key in data.model) {
+                let value = _item;
+                const nestedProperty = key.split('.');
+                for (let i = 0; i < nestedProperty.length; i++) {
+                    const _property = nestedProperty[i];
+                    if (value) {
+                        value = value[_property];
+                    }
+                    else {
+                        break;
+                    }
+                }
+                if (typeof value !== undefined && value !== null) {
+                    csv += `${escapeCommas(String(value).replace(/\n/g, ''))},`;
+                }
+                else {
+                    csv += ',';
+                }
+            }
+        });
+        if (csv && csv[csv.length - 1] === ',') {
+            // Remove the last character (',')
+            csv = csv.slice(0, -1);
+        }
+        return csv;
+    }
+    #downloadCSV(data) {
+        const blob = new Blob([data.csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const downloadButton = this.#renderer.createElement('a');
+        downloadButton.setAttribute('download', data.fileName);
+        downloadButton.href = url;
+        this.#renderer.appendChild(this.document.body, downloadButton);
+        downloadButton.click();
+        this.#renderer.removeChild(this.document.body, downloadButton);
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyExportToCSVService, deps: [{ token: DOCUMENT }, { token: RendererFactory2 }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyExportToCSVService, providedIn: 'root' });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyExportToCSVService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
+        }], ctorParameters: () => [{ type: Document, decorators: [{
+                    type: Inject,
+                    args: [DOCUMENT]
+                }] }, { type: i0.RendererFactory2, decorators: [{
+                    type: Inject,
+                    args: [RendererFactory2]
+                }] }] });
+
+class BizyRouterService {
+    router;
+    static backPath = '';
+    transitionsEnd$;
+    transitionsStart$;
+    popStateEvent$;
+    routeChange$;
+    constructor(router) {
+        this.router = router;
+        this.transitionsEnd$ = this.router.events.pipe(filter$1(event => event instanceof NavigationEnd), map((event) => event.id), distinctUntilChanged(), map(() => this.router.routerState.snapshot.root));
+        this.transitionsStart$ = this.router.events.pipe(filter$1(event => event instanceof NavigationStart), map((event) => event.id), distinctUntilChanged(), map(() => this.router.routerState.snapshot.root));
+        this.popStateEvent$ = fromEvent(window, 'popstate');
+        this.routeChange$ = merge(this.transitionsEnd$, this.popStateEvent$).pipe(map(() => void 0));
+    }
+    getURL() {
+        return window.location.pathname;
+    }
+    getBackPath() {
+        return BizyRouterService.backPath;
+    }
+    getId(activatedRoute, param) {
+        return activatedRoute.snapshot.paramMap.get(param);
+    }
+    getQueryParam(activatedRoute, param) {
+        return activatedRoute.snapshot.queryParamMap.get(param);
+    }
+    getAllQueryParam() {
+        const params = new URL(window.location.href).searchParams;
+        const queryParams = {};
+        for (const [key, value] of params.entries()) {
+            queryParams[key] = value;
+        }
+        return queryParams;
+    }
+    goTo(data) {
+        if (data.replace) {
+            BizyRouterService.backPath = '';
+        }
+        else {
+            BizyRouterService.backPath = this.getURL();
+        }
+        if (data.path[0] === '/') {
+            this.router.navigateByUrl(`${data.path}${this._serialize(data.params)}`, { replaceUrl: data.replace ?? false, skipLocationChange: data.skip ?? false });
+            return;
+        }
+        const path = this.getURL();
+        const index = path.indexOf('?');
+        const url = index !== -1 ? path.substring(0, index) : path;
+        this.router.navigateByUrl(`${url}/${data.path}${this._serialize(data.params)}`, { replaceUrl: data.replace ?? false, skipLocationChange: data.skip ?? false });
+    }
+    goBack(data) {
+        if (BizyRouterService.backPath) {
+            history.back();
+            BizyRouterService.backPath = '';
+        }
+        else if (data && data.path) {
+            this.router.navigateByUrl(data.path, { replaceUrl: true });
+        }
+        else {
+            const index = this.getURL().lastIndexOf('/');
+            const backURL = this.getURL().substring(0, index);
+            this.router.navigateByUrl(backURL, { replaceUrl: true });
+        }
+    }
+    reload(force) {
+        if (force) {
+            window.location.reload();
+        }
+        else {
+            setTimeout(() => {
+                this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+                    this.goTo({ path: this.getURL(), params: this.getAllQueryParam() });
+                });
+            }, 1);
+        }
+    }
+    _serialize(params) {
+        if (!params) {
+            return '';
+        }
+        const str = [];
+        for (const param in params) {
+            if (params[param]) {
+                str.push(encodeURIComponent(param) + '=' + encodeURIComponent(params[param]));
+            }
+        }
+        const queryParams = str.length > 0 ? `?${str.join('&')}` : '';
+        return queryParams;
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyRouterService, deps: [{ token: Router }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyRouterService, providedIn: 'root' });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyRouterService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
+        }], ctorParameters: () => [{ type: i1$1.Router, decorators: [{
+                    type: Inject,
+                    args: [Router]
+                }] }] });
+
+class BizyCacheService {
+    router;
+    CACHE_PREFIX = 'BIZY-CACHE';
+    constructor(router) {
+        this.router = router;
+    }
+    getData(key) {
+        if (!key) {
+            key = this.router.getURL();
+        }
+        const data = sessionStorage.getItem(`${this.CACHE_PREFIX}-${key}`);
+        if (data) {
+            const _data = JSON.parse(data);
+            return Date.now() < _data.expiresAt ? _data.value : {};
+        }
+        return {};
+    }
+    setData(value, key, expiresAt) {
+        if (typeof value === 'undefined' || value === null) {
+            return;
+        }
+        if (!key) {
+            key = this.router.getURL();
+        }
+        if (!expiresAt) {
+            const date = new Date();
+            date.setHours(23, 59, 59);
+            expiresAt = date.getTime();
+        }
+        const data = {
+            expiresAt,
+            value
+        };
+        sessionStorage.setItem(`${this.CACHE_PREFIX}-${key}`, JSON.stringify(data));
+    }
+    remove(key) {
+        if (!key) {
+            key = this.router.getURL();
+        }
+        sessionStorage.removeItem(`${this.CACHE_PREFIX}-${key}`);
+    }
+    removeAll() {
+        const cacheKeys = Object.keys(sessionStorage).filter(key => {
+            return key.includes(this.CACHE_PREFIX);
+        });
+        cacheKeys.forEach(value => {
+            sessionStorage.removeItem(value);
+        });
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyCacheService, deps: [{ token: BizyRouterService }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyCacheService, providedIn: 'root' });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyCacheService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
+        }], ctorParameters: () => [{ type: BizyRouterService, decorators: [{
+                    type: Inject,
+                    args: [BizyRouterService]
+                }] }] });
+
+class BizyValidatorService {
+    isEmail(email) {
+        const regex = /^(([^ñ<>()[\]\\.,;:\s@"]+(\.[^ñ<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return regex.test(String(email).toLowerCase());
+    }
+    isPassFormat(pass) {
+        const formatRegex = /(?!.*012)(?!.*123)(?!.*234)(?!.*345)(?!.*456)(?!.*567)(?!.*678)(?!.*789)(?!.*987)(?!.*876)(?!.*765)(?!.*654)(?!.*543)(?!.*432)(?!.*321)(?!.*210)(?!.*(.)\1{2,})(?!(^\D+$))(?!(^\d+$))(^.{6,}$)/;
+        const excludeRegex = /[^'"]$/;
+        const _pass = String(pass).toLowerCase();
+        return formatRegex.test(_pass) && excludeRegex.test(_pass);
+    }
+    isNoSpecialCharacter(name) {
+        const regex = /^[a-zA-Z0-9][a-zA-Z0-9_-]*$/;
+        return regex.test(String(name).toLowerCase());
+    }
+    isNumber(number) {
+        const regex = /^[0-9]*$/;
+        return regex.test(String(number).toLowerCase());
+    }
+    isPhoneNumber(number) {
+        const regex = /^\+{0,1}[0-9#*]+$/;
+        return regex.test(String(number).toLowerCase());
+    }
+    isString(string) {
+        return typeof string === 'string' || string instanceof String;
+    }
+    isJSON(text) {
+        if (/^[\],:{}\s]*$/.test(text.replace(/\\["\\/bfnrtu]/g, '@')
+            .replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?/g, ']')
+            .replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
+            return true;
+        }
+        return false;
+    }
+    emailValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isEmail(control.value)) ? null : { bizyEmail: true };
+        };
+    }
+    phoneNumberValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isPhoneNumber(control.value)) ? null : { bizyPhoneNumber: true };
+        };
+    }
+    numberValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isNumber(control.value)) ? null : { bizyNumber: true };
+        };
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyValidatorService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyValidatorService, providedIn: 'root' });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyValidatorService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
+        }] });
+
+class BizyStorageService {
+    get(key) {
+        const item = localStorage.getItem(key);
+        try {
+            return JSON.parse(item);
+        }
+        catch (e) {
+            return item;
+        }
+    }
+    set(key, value) {
+        if (typeof value === 'object') {
+            localStorage.setItem(key, JSON.stringify(value));
+        }
+        else if (typeof value === 'string') {
+            localStorage.setItem(key, value);
+        }
+        else {
+            localStorage.setItem(key, String(value));
+        }
+    }
+    remove(key) {
+        localStorage.removeItem(key);
+    }
+    clear() {
+        localStorage.clear();
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyStorageService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyStorageService, providedIn: 'root' });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyStorageService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
+        }] });
+
+var COLOR;
+(function (COLOR) {
+    COLOR["DEFAULT"] = "#666666";
+    COLOR["INFO"] = "#2484C6";
+    COLOR["SUCCESS"] = "#65BF6C";
+    COLOR["WARNING"] = "#F7A64C";
+    COLOR["ERROR"] = "#EF4C59";
+})(COLOR || (COLOR = {}));
+class BizyLogService {
+    #lastLogTimestamp = 0;
+    #log(log, color, param) {
+        const difference = this.#lastLogTimestamp ? Date.now() - this.#lastLogTimestamp : 0;
+        this.#lastLogTimestamp = Date.now();
+        const timestampStyles = 'color: #EE5DFF';
+        const logStyles = `color: ${color}; font-size: 12px;`;
+        const date = new Date();
+        if (param) {
+            console.log(`%c${date.toLocaleString()}: %c${log} %c(+${difference}ms)`, timestampStyles, logStyles, timestampStyles, param);
+        }
+        else {
+            console.log(`%c${date.toLocaleString()}: %c${log} %c(+${difference}ms)`, timestampStyles, logStyles, timestampStyles);
+        }
+    }
+    debug(data, param) {
+        if (typeof data === 'string') {
+            this.#log(data, COLOR.DEFAULT, param);
+        }
+        else {
+            this.#template({ ...data, param: data.param, title: 'Debug', color: COLOR.DEFAULT });
+        }
+    }
+    info(data, param) {
+        if (typeof data === 'string') {
+            this.#log(data, COLOR.INFO, param);
+        }
+        else {
+            this.#template({ ...data, param: data.param, title: 'Info', color: COLOR.INFO });
+        }
+    }
+    success(data, param) {
+        if (typeof data === 'string') {
+            this.#log(data, COLOR.SUCCESS, param);
+        }
+        else {
+            this.#template({ ...data, param: data.param, title: 'Success', color: COLOR.SUCCESS });
+        }
+    }
+    warning(data, param) {
+        if (typeof data === 'string') {
+            this.#log(data, COLOR.WARNING, param);
+        }
+        else {
+            this.#template({ ...data, param: data.param, title: 'Warning', color: COLOR.WARNING });
+        }
+    }
+    error(data, param) {
+        if (typeof data === 'string') {
+            this.#log(data, COLOR.ERROR, param);
+        }
+        else {
+            this.#template({ ...data, param: data.param, title: 'Error', color: COLOR.ERROR });
+        }
+    }
+    /** DEPRECATED */
+    templateDebug(data) {
+        this.#template({ ...data, title: 'Debug', color: COLOR.DEFAULT });
+    }
+    /** DEPRECATED */
+    templateSucc(data) {
+        this.#template({ ...data, title: 'Success', color: COLOR.SUCCESS });
+    }
+    /** DEPRECATED */
+    templateInfo(data) {
+        this.#template({ ...data, title: 'Info', color: COLOR.INFO });
+    }
+    /** DEPRECATED */
+    templateWarn(data) {
+        this.#template({ ...data, title: 'Warning', color: COLOR.WARNING });
+    }
+    /** DEPRECATED */
+    templateError(data) {
+        this.#template({ ...data, title: 'Error', color: COLOR.ERROR });
+    }
+    #template(data) {
+        const log = `(${data.title}) ${data.fileName} - ${data.functionName}`;
+        this.#log(log, data.color, data.param);
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyLogService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyLogService, providedIn: 'root' });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyLogService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
+        }] });
+
+class BizyCopyToClipboardService {
+    #clipboard = inject(Clipboard);
+    copy(data) {
+        return new Promise((resolve, reject) => {
+            try {
+                if (!data) {
+                    resolve();
+                    return;
+                }
+                setTimeout(() => {
+                    let toCopy = '';
+                    if (typeof data === 'string' || data instanceof String) {
+                        toCopy = data;
+                    }
+                    else if (data.items && data.items.length > 0 && data.model) {
+                        for (const key in data.model) {
+                            if (key) {
+                                toCopy += `${data.model[key]},`;
+                            }
+                        }
+                        data.items.forEach(_item => {
+                            // Remove the last character (',')
+                            toCopy = toCopy.slice(0, -2);
+                            toCopy += '\n';
+                            for (const key in data.model) {
+                                let value = _item;
+                                const nestedProperty = key.split('.');
+                                nestedProperty.forEach(_property => {
+                                    value = value[_property];
+                                });
+                                if (typeof value !== undefined && value !== null) {
+                                    toCopy += `${String(value).replace(/\n/g, '')},`;
+                                }
+                                else {
+                                    toCopy += ',';
+                                }
+                            }
+                        });
+                    }
+                    const pending = this.#clipboard.beginCopy(toCopy);
+                    let remainingAttempts = 3;
+                    const attempt = () => {
+                        const result = pending.copy();
+                        if (!result && --remainingAttempts) {
+                            setTimeout(attempt);
+                        }
+                        else {
+                            // Remember to destroy when you're done!
+                            pending.destroy();
+                            resolve();
+                        }
+                    };
+                    attempt();
+                }, 100);
+            }
+            catch (error) {
+                reject(error);
+            }
+        });
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyCopyToClipboardService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyCopyToClipboardService, providedIn: 'root' });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyCopyToClipboardService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
+        }] });
+
+var BIZY_FORMAT_SECONDS_LANGUAGE;
+(function (BIZY_FORMAT_SECONDS_LANGUAGE) {
+    BIZY_FORMAT_SECONDS_LANGUAGE["SPANISH"] = "es";
+    BIZY_FORMAT_SECONDS_LANGUAGE["ENGLISH"] = "en";
+})(BIZY_FORMAT_SECONDS_LANGUAGE || (BIZY_FORMAT_SECONDS_LANGUAGE = {}));
+var BIZY_FORMAT_SECONDS_FORMAT;
+(function (BIZY_FORMAT_SECONDS_FORMAT) {
+    BIZY_FORMAT_SECONDS_FORMAT["DATE_TIME"] = "date-time";
+    BIZY_FORMAT_SECONDS_FORMAT["TIME"] = "time";
+})(BIZY_FORMAT_SECONDS_FORMAT || (BIZY_FORMAT_SECONDS_FORMAT = {}));
+class BizyFormatSecondsService {
+    #options = {
+        language: BIZY_FORMAT_SECONDS_LANGUAGE.SPANISH,
+        format: BIZY_FORMAT_SECONDS_FORMAT.TIME
+    };
+    getOptions() {
+        return this.#options;
+    }
+    setOptions(options) {
+        if (options && options.language) {
+            this.#options.language = options.language;
+        }
+        if (options && options.format) {
+            this.#options.format = options.format;
+        }
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyFormatSecondsService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyFormatSecondsService, providedIn: 'root' });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyFormatSecondsService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
+        }] });
+
+/**
+ * Copyright 2020 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the 'License');
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an 'AS IS' BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+// This function's role is to enable smooth transition to the brave new world of
+// User-Agent Client Hints. If you have legacy code that relies on
+// `navigator.userAgent` and which relies on entropy that will go away by
+// default, you *need* to refactor it to use UA-CH. This function is to be used
+// as a stop gap, to enable smooth transition during that period.
+/**
+* @param {string[]} hints
+* @return {Promise<string|undefined>} A Promise that resolves to a string if a
+*   UA could be synthesized from client hints, otherwise undefined.
+*/
+async function getUserAgentUsingClientHints(hints) {
+    // Helper functions for platform specific strings
+    const GetCrosSpecificString = (values) => {
+        let osCPUFragment = '';
+        if (values.bitness == '64') {
+            if (values.architecture == 'x86') {
+                osCPUFragment = 'x86_64';
+            }
+            else if (values.architecture == 'arm') {
+                osCPUFragment = 'aarch64';
+            }
+        }
+        else if (values.architecture == 'arm' && values.bitness == '32') {
+            osCPUFragment = 'armv7l';
+        }
+        if (osCPUFragment == '') {
+            return `X11; CrOS ${values.platformVersion}`;
+        }
+        return `X11; CrOS ${osCPUFragment} ${values.platformVersion}`;
+    };
+    const GetWindowsSpecificString = (values) => {
+        let osCPUFragment = '';
+        if (values.architecture == 'x86' && values.bitness == '64') {
+            osCPUFragment = '; Win64; x64';
+        }
+        else if (values.architecture == 'arm') {
+            osCPUFragment = '; ARM';
+        }
+        else if (values.wow64 === true) {
+            osCPUFragment = '; WOW64';
+        }
+        return `Windows NT ${getWindowsPlatformVersion(values.platformVersion)}${osCPUFragment}`;
+    };
+    const GetMacSpecificString = (values) => {
+        let newUA = 'Macintosh;';
+        newUA += values.architecture === 'arm' ? ' ARM ' : ' Intel ';
+        newUA += 'Mac OS X ';
+        let macVersion = values.platformVersion;
+        if (macVersion.indexOf('.') > -1) {
+            macVersion = macVersion.split('.').join('_');
+        }
+        newUA += macVersion;
+        return newUA;
+    };
+    const GetAndroidSpecificString = (values) => {
+        let newUA = 'Linux; Android ';
+        newUA += values.platformVersion;
+        if (values.model) {
+            newUA += '; ';
+            newUA += values.model;
+        }
+        return newUA;
+    };
+    const Initialize = (values) => {
+        if (!values.architecture) {
+            values.architecture = 'x86';
+        }
+        if (!values.bitness) {
+            values.bitness = '64';
+        }
+        if (!values.model) {
+            values.model = '';
+        }
+        if (!values.platform) {
+            values.platform = 'Windows';
+        }
+        if (!values.platformVersion) {
+            values.platformVersion = '10.0';
+        }
+        if (!values.wow64) {
+            values.wow64 = false;
+        }
+        return values;
+    };
+    // @ts-ignore-error
+    if (!navigator.userAgentData) {
+        return Promise.resolve('');
+    }
+    // Verify that this is a Chromium-based browser
+    let isChromium = false;
+    let chromiumVersion;
+    // eslint-disable-next-line prefer-regex-literals
+    const isChromeUAPattern = new RegExp('AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/\\d+.\\d+.\\d+.\\d+ (Mobile )?Safari/537.36$');
+    // @ts-ignore-error
+    navigator.userAgentData.brands.forEach(value => {
+        if (value.brand == 'Chromium') {
+            // Let's double check the UA string as well, so we don't accidentally
+            // capture a headless browser or friendly bot (which should report as
+            // HeadlessChrome or something entirely different).
+            isChromium = isChromeUAPattern.test(navigator.userAgent);
+            chromiumVersion = value.version;
+        }
+    });
+    // @ts-ignore
+    if (!isChromium || chromiumVersion < 100) {
+        // If this is not a Chromium-based browser, the UA string should be very
+        // different. Or, if this is a Chromium lower than 100, it doesn't have
+        // all the hints we rely on. So let's bail.
+        return Promise.resolve('');
+    }
+    // Main logic
+    return new Promise(resolve => {
+        // @ts-ignore-error
+        navigator.userAgentData.getHighEntropyValues(hints).then(values => {
+            let initialValues = {
+                // @ts-ignore-error
+                platform: navigator.userAgentData?.platform,
+                version: chromiumVersion
+            };
+            values = Object.assign(initialValues, values);
+            values = Initialize(values);
+            let newUA = 'Mozilla/5.0 (';
+            if (['Chrome OS', 'Chromium OS'].includes(values.platform)) {
+                newUA += GetCrosSpecificString(values);
+            }
+            else if (values.platform == 'Windows') {
+                newUA += GetWindowsSpecificString(values);
+            }
+            else if (values.platform == 'macOS') {
+                newUA += GetMacSpecificString(values);
+            }
+            else if (values.platform == 'Android') {
+                newUA += GetAndroidSpecificString(values);
+            }
+            else {
+                newUA += 'X11; Linux x86_64';
+            }
+            newUA += ') AppleWebKit/537.36 (KHTML, like Gecko) Chrome/';
+            newUA += getVersion(values?.fullVersionList, initialValues.version);
+            // @ts-ignore-error
+            if (navigator.userAgentData.mobile) {
+                newUA += ' Mobile';
+            }
+            newUA += ' Safari/537.36';
+            resolve(newUA);
+        });
+    });
+}
+function getVersion(fullVersionList, majorVersion) {
+    // If we don't get a fullVersionList, or it's somehow undefined, return
+    // the reduced version number.
+    return (fullVersionList?.find((item) => item.brand == 'Google Chrome')?.version ||
+        `${majorVersion}.0.0.0`);
+}
+function getWindowsPlatformVersion(platformVersion) {
+    // https://wicg.github.io/ua-client-hints/#get-the-legacy-windows-version-number
+    const versionMap = new Map([
+        ['0.3.0', '6.3'], // Windows 8.1
+        ['0.2.0', '6.2'], // Windows 8
+        ['0.1.0', '6.1'] // Windows 7
+    ]);
+    if (versionMap.has(platformVersion)) {
+        return versionMap.get(platformVersion);
+    }
+    // Windows 10 and above send "Windows NT 10.0"
+    return '10.0';
+}
+/**
+   * @param {string[]} hints
+   * @return {Promise<string|undefined>} A Promise that resolves on overriding the
+   *   navigator.userAgent string.
+   */
+async function overrideUserAgentUsingClientHints(hints) {
+    return new Promise(resolve => {
+        getUserAgentUsingClientHints(hints).then(newUA => {
+            if (newUA) {
+                // Got a new UA value. Now override `navigator.userAgent`.
+                Object.defineProperty(navigator, 'userAgent', {
+                    value: newUA,
+                    writable: false,
+                    configurable: true
+                });
+            }
+            else {
+                newUA = navigator.userAgent;
+            }
+            resolve(newUA);
+        });
+    });
+}
+const exportedForTests = { getVersion, getWindowsPlatformVersion };
+
+class BizyDeviceService {
+    #device = inject(DeviceDetectorService);
+    async getUserAgent() {
+        try {
+            const userAgent = await overrideUserAgentUsingClientHints([
+                'architecture',
+                'bitness',
+                'model',
+                'platformVersion',
+                'uaFullVersion',
+                'fullVersionList'
+            ]);
+            return userAgent;
+        }
+        catch {
+            return window.navigator.userAgent;
+        }
+    }
+    isMobile = () => this.#device.isMobile();
+    isTablet = () => this.#device.isTablet();
+    isDesktop = () => this.#device.isDesktop();
+    isPortrait = () => this.#device.orientation === 'portrait';
+    isLandscape = () => this.#device.orientation === 'landscape';
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyDeviceService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyDeviceService, providedIn: 'root' });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyDeviceService, decorators: [{
+            type: Injectable,
+            args: [{ providedIn: 'root' }]
+        }] });
+
+const SERVICES = [
+    BizyAnimationService,
+    BizyDeviceService,
+    BizyCacheService,
+    BizyCopyToClipboardService,
+    BizyExportToCSVService,
+    BizyFormatSecondsService,
+    BizyKeyboardService,
+    BizyLogService,
+    BizyRouterService,
+    BizyStorageService,
+    BizyValidatorService,
+    BizyViewportService
+];
+class BizyServicesModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyServicesModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.8", ngImport: i0, type: BizyServicesModule });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyServicesModule, providers: SERVICES });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyServicesModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    providers: SERVICES
+                }]
+        }] });
+
 class BizyFilterPipe {
+    validator = inject(BizyValidatorService);
     transform(items, property, states) {
         if (!items || items.length === 0) {
             return [];
         }
-        if (!property || !states || states.length === 0) {
+        if (!property || typeof states === 'undefined' || states === null) {
+            return items;
+        }
+        if (!Array.isArray(states)) {
+            return items.filter(_item => _item[property] === states);
+        }
+        if (states.length === 0) {
             return items;
         }
         const _selected = states.filter(_state => _state.selected);
@@ -3616,7 +4587,7 @@ class BizyPopupWrapperComponent {
         this.#popup.close({ id: this.#dialogRef.id });
     }
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyPopupWrapperComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.8", type: BizyPopupWrapperComponent, isStandalone: true, selector: "bizy-popup-wrapper", viewQueries: [{ propertyName: "dynamicComponentContainer", first: true, predicate: ["dynamicComponentContainer"], descendants: true, read: ViewContainerRef }], ngImport: i0, template: "<div class=\"bizy-popup-wrapper\" cdkDrag>\n\n    <button class=\"bizy-popup-wrapper__drag-button\" cdkDragHandle>\n\n        <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\" class=\"bizy-popup-wrapper__drag-button__icon\">\n            <path d=\"M278.6 9.4c-12.5-12.5-32.8-12.5-45.3 0l-64 64c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l9.4-9.4V224H109.3l9.4-9.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-64 64c-12.5 12.5-12.5 32.8 0 45.3l64 64c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-9.4-9.4H224V402.7l-9.4-9.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l64 64c12.5 12.5 32.8 12.5 45.3 0l64-64c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-9.4 9.4V288H402.7l-9.4 9.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l64-64c12.5-12.5 12.5-32.8 0-45.3l-64-64c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l9.4 9.4H288V109.3l9.4 9.4c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-64-64z\"/>\n        </svg>\n\n    </button>\n\n    <button class=\"bizy-popup-wrapper__close-button\" (click)=\"close()\" (keyup.enter)=\"close()\">\n\n\n        <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 384 512\" class=\"bizy-popup-wrapper__close-button__icon\">\n            <path d=\"M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z\"/>\n        </svg>\n\n    </button>\n\n    <ng-container #dynamicComponentContainer></ng-container>\n\n</div>", styles: [":host{font-size:1rem;position:fixed!important;inset:50%;transform:translate(-50%,-50%);min-height:150px;min-width:150px;width:fit-content;height:fit-content;z-index:10}.bizy-popup-wrapper{position:relative;padding:var(--bizy-popup-padding);background-color:var(--bizy-popup-background-color);min-width:var(--bizy-popup-min-width);width:var(--bizy-popup-width);max-width:var(--bizy-popup-max-width)}.bizy-popup-wrapper__drag-button{position:absolute;left:-.9rem;top:-.9rem;border:var(--bizy-popup-drag-button-border);border-radius:50%;padding:.2rem;place-items:center;display:grid;background-color:var(--bizy-popup-drag-button-background-color);cursor:pointer;transition:transform .2s;z-index:1}.bizy-popup-wrapper__drag-button:hover{transform:scale(1.1)}.bizy-popup-wrapper__drag-button__icon{height:1rem}.bizy-popup-wrapper__drag-button__icon{fill:var(--bizy-popup-drag-button-color)}.bizy-popup-wrapper__close-button{position:absolute;right:-.9rem;top:-.9rem;border:var(--bizy-popup-close-button-border);border-radius:50%;padding:.25rem .35rem;place-items:center;display:grid;background-color:var(--bizy-popup-close-button-background-color);cursor:pointer;transition:transform .2s;z-index:1}.bizy-popup-wrapper__close-button:hover .bizy-popup-wrapper__close-button__icon{transform:scale(1.1)}.bizy-popup-wrapper__close-button:hover .bizy-popup-wrapper__close-button__icon{fill:var(--bizy-popup-close-button-hover-color)}.bizy-popup-wrapper__close-button__icon{height:1rem;transition:fill .2s ease,}.bizy-popup-wrapper__close-button__icon{fill:var(--bizy-popup-close-button-color)}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }, { kind: "ngmodule", type: DialogModule }, { kind: "ngmodule", type: DragDropModule }, { kind: "directive", type: i1$1.CdkDrag, selector: "[cdkDrag]", inputs: ["cdkDragData", "cdkDragLockAxis", "cdkDragRootElement", "cdkDragBoundary", "cdkDragStartDelay", "cdkDragFreeDragPosition", "cdkDragDisabled", "cdkDragConstrainPosition", "cdkDragPreviewClass", "cdkDragPreviewContainer", "cdkDragScale"], outputs: ["cdkDragStarted", "cdkDragReleased", "cdkDragEnded", "cdkDragEntered", "cdkDragExited", "cdkDragDropped", "cdkDragMoved"], exportAs: ["cdkDrag"] }, { kind: "directive", type: i1$1.CdkDragHandle, selector: "[cdkDragHandle]", inputs: ["cdkDragHandleDisabled"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.8", type: BizyPopupWrapperComponent, isStandalone: true, selector: "bizy-popup-wrapper", viewQueries: [{ propertyName: "dynamicComponentContainer", first: true, predicate: ["dynamicComponentContainer"], descendants: true, read: ViewContainerRef }], ngImport: i0, template: "<div class=\"bizy-popup-wrapper\" cdkDrag>\n\n    <button class=\"bizy-popup-wrapper__drag-button\" cdkDragHandle>\n\n        <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\" class=\"bizy-popup-wrapper__drag-button__icon\">\n            <path d=\"M278.6 9.4c-12.5-12.5-32.8-12.5-45.3 0l-64 64c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l9.4-9.4V224H109.3l9.4-9.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-64 64c-12.5 12.5-12.5 32.8 0 45.3l64 64c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-9.4-9.4H224V402.7l-9.4-9.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l64 64c12.5 12.5 32.8 12.5 45.3 0l64-64c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-9.4 9.4V288H402.7l-9.4 9.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l64-64c12.5-12.5 12.5-32.8 0-45.3l-64-64c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l9.4 9.4H288V109.3l9.4 9.4c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-64-64z\"/>\n        </svg>\n\n    </button>\n\n    <button class=\"bizy-popup-wrapper__close-button\" (click)=\"close()\" (keyup.enter)=\"close()\">\n\n\n        <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 384 512\" class=\"bizy-popup-wrapper__close-button__icon\">\n            <path d=\"M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z\"/>\n        </svg>\n\n    </button>\n\n    <ng-container #dynamicComponentContainer></ng-container>\n\n</div>", styles: [":host{font-size:1rem;position:fixed!important;inset:50%;transform:translate(-50%,-50%);min-height:150px;min-width:150px;width:fit-content;height:fit-content;z-index:10}.bizy-popup-wrapper{position:relative;padding:var(--bizy-popup-padding);background-color:var(--bizy-popup-background-color);min-width:var(--bizy-popup-min-width);width:var(--bizy-popup-width);max-width:var(--bizy-popup-max-width)}.bizy-popup-wrapper__drag-button{position:absolute;left:-.9rem;top:-.9rem;border:var(--bizy-popup-drag-button-border);border-radius:50%;padding:.2rem;place-items:center;display:grid;background-color:var(--bizy-popup-drag-button-background-color);cursor:pointer;transition:transform .2s;z-index:1}.bizy-popup-wrapper__drag-button:hover{transform:scale(1.1)}.bizy-popup-wrapper__drag-button__icon{height:1rem}.bizy-popup-wrapper__drag-button__icon{fill:var(--bizy-popup-drag-button-color)}.bizy-popup-wrapper__close-button{position:absolute;right:-.9rem;top:-.9rem;border:var(--bizy-popup-close-button-border);border-radius:50%;padding:.25rem .35rem;place-items:center;display:grid;background-color:var(--bizy-popup-close-button-background-color);cursor:pointer;transition:transform .2s;z-index:1}.bizy-popup-wrapper__close-button:hover .bizy-popup-wrapper__close-button__icon{transform:scale(1.1)}.bizy-popup-wrapper__close-button:hover .bizy-popup-wrapper__close-button__icon{fill:var(--bizy-popup-close-button-hover-color)}.bizy-popup-wrapper__close-button__icon{height:1rem;transition:fill .2s ease,}.bizy-popup-wrapper__close-button__icon{fill:var(--bizy-popup-close-button-color)}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }, { kind: "ngmodule", type: DialogModule }, { kind: "ngmodule", type: DragDropModule }, { kind: "directive", type: i1$2.CdkDrag, selector: "[cdkDrag]", inputs: ["cdkDragData", "cdkDragLockAxis", "cdkDragRootElement", "cdkDragBoundary", "cdkDragStartDelay", "cdkDragFreeDragPosition", "cdkDragDisabled", "cdkDragConstrainPosition", "cdkDragPreviewClass", "cdkDragPreviewContainer", "cdkDragScale"], outputs: ["cdkDragStarted", "cdkDragReleased", "cdkDragEnded", "cdkDragEntered", "cdkDragExited", "cdkDragDropped", "cdkDragMoved"], exportAs: ["cdkDrag"] }, { kind: "directive", type: i1$2.CdkDragHandle, selector: "[cdkDragHandle]", inputs: ["cdkDragHandleDisabled"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyPopupWrapperComponent, decorators: [{
             type: Component,
@@ -3625,970 +4596,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImpor
                 type: ViewChild,
                 args: ['dynamicComponentContainer', { read: ViewContainerRef }]
             }] } });
-
-var BIZY_ANIMATION;
-(function (BIZY_ANIMATION) {
-    BIZY_ANIMATION["FADE_IN"] = "fade-in";
-    BIZY_ANIMATION["FADE_OUT"] = "fade-out";
-    BIZY_ANIMATION["FADE_IN_UP"] = "fade-in-up";
-    BIZY_ANIMATION["FADE_IN_RIGHT"] = "fade-in-right";
-    BIZY_ANIMATION["FADE_IN_DOWN"] = "fade-in-down";
-    BIZY_ANIMATION["FADE_IN_LEFT"] = "fade-in-left";
-    BIZY_ANIMATION["SLIDE_IN_UP"] = "slide-in-up";
-    BIZY_ANIMATION["SLIDE_IN_RIGHT"] = "slide-in-right";
-    BIZY_ANIMATION["SLIDE_IN_DOWN"] = "slide-in-down";
-    BIZY_ANIMATION["SLIDE_IN_LEFT"] = "slide-in-left";
-    BIZY_ANIMATION["SLIDE_OUT_UP"] = "slide-out-up";
-    BIZY_ANIMATION["SLIDE_OUT_DOWN"] = "slide-out-down";
-    BIZY_ANIMATION["SLIDE_OUT_RIGHT"] = "slide-out-right";
-    BIZY_ANIMATION["SLIDE_OUT_LEFT"] = "slide-out-left";
-})(BIZY_ANIMATION || (BIZY_ANIMATION = {}));
-class BizyAnimationService {
-    rendererFactory;
-    #renderer;
-    constructor(rendererFactory) {
-        this.rendererFactory = rendererFactory;
-        this.#renderer = this.rendererFactory.createRenderer(null, null);
-    }
-    setAnimation(element, animation) {
-        return new Promise(resolve => {
-            if (!element || !animation || !this.#renderer) {
-                return;
-            }
-            const root = this.#renderer.selectRootElement(':root', true);
-            const animationTimeout = getComputedStyle(root).getPropertyValue('--bizy-animation-timeout').trim();
-            this.#renderer.addClass(element, 'animated');
-            this.#renderer.addClass(element, animation);
-            setTimeout(() => {
-                this.#renderer.removeClass(element, 'animated');
-                this.#renderer.removeClass(element, animation);
-                resolve();
-            }, Number(animationTimeout.match(/\d/g).join('')));
-        });
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyAnimationService, deps: [{ token: RendererFactory2 }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyAnimationService, providedIn: 'root' });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyAnimationService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }], ctorParameters: () => [{ type: i0.RendererFactory2, decorators: [{
-                    type: Inject,
-                    args: [RendererFactory2]
-                }] }] });
-
-class BizyViewportService {
-    window;
-    #viewportSizeChanged;
-    get sizeChange$() {
-        return this.#viewportSizeChanged.asObservable();
-    }
-    constructor(window) {
-        this.window = window;
-        this.#viewportSizeChanged = new BehaviorSubject({
-            width: this.window.innerWidth,
-            height: this.window.innerHeight
-        });
-        fromEvent(window, 'resize')
-            .pipe(debounceTime(200), map((event) => ({
-            width: event.currentTarget.innerWidth,
-            height: event.currentTarget.innerHeight
-        })))
-            .subscribe(windowSize => {
-            this.#viewportSizeChanged.next(windowSize);
-        });
-    }
-    width() {
-        return this.window.screen.availWidth;
-    }
-    height() {
-        return this.window.screen.availHeight;
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyViewportService, deps: [{ token: Window }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyViewportService, providedIn: 'root' });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyViewportService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }], ctorParameters: () => [{ type: Window, decorators: [{
-                    type: Inject,
-                    args: [Window]
-                }] }] });
-
-class BizyKeyboardService {
-    document;
-    #shiftHolding = new BehaviorSubject(false);
-    #controlHolding = new BehaviorSubject(false);
-    get shiftHolding$() {
-        return this.#shiftHolding.asObservable();
-    }
-    get controlHolding$() {
-        return this.#controlHolding.asObservable();
-    }
-    constructor(document) {
-        this.document = document;
-        this.document.addEventListener('visibilitychange', () => {
-            this.#shiftHolding.next(false);
-            this.#controlHolding.next(false);
-        });
-        this.document.addEventListener('keydown', (event) => {
-            if (event.key === 'Shift') {
-                this.#shiftHolding.next(true);
-            }
-            if (event.key === 'Meta' || event.key === 'Control') {
-                this.#controlHolding.next(true);
-            }
-        });
-        this.document.addEventListener('keyup', (event) => {
-            if (event.key === 'Shift') {
-                this.#shiftHolding.next(false);
-            }
-            if (event.key === 'Meta' || event.key === 'Control') {
-                this.#controlHolding.next(false);
-            }
-        });
-    }
-    isShiftHolding() {
-        return this.#shiftHolding.value;
-    }
-    isControlHolding() {
-        return this.#controlHolding.value;
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyKeyboardService, deps: [{ token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyKeyboardService, providedIn: 'root' });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyKeyboardService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }], ctorParameters: () => [{ type: Document, decorators: [{
-                    type: Inject,
-                    args: [DOCUMENT]
-                }] }] });
-
-class BizyExportToCSVService {
-    document;
-    rendererFactory;
-    #loading = false;
-    #renderer;
-    constructor(document, rendererFactory) {
-        this.document = document;
-        this.rendererFactory = rendererFactory;
-        this.#renderer = this.rendererFactory.createRenderer(null, null);
-    }
-    download(data) {
-        if (this.#loading || !data.items || !Array.isArray(data.items) || !data.model) {
-            return;
-        }
-        try {
-            this.#loading = true;
-            const csv = this.getCSV(data);
-            if (!data.fileName) {
-                data.fileName = 'bizy-csv';
-            }
-            this.#downloadCSV({ csv, fileName: data.fileName });
-        }
-        finally {
-            this.#loading = false;
-        }
-    }
-    getCSV(data) {
-        let csv = '';
-        function escapeCommas(str) {
-            return str.includes(',') ? `"${str}"` : str;
-        }
-        for (const key in data.model) {
-            if (key) {
-                csv += `${data.model[key]},`;
-            }
-        }
-        data.items.forEach(_item => {
-            // Remove the last character (',')
-            csv = csv.slice(0, -1);
-            csv += '\n';
-            for (const key in data.model) {
-                let value = _item;
-                const nestedProperty = key.split('.');
-                for (let i = 0; i < nestedProperty.length; i++) {
-                    const _property = nestedProperty[i];
-                    if (value) {
-                        value = value[_property];
-                    }
-                    else {
-                        break;
-                    }
-                }
-                if (typeof value !== undefined && value !== null) {
-                    csv += `${escapeCommas(String(value).replace(/\n/g, ''))},`;
-                }
-                else {
-                    csv += ',';
-                }
-            }
-        });
-        if (csv && csv[csv.length - 1] === ',') {
-            // Remove the last character (',')
-            csv = csv.slice(0, -1);
-        }
-        return csv;
-    }
-    #downloadCSV(data) {
-        const blob = new Blob([data.csv], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const downloadButton = this.#renderer.createElement('a');
-        downloadButton.setAttribute('download', data.fileName);
-        downloadButton.href = url;
-        this.#renderer.appendChild(this.document.body, downloadButton);
-        downloadButton.click();
-        this.#renderer.removeChild(this.document.body, downloadButton);
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyExportToCSVService, deps: [{ token: DOCUMENT }, { token: RendererFactory2 }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyExportToCSVService, providedIn: 'root' });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyExportToCSVService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }], ctorParameters: () => [{ type: Document, decorators: [{
-                    type: Inject,
-                    args: [DOCUMENT]
-                }] }, { type: i0.RendererFactory2, decorators: [{
-                    type: Inject,
-                    args: [RendererFactory2]
-                }] }] });
-
-class BizyRouterService {
-    router;
-    static backPath = '';
-    transitionsEnd$;
-    transitionsStart$;
-    popStateEvent$;
-    routeChange$;
-    constructor(router) {
-        this.router = router;
-        this.transitionsEnd$ = this.router.events.pipe(filter$1(event => event instanceof NavigationEnd), map((event) => event.id), distinctUntilChanged(), map(() => this.router.routerState.snapshot.root));
-        this.transitionsStart$ = this.router.events.pipe(filter$1(event => event instanceof NavigationStart), map((event) => event.id), distinctUntilChanged(), map(() => this.router.routerState.snapshot.root));
-        this.popStateEvent$ = fromEvent(window, 'popstate');
-        this.routeChange$ = merge(this.transitionsEnd$, this.popStateEvent$).pipe(map(() => void 0));
-    }
-    getURL() {
-        return window.location.pathname;
-    }
-    getBackPath() {
-        return BizyRouterService.backPath;
-    }
-    getId(activatedRoute, param) {
-        return activatedRoute.snapshot.paramMap.get(param);
-    }
-    getQueryParam(activatedRoute, param) {
-        return activatedRoute.snapshot.queryParamMap.get(param);
-    }
-    getAllQueryParam() {
-        const params = new URL(window.location.href).searchParams;
-        const queryParams = {};
-        for (const [key, value] of params.entries()) {
-            queryParams[key] = value;
-        }
-        return queryParams;
-    }
-    goTo(data) {
-        if (data.replace) {
-            BizyRouterService.backPath = '';
-        }
-        else {
-            BizyRouterService.backPath = this.getURL();
-        }
-        if (data.path[0] === '/') {
-            this.router.navigateByUrl(`${data.path}${this._serialize(data.params)}`, { replaceUrl: data.replace ?? false, skipLocationChange: data.skip ?? false });
-            return;
-        }
-        const path = this.getURL();
-        const index = path.indexOf('?');
-        const url = index !== -1 ? path.substring(0, index) : path;
-        this.router.navigateByUrl(`${url}/${data.path}${this._serialize(data.params)}`, { replaceUrl: data.replace ?? false, skipLocationChange: data.skip ?? false });
-    }
-    goBack(data) {
-        if (BizyRouterService.backPath) {
-            history.back();
-            BizyRouterService.backPath = '';
-        }
-        else if (data && data.path) {
-            this.router.navigateByUrl(data.path, { replaceUrl: true });
-        }
-        else {
-            const index = this.getURL().lastIndexOf('/');
-            const backURL = this.getURL().substring(0, index);
-            this.router.navigateByUrl(backURL, { replaceUrl: true });
-        }
-    }
-    reload(force) {
-        if (force) {
-            window.location.reload();
-        }
-        else {
-            setTimeout(() => {
-                this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-                    this.goTo({ path: this.getURL(), params: this.getAllQueryParam() });
-                });
-            }, 1);
-        }
-    }
-    _serialize(params) {
-        if (!params) {
-            return '';
-        }
-        const str = [];
-        for (const param in params) {
-            if (params[param]) {
-                str.push(encodeURIComponent(param) + '=' + encodeURIComponent(params[param]));
-            }
-        }
-        const queryParams = str.length > 0 ? `?${str.join('&')}` : '';
-        return queryParams;
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyRouterService, deps: [{ token: Router }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyRouterService, providedIn: 'root' });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyRouterService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }], ctorParameters: () => [{ type: i1$2.Router, decorators: [{
-                    type: Inject,
-                    args: [Router]
-                }] }] });
-
-class BizyCacheService {
-    router;
-    CACHE_PREFIX = 'BIZY-CACHE';
-    constructor(router) {
-        this.router = router;
-    }
-    getData(key) {
-        if (!key) {
-            key = this.router.getURL();
-        }
-        const data = sessionStorage.getItem(`${this.CACHE_PREFIX}-${key}`);
-        if (data) {
-            const _data = JSON.parse(data);
-            return Date.now() < _data.expiresAt ? _data.value : {};
-        }
-        return {};
-    }
-    setData(value, key, expiresAt) {
-        if (typeof value === 'undefined' || value === null) {
-            return;
-        }
-        if (!key) {
-            key = this.router.getURL();
-        }
-        if (!expiresAt) {
-            const date = new Date();
-            date.setHours(23, 59, 59);
-            expiresAt = date.getTime();
-        }
-        const data = {
-            expiresAt,
-            value
-        };
-        sessionStorage.setItem(`${this.CACHE_PREFIX}-${key}`, JSON.stringify(data));
-    }
-    remove(key) {
-        if (!key) {
-            key = this.router.getURL();
-        }
-        sessionStorage.removeItem(`${this.CACHE_PREFIX}-${key}`);
-    }
-    removeAll() {
-        const cacheKeys = Object.keys(sessionStorage).filter(key => {
-            return key.includes(this.CACHE_PREFIX);
-        });
-        cacheKeys.forEach(value => {
-            sessionStorage.removeItem(value);
-        });
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyCacheService, deps: [{ token: BizyRouterService }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyCacheService, providedIn: 'root' });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyCacheService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }], ctorParameters: () => [{ type: BizyRouterService, decorators: [{
-                    type: Inject,
-                    args: [BizyRouterService]
-                }] }] });
-
-class BizyValidatorService {
-    isEmail(email) {
-        const regex = /^(([^ñ<>()[\]\\.,;:\s@"]+(\.[^ñ<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return regex.test(String(email).toLowerCase());
-    }
-    isPassFormat(pass) {
-        const formatRegex = /(?!.*012)(?!.*123)(?!.*234)(?!.*345)(?!.*456)(?!.*567)(?!.*678)(?!.*789)(?!.*987)(?!.*876)(?!.*765)(?!.*654)(?!.*543)(?!.*432)(?!.*321)(?!.*210)(?!.*(.)\1{2,})(?!(^\D+$))(?!(^\d+$))(^.{6,}$)/;
-        const excludeRegex = /[^'"]$/;
-        const _pass = String(pass).toLowerCase();
-        return formatRegex.test(_pass) && excludeRegex.test(_pass);
-    }
-    isNoSpecialCharacter(name) {
-        const regex = /^[a-zA-Z0-9][a-zA-Z0-9_-]*$/;
-        return regex.test(String(name).toLowerCase());
-    }
-    isNumber(number) {
-        const regex = /^[0-9]*$/;
-        return regex.test(String(number).toLowerCase());
-    }
-    isPhoneNumber(number) {
-        const regex = /^\+{0,1}[0-9#*]+$/;
-        return regex.test(String(number).toLowerCase());
-    }
-    isString(string) {
-        return typeof string === 'string' || string instanceof String;
-    }
-    isJSON(text) {
-        if (/^[\],:{}\s]*$/.test(text.replace(/\\["\\/bfnrtu]/g, '@')
-            .replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?/g, ']')
-            .replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
-            return true;
-        }
-        return false;
-    }
-    emailValidator() {
-        return (control) => {
-            return !control.value || (control.value && this.isEmail(control.value)) ? null : { bizyEmail: true };
-        };
-    }
-    phoneNumberValidator() {
-        return (control) => {
-            return !control.value || (control.value && this.isPhoneNumber(control.value)) ? null : { bizyPhoneNumber: true };
-        };
-    }
-    numberValidator() {
-        return (control) => {
-            return !control.value || (control.value && this.isNumber(control.value)) ? null : { bizyNumber: true };
-        };
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyValidatorService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyValidatorService, providedIn: 'root' });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyValidatorService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }] });
-
-class BizyStorageService {
-    get(key) {
-        const item = localStorage.getItem(key);
-        try {
-            return JSON.parse(item);
-        }
-        catch (e) {
-            return item;
-        }
-    }
-    set(key, value) {
-        if (typeof value === 'object') {
-            localStorage.setItem(key, JSON.stringify(value));
-        }
-        else if (typeof value === 'string') {
-            localStorage.setItem(key, value);
-        }
-        else {
-            localStorage.setItem(key, String(value));
-        }
-    }
-    remove(key) {
-        localStorage.removeItem(key);
-    }
-    clear() {
-        localStorage.clear();
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyStorageService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyStorageService, providedIn: 'root' });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyStorageService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }] });
-
-var COLOR;
-(function (COLOR) {
-    COLOR["DEFAULT"] = "#666666";
-    COLOR["INFO"] = "#2484C6";
-    COLOR["SUCCESS"] = "#65BF6C";
-    COLOR["WARNING"] = "#F7A64C";
-    COLOR["ERROR"] = "#EF4C59";
-})(COLOR || (COLOR = {}));
-class BizyLogService {
-    #lastLogTimestamp = 0;
-    #log(log, color, param) {
-        const difference = this.#lastLogTimestamp ? Date.now() - this.#lastLogTimestamp : 0;
-        this.#lastLogTimestamp = Date.now();
-        const timestampStyles = 'color: #EE5DFF';
-        const logStyles = `color: ${color}; font-size: 12px;`;
-        const date = new Date();
-        if (param) {
-            console.log(`%c${date.toLocaleString()}: %c${log} %c(+${difference}ms)`, timestampStyles, logStyles, timestampStyles, param);
-        }
-        else {
-            console.log(`%c${date.toLocaleString()}: %c${log} %c(+${difference}ms)`, timestampStyles, logStyles, timestampStyles);
-        }
-    }
-    debug(data, param) {
-        if (typeof data === 'string') {
-            this.#log(data, COLOR.DEFAULT, param);
-        }
-        else {
-            this.#template({ ...data, param: data.param, title: 'Debug', color: COLOR.DEFAULT });
-        }
-    }
-    info(data, param) {
-        if (typeof data === 'string') {
-            this.#log(data, COLOR.INFO, param);
-        }
-        else {
-            this.#template({ ...data, param: data.param, title: 'Info', color: COLOR.INFO });
-        }
-    }
-    success(data, param) {
-        if (typeof data === 'string') {
-            this.#log(data, COLOR.SUCCESS, param);
-        }
-        else {
-            this.#template({ ...data, param: data.param, title: 'Success', color: COLOR.SUCCESS });
-        }
-    }
-    warning(data, param) {
-        if (typeof data === 'string') {
-            this.#log(data, COLOR.WARNING, param);
-        }
-        else {
-            this.#template({ ...data, param: data.param, title: 'Warning', color: COLOR.WARNING });
-        }
-    }
-    error(data, param) {
-        if (typeof data === 'string') {
-            this.#log(data, COLOR.ERROR, param);
-        }
-        else {
-            this.#template({ ...data, param: data.param, title: 'Error', color: COLOR.ERROR });
-        }
-    }
-    /** DEPRECATED */
-    templateDebug(data) {
-        this.#template({ ...data, title: 'Debug', color: COLOR.DEFAULT });
-    }
-    /** DEPRECATED */
-    templateSucc(data) {
-        this.#template({ ...data, title: 'Success', color: COLOR.SUCCESS });
-    }
-    /** DEPRECATED */
-    templateInfo(data) {
-        this.#template({ ...data, title: 'Info', color: COLOR.INFO });
-    }
-    /** DEPRECATED */
-    templateWarn(data) {
-        this.#template({ ...data, title: 'Warning', color: COLOR.WARNING });
-    }
-    /** DEPRECATED */
-    templateError(data) {
-        this.#template({ ...data, title: 'Error', color: COLOR.ERROR });
-    }
-    #template(data) {
-        const log = `(${data.title}) ${data.fileName} - ${data.functionName}`;
-        this.#log(log, data.color, data.param);
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyLogService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyLogService, providedIn: 'root' });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyLogService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }] });
-
-class BizyCopyToClipboardService {
-    #clipboard = inject(Clipboard);
-    copy(data) {
-        return new Promise((resolve, reject) => {
-            try {
-                if (!data) {
-                    resolve();
-                    return;
-                }
-                setTimeout(() => {
-                    let toCopy = '';
-                    if (typeof data === 'string' || data instanceof String) {
-                        toCopy = data;
-                    }
-                    else if (data.items && data.items.length > 0 && data.model) {
-                        for (const key in data.model) {
-                            if (key) {
-                                toCopy += `${data.model[key]},`;
-                            }
-                        }
-                        data.items.forEach(_item => {
-                            // Remove the last character (',')
-                            toCopy = toCopy.slice(0, -2);
-                            toCopy += '\n';
-                            for (const key in data.model) {
-                                let value = _item;
-                                const nestedProperty = key.split('.');
-                                nestedProperty.forEach(_property => {
-                                    value = value[_property];
-                                });
-                                if (typeof value !== undefined && value !== null) {
-                                    toCopy += `${String(value).replace(/\n/g, '')},`;
-                                }
-                                else {
-                                    toCopy += ',';
-                                }
-                            }
-                        });
-                    }
-                    const pending = this.#clipboard.beginCopy(toCopy);
-                    let remainingAttempts = 3;
-                    const attempt = () => {
-                        const result = pending.copy();
-                        if (!result && --remainingAttempts) {
-                            setTimeout(attempt);
-                        }
-                        else {
-                            // Remember to destroy when you're done!
-                            pending.destroy();
-                            resolve();
-                        }
-                    };
-                    attempt();
-                }, 100);
-            }
-            catch (error) {
-                reject(error);
-            }
-        });
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyCopyToClipboardService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyCopyToClipboardService, providedIn: 'root' });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyCopyToClipboardService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }] });
-
-var BIZY_FORMAT_SECONDS_LANGUAGE;
-(function (BIZY_FORMAT_SECONDS_LANGUAGE) {
-    BIZY_FORMAT_SECONDS_LANGUAGE["SPANISH"] = "es";
-    BIZY_FORMAT_SECONDS_LANGUAGE["ENGLISH"] = "en";
-})(BIZY_FORMAT_SECONDS_LANGUAGE || (BIZY_FORMAT_SECONDS_LANGUAGE = {}));
-var BIZY_FORMAT_SECONDS_FORMAT;
-(function (BIZY_FORMAT_SECONDS_FORMAT) {
-    BIZY_FORMAT_SECONDS_FORMAT["DATE_TIME"] = "date-time";
-    BIZY_FORMAT_SECONDS_FORMAT["TIME"] = "time";
-})(BIZY_FORMAT_SECONDS_FORMAT || (BIZY_FORMAT_SECONDS_FORMAT = {}));
-class BizyFormatSecondsService {
-    #options = {
-        language: BIZY_FORMAT_SECONDS_LANGUAGE.SPANISH,
-        format: BIZY_FORMAT_SECONDS_FORMAT.TIME
-    };
-    getOptions() {
-        return this.#options;
-    }
-    setOptions(options) {
-        if (options && options.language) {
-            this.#options.language = options.language;
-        }
-        if (options && options.format) {
-            this.#options.format = options.format;
-        }
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyFormatSecondsService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyFormatSecondsService, providedIn: 'root' });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyFormatSecondsService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }] });
-
-/**
- * Copyright 2020 Google LLC
- *
- * Licensed under the Apache License, Version 2.0 (the 'License');
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an 'AS IS' BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-// This function's role is to enable smooth transition to the brave new world of
-// User-Agent Client Hints. If you have legacy code that relies on
-// `navigator.userAgent` and which relies on entropy that will go away by
-// default, you *need* to refactor it to use UA-CH. This function is to be used
-// as a stop gap, to enable smooth transition during that period.
-/**
-* @param {string[]} hints
-* @return {Promise<string|undefined>} A Promise that resolves to a string if a
-*   UA could be synthesized from client hints, otherwise undefined.
-*/
-async function getUserAgentUsingClientHints(hints) {
-    // Helper functions for platform specific strings
-    const GetCrosSpecificString = (values) => {
-        let osCPUFragment = '';
-        if (values.bitness == '64') {
-            if (values.architecture == 'x86') {
-                osCPUFragment = 'x86_64';
-            }
-            else if (values.architecture == 'arm') {
-                osCPUFragment = 'aarch64';
-            }
-        }
-        else if (values.architecture == 'arm' && values.bitness == '32') {
-            osCPUFragment = 'armv7l';
-        }
-        if (osCPUFragment == '') {
-            return `X11; CrOS ${values.platformVersion}`;
-        }
-        return `X11; CrOS ${osCPUFragment} ${values.platformVersion}`;
-    };
-    const GetWindowsSpecificString = (values) => {
-        let osCPUFragment = '';
-        if (values.architecture == 'x86' && values.bitness == '64') {
-            osCPUFragment = '; Win64; x64';
-        }
-        else if (values.architecture == 'arm') {
-            osCPUFragment = '; ARM';
-        }
-        else if (values.wow64 === true) {
-            osCPUFragment = '; WOW64';
-        }
-        return `Windows NT ${getWindowsPlatformVersion(values.platformVersion)}${osCPUFragment}`;
-    };
-    const GetMacSpecificString = (values) => {
-        let newUA = 'Macintosh;';
-        newUA += values.architecture === 'arm' ? ' ARM ' : ' Intel ';
-        newUA += 'Mac OS X ';
-        let macVersion = values.platformVersion;
-        if (macVersion.indexOf('.') > -1) {
-            macVersion = macVersion.split('.').join('_');
-        }
-        newUA += macVersion;
-        return newUA;
-    };
-    const GetAndroidSpecificString = (values) => {
-        let newUA = 'Linux; Android ';
-        newUA += values.platformVersion;
-        if (values.model) {
-            newUA += '; ';
-            newUA += values.model;
-        }
-        return newUA;
-    };
-    const Initialize = (values) => {
-        if (!values.architecture) {
-            values.architecture = 'x86';
-        }
-        if (!values.bitness) {
-            values.bitness = '64';
-        }
-        if (!values.model) {
-            values.model = '';
-        }
-        if (!values.platform) {
-            values.platform = 'Windows';
-        }
-        if (!values.platformVersion) {
-            values.platformVersion = '10.0';
-        }
-        if (!values.wow64) {
-            values.wow64 = false;
-        }
-        return values;
-    };
-    // @ts-ignore-error
-    if (!navigator.userAgentData) {
-        return Promise.resolve('');
-    }
-    // Verify that this is a Chromium-based browser
-    let isChromium = false;
-    let chromiumVersion;
-    // eslint-disable-next-line prefer-regex-literals
-    const isChromeUAPattern = new RegExp('AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/\\d+.\\d+.\\d+.\\d+ (Mobile )?Safari/537.36$');
-    // @ts-ignore-error
-    navigator.userAgentData.brands.forEach(value => {
-        if (value.brand == 'Chromium') {
-            // Let's double check the UA string as well, so we don't accidentally
-            // capture a headless browser or friendly bot (which should report as
-            // HeadlessChrome or something entirely different).
-            isChromium = isChromeUAPattern.test(navigator.userAgent);
-            chromiumVersion = value.version;
-        }
-    });
-    // @ts-ignore
-    if (!isChromium || chromiumVersion < 100) {
-        // If this is not a Chromium-based browser, the UA string should be very
-        // different. Or, if this is a Chromium lower than 100, it doesn't have
-        // all the hints we rely on. So let's bail.
-        return Promise.resolve('');
-    }
-    // Main logic
-    return new Promise(resolve => {
-        // @ts-ignore-error
-        navigator.userAgentData.getHighEntropyValues(hints).then(values => {
-            let initialValues = {
-                // @ts-ignore-error
-                platform: navigator.userAgentData?.platform,
-                version: chromiumVersion
-            };
-            values = Object.assign(initialValues, values);
-            values = Initialize(values);
-            let newUA = 'Mozilla/5.0 (';
-            if (['Chrome OS', 'Chromium OS'].includes(values.platform)) {
-                newUA += GetCrosSpecificString(values);
-            }
-            else if (values.platform == 'Windows') {
-                newUA += GetWindowsSpecificString(values);
-            }
-            else if (values.platform == 'macOS') {
-                newUA += GetMacSpecificString(values);
-            }
-            else if (values.platform == 'Android') {
-                newUA += GetAndroidSpecificString(values);
-            }
-            else {
-                newUA += 'X11; Linux x86_64';
-            }
-            newUA += ') AppleWebKit/537.36 (KHTML, like Gecko) Chrome/';
-            newUA += getVersion(values?.fullVersionList, initialValues.version);
-            // @ts-ignore-error
-            if (navigator.userAgentData.mobile) {
-                newUA += ' Mobile';
-            }
-            newUA += ' Safari/537.36';
-            resolve(newUA);
-        });
-    });
-}
-function getVersion(fullVersionList, majorVersion) {
-    // If we don't get a fullVersionList, or it's somehow undefined, return
-    // the reduced version number.
-    return (fullVersionList?.find((item) => item.brand == 'Google Chrome')?.version ||
-        `${majorVersion}.0.0.0`);
-}
-function getWindowsPlatformVersion(platformVersion) {
-    // https://wicg.github.io/ua-client-hints/#get-the-legacy-windows-version-number
-    const versionMap = new Map([
-        ['0.3.0', '6.3'], // Windows 8.1
-        ['0.2.0', '6.2'], // Windows 8
-        ['0.1.0', '6.1'] // Windows 7
-    ]);
-    if (versionMap.has(platformVersion)) {
-        return versionMap.get(platformVersion);
-    }
-    // Windows 10 and above send "Windows NT 10.0"
-    return '10.0';
-}
-/**
-   * @param {string[]} hints
-   * @return {Promise<string|undefined>} A Promise that resolves on overriding the
-   *   navigator.userAgent string.
-   */
-async function overrideUserAgentUsingClientHints(hints) {
-    return new Promise(resolve => {
-        getUserAgentUsingClientHints(hints).then(newUA => {
-            if (newUA) {
-                // Got a new UA value. Now override `navigator.userAgent`.
-                Object.defineProperty(navigator, 'userAgent', {
-                    value: newUA,
-                    writable: false,
-                    configurable: true
-                });
-            }
-            else {
-                newUA = navigator.userAgent;
-            }
-            resolve(newUA);
-        });
-    });
-}
-const exportedForTests = { getVersion, getWindowsPlatformVersion };
-
-class BizyDeviceService {
-    #device = inject(DeviceDetectorService);
-    async getUserAgent() {
-        try {
-            const userAgent = await overrideUserAgentUsingClientHints([
-                'architecture',
-                'bitness',
-                'model',
-                'platformVersion',
-                'uaFullVersion',
-                'fullVersionList'
-            ]);
-            return userAgent;
-        }
-        catch {
-            return window.navigator.userAgent;
-        }
-    }
-    isMobile = () => this.#device.isMobile();
-    isTablet = () => this.#device.isTablet();
-    isDesktop = () => this.#device.isDesktop();
-    isPortrait = () => this.#device.orientation === 'portrait';
-    isLandscape = () => this.#device.orientation === 'landscape';
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyDeviceService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyDeviceService, providedIn: 'root' });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyDeviceService, decorators: [{
-            type: Injectable,
-            args: [{ providedIn: 'root' }]
-        }] });
-
-const SERVICES = [
-    BizyAnimationService,
-    BizyDeviceService,
-    BizyCacheService,
-    BizyCopyToClipboardService,
-    BizyExportToCSVService,
-    BizyFormatSecondsService,
-    BizyKeyboardService,
-    BizyLogService,
-    BizyRouterService,
-    BizyStorageService,
-    BizyValidatorService,
-    BizyViewportService
-];
-class BizyServicesModule {
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyServicesModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.8", ngImport: i0, type: BizyServicesModule });
-    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyServicesModule, providers: SERVICES });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizyServicesModule, decorators: [{
-            type: NgModule,
-            args: [{
-                    providers: SERVICES
-                }]
-        }] });
 
 class BizyPopupService {
     #animation = inject(BizyAnimationService);
@@ -6595,23 +6602,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImpor
                 }]
         }] });
 
-class BizySelectedPipe {
-    transform(items) {
-        if (!items || items.length === 0) {
-            return [];
-        }
-        return items.filter((_item) => _item.selected === true);
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizySelectedPipe, deps: [], target: i0.ɵɵFactoryTarget.Pipe });
-    static ɵpipe = i0.ɵɵngDeclarePipe({ minVersion: "14.0.0", version: "19.2.8", ngImport: i0, type: BizySelectedPipe, isStandalone: true, name: "bizySelected" });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImport: i0, type: BizySelectedPipe, decorators: [{
-            type: Pipe,
-            args: [{
-                    name: 'bizySelected',
-                }]
-        }] });
-
 class BizyOrderByPipe {
     transform(items, order = null, property = '') {
         // No items
@@ -6987,7 +6977,6 @@ const PIPES = [
     BizyRepeatPipe,
     BizySetToArrayPipe,
     BizyEnumToArrayPipe,
-    BizySelectedPipe,
     BizyOrderByPipe,
     BizyReducePipe,
     BizySafePipe,
@@ -7001,7 +6990,6 @@ class BizyPipesModule {
     static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.8", ngImport: i0, type: BizyPipesModule, imports: [BizyRepeatPipe,
             BizySetToArrayPipe,
             BizyEnumToArrayPipe,
-            BizySelectedPipe,
             BizyOrderByPipe,
             BizyReducePipe,
             BizySafePipe,
@@ -7011,7 +6999,6 @@ class BizyPipesModule {
             BizyExtractNumbersPipe], exports: [BizyRepeatPipe,
             BizySetToArrayPipe,
             BizyEnumToArrayPipe,
-            BizySelectedPipe,
             BizyOrderByPipe,
             BizyReducePipe,
             BizySafePipe,
@@ -7741,5 +7728,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.8", ngImpor
  * Generated bundle index. Do not edit.
  */
 
-export { BIZY_ANIMATION, BIZY_CALENDAR_DAY, BIZY_CALENDAR_EVENT_ACTION, BIZY_CALENDAR_LANGUAGE, BIZY_CALENDAR_MODE, BIZY_FORMAT_SECONDS_FORMAT, BIZY_FORMAT_SECONDS_LANGUAGE, BIZY_SKELETON_SHAPE, BIZY_TAG_TYPE, BizyAccordionComponent, BizyAccordionModule, BizyAnimationService, BizyAudioPlayerComponent, BizyAudioPlayerModule, BizyAutoFocusDirective, BizyAveragePipe, BizyBarLineChartComponent, BizyBarLineChartModule, BizyBreadcrumbComponent, BizyBreadcrumbModule, BizyButtonComponent, BizyButtonModule, BizyCacheService, BizyCalendarComponent, BizyCalendarModule, BizyCardComponent, BizyCardModule, BizyCheckboxComponent, BizyCheckboxModule, BizyCopyToClipboardDirective, BizyCopyToClipboardService, BizyCurrencyFormatDirective, BizyDatePickerComponent, BizyDatePickerModule, BizyDeviceService, BizyDirectivesModule, BizyEnumToArrayPipe, BizyExportToCSVService, BizyExtractNumbersPipe, BizyFileUploaderComponent, BizyFileUploaderModule, BizyFileUploaderService, BizyFilterComponent, BizyFilterContentComponent, BizyFilterModule, BizyFilterPipe, BizyFilterSectionCheckboxOptionComponent, BizyFilterSectionComponent, BizyFilterSectionRangeOptionComponent, BizyFilterSectionSearchOptionComponent, BizyFilterSectionsComponent, BizyFormComponent, BizyFormModule, BizyFormatSecondsPipe, BizyFormatSecondsService, BizyFullScreenPopupWrapperComponent, BizyGridComponent, BizyGridForDirective, BizyGridModule, BizyGridRowComponent, BizyInputComponent, BizyInputModule, BizyInputOptionComponent, BizyKeyboardService, BizyListComponent, BizyListModule, BizyLoadingDirective, BizyLogService, BizyLongPressDirective, BizyMenuComponent, BizyMenuModule, BizyMenuOptionComponent, BizyMenuTitleComponent, BizyOnlyNumbersDirective, BizyOnlyPhoneDigitsDirective, BizyOrderByPipe, BizyPieChartComponent, BizyPieChartModule, BizyPipesModule, BizyPopupModule, BizyPopupService, BizyPopupWrapperComponent, BizyRadioComponent, BizyRadioModule, BizyRangeFilterPipe, BizyReducePipe, BizyRepeatPipe, BizyRouterService, BizySafePipe, BizySearchPipe, BizySectionCenterComponent, BizySectionComponent, BizySectionEndComponent, BizySectionModule, BizySectionStartComponent, BizySelectComponent, BizySelectModule, BizySelectOptionComponent, BizySelectedPipe, BizyServicesModule, BizySetToArrayPipe, BizySidebarComponent, BizySidebarFloatingOptionComponent, BizySidebarFloatingOptionTitleComponent, BizySidebarModule, BizySidebarOptionComponent, BizySkeletonComponent, BizySkeletonModule, BizySliderComponent, BizySliderModule, BizyStorageService, BizyTabComponent, BizyTableColumnArrowsComponent, BizyTableColumnComponent, BizyTableColumnFixedDirective, BizyTableComponent, BizyTableFooterComponent, BizyTableHeaderComponent, BizyTableModule, BizyTableRowComponent, BizyTableRowExpandContentComponent, BizyTableScrollingComponent, BizyTableScrollingDirective, BizyTabsComponent, BizyTabsModule, BizyTagComponent, BizyTagModule, BizyTextEllipsisDirective, BizyToastModule, BizyToastService, BizyToastWrapperComponent, BizyToggleComponent, BizyToggleModule, BizyToolbarComponent, BizyToolbarModule, BizyTooltipDirective, BizyTrackByIdDirective, BizyTranslateModule, BizyTranslatePipe, BizyTranslateService, BizyValidatorService, BizyViewportService, LANGUAGE, LOADING_TYPE, MIME_TYPE };
+export { BIZY_ANIMATION, BIZY_CALENDAR_DAY, BIZY_CALENDAR_EVENT_ACTION, BIZY_CALENDAR_LANGUAGE, BIZY_CALENDAR_MODE, BIZY_FORMAT_SECONDS_FORMAT, BIZY_FORMAT_SECONDS_LANGUAGE, BIZY_SKELETON_SHAPE, BIZY_TAG_TYPE, BizyAccordionComponent, BizyAccordionModule, BizyAnimationService, BizyAudioPlayerComponent, BizyAudioPlayerModule, BizyAutoFocusDirective, BizyAveragePipe, BizyBarLineChartComponent, BizyBarLineChartModule, BizyBreadcrumbComponent, BizyBreadcrumbModule, BizyButtonComponent, BizyButtonModule, BizyCacheService, BizyCalendarComponent, BizyCalendarModule, BizyCardComponent, BizyCardModule, BizyCheckboxComponent, BizyCheckboxModule, BizyCopyToClipboardDirective, BizyCopyToClipboardService, BizyCurrencyFormatDirective, BizyDatePickerComponent, BizyDatePickerModule, BizyDeviceService, BizyDirectivesModule, BizyEnumToArrayPipe, BizyExportToCSVService, BizyExtractNumbersPipe, BizyFileUploaderComponent, BizyFileUploaderModule, BizyFileUploaderService, BizyFilterComponent, BizyFilterContentComponent, BizyFilterModule, BizyFilterPipe, BizyFilterSectionCheckboxOptionComponent, BizyFilterSectionComponent, BizyFilterSectionRangeOptionComponent, BizyFilterSectionSearchOptionComponent, BizyFilterSectionsComponent, BizyFormComponent, BizyFormModule, BizyFormatSecondsPipe, BizyFormatSecondsService, BizyFullScreenPopupWrapperComponent, BizyGridComponent, BizyGridForDirective, BizyGridModule, BizyGridRowComponent, BizyInputComponent, BizyInputModule, BizyInputOptionComponent, BizyKeyboardService, BizyListComponent, BizyListModule, BizyLoadingDirective, BizyLogService, BizyLongPressDirective, BizyMenuComponent, BizyMenuModule, BizyMenuOptionComponent, BizyMenuTitleComponent, BizyOnlyNumbersDirective, BizyOnlyPhoneDigitsDirective, BizyOrderByPipe, BizyPieChartComponent, BizyPieChartModule, BizyPipesModule, BizyPopupModule, BizyPopupService, BizyPopupWrapperComponent, BizyRadioComponent, BizyRadioModule, BizyRangeFilterPipe, BizyReducePipe, BizyRepeatPipe, BizyRouterService, BizySafePipe, BizySearchPipe, BizySectionCenterComponent, BizySectionComponent, BizySectionEndComponent, BizySectionModule, BizySectionStartComponent, BizySelectComponent, BizySelectModule, BizySelectOptionComponent, BizyServicesModule, BizySetToArrayPipe, BizySidebarComponent, BizySidebarFloatingOptionComponent, BizySidebarFloatingOptionTitleComponent, BizySidebarModule, BizySidebarOptionComponent, BizySkeletonComponent, BizySkeletonModule, BizySliderComponent, BizySliderModule, BizyStorageService, BizyTabComponent, BizyTableColumnArrowsComponent, BizyTableColumnComponent, BizyTableColumnFixedDirective, BizyTableComponent, BizyTableFooterComponent, BizyTableHeaderComponent, BizyTableModule, BizyTableRowComponent, BizyTableRowExpandContentComponent, BizyTableScrollingComponent, BizyTableScrollingDirective, BizyTabsComponent, BizyTabsModule, BizyTagComponent, BizyTagModule, BizyTextEllipsisDirective, BizyToastModule, BizyToastService, BizyToastWrapperComponent, BizyToggleComponent, BizyToggleModule, BizyToolbarComponent, BizyToolbarModule, BizyTooltipDirective, BizyTrackByIdDirective, BizyTranslateModule, BizyTranslatePipe, BizyTranslateService, BizyValidatorService, BizyViewportService, LANGUAGE, LOADING_TYPE, MIME_TYPE };
 //# sourceMappingURL=bizy-core.mjs.map

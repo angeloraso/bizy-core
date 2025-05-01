@@ -1,7 +1,9 @@
 import { PipeTransform } from '@angular/core';
+import { BizyValidatorService } from '../../../services';
 import * as i0 from "@angular/core";
 export declare class BizyFilterPipe implements PipeTransform {
-    transform<T>(items: Array<T>, property: string, states: Array<{
+    readonly validator: BizyValidatorService;
+    transform<T>(items: Array<T>, property: string, states: string | number | boolean | Array<{
         id: string | number | boolean;
         selected: boolean;
     }>): Array<T>;
