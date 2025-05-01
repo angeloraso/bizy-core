@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { BizyRepeatPipe } from './repeat.pipe';
 import { BizySetToArrayPipe } from './set-to-array.pipe';
 import { BizyEnumToArrayPipe } from './enum-to-array.pipe';
-import { BizySelectedPipe } from './selected.pipe';
 import { BizyOrderByPipe } from './order-by.pipe';
 import { BizyReducePipe } from './reduce.pipe';
 import { BizySafePipe } from './safe.pipe';
@@ -15,7 +14,6 @@ const PIPES: Array<any> = [
   BizyRepeatPipe,
   BizySetToArrayPipe,
   BizyEnumToArrayPipe,
-  BizySelectedPipe,
   BizyOrderByPipe,
   BizyReducePipe,
   BizySafePipe,
