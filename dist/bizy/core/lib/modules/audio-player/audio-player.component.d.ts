@@ -1,9 +1,7 @@
-import { EventEmitter, Renderer2 } from '@angular/core';
+import { EventEmitter } from '@angular/core';
 import * as i0 from "@angular/core";
 export declare class BizyAudioPlayerComponent {
     #private;
-    private document;
-    private renderer;
     id: string;
     mimeType: string;
     showDownload: boolean;
@@ -14,9 +12,7 @@ export declare class BizyAudioPlayerComponent {
     onTrackPlayerRate: EventEmitter<string>;
     set audioURL(audioURL: string);
     _audioURL: string | null;
-    _audioRef: HTMLAudioElement;
     _playbackRate: number;
-    constructor(document: Document, renderer: Renderer2);
     trackPlayerRate(): void;
     _onTrackPlayerRate(): void;
     _onDownload(): void;
