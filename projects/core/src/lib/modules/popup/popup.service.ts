@@ -14,15 +14,23 @@ export class BizyPopupService {
   static dialogs = new Set<DialogRef<unknown, any>>();
   #data: unknown = null;
   
-  open<R>(data: {component: ComponentType<unknown>, data?: unknown, customClass?: Array<string> | string, fullScreen?: boolean, disableClose?: boolean, id?: string}, callback?: (res: R) => void) {
+  /**
+   * 
+   * @param data.disableClose Deprecated
+   */
+  open<R>(data: {component: ComponentType<unknown>, data?: unknown, customClass?: Array<string> | string, fullScreen?: boolean, disableClose?: boolean, disableBackdropClose?: boolean, id?: string, disableCloseButton?: boolean, disableDragButton?: boolean}, callback?: (res: R) => void) {
     this.#data = data.data;
     const component: ComponentType<unknown> = data.fullScreen ? BizyFullScreenPopupWrapperComponent : BizyPopupWrapperComponent;
     const dialogRef = this.#dialog.open(component, ({
       id: data.id,
-      data: data.component,
+      data: {
+        component: data.component,
+        disableClose: data.disableCloseButton ?? false,
+        disableDrag: data.disableDragButton ?? false
+      },
       autoFocus: true,
       hasBackdrop: true,
-      disableClose: data.disableClose ?? true,
+      disableClose: data.disableBackdropClose ? data.disableBackdropClose : data.disableClose ? data.disableClose : true,
       panelClass: Array.isArray(data.customClass) ? data.customClass : this.#validator.isString(data.customClass) ? [data.customClass] : []
     }));
 
@@ -35,6 +43,7 @@ export class BizyPopupService {
       }
     });
   }
+
 
   getData<D>() {
     return this.#data as D;
