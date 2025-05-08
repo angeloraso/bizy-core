@@ -3,6 +3,7 @@
 }
 
 .bizy-toolbar {
+    min-height: var(--bizy-toolbar-min-height);
     height: var(--bizy-toolbar-height);
     width: 100%;
     background-color: var(--bizy-toolbar-background-color);

@@ -344,8 +344,8 @@
     --bizy-toggle-selected-color: var(--bizy-success-color);
     --bizy-toggle-selected-background-color: #abd8b0;
 
-    --bizy-toolbar-height: 3.2rem;
-    --bizy-toolbar-column-gap: 0.5rem;
+    --bizy-toolbar-height: fit-content;
+    --bizy-toolbar-min-height: 3.2rem;
     --bizy-toolbar-background-color: #f3f3f3;
     --bizy-toolbar-padding: 0 0.5rem 0 2rem;
 
