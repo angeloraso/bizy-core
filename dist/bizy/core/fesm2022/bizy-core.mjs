@@ -4602,13 +4602,13 @@ class BizyPopupWrapperComponent {
             this.disableDrag = this.#data.disableDrag;
         }
     }
-    loadDynamicComponent() {
+    loadDynamicComponent = () => {
         if (this.#data && this.#data.component) {
             this.dynamicComponentContainer.clear();
             this.dynamicComponentContainer.createComponent(this.#data.component);
             this.#ref.detectChanges();
         }
-    }
+    };
     async close() {
         this.disabled = true;
         this.#popup.close({ id: this.#dialogRef.id });
@@ -4705,13 +4705,13 @@ class BizyFullScreenPopupWrapperComponent {
     ngAfterViewInit() {
         this.loadDynamicComponent();
     }
-    loadDynamicComponent() {
+    loadDynamicComponent = () => {
         if (this.#component) {
             this.dynamicComponentContainer.clear();
             this.dynamicComponentContainer.createComponent(this.#component);
             this.#ref.detectChanges();
         }
-    }
+    };
     async close() {
         this.disabled = true;
         this.#popup.close({ id: this.#dialogRef.id });
