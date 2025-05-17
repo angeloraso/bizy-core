@@ -4,6 +4,8 @@ export declare class BizyFullScreenPopupWrapperComponent<T> {
     #private;
     dynamicComponentContainer: ViewContainerRef;
     disabled: boolean;
+    disableClose: boolean;
+    disableDrag: boolean;
     ngAfterViewInit(): void;
     loadDynamicComponent: () => void;
     close(): Promise<void>;
