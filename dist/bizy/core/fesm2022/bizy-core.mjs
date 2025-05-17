@@ -7467,11 +7467,16 @@ class BizyTooltipDirective {
         this.#renderer.setStyle(this.#elementRef.nativeElement, 'min-width', '0');
         this.#renderer.setStyle(this.#elementRef.nativeElement, 'overflow', 'hidden');
         this.#renderer.setStyle(this.#elementRef.nativeElement, 'text-overflow', 'ellipsis');
-        this.#renderer.setStyle(this.#elementRef.nativeElement, 'display', '-webkit-box');
-        this.#renderer.setStyle(this.#elementRef.nativeElement, 'line-clamp', this.#lineClamp);
-        this.#renderer.setStyle(this.#elementRef.nativeElement, '-webkit-line-clamp', this.#lineClamp);
-        this.#renderer.setStyle(this.#elementRef.nativeElement, '-webkit-box-orient', 'vertical');
-        this.#renderer.setStyle(this.#elementRef.nativeElement, 'max-height', `calc(${this.#lineClamp} * ${computedStyle.lineHeight})`);
+        if (lineClamp === 1) {
+            this.#renderer.setStyle(this.#elementRef.nativeElement, 'white-space', 'nowrap');
+        }
+        else {
+            this.#renderer.setStyle(this.#elementRef.nativeElement, 'display', '-webkit-box');
+            this.#renderer.setStyle(this.#elementRef.nativeElement, 'line-clamp', this.#lineClamp);
+            this.#renderer.setStyle(this.#elementRef.nativeElement, '-webkit-line-clamp', this.#lineClamp);
+            this.#renderer.setStyle(this.#elementRef.nativeElement, '-webkit-box-orient', 'vertical');
+            this.#renderer.setStyle(this.#elementRef.nativeElement, 'max-height', `calc(${this.#lineClamp} * ${computedStyle.lineHeight})`);
+        }
     }
     set tooltipText(tooltipText) {
         if (!tooltipText) {
