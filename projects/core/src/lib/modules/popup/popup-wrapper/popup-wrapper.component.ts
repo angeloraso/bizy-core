@@ -34,7 +34,7 @@ export class BizyPopupWrapperComponent<T> {
 
     if (this.#data && this.#data.disableDrag) {
       this.disableDrag = this.#data.disableDrag;
-  }
+    }
   }
 
   loadDynamicComponent = () => {

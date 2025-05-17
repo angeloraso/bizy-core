@@ -17,21 +17,32 @@ import { BizyPopupService } from '../popup.service';
 export class BizyFullScreenPopupWrapperComponent<T> {
   @ViewChild('dynamicComponentContainer', { read: ViewContainerRef }) dynamicComponentContainer: ViewContainerRef;
 
-  readonly #component: ComponentType<T> = inject(DIALOG_DATA);
+  readonly #data: {component: ComponentType<T>, disableClose: boolean, disableDrag: boolean} = inject(DIALOG_DATA);
   readonly #dialogRef: DialogRef<void> = inject(DialogRef);
   readonly #popup = inject(BizyPopupService);
   readonly #ref = inject(ChangeDetectorRef);
 
   disabled: boolean = false;
 
+  disableClose: boolean = false;
+  disableDrag: boolean = false;
+
   ngAfterViewInit() {
     this.loadDynamicComponent();
+
+    if (this.#data && this.#data.disableClose) {
+        this.disableClose = this.#data.disableClose;
+    }
+
+    if (this.#data && this.#data.disableDrag) {
+      this.disableDrag = this.#data.disableDrag;
+    }
   }
 
   loadDynamicComponent = () => {
-    if (this.#component) {
+    if (this.#data && this.#data.component) {
       this.dynamicComponentContainer.clear();
-      this.dynamicComponentContainer.createComponent(this.#component);
+      this.dynamicComponentContainer.createComponent(this.#data.component);
 
       this.#ref.detectChanges();
     }

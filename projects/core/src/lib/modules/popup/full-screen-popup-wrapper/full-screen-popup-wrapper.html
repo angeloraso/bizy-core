@@ -1,6 +1,6 @@
 <div class="bizy-full-screen-popup-wrapper" [ngClass]="{'bizy-full-screen-popup-wrapper--disabled': disabled}">
 
-    <button class="bizy-full-screen-popup-wrapper__close-button" (click)="close()" (keyup.enter)="close()">
+    <button *ngIf="!disableClose" class="bizy-full-screen-popup-wrapper__close-button" (click)="close()" (keyup.enter)="close()">
 
 
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="bizy-full-screen-popup-wrapper__close-button__icon">
