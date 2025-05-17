@@ -1,6 +1,6 @@
 .bizy-toggle {
     width: fit-content;
-    height: 1.3rem;
+    min-height: 1.3rem;
     display: flex;
     column-gap: 0.5rem;
     align-items: center;
