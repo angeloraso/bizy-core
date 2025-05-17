@@ -28,7 +28,7 @@ export class BizyFullScreenPopupWrapperComponent<T> {
     this.loadDynamicComponent();
   }
 
-  loadDynamicComponent() {
+  loadDynamicComponent = () => {
     if (this.#component) {
       this.dynamicComponentContainer.clear();
       this.dynamicComponentContainer.createComponent(this.#component);

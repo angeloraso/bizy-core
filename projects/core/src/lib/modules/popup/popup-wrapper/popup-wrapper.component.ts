@@ -37,7 +37,7 @@ export class BizyPopupWrapperComponent<T> {
   }
   }
 
-  loadDynamicComponent() {
+  loadDynamicComponent = () => {
     if (this.#data && this.#data.component) {
       this.dynamicComponentContainer.clear();
       this.dynamicComponentContainer.createComponent(this.#data.component);
