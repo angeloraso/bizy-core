@@ -17,7 +17,7 @@ export declare class BizyAudioPlayerComponent {
     _audioURL: string | null;
     _ready: boolean;
     _playbackRate: number;
-    trackPlayerRate(): void;
+    _trackPlayerRate(): void;
     _onTrackPlayerRate(): void;
     _onDownload(): void;
     ngOnDestroy(): void;

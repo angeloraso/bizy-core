@@ -190,6 +190,7 @@ class BizyAudioPlayerComponent {
         this.#audioRef = this.#document.getElementById(this.id);
         if (this.#audioRef) {
             this.#audioRef.load();
+            this._trackPlayerRate();
             if (this.autoplay) {
                 this.#audioRef.play();
             }
@@ -199,6 +200,7 @@ class BizyAudioPlayerComponent {
                 this.#audioRef = this.#document.getElementById(this.id);
                 if (this.#audioRef) {
                     this.#audioRef.load();
+                    this._trackPlayerRate();
                     if (this.autoplay) {
                         this.#audioRef.play();
                     }
@@ -213,7 +215,7 @@ class BizyAudioPlayerComponent {
     _playbackRate = 1;
     #trackPlaybackRate$ = new Subject();
     #subscription = new Subscription();
-    trackPlayerRate() {
+    _trackPlayerRate() {
         this.#subscription.add(this.#trackPlaybackRate$.pipe(debounceTime(500), distinctUntilChanged()).subscribe(value => {
             this.onTrackPlayerRate.emit(value);
         }));
@@ -240,15 +242,17 @@ class BizyAudioPlayerComponent {
                 case 2:
                     this.#audioRef.playbackRate = 1;
                     this._playbackRate = 1;
+                    this.#trackPlaybackRate$.next('1');
                     break;
                 default:
                     this.#audioRef.playbackRate = 1;
                     this._playbackRate = 1;
+                    this.#trackPlaybackRate$.next('1');
             }
         }
     }
     _onDownload() {
-        if (!this.disabled) {
+        if (this.disabled || !this.showDownload) {
             return;
         }
         const downloadButton = this.#renderer.createElement('a');
