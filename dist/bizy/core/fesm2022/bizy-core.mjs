@@ -157,16 +157,20 @@ class BizyAudioPlayerComponent {
     #renderer = inject(Renderer2);
     id = `bizy-audio-player-${Math.random()}`;
     mimeType;
+    audioPlayerError = 'Error';
     showDownload = true;
     autoplay = false;
+    disabled = false;
     downloadURL;
     downloadFileName = 'bizy_audio';
     onDownload = new EventEmitter();
+    canPlayThrough = new EventEmitter();
     onTrackPlayerRate = new EventEmitter();
     set audioURL(audioURL) {
         if (!audioURL) {
             return;
         }
+        this._ready = false;
         this._audioURL = audioURL;
         if (!this.mimeType) {
             const isOGG = this._audioURL.toLowerCase().includes('ogg');
@@ -204,6 +208,7 @@ class BizyAudioPlayerComponent {
         }
     }
     _audioURL = null;
+    _ready = false;
     #audioRef;
     _playbackRate = 1;
     #trackPlaybackRate$ = new Subject();
@@ -214,6 +219,9 @@ class BizyAudioPlayerComponent {
         }));
     }
     _onTrackPlayerRate() {
+        if (!this.disabled) {
+            return;
+        }
         if (!this.#audioRef) {
             this.#audioRef = this.#document.getElementById(this.id);
         }
@@ -240,6 +248,9 @@ class BizyAudioPlayerComponent {
         }
     }
     _onDownload() {
+        if (!this.disabled) {
+            return;
+        }
         const downloadButton = this.#renderer.createElement('a');
         this.#renderer.setAttribute(downloadButton, 'download', this.downloadFileName);
         this.#renderer.setProperty(downloadButton, 'href', this.downloadURL);
@@ -252,24 +263,30 @@ class BizyAudioPlayerComponent {
         this.#subscription.unsubscribe();
     }
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyAudioPlayerComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.10", type: BizyAudioPlayerComponent, isStandalone: true, selector: "bizy-audio-player", inputs: { id: "id", mimeType: "mimeType", showDownload: "showDownload", autoplay: "autoplay", downloadURL: "downloadURL", downloadFileName: "downloadFileName", audioURL: "audioURL" }, outputs: { onDownload: "onDownload", onTrackPlayerRate: "onTrackPlayerRate" }, ngImport: i0, template: "<div class=\"bizy-audio-player-component\">\n\n    <span class=\"bizy-audio-player__audio-controls\">\n\n        <audio\n            *ngIf=\"_audioURL\"\n            class=\"bizy-audio-player__audio-controls__audio\"\n            [id]=\"id\"\n            [autoplay]=\"autoplay\"\n            controls\n            controlslist=\"nodownload noplaybackrate\">\n            <source [src]=\"_audioURL\" [type]=\"mimeType\">\n            {{audioPlayerError}}\n        </audio>\n\n        <bizy-button customClass=\"bizy-audio-player__audio-controls__playback-rate\" (onSelect)=\"_onTrackPlayerRate()\">\n            <span>{{_playbackRate}}x</span>\n        </bizy-button>\n\n        <bizy-button customClass=\"bizy-audio-player__download-button\" *ngIf=\"showDownload\" (onSelect)=\"_onDownload()\">\n            <svg \n                class=\"bizy-audio-player__download-button__icon\"\n                fill=\"none\"\n                stroke=\"currentColor\"\n                stroke-linecap=\"round\"\n                stroke-linejoin=\"round\"\n                stroke-width=\"2\"\n                viewBox=\"0 0 24 24\"\n                xmlns=\"http://www.w3.org/2000/svg\">\n                <path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><polyline points=\"7 10 12 15 17 10\"/><line x1=\"12\" x2=\"12\" y1=\"15\" y2=\"3\"/>\n            </svg>\n        </bizy-button>\n\n    </span>\n\n</div>", styles: [":host{font-size:1rem;width:100%}.bizy-audio-player-component{width:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;row-gap:2rem}.bizy-audio-player__audio-controls{width:100%;min-width:25rem;display:flex;align-items:center;column-gap:1rem}.bizy-audio-player__audio-controls__audio{flex:1;width:100%}::ng-deep .bizy-audio-player__audio-controls__playback-rate{font-size:1rem;--bizy-button-background-color: var(--bizy-audio-player-playback-rate-background-color);--bizy-button-color: var(--bizy-audio-player-playback-rate-color);font-weight:700;border-radius:50%!important;width:4rem;height:2rem;display:grid;place-items:center;cursor:pointer}::ng-deep .bizy-audio-player__download-button{--bizy-button-background-color: var(--bizy-audio-player-download-button-background-color);--bizy-button-color: var(--bizy-audio-player-download-button-color)}.bizy-audio-player__download-button__icon{height:1rem}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }, { kind: "directive", type: i1.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "ngmodule", type: BizyButtonModule }, { kind: "component", type: BizyButtonComponent, selector: "bizy-button", inputs: ["id", "disabled", "type", "customClass"], outputs: ["onSelect"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.10", type: BizyAudioPlayerComponent, isStandalone: true, selector: "bizy-audio-player", inputs: { id: "id", mimeType: "mimeType", audioPlayerError: "audioPlayerError", showDownload: "showDownload", autoplay: "autoplay", disabled: "disabled", downloadURL: "downloadURL", downloadFileName: "downloadFileName", audioURL: "audioURL" }, outputs: { onDownload: "onDownload", canPlayThrough: "canPlayThrough", onTrackPlayerRate: "onTrackPlayerRate" }, ngImport: i0, template: "<audio\n    class=\"bizy-audio-player__audio\"\n    [ngClass]=\"{'bizy-audio-player__audio--disabled': disabled || !_audioURL || !_ready}\"\n    [id]=\"id\"\n    [autoplay]=\"autoplay\"\n    controls\n    (canplaythrough)=\"_ready = true; canPlayThrough.emit($event)\"\n    controlslist=\"nodownload noplaybackrate\">\n    <source [src]=\"_audioURL\" [type]=\"mimeType\">\n    {{audioPlayerError}}\n</audio>\n\n<bizy-button customClass=\"bizy-audio-player__playback-rate\" (onSelect)=\"_onTrackPlayerRate()\" [disabled]=\"disabled || !_audioURL || !_ready\">\n    <span>{{_playbackRate}}x</span>\n</bizy-button>\n\n<bizy-button customClass=\"bizy-audio-player__download-button\" *ngIf=\"showDownload\" (onSelect)=\"_onDownload()\" [disabled]=\"disabled || !_audioURL || !_ready\">\n    <svg \n        class=\"bizy-audio-player__download-button__icon\"\n        fill=\"none\"\n        stroke=\"currentColor\"\n        stroke-linecap=\"round\"\n        stroke-linejoin=\"round\"\n        stroke-width=\"2\"\n        viewBox=\"0 0 24 24\"\n        xmlns=\"http://www.w3.org/2000/svg\">\n        <path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><polyline points=\"7 10 12 15 17 10\"/><line x1=\"12\" x2=\"12\" y1=\"15\" y2=\"3\"/>\n    </svg>\n</bizy-button>\n", styles: [":host{font-size:1rem;width:100%;display:flex;align-items:center;column-gap:1rem}.bizy-audio-player__audio--disabled{opacity:.5;pointer-events:none;cursor:not-allowed!important}.bizy-audio-player__audio{flex:1;width:100%}::ng-deep .bizy-audio-player__playback-rate{font-size:1rem;--bizy-button-background-color: var(--bizy-audio-player-playback-rate-background-color);--bizy-button-color: var(--bizy-audio-player-playback-rate-color);font-weight:700;border-radius:50%!important;width:4rem;height:2rem;display:grid;place-items:center;cursor:pointer}::ng-deep .bizy-audio-player__download-button{--bizy-button-background-color: var(--bizy-audio-player-download-button-background-color);--bizy-button-color: var(--bizy-audio-player-download-button-color)}.bizy-audio-player__download-button__icon{height:1rem}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }, { kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "ngmodule", type: BizyButtonModule }, { kind: "component", type: BizyButtonComponent, selector: "bizy-button", inputs: ["id", "disabled", "type", "customClass"], outputs: ["onSelect"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyAudioPlayerComponent, decorators: [{
             type: Component,
-            args: [{ selector: 'bizy-audio-player', imports: [CommonModule, BizyButtonModule], changeDetection: ChangeDetectionStrategy.OnPush, template: "<div class=\"bizy-audio-player-component\">\n\n    <span class=\"bizy-audio-player__audio-controls\">\n\n        <audio\n            *ngIf=\"_audioURL\"\n            class=\"bizy-audio-player__audio-controls__audio\"\n            [id]=\"id\"\n            [autoplay]=\"autoplay\"\n            controls\n            controlslist=\"nodownload noplaybackrate\">\n            <source [src]=\"_audioURL\" [type]=\"mimeType\">\n            {{audioPlayerError}}\n        </audio>\n\n        <bizy-button customClass=\"bizy-audio-player__audio-controls__playback-rate\" (onSelect)=\"_onTrackPlayerRate()\">\n            <span>{{_playbackRate}}x</span>\n        </bizy-button>\n\n        <bizy-button customClass=\"bizy-audio-player__download-button\" *ngIf=\"showDownload\" (onSelect)=\"_onDownload()\">\n            <svg \n                class=\"bizy-audio-player__download-button__icon\"\n                fill=\"none\"\n                stroke=\"currentColor\"\n                stroke-linecap=\"round\"\n                stroke-linejoin=\"round\"\n                stroke-width=\"2\"\n                viewBox=\"0 0 24 24\"\n                xmlns=\"http://www.w3.org/2000/svg\">\n                <path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><polyline points=\"7 10 12 15 17 10\"/><line x1=\"12\" x2=\"12\" y1=\"15\" y2=\"3\"/>\n            </svg>\n        </bizy-button>\n\n    </span>\n\n</div>", styles: [":host{font-size:1rem;width:100%}.bizy-audio-player-component{width:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;row-gap:2rem}.bizy-audio-player__audio-controls{width:100%;min-width:25rem;display:flex;align-items:center;column-gap:1rem}.bizy-audio-player__audio-controls__audio{flex:1;width:100%}::ng-deep .bizy-audio-player__audio-controls__playback-rate{font-size:1rem;--bizy-button-background-color: var(--bizy-audio-player-playback-rate-background-color);--bizy-button-color: var(--bizy-audio-player-playback-rate-color);font-weight:700;border-radius:50%!important;width:4rem;height:2rem;display:grid;place-items:center;cursor:pointer}::ng-deep .bizy-audio-player__download-button{--bizy-button-background-color: var(--bizy-audio-player-download-button-background-color);--bizy-button-color: var(--bizy-audio-player-download-button-color)}.bizy-audio-player__download-button__icon{height:1rem}\n"] }]
+            args: [{ selector: 'bizy-audio-player', imports: [CommonModule, BizyButtonModule], changeDetection: ChangeDetectionStrategy.OnPush, template: "<audio\n    class=\"bizy-audio-player__audio\"\n    [ngClass]=\"{'bizy-audio-player__audio--disabled': disabled || !_audioURL || !_ready}\"\n    [id]=\"id\"\n    [autoplay]=\"autoplay\"\n    controls\n    (canplaythrough)=\"_ready = true; canPlayThrough.emit($event)\"\n    controlslist=\"nodownload noplaybackrate\">\n    <source [src]=\"_audioURL\" [type]=\"mimeType\">\n    {{audioPlayerError}}\n</audio>\n\n<bizy-button customClass=\"bizy-audio-player__playback-rate\" (onSelect)=\"_onTrackPlayerRate()\" [disabled]=\"disabled || !_audioURL || !_ready\">\n    <span>{{_playbackRate}}x</span>\n</bizy-button>\n\n<bizy-button customClass=\"bizy-audio-player__download-button\" *ngIf=\"showDownload\" (onSelect)=\"_onDownload()\" [disabled]=\"disabled || !_audioURL || !_ready\">\n    <svg \n        class=\"bizy-audio-player__download-button__icon\"\n        fill=\"none\"\n        stroke=\"currentColor\"\n        stroke-linecap=\"round\"\n        stroke-linejoin=\"round\"\n        stroke-width=\"2\"\n        viewBox=\"0 0 24 24\"\n        xmlns=\"http://www.w3.org/2000/svg\">\n        <path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><polyline points=\"7 10 12 15 17 10\"/><line x1=\"12\" x2=\"12\" y1=\"15\" y2=\"3\"/>\n    </svg>\n</bizy-button>\n", styles: [":host{font-size:1rem;width:100%;display:flex;align-items:center;column-gap:1rem}.bizy-audio-player__audio--disabled{opacity:.5;pointer-events:none;cursor:not-allowed!important}.bizy-audio-player__audio{flex:1;width:100%}::ng-deep .bizy-audio-player__playback-rate{font-size:1rem;--bizy-button-background-color: var(--bizy-audio-player-playback-rate-background-color);--bizy-button-color: var(--bizy-audio-player-playback-rate-color);font-weight:700;border-radius:50%!important;width:4rem;height:2rem;display:grid;place-items:center;cursor:pointer}::ng-deep .bizy-audio-player__download-button{--bizy-button-background-color: var(--bizy-audio-player-download-button-background-color);--bizy-button-color: var(--bizy-audio-player-download-button-color)}.bizy-audio-player__download-button__icon{height:1rem}\n"] }]
         }], propDecorators: { id: [{
                 type: Input
             }], mimeType: [{
                 type: Input
+            }], audioPlayerError: [{
+                type: Input
             }], showDownload: [{
                 type: Input
             }], autoplay: [{
+                type: Input
+            }], disabled: [{
                 type: Input
             }], downloadURL: [{
                 type: Input
             }], downloadFileName: [{
                 type: Input
             }], onDownload: [{
+                type: Output
+            }], canPlayThrough: [{
                 type: Output
             }], onTrackPlayerRate: [{
                 type: Output
