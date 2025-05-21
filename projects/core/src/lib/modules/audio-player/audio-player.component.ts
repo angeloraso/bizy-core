@@ -18,11 +18,14 @@ export class BizyAudioPlayerComponent {
   readonly #renderer = inject(Renderer2);
   @Input() id: string = `bizy-audio-player-${Math.random()}`;
   @Input() mimeType: string;
+  @Input() audioPlayerError: string = 'Error';
   @Input() showDownload: boolean = true;
   @Input() autoplay: boolean = false;
+  @Input() disabled: boolean = false;
   @Input() downloadURL: string;
   @Input() downloadFileName: string = 'bizy_audio';
   @Output() onDownload = new EventEmitter<void>();
+  @Output() canPlayThrough = new EventEmitter<Event>();
   @Output() onTrackPlayerRate = new EventEmitter<string>();
 
   @Input() set audioURL(audioURL: string) {
@@ -30,6 +33,7 @@ export class BizyAudioPlayerComponent {
       return;
     }
 
+    this._ready = false;
     this._audioURL = audioURL;
 
     if (!this.mimeType) {
@@ -70,6 +74,7 @@ export class BizyAudioPlayerComponent {
   }
 
   _audioURL: string | null = null;
+  _ready: boolean = false;
   #audioRef: HTMLAudioElement;
   _playbackRate = 1;
   #trackPlaybackRate$ = new Subject<string>();
@@ -85,6 +90,10 @@ export class BizyAudioPlayerComponent {
   }
 
   _onTrackPlayerRate() {
+    if (!this.disabled) {
+      return;
+    }
+
     if (!this.#audioRef) {
       this.#audioRef = this.#document.getElementById(this.id) as HTMLAudioElement;
     }
@@ -113,6 +122,10 @@ export class BizyAudioPlayerComponent {
   }
 
   _onDownload(): void {
+    if (!this.disabled) {
+      return;
+    }
+
     const downloadButton = this.#renderer.createElement('a');
     this.#renderer.setAttribute(downloadButton, 'download', this.downloadFileName);
     this.#renderer.setProperty(downloadButton, 'href', this.downloadURL);
