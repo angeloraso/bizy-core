@@ -55,6 +55,8 @@ export class BizyAudioPlayerComponent {
     if (this.#audioRef) {
       this.#audioRef.load();
 
+      this._trackPlayerRate();
+
       if (this.autoplay) {
         this.#audioRef.play();
       } 
@@ -63,6 +65,8 @@ export class BizyAudioPlayerComponent {
         this.#audioRef = this.#document.getElementById(this.id) as HTMLAudioElement;
         if (this.#audioRef) {
           this.#audioRef.load();
+
+          this._trackPlayerRate();
 
           if (this.autoplay) {
             this.#audioRef.play();
@@ -80,7 +84,7 @@ export class BizyAudioPlayerComponent {
   #trackPlaybackRate$ = new Subject<string>();
   #subscription = new Subscription();
 
-  trackPlayerRate() {
+  _trackPlayerRate() {
     this.#subscription.add(this.#trackPlaybackRate$.pipe(
       debounceTime(500),
       distinctUntilChanged()
@@ -113,16 +117,18 @@ export class BizyAudioPlayerComponent {
         case 2:
           this.#audioRef.playbackRate = 1;
           this._playbackRate = 1;
+          this.#trackPlaybackRate$.next('1');
           break;
         default:
           this.#audioRef.playbackRate = 1;
           this._playbackRate = 1;
+          this.#trackPlaybackRate$.next('1');
       }
     }
   }
 
   _onDownload(): void {
-    if (!this.disabled) {
+    if (this.disabled || !this.showDownload) {
       return;
     }
 
