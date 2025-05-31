@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Inject, Input, Output, Renderer2 } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { BIZY_TAG_TYPE } from './tag.types';
 import { CommonModule } from '@angular/common';
 
