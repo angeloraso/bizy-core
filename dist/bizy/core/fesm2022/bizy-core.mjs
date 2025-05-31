@@ -26,6 +26,7 @@ import Dashboard from '@uppy/dashboard';
 import XHRUpload from '@uppy/xhr-upload';
 import * as i1$1 from '@angular/router';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import validator from 'validator';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import * as i3 from '@angular/cdk/portal';
@@ -2930,52 +2931,249 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImpo
                 }] }] });
 
 class BizyValidatorService {
-    isEmail(email) {
-        const regex = /^(([^ñ<>()[\]\\.,;:\s@"]+(\.[^ñ<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return regex.test(String(email).toLowerCase());
-    }
-    isPassFormat(pass) {
-        const formatRegex = /(?!.*012)(?!.*123)(?!.*234)(?!.*345)(?!.*456)(?!.*567)(?!.*678)(?!.*789)(?!.*987)(?!.*876)(?!.*765)(?!.*654)(?!.*543)(?!.*432)(?!.*321)(?!.*210)(?!.*(.)\1{2,})(?!(^\D+$))(?!(^\d+$))(^.{6,}$)/;
-        const excludeRegex = /[^'"]$/;
-        const _pass = String(pass).toLowerCase();
-        return formatRegex.test(_pass) && excludeRegex.test(_pass);
-    }
-    isNoSpecialCharacter(name) {
-        const regex = /^[a-zA-Z0-9][a-zA-Z0-9_-]*$/;
-        return regex.test(String(name).toLowerCase());
-    }
+    isEmail = (value) => validator.isEmail(value);
+    dateIsAfter = (data) => {
+        if (!data || !data.date || !data.comparisonDate) {
+            return false;
+        }
+        const date = new Date(data.date);
+        const comparisonDate = new Date(data.comparisonDate);
+        return validator.isAfter(date.toString(), comparisonDate.toString());
+    };
+    dateIsBefore = (data) => {
+        if (!data || !data.date || !data.comparisonDate) {
+            return false;
+        }
+        const date = new Date(data.date);
+        const comparisonDate = new Date(data.comparisonDate);
+        return validator.isBefore(date.toString(), comparisonDate.toString());
+    };
+    isAlpha = (value) => validator.isAlpha(value);
+    isAlphanumeric = (value) => validator.isAlphanumeric(value);
+    isNumeric = (value) => validator.isNumeric(value);
     isNumber(number) {
-        const regex = /^[0-9]*$/;
-        return regex.test(String(number).toLowerCase());
-    }
-    isPhoneNumber(number) {
-        const regex = /^\+{0,1}[0-9#*]+$/;
+        const regex = /^-?\d+(\.\d+)?$/;
         return regex.test(String(number).toLowerCase());
     }
     isString(string) {
         return typeof string === 'string' || string instanceof String;
     }
-    isJSON(text) {
-        if (/^[\],:{}\s]*$/.test(text.replace(/\\["\\/bfnrtu]/g, '@')
-            .replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?/g, ']')
-            .replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
-            return true;
+    isInteger = (value) => validator.isInt(value);
+    isBoolean = (value) => validator.isBoolean(value);
+    isCreditCard = (value) => validator.isCreditCard(value);
+    isDataURI = (value) => validator.isDataURI(value);
+    isURL = (value) => validator.isURL(value);
+    isDate = (value) => validator.isDate(value);
+    isJSON = (value) => validator.isJSON(value);
+    isIP = (value, version) => validator.isIP(value, { version });
+    isJWT = (value) => validator.isJWT(value);
+    isLowercase = (value) => validator.isLowercase(value);
+    isUppercase = (value) => validator.isUppercase(value);
+    isMobilePhone = (data) => validator.isMobilePhone(data.value, data.locale);
+    isCUIT(cuit) {
+        const regex = /(^[0-9]{2}-[0-9]{8}-[0-9]$)/i;
+        const isCUIT = regex.test(String(cuit).toLowerCase());
+        if (!isCUIT) {
+            return false;
+        }
+        cuit = String(cuit).replace(/[-_]/g, '');
+        if (cuit.length == 11) {
+            const mult = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
+            let total = 0;
+            for (let i = 0; i < mult.length; i++) {
+                total += parseInt(cuit[i]) * mult[i];
+            }
+            const mod = total % 11;
+            const digit = mod === 0 ? 0 : mod === 1 ? 9 : 11 - mod;
+            return digit === parseInt(cuit[10]);
         }
         return false;
     }
+    isDNI(dni) {
+        const regex = /(^[1-9]{1}[0-9]{7}$)/i;
+        return regex.test(String(dni).toLowerCase());
+    }
+    isCBU(cbu) {
+        const _isLengthOk = (cbu) => {
+            return cbu.length === 22;
+        };
+        const _isValidAccount = (account) => {
+            if (account.length !== 14) {
+                return false;
+            }
+            const sum = Number(account[0]) * 3 +
+                Number(account[1]) * 9 +
+                Number(account[2]) * 7 +
+                Number(account[3]) * 1 +
+                Number(account[4]) * 3 +
+                Number(account[5]) * 9 +
+                Number(account[6]) * 7 +
+                Number(account[7]) * 1 +
+                Number(account[8]) * 3 +
+                Number(account[9]) * 9 +
+                Number(account[10]) * 7 +
+                Number(account[11]) * 1 +
+                Number(account[12]) * 3;
+            const diff = (10 - (sum % 10)) % 10; // The result of this should be only 1 digit
+            const checksum = Number(account[13]);
+            return diff === checksum;
+        };
+        const _isValidBankCode = (code) => {
+            if (code.length !== 8) {
+                return false;
+            }
+            const bank = code.substring(0, 3);
+            const checksumOne = code[3];
+            const branch = code.substring(4, 4 + 3);
+            const checksumTwo = code[7];
+            const sum = (Number(bank[0]) * 7) +
+                (Number(bank[1]) * 1) +
+                (Number(bank[2]) * 3) +
+                (Number(checksumOne) * 9) +
+                (Number(branch[0]) * 7) +
+                (Number(branch[1]) * 1) +
+                (Number(branch[2]) * 3);
+            const diff = (10 - (sum % 10)) % 10; // The result of this should be only 1 digit
+            return diff === Number(checksumTwo);
+        };
+        const bankCode = cbu.substring(0, 8);
+        const accountCode = cbu.substring(8, 8 + 14);
+        return (_isLengthOk(cbu) &&
+            _isValidBankCode(bankCode) &&
+            _isValidAccount(accountCode));
+    }
     emailValidator() {
         return (control) => {
-            return !control.value || (control.value && this.isEmail(control.value)) ? null : { bizyEmail: true };
+            return !control.value || (control.value && this.isEmail(control.value))
+                ? null
+                : { anuraEmail: true };
         };
     }
-    phoneNumberValidator() {
+    mobilePhoneValidator(locale) {
         return (control) => {
-            return !control.value || (control.value && this.isPhoneNumber(control.value)) ? null : { bizyPhoneNumber: true };
+            return !control.value || !locale ||
+                (control.value && locale && this.isMobilePhone({ value: control.value, locale }))
+                ? null
+                : { anuraMobilePhone: true };
         };
     }
     numberValidator() {
         return (control) => {
-            return !control.value || (control.value && this.isNumber(control.value)) ? null : { bizyNumber: true };
+            return !control.value || (control.value && this.isNumber(control.value))
+                ? null
+                : { anuraNumber: true };
+        };
+    }
+    numericValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isNumeric(control.value))
+                ? null
+                : { anuraNumeric: true };
+        };
+    }
+    dateIsAfterValidator(comparisonDate) {
+        return (control) => {
+            return !control.value || !comparisonDate || (control.value && comparisonDate && !this.dateIsAfter({ date: control.value, comparisonDate }))
+                ? null
+                : { anuraDateIsAfter: true };
+        };
+    }
+    dateIsBeforeValidator(comparisonDate) {
+        return (control) => {
+            return !control.value || !comparisonDate || (control.value && comparisonDate && !this.dateIsBefore({ date: control.value, comparisonDate }))
+                ? null
+                : { anuraDateIsBefore: true };
+        };
+    }
+    alphaValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isAlpha(control.value))
+                ? null
+                : { anuraAlpha: true };
+        };
+    }
+    alphanumericValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isAlphanumeric(control.value))
+                ? null
+                : { anuraAlphanumeric: true };
+        };
+    }
+    integerValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isInteger(control.value))
+                ? null
+                : { anuraInteger: true };
+        };
+    }
+    dataURIValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isDataURI(control.value))
+                ? null
+                : { anuraDataURI: true };
+        };
+    }
+    urlValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isURL(control.value))
+                ? null
+                : { anuraURL: true };
+        };
+    }
+    jsonValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isJSON(control.value))
+                ? null
+                : { anuraJSON: true };
+        };
+    }
+    jwtValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isJWT(control.value))
+                ? null
+                : { anuraJWT: true };
+        };
+    }
+    lowerCaseValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isLowercase(control.value))
+                ? null
+                : { anuraLowerCase: true };
+        };
+    }
+    upperCaseValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isUppercase(control.value))
+                ? null
+                : { anuraUpperCase: true };
+        };
+    }
+    cuitValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isCUIT(control.value))
+                ? null
+                : { anuraCUIT: true };
+        };
+    }
+    dniValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isDNI(control.value))
+                ? null
+                : { anuraDNI: true };
+        };
+    }
+    cbuValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isCBU(control.value))
+                ? null
+                : { anuraCBU: true };
+        };
+    }
+    creditCardValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isCreditCard(control.value))
+                ? null
+                : { anuraCreditCard: true };
         };
     }
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyValidatorService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
