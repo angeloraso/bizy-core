@@ -1,9 +1,12 @@
 <button 
     type="button"
     [id]="id"
+    (focus)="_focused = true"
+    (blur)="_focused = false"
+    [ngClass]="{'bizy-tag--disabled': disabled}"
     class="bizy-tag bizy-tag--{{type}} {{customClass}}"
-    (click)="onSelect.emit($event)"
-    (keyup.enter)="onSelect.emit($event)">
+    (click)="_focused = true; _onSelect($event)"
+    (keyup.enter)="_onSelect($event)">
 
     <ng-content></ng-content>
 

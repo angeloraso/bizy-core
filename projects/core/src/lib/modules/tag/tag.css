@@ -54,3 +54,9 @@
 ::ng-deep .bizy-tag--danger * {
   color: var(--bizy-tag-danger-color) !important;
 }
+
+.bizy-tag--disabled {
+    opacity: 0.5;
+    cursor: not-allowed !important;
+    pointer-events: none;
+}

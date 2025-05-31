@@ -12,6 +12,17 @@ import { CommonModule } from '@angular/common';
 export class BizyTagComponent {
   @Input() id: string = `bizy-tag-${Math.random()}`;
   @Input() customClass: string = '';
+  @Input() disabled: boolean = false;
   @Input() type: BIZY_TAG_TYPE = BIZY_TAG_TYPE.DEFAULT;
   @Output() onSelect = new EventEmitter<PointerEvent>();
+
+  _focused: boolean = false;
+
+  _onSelect(event: PointerEvent) {
+    if (this.disabled || !this._focused) {
+      return;
+    }
+
+    this.onSelect.emit(event);
+  }
 }
