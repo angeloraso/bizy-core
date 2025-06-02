@@ -1,16 +1,13 @@
-import { inject, Pipe, PipeTransform } from '@angular/core';
-import { BizyValidatorService } from '../../../services';
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'bizyFilter'
 })
 export class BizyFilterPipe implements PipeTransform {
-  readonly validator = inject(BizyValidatorService);
-
   transform<T>(
     items: Array<T>,
     property: string,
-    states: string | number | boolean | Array<{ id: string | number | boolean; selected: boolean }>
+    states?: string | number | boolean | Array<{ id: string | number | boolean; selected: boolean }>,
   ): Array<T> {
     if (!items || items.length === 0) {
       return [];
@@ -27,7 +24,6 @@ export class BizyFilterPipe implements PipeTransform {
     if (states.length === 0) {
       return items;
     }
-
     const _selected = states.filter(_state => _state.selected);
     if (_selected.length === states.length) {
       return items;
@@ -59,31 +55,61 @@ export class BizyFilterPipe implements PipeTransform {
       output = output.concat(res);
     });
 
-    function deepEqual(a, b, seen = new WeakMap()) {
-      if (a === b) return true;
-      if (typeof a !== "object" || typeof b !== "object" || a === null || b === null) return false;
-    
-      // Circular reference check
-      if (seen.has(a)) return seen.get(a) === b;
-      seen.set(a, b);
-    
-      const aKeys = Object.keys(a);
-      const bKeys = Object.keys(b);
-    
-      if (aKeys.length !== bKeys.length) return false;
-    
-      for (let key of aKeys) {
-        if (!bKeys.includes(key)) return false;
-        if (!deepEqual(a[key], b[key], seen)) return false;
+    function safeStringify(obj: any): string {
+      const seen = new WeakSet();
+
+      function replacer(_key: string, value: any) {
+        // Handle circular references
+        if (typeof value === 'object' && value !== null) {
+          if (seen.has(value)) return '[Circular]';
+          seen.add(value);
+        }
+
+        // Handle BigInt
+        if (typeof value === 'bigint') return value.toString() + 'n';
+
+        // Handle Symbol and Function
+        if (typeof value === 'symbol') return value.toString();
+        if (typeof value === 'function') return `[Function: ${value.name || 'anonymous'}]`;
+
+        // Preserve Dates
+        if (value instanceof Date) return `__DATE__:${value.toISOString()}`;
+
+        return value;
       }
-    
-      return true;
+
+      // Sort keys consistently
+      const ordered = sortKeys(obj);
+      return JSON.stringify(ordered, replacer);
     }
-    
-    function uniqueObjects(items: Array<T>) {
-      return items.filter((obj, index, self) =>
-        index === self.findIndex(other => deepEqual(obj, other))
-      );
+
+    function sortKeys(obj: any): any {
+      if (Array.isArray(obj)) {
+        return obj.map(sortKeys);
+      } else if (obj && typeof obj === 'object' && !(obj instanceof Date)) {
+        return Object.keys(obj)
+          .sort()
+          .reduce((acc, key) => {
+            acc[key] = sortKeys(obj[key]);
+            return acc;
+          }, {} as any);
+      }
+      return obj;
+    }
+
+    function uniqueObjects<T>(items: T[]): T[] {
+      const seen = new Set<string>();
+      const result: T[] = [];
+
+      for (const item of items) {
+        const str = safeStringify(item);
+        if (!seen.has(str)) {
+          seen.add(str);
+          result.push(item);
+        }
+      }
+
+      return result;
     }
 
     return uniqueObjects(output);
