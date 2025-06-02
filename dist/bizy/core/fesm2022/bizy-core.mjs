@@ -2931,7 +2931,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImpo
                 }] }] });
 
 class BizyValidatorService {
-    isEmail = (value) => validator.isEmail(value);
+    isEmail = (value) => validator.isEmail(value, { allow_utf8_local_part: false });
     dateIsAfter = (data) => {
         if (!data || !data.date || !data.comparisonDate) {
             return false;
