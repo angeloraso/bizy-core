@@ -5,7 +5,7 @@ import validator from 'validator';
   providedIn: 'root'
 })
 export class BizyValidatorService {
-  isEmail = (value: string): boolean => validator.isEmail(value);
+  isEmail = (value: string): boolean => validator.isEmail(value, {allow_utf8_local_part: false});
 
   dateIsAfter = (data: {date: string | number | Date, comparisonDate: string | number | Date}): boolean => {
     if (!data || !data.date || !data.comparisonDate) {
