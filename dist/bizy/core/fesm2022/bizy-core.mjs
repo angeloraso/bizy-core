@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { EventEmitter, ChangeDetectorRef, Output, Input, Inject, ChangeDetectionStrategy, Component, NgModule, inject, Renderer2, ElementRef, Injectable, Directive, ViewChild, ContentChildren, ContentChild, RendererFactory2, Pipe, ViewContainerRef, TemplateRef, HostListener, Host } from '@angular/core';
+import { EventEmitter, ChangeDetectorRef, Output, Input, Inject, ChangeDetectionStrategy, Component, NgModule, inject, Renderer2, ElementRef, Injectable, Directive, ViewChild, ContentChildren, ContentChild, Pipe, ViewContainerRef, TemplateRef, RendererFactory2, HostListener, Host } from '@angular/core';
 import * as i1 from '@angular/common';
 import { CommonModule, DOCUMENT, registerLocaleData, DatePipe } from '@angular/common';
 import { Subject, Subscription, BehaviorSubject, filter, take, skip, auditTime, throttleTime, debounceTime as debounceTime$1, interval, fromEvent, merge, timer, of } from 'rxjs';
@@ -24,11 +24,6 @@ import es_ES from '@uppy/locales/lib/es_ES';
 import en_US from '@uppy/locales/lib/en_US';
 import Dashboard from '@uppy/dashboard';
 import XHRUpload from '@uppy/xhr-upload';
-import * as i1$1 from '@angular/router';
-import { NavigationEnd, NavigationStart, Router } from '@angular/router';
-import validator from 'validator';
-import { Clipboard } from '@angular/cdk/clipboard';
-import { DeviceDetectorService } from 'ngx-device-detector';
 import * as i3 from '@angular/cdk/portal';
 import { TemplatePortal, PortalModule } from '@angular/cdk/portal';
 import { ScrollingModule, CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
@@ -36,6 +31,11 @@ import * as i1$2 from '@angular/cdk/dialog';
 import { DIALOG_DATA, DialogRef, DialogModule, Dialog } from '@angular/cdk/dialog';
 import * as i2$3 from '@angular/cdk/drag-drop';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import * as i1$1 from '@angular/router';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import validator from 'validator';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import * as i1$3 from '@angular/platform-browser';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -2529,1169 +2529,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImpo
             args: [{ selector: 'bizy-filter-content', changeDetection: ChangeDetectionStrategy.OnPush, template: "<ng-content></ng-content>", styles: [":host{font-size:1rem}\n"] }]
         }] });
 
-var BIZY_ANIMATION;
-(function (BIZY_ANIMATION) {
-    BIZY_ANIMATION["FADE_IN"] = "fade-in";
-    BIZY_ANIMATION["FADE_OUT"] = "fade-out";
-    BIZY_ANIMATION["FADE_IN_UP"] = "fade-in-up";
-    BIZY_ANIMATION["FADE_IN_RIGHT"] = "fade-in-right";
-    BIZY_ANIMATION["FADE_IN_DOWN"] = "fade-in-down";
-    BIZY_ANIMATION["FADE_IN_LEFT"] = "fade-in-left";
-    BIZY_ANIMATION["SLIDE_IN_UP"] = "slide-in-up";
-    BIZY_ANIMATION["SLIDE_IN_RIGHT"] = "slide-in-right";
-    BIZY_ANIMATION["SLIDE_IN_DOWN"] = "slide-in-down";
-    BIZY_ANIMATION["SLIDE_IN_LEFT"] = "slide-in-left";
-    BIZY_ANIMATION["SLIDE_OUT_UP"] = "slide-out-up";
-    BIZY_ANIMATION["SLIDE_OUT_DOWN"] = "slide-out-down";
-    BIZY_ANIMATION["SLIDE_OUT_RIGHT"] = "slide-out-right";
-    BIZY_ANIMATION["SLIDE_OUT_LEFT"] = "slide-out-left";
-})(BIZY_ANIMATION || (BIZY_ANIMATION = {}));
-class BizyAnimationService {
-    rendererFactory;
-    #renderer;
-    constructor(rendererFactory) {
-        this.rendererFactory = rendererFactory;
-        this.#renderer = this.rendererFactory.createRenderer(null, null);
-    }
-    setAnimation(element, animation) {
-        return new Promise(resolve => {
-            if (!element || !animation || !this.#renderer) {
-                return;
-            }
-            const root = this.#renderer.selectRootElement(':root', true);
-            const animationTimeout = getComputedStyle(root).getPropertyValue('--bizy-animation-timeout').trim();
-            this.#renderer.addClass(element, 'animated');
-            this.#renderer.addClass(element, animation);
-            setTimeout(() => {
-                this.#renderer.removeClass(element, 'animated');
-                this.#renderer.removeClass(element, animation);
-                resolve();
-            }, Number(animationTimeout.match(/\d/g).join('')));
-        });
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyAnimationService, deps: [{ token: RendererFactory2 }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyAnimationService, providedIn: 'root' });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyAnimationService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }], ctorParameters: () => [{ type: i0.RendererFactory2, decorators: [{
-                    type: Inject,
-                    args: [RendererFactory2]
-                }] }] });
-
-class BizyViewportService {
-    window;
-    #viewportSizeChanged;
-    get sizeChange$() {
-        return this.#viewportSizeChanged.asObservable();
-    }
-    constructor(window) {
-        this.window = window;
-        this.#viewportSizeChanged = new BehaviorSubject({
-            width: this.window.innerWidth,
-            height: this.window.innerHeight
-        });
-        fromEvent(window, 'resize')
-            .pipe(debounceTime(200), map((event) => ({
-            width: event.currentTarget.innerWidth,
-            height: event.currentTarget.innerHeight
-        })))
-            .subscribe(windowSize => {
-            this.#viewportSizeChanged.next(windowSize);
-        });
-    }
-    width() {
-        return this.window.screen.availWidth;
-    }
-    height() {
-        return this.window.screen.availHeight;
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyViewportService, deps: [{ token: Window }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyViewportService, providedIn: 'root' });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyViewportService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }], ctorParameters: () => [{ type: Window, decorators: [{
-                    type: Inject,
-                    args: [Window]
-                }] }] });
-
-class BizyKeyboardService {
-    document;
-    #shiftHolding = new BehaviorSubject(false);
-    #controlHolding = new BehaviorSubject(false);
-    get shiftHolding$() {
-        return this.#shiftHolding.asObservable();
-    }
-    get controlHolding$() {
-        return this.#controlHolding.asObservable();
-    }
-    constructor(document) {
-        this.document = document;
-        this.document.addEventListener('visibilitychange', () => {
-            this.#shiftHolding.next(false);
-            this.#controlHolding.next(false);
-        });
-        this.document.addEventListener('keydown', (event) => {
-            if (event.key === 'Shift') {
-                this.#shiftHolding.next(true);
-            }
-            if (event.key === 'Meta' || event.key === 'Control') {
-                this.#controlHolding.next(true);
-            }
-        });
-        this.document.addEventListener('keyup', (event) => {
-            if (event.key === 'Shift') {
-                this.#shiftHolding.next(false);
-            }
-            if (event.key === 'Meta' || event.key === 'Control') {
-                this.#controlHolding.next(false);
-            }
-        });
-    }
-    isShiftHolding() {
-        return this.#shiftHolding.value;
-    }
-    isControlHolding() {
-        return this.#controlHolding.value;
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyKeyboardService, deps: [{ token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyKeyboardService, providedIn: 'root' });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyKeyboardService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }], ctorParameters: () => [{ type: Document, decorators: [{
-                    type: Inject,
-                    args: [DOCUMENT]
-                }] }] });
-
-class BizyExportToCSVService {
-    document;
-    rendererFactory;
-    #loading = false;
-    #renderer;
-    constructor(document, rendererFactory) {
-        this.document = document;
-        this.rendererFactory = rendererFactory;
-        this.#renderer = this.rendererFactory.createRenderer(null, null);
-    }
-    download(data) {
-        if (this.#loading || !data.items || !Array.isArray(data.items) || !data.model) {
-            return;
-        }
-        try {
-            this.#loading = true;
-            const csv = this.getCSV(data);
-            if (!data.fileName) {
-                data.fileName = 'bizy-csv';
-            }
-            this.#downloadCSV({ csv, fileName: data.fileName });
-        }
-        finally {
-            this.#loading = false;
-        }
-    }
-    getCSV(data) {
-        let csv = '';
-        function escapeCommas(str) {
-            return str.includes(',') ? `"${str}"` : str;
-        }
-        for (const key in data.model) {
-            if (key) {
-                csv += `${data.model[key]},`;
-            }
-        }
-        data.items.forEach(_item => {
-            // Remove the last character (',')
-            csv = csv.slice(0, -1);
-            csv += '\n';
-            for (const key in data.model) {
-                let value = _item;
-                const nestedProperty = key.split('.');
-                for (let i = 0; i < nestedProperty.length; i++) {
-                    const _property = nestedProperty[i];
-                    if (value) {
-                        value = value[_property];
-                    }
-                    else {
-                        break;
-                    }
-                }
-                if (typeof value !== undefined && value !== null) {
-                    csv += `${escapeCommas(String(value).replace(/\n/g, ''))},`;
-                }
-                else {
-                    csv += ',';
-                }
-            }
-        });
-        if (csv && csv[csv.length - 1] === ',') {
-            // Remove the last character (',')
-            csv = csv.slice(0, -1);
-        }
-        return csv;
-    }
-    #downloadCSV(data) {
-        const blob = new Blob([data.csv], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const downloadButton = this.#renderer.createElement('a');
-        downloadButton.setAttribute('download', data.fileName);
-        downloadButton.href = url;
-        this.#renderer.appendChild(this.document.body, downloadButton);
-        downloadButton.click();
-        this.#renderer.removeChild(this.document.body, downloadButton);
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyExportToCSVService, deps: [{ token: DOCUMENT }, { token: RendererFactory2 }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyExportToCSVService, providedIn: 'root' });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyExportToCSVService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }], ctorParameters: () => [{ type: Document, decorators: [{
-                    type: Inject,
-                    args: [DOCUMENT]
-                }] }, { type: i0.RendererFactory2, decorators: [{
-                    type: Inject,
-                    args: [RendererFactory2]
-                }] }] });
-
-class BizyRouterService {
-    router;
-    static backPath = '';
-    transitionsEnd$;
-    transitionsStart$;
-    popStateEvent$;
-    routeChange$;
-    constructor(router) {
-        this.router = router;
-        this.transitionsEnd$ = this.router.events.pipe(filter$1(event => event instanceof NavigationEnd), map((event) => event.id), distinctUntilChanged(), map(() => this.router.routerState.snapshot.root));
-        this.transitionsStart$ = this.router.events.pipe(filter$1(event => event instanceof NavigationStart), map((event) => event.id), distinctUntilChanged(), map(() => this.router.routerState.snapshot.root));
-        this.popStateEvent$ = fromEvent(window, 'popstate');
-        this.routeChange$ = merge(this.transitionsEnd$, this.popStateEvent$).pipe(map(() => void 0));
-    }
-    getURL() {
-        return window.location.pathname;
-    }
-    getBackPath() {
-        return BizyRouterService.backPath;
-    }
-    getId(activatedRoute, param) {
-        return activatedRoute.snapshot.paramMap.get(param);
-    }
-    getQueryParam(activatedRoute, param) {
-        return activatedRoute.snapshot.queryParamMap.get(param);
-    }
-    getAllQueryParam() {
-        const params = new URL(window.location.href).searchParams;
-        const queryParams = {};
-        for (const [key, value] of params.entries()) {
-            queryParams[key] = value;
-        }
-        return queryParams;
-    }
-    goTo(data) {
-        if (data.replace) {
-            BizyRouterService.backPath = '';
-        }
-        else {
-            BizyRouterService.backPath = this.getURL();
-        }
-        if (data.path[0] === '/') {
-            this.router.navigateByUrl(`${data.path}${this._serialize(data.params)}`, { replaceUrl: data.replace ?? false, skipLocationChange: data.skip ?? false });
-            return;
-        }
-        const path = this.getURL();
-        const index = path.indexOf('?');
-        const url = index !== -1 ? path.substring(0, index) : path;
-        this.router.navigateByUrl(`${url}/${data.path}${this._serialize(data.params)}`, { replaceUrl: data.replace ?? false, skipLocationChange: data.skip ?? false });
-    }
-    goBack(data) {
-        if (BizyRouterService.backPath) {
-            history.back();
-            BizyRouterService.backPath = '';
-        }
-        else if (data && data.path) {
-            this.router.navigateByUrl(data.path, { replaceUrl: true });
-        }
-        else {
-            const index = this.getURL().lastIndexOf('/');
-            const backURL = this.getURL().substring(0, index);
-            this.router.navigateByUrl(backURL, { replaceUrl: true });
-        }
-    }
-    reload(force) {
-        if (force) {
-            window.location.reload();
-        }
-        else {
-            setTimeout(() => {
-                this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-                    this.goTo({ path: this.getURL(), params: this.getAllQueryParam() });
-                });
-            }, 1);
-        }
-    }
-    _serialize(params) {
-        if (!params) {
-            return '';
-        }
-        const str = [];
-        for (const param in params) {
-            if (params[param]) {
-                str.push(encodeURIComponent(param) + '=' + encodeURIComponent(params[param]));
-            }
-        }
-        const queryParams = str.length > 0 ? `?${str.join('&')}` : '';
-        return queryParams;
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyRouterService, deps: [{ token: Router }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyRouterService, providedIn: 'root' });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyRouterService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }], ctorParameters: () => [{ type: i1$1.Router, decorators: [{
-                    type: Inject,
-                    args: [Router]
-                }] }] });
-
-class BizyCacheService {
-    router;
-    CACHE_PREFIX = 'BIZY-CACHE';
-    constructor(router) {
-        this.router = router;
-    }
-    getData(key) {
-        if (!key) {
-            key = this.router.getURL();
-        }
-        const data = sessionStorage.getItem(`${this.CACHE_PREFIX}-${key}`);
-        if (data) {
-            const _data = JSON.parse(data);
-            return Date.now() < _data.expiresAt ? _data.value : {};
-        }
-        return {};
-    }
-    setData(value, key, expiresAt) {
-        if (typeof value === 'undefined' || value === null) {
-            return;
-        }
-        if (!key) {
-            key = this.router.getURL();
-        }
-        if (!expiresAt) {
-            const date = new Date();
-            date.setHours(23, 59, 59);
-            expiresAt = date.getTime();
-        }
-        const data = {
-            expiresAt,
-            value
-        };
-        sessionStorage.setItem(`${this.CACHE_PREFIX}-${key}`, JSON.stringify(data));
-    }
-    remove(key) {
-        if (!key) {
-            key = this.router.getURL();
-        }
-        sessionStorage.removeItem(`${this.CACHE_PREFIX}-${key}`);
-    }
-    removeAll() {
-        const cacheKeys = Object.keys(sessionStorage).filter(key => {
-            return key.includes(this.CACHE_PREFIX);
-        });
-        cacheKeys.forEach(value => {
-            sessionStorage.removeItem(value);
-        });
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyCacheService, deps: [{ token: BizyRouterService }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyCacheService, providedIn: 'root' });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyCacheService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }], ctorParameters: () => [{ type: BizyRouterService, decorators: [{
-                    type: Inject,
-                    args: [BizyRouterService]
-                }] }] });
-
-class BizyValidatorService {
-    isEmail = (value) => validator.isEmail(value, { allow_utf8_local_part: false });
-    dateIsAfter = (data) => {
-        if (!data || !data.date || !data.comparisonDate) {
-            return false;
-        }
-        const date = new Date(data.date);
-        const comparisonDate = new Date(data.comparisonDate);
-        return validator.isAfter(date.toString(), comparisonDate.toString());
-    };
-    dateIsBefore = (data) => {
-        if (!data || !data.date || !data.comparisonDate) {
-            return false;
-        }
-        const date = new Date(data.date);
-        const comparisonDate = new Date(data.comparisonDate);
-        return validator.isBefore(date.toString(), comparisonDate.toString());
-    };
-    isAlpha = (value) => validator.isAlpha(value);
-    isAlphanumeric = (value) => validator.isAlphanumeric(value);
-    isNumeric = (value) => validator.isNumeric(value);
-    isNumber(number) {
-        const regex = /^-?\d+(\.\d+)?$/;
-        return regex.test(String(number).toLowerCase());
-    }
-    isString(string) {
-        return typeof string === 'string' || string instanceof String;
-    }
-    isInteger = (value) => validator.isInt(value);
-    isBoolean = (value) => validator.isBoolean(value);
-    isCreditCard = (value) => validator.isCreditCard(value);
-    isDataURI = (value) => validator.isDataURI(value);
-    isURL = (value) => validator.isURL(value);
-    isDate = (value) => validator.isDate(value);
-    isJSON = (value) => validator.isJSON(value);
-    isIP = (value, version) => validator.isIP(value, { version });
-    isJWT = (value) => validator.isJWT(value);
-    isLowercase = (value) => validator.isLowercase(value);
-    isUppercase = (value) => validator.isUppercase(value);
-    isMobilePhone = (data) => validator.isMobilePhone(data.value, data.locale);
-    isCUIT(cuit) {
-        const regex = /(^[0-9]{2}-[0-9]{8}-[0-9]$)/i;
-        const isCUIT = regex.test(String(cuit).toLowerCase());
-        if (!isCUIT) {
-            return false;
-        }
-        cuit = String(cuit).replace(/[-_]/g, '');
-        if (cuit.length == 11) {
-            const mult = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
-            let total = 0;
-            for (let i = 0; i < mult.length; i++) {
-                total += parseInt(cuit[i]) * mult[i];
-            }
-            const mod = total % 11;
-            const digit = mod === 0 ? 0 : mod === 1 ? 9 : 11 - mod;
-            return digit === parseInt(cuit[10]);
-        }
-        return false;
-    }
-    isDNI(dni) {
-        const regex = /(^[1-9]{1}[0-9]{7}$)/i;
-        return regex.test(String(dni).toLowerCase());
-    }
-    isCBU(cbu) {
-        const _isLengthOk = (cbu) => {
-            return cbu.length === 22;
-        };
-        const _isValidAccount = (account) => {
-            if (account.length !== 14) {
-                return false;
-            }
-            const sum = Number(account[0]) * 3 +
-                Number(account[1]) * 9 +
-                Number(account[2]) * 7 +
-                Number(account[3]) * 1 +
-                Number(account[4]) * 3 +
-                Number(account[5]) * 9 +
-                Number(account[6]) * 7 +
-                Number(account[7]) * 1 +
-                Number(account[8]) * 3 +
-                Number(account[9]) * 9 +
-                Number(account[10]) * 7 +
-                Number(account[11]) * 1 +
-                Number(account[12]) * 3;
-            const diff = (10 - (sum % 10)) % 10; // The result of this should be only 1 digit
-            const checksum = Number(account[13]);
-            return diff === checksum;
-        };
-        const _isValidBankCode = (code) => {
-            if (code.length !== 8) {
-                return false;
-            }
-            const bank = code.substring(0, 3);
-            const checksumOne = code[3];
-            const branch = code.substring(4, 4 + 3);
-            const checksumTwo = code[7];
-            const sum = (Number(bank[0]) * 7) +
-                (Number(bank[1]) * 1) +
-                (Number(bank[2]) * 3) +
-                (Number(checksumOne) * 9) +
-                (Number(branch[0]) * 7) +
-                (Number(branch[1]) * 1) +
-                (Number(branch[2]) * 3);
-            const diff = (10 - (sum % 10)) % 10; // The result of this should be only 1 digit
-            return diff === Number(checksumTwo);
-        };
-        const bankCode = cbu.substring(0, 8);
-        const accountCode = cbu.substring(8, 8 + 14);
-        return (_isLengthOk(cbu) &&
-            _isValidBankCode(bankCode) &&
-            _isValidAccount(accountCode));
-    }
-    emailValidator() {
-        return (control) => {
-            return !control.value || (control.value && this.isEmail(control.value))
-                ? null
-                : { anuraEmail: true };
-        };
-    }
-    mobilePhoneValidator(locale) {
-        return (control) => {
-            return !control.value || !locale ||
-                (control.value && locale && this.isMobilePhone({ value: control.value, locale }))
-                ? null
-                : { anuraMobilePhone: true };
-        };
-    }
-    numberValidator() {
-        return (control) => {
-            return !control.value || (control.value && this.isNumber(control.value))
-                ? null
-                : { anuraNumber: true };
-        };
-    }
-    numericValidator() {
-        return (control) => {
-            return !control.value || (control.value && this.isNumeric(control.value))
-                ? null
-                : { anuraNumeric: true };
-        };
-    }
-    dateIsAfterValidator(comparisonDate) {
-        return (control) => {
-            return !control.value || !comparisonDate || (control.value && comparisonDate && !this.dateIsAfter({ date: control.value, comparisonDate }))
-                ? null
-                : { anuraDateIsAfter: true };
-        };
-    }
-    dateIsBeforeValidator(comparisonDate) {
-        return (control) => {
-            return !control.value || !comparisonDate || (control.value && comparisonDate && !this.dateIsBefore({ date: control.value, comparisonDate }))
-                ? null
-                : { anuraDateIsBefore: true };
-        };
-    }
-    alphaValidator() {
-        return (control) => {
-            return !control.value || (control.value && this.isAlpha(control.value))
-                ? null
-                : { anuraAlpha: true };
-        };
-    }
-    alphanumericValidator() {
-        return (control) => {
-            return !control.value || (control.value && this.isAlphanumeric(control.value))
-                ? null
-                : { anuraAlphanumeric: true };
-        };
-    }
-    integerValidator() {
-        return (control) => {
-            return !control.value || (control.value && this.isInteger(control.value))
-                ? null
-                : { anuraInteger: true };
-        };
-    }
-    dataURIValidator() {
-        return (control) => {
-            return !control.value || (control.value && this.isDataURI(control.value))
-                ? null
-                : { anuraDataURI: true };
-        };
-    }
-    urlValidator() {
-        return (control) => {
-            return !control.value || (control.value && this.isURL(control.value))
-                ? null
-                : { anuraURL: true };
-        };
-    }
-    jsonValidator() {
-        return (control) => {
-            return !control.value || (control.value && this.isJSON(control.value))
-                ? null
-                : { anuraJSON: true };
-        };
-    }
-    jwtValidator() {
-        return (control) => {
-            return !control.value || (control.value && this.isJWT(control.value))
-                ? null
-                : { anuraJWT: true };
-        };
-    }
-    lowerCaseValidator() {
-        return (control) => {
-            return !control.value || (control.value && this.isLowercase(control.value))
-                ? null
-                : { anuraLowerCase: true };
-        };
-    }
-    upperCaseValidator() {
-        return (control) => {
-            return !control.value || (control.value && this.isUppercase(control.value))
-                ? null
-                : { anuraUpperCase: true };
-        };
-    }
-    cuitValidator() {
-        return (control) => {
-            return !control.value || (control.value && this.isCUIT(control.value))
-                ? null
-                : { anuraCUIT: true };
-        };
-    }
-    dniValidator() {
-        return (control) => {
-            return !control.value || (control.value && this.isDNI(control.value))
-                ? null
-                : { anuraDNI: true };
-        };
-    }
-    cbuValidator() {
-        return (control) => {
-            return !control.value || (control.value && this.isCBU(control.value))
-                ? null
-                : { anuraCBU: true };
-        };
-    }
-    creditCardValidator() {
-        return (control) => {
-            return !control.value || (control.value && this.isCreditCard(control.value))
-                ? null
-                : { anuraCreditCard: true };
-        };
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyValidatorService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyValidatorService, providedIn: 'root' });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyValidatorService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }] });
-
-class BizyStorageService {
-    get(key) {
-        const item = localStorage.getItem(key);
-        try {
-            return JSON.parse(item);
-        }
-        catch (e) {
-            return item;
-        }
-    }
-    set(key, value) {
-        if (typeof value === 'object') {
-            localStorage.setItem(key, JSON.stringify(value));
-        }
-        else if (typeof value === 'string') {
-            localStorage.setItem(key, value);
-        }
-        else {
-            localStorage.setItem(key, String(value));
-        }
-    }
-    remove(key) {
-        localStorage.removeItem(key);
-    }
-    clear() {
-        localStorage.clear();
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyStorageService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyStorageService, providedIn: 'root' });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyStorageService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }] });
-
-var COLOR;
-(function (COLOR) {
-    COLOR["DEFAULT"] = "#666666";
-    COLOR["INFO"] = "#2484C6";
-    COLOR["SUCCESS"] = "#65BF6C";
-    COLOR["WARNING"] = "#F7A64C";
-    COLOR["ERROR"] = "#EF4C59";
-})(COLOR || (COLOR = {}));
-class BizyLogService {
-    #lastLogTimestamp = 0;
-    #log(log, color, param) {
-        const difference = this.#lastLogTimestamp ? Date.now() - this.#lastLogTimestamp : 0;
-        this.#lastLogTimestamp = Date.now();
-        const timestampStyles = 'color: #EE5DFF';
-        const logStyles = `color: ${color}; font-size: 12px;`;
-        const date = new Date();
-        if (param) {
-            console.log(`%c${date.toLocaleString()}: %c${log} %c(+${difference}ms)`, timestampStyles, logStyles, timestampStyles, param);
-        }
-        else {
-            console.log(`%c${date.toLocaleString()}: %c${log} %c(+${difference}ms)`, timestampStyles, logStyles, timestampStyles);
-        }
-    }
-    debug(data, param) {
-        if (typeof data === 'string') {
-            this.#log(data, COLOR.DEFAULT, param);
-        }
-        else {
-            this.#template({ ...data, param: data.param, title: 'Debug', color: COLOR.DEFAULT });
-        }
-    }
-    info(data, param) {
-        if (typeof data === 'string') {
-            this.#log(data, COLOR.INFO, param);
-        }
-        else {
-            this.#template({ ...data, param: data.param, title: 'Info', color: COLOR.INFO });
-        }
-    }
-    success(data, param) {
-        if (typeof data === 'string') {
-            this.#log(data, COLOR.SUCCESS, param);
-        }
-        else {
-            this.#template({ ...data, param: data.param, title: 'Success', color: COLOR.SUCCESS });
-        }
-    }
-    warning(data, param) {
-        if (typeof data === 'string') {
-            this.#log(data, COLOR.WARNING, param);
-        }
-        else {
-            this.#template({ ...data, param: data.param, title: 'Warning', color: COLOR.WARNING });
-        }
-    }
-    error(data, param) {
-        if (typeof data === 'string') {
-            this.#log(data, COLOR.ERROR, param);
-        }
-        else {
-            this.#template({ ...data, param: data.param, title: 'Error', color: COLOR.ERROR });
-        }
-    }
-    /** DEPRECATED */
-    templateDebug(data) {
-        this.#template({ ...data, title: 'Debug', color: COLOR.DEFAULT });
-    }
-    /** DEPRECATED */
-    templateSucc(data) {
-        this.#template({ ...data, title: 'Success', color: COLOR.SUCCESS });
-    }
-    /** DEPRECATED */
-    templateInfo(data) {
-        this.#template({ ...data, title: 'Info', color: COLOR.INFO });
-    }
-    /** DEPRECATED */
-    templateWarn(data) {
-        this.#template({ ...data, title: 'Warning', color: COLOR.WARNING });
-    }
-    /** DEPRECATED */
-    templateError(data) {
-        this.#template({ ...data, title: 'Error', color: COLOR.ERROR });
-    }
-    #template(data) {
-        const log = `(${data.title}) ${data.fileName} - ${data.functionName}`;
-        this.#log(log, data.color, data.param);
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyLogService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyLogService, providedIn: 'root' });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyLogService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }] });
-
-class BizyCopyToClipboardService {
-    #clipboard = inject(Clipboard);
-    copy(data) {
-        return new Promise((resolve, reject) => {
-            try {
-                if (!data) {
-                    resolve();
-                    return;
-                }
-                setTimeout(() => {
-                    let toCopy = '';
-                    if (typeof data === 'string' || data instanceof String) {
-                        toCopy = data;
-                    }
-                    else if (data.items && data.items.length > 0 && data.model) {
-                        for (const key in data.model) {
-                            if (key) {
-                                toCopy += `${data.model[key]},`;
-                            }
-                        }
-                        data.items.forEach(_item => {
-                            // Remove the last character (',')
-                            toCopy = toCopy.slice(0, -2);
-                            toCopy += '\n';
-                            for (const key in data.model) {
-                                let value = _item;
-                                const nestedProperty = key.split('.');
-                                nestedProperty.forEach(_property => {
-                                    value = value[_property];
-                                });
-                                if (typeof value !== undefined && value !== null) {
-                                    toCopy += `${String(value).replace(/\n/g, '')},`;
-                                }
-                                else {
-                                    toCopy += ',';
-                                }
-                            }
-                        });
-                    }
-                    const pending = this.#clipboard.beginCopy(toCopy);
-                    let remainingAttempts = 3;
-                    const attempt = () => {
-                        const result = pending.copy();
-                        if (!result && --remainingAttempts) {
-                            setTimeout(attempt);
-                        }
-                        else {
-                            // Remember to destroy when you're done!
-                            pending.destroy();
-                            resolve();
-                        }
-                    };
-                    attempt();
-                }, 100);
-            }
-            catch (error) {
-                reject(error);
-            }
-        });
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyCopyToClipboardService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyCopyToClipboardService, providedIn: 'root' });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyCopyToClipboardService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }] });
-
-var BIZY_FORMAT_SECONDS_LANGUAGE;
-(function (BIZY_FORMAT_SECONDS_LANGUAGE) {
-    BIZY_FORMAT_SECONDS_LANGUAGE["SPANISH"] = "es";
-    BIZY_FORMAT_SECONDS_LANGUAGE["ENGLISH"] = "en";
-})(BIZY_FORMAT_SECONDS_LANGUAGE || (BIZY_FORMAT_SECONDS_LANGUAGE = {}));
-var BIZY_FORMAT_SECONDS_FORMAT;
-(function (BIZY_FORMAT_SECONDS_FORMAT) {
-    BIZY_FORMAT_SECONDS_FORMAT["DATE_TIME"] = "date-time";
-    BIZY_FORMAT_SECONDS_FORMAT["TIME"] = "time";
-})(BIZY_FORMAT_SECONDS_FORMAT || (BIZY_FORMAT_SECONDS_FORMAT = {}));
-class BizyFormatSecondsService {
-    #options = {
-        language: BIZY_FORMAT_SECONDS_LANGUAGE.SPANISH,
-        format: BIZY_FORMAT_SECONDS_FORMAT.TIME
-    };
-    getOptions() {
-        return this.#options;
-    }
-    setOptions(options) {
-        if (options && options.language) {
-            this.#options.language = options.language;
-        }
-        if (options && options.format) {
-            this.#options.format = options.format;
-        }
-    }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyFormatSecondsService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyFormatSecondsService, providedIn: 'root' });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyFormatSecondsService, decorators: [{
-            type: Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }] });
-
-/**
- * Copyright 2020 Google LLC
- *
- * Licensed under the Apache License, Version 2.0 (the 'License');
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an 'AS IS' BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-// This function's role is to enable smooth transition to the brave new world of
-// User-Agent Client Hints. If you have legacy code that relies on
-// `navigator.userAgent` and which relies on entropy that will go away by
-// default, you *need* to refactor it to use UA-CH. This function is to be used
-// as a stop gap, to enable smooth transition during that period.
-/**
-* @param {string[]} hints
-* @return {Promise<string|undefined>} A Promise that resolves to a string if a
-*   UA could be synthesized from client hints, otherwise undefined.
-*/
-async function getUserAgentUsingClientHints(hints) {
-    // Helper functions for platform specific strings
-    const GetCrosSpecificString = (values) => {
-        let osCPUFragment = '';
-        if (values.bitness == '64') {
-            if (values.architecture == 'x86') {
-                osCPUFragment = 'x86_64';
-            }
-            else if (values.architecture == 'arm') {
-                osCPUFragment = 'aarch64';
-            }
-        }
-        else if (values.architecture == 'arm' && values.bitness == '32') {
-            osCPUFragment = 'armv7l';
-        }
-        if (osCPUFragment == '') {
-            return `X11; CrOS ${values.platformVersion}`;
-        }
-        return `X11; CrOS ${osCPUFragment} ${values.platformVersion}`;
-    };
-    const GetWindowsSpecificString = (values) => {
-        let osCPUFragment = '';
-        if (values.architecture == 'x86' && values.bitness == '64') {
-            osCPUFragment = '; Win64; x64';
-        }
-        else if (values.architecture == 'arm') {
-            osCPUFragment = '; ARM';
-        }
-        else if (values.wow64 === true) {
-            osCPUFragment = '; WOW64';
-        }
-        return `Windows NT ${getWindowsPlatformVersion(values.platformVersion)}${osCPUFragment}`;
-    };
-    const GetMacSpecificString = (values) => {
-        let newUA = 'Macintosh;';
-        newUA += values.architecture === 'arm' ? ' ARM ' : ' Intel ';
-        newUA += 'Mac OS X ';
-        let macVersion = values.platformVersion;
-        if (macVersion.indexOf('.') > -1) {
-            macVersion = macVersion.split('.').join('_');
-        }
-        newUA += macVersion;
-        return newUA;
-    };
-    const GetAndroidSpecificString = (values) => {
-        let newUA = 'Linux; Android ';
-        newUA += values.platformVersion;
-        if (values.model) {
-            newUA += '; ';
-            newUA += values.model;
-        }
-        return newUA;
-    };
-    const Initialize = (values) => {
-        if (!values.architecture) {
-            values.architecture = 'x86';
-        }
-        if (!values.bitness) {
-            values.bitness = '64';
-        }
-        if (!values.model) {
-            values.model = '';
-        }
-        if (!values.platform) {
-            values.platform = 'Windows';
-        }
-        if (!values.platformVersion) {
-            values.platformVersion = '10.0';
-        }
-        if (!values.wow64) {
-            values.wow64 = false;
-        }
-        return values;
-    };
-    // @ts-ignore-error
-    if (!navigator.userAgentData) {
-        return Promise.resolve('');
-    }
-    // Verify that this is a Chromium-based browser
-    let isChromium = false;
-    let chromiumVersion;
-    // eslint-disable-next-line prefer-regex-literals
-    const isChromeUAPattern = new RegExp('AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/\\d+.\\d+.\\d+.\\d+ (Mobile )?Safari/537.36$');
-    // @ts-ignore-error
-    navigator.userAgentData.brands.forEach(value => {
-        if (value.brand == 'Chromium') {
-            // Let's double check the UA string as well, so we don't accidentally
-            // capture a headless browser or friendly bot (which should report as
-            // HeadlessChrome or something entirely different).
-            isChromium = isChromeUAPattern.test(navigator.userAgent);
-            chromiumVersion = value.version;
-        }
-    });
-    // @ts-ignore
-    if (!isChromium || chromiumVersion < 100) {
-        // If this is not a Chromium-based browser, the UA string should be very
-        // different. Or, if this is a Chromium lower than 100, it doesn't have
-        // all the hints we rely on. So let's bail.
-        return Promise.resolve('');
-    }
-    // Main logic
-    return new Promise(resolve => {
-        // @ts-ignore-error
-        navigator.userAgentData.getHighEntropyValues(hints).then(values => {
-            let initialValues = {
-                // @ts-ignore-error
-                platform: navigator.userAgentData?.platform,
-                version: chromiumVersion
-            };
-            values = Object.assign(initialValues, values);
-            values = Initialize(values);
-            let newUA = 'Mozilla/5.0 (';
-            if (['Chrome OS', 'Chromium OS'].includes(values.platform)) {
-                newUA += GetCrosSpecificString(values);
-            }
-            else if (values.platform == 'Windows') {
-                newUA += GetWindowsSpecificString(values);
-            }
-            else if (values.platform == 'macOS') {
-                newUA += GetMacSpecificString(values);
-            }
-            else if (values.platform == 'Android') {
-                newUA += GetAndroidSpecificString(values);
-            }
-            else {
-                newUA += 'X11; Linux x86_64';
-            }
-            newUA += ') AppleWebKit/537.36 (KHTML, like Gecko) Chrome/';
-            newUA += getVersion(values?.fullVersionList, initialValues.version);
-            // @ts-ignore-error
-            if (navigator.userAgentData.mobile) {
-                newUA += ' Mobile';
-            }
-            newUA += ' Safari/537.36';
-            resolve(newUA);
-        });
-    });
-}
-function getVersion(fullVersionList, majorVersion) {
-    // If we don't get a fullVersionList, or it's somehow undefined, return
-    // the reduced version number.
-    return (fullVersionList?.find((item) => item.brand == 'Google Chrome')?.version ||
-        `${majorVersion}.0.0.0`);
-}
-function getWindowsPlatformVersion(platformVersion) {
-    // https://wicg.github.io/ua-client-hints/#get-the-legacy-windows-version-number
-    const versionMap = new Map([
-        ['0.3.0', '6.3'], // Windows 8.1
-        ['0.2.0', '6.2'], // Windows 8
-        ['0.1.0', '6.1'] // Windows 7
-    ]);
-    if (versionMap.has(platformVersion)) {
-        return versionMap.get(platformVersion);
-    }
-    // Windows 10 and above send "Windows NT 10.0"
-    return '10.0';
-}
-/**
-   * @param {string[]} hints
-   * @return {Promise<string|undefined>} A Promise that resolves on overriding the
-   *   navigator.userAgent string.
-   */
-async function overrideUserAgentUsingClientHints(hints) {
-    return new Promise(resolve => {
-        getUserAgentUsingClientHints(hints).then(newUA => {
-            if (newUA) {
-                // Got a new UA value. Now override `navigator.userAgent`.
-                Object.defineProperty(navigator, 'userAgent', {
-                    value: newUA,
-                    writable: false,
-                    configurable: true
-                });
-            }
-            else {
-                newUA = navigator.userAgent;
-            }
-            resolve(newUA);
-        });
-    });
-}
-const exportedForTests = { getVersion, getWindowsPlatformVersion };
-
-class BizyDeviceService {
-    #device = inject(DeviceDetectorService);
-    async getUserAgent() {
-        try {
-            const userAgent = await overrideUserAgentUsingClientHints([
-                'architecture',
-                'bitness',
-                'model',
-                'platformVersion',
-                'uaFullVersion',
-                'fullVersionList'
-            ]);
-            return userAgent;
-        }
-        catch {
-            return window.navigator.userAgent;
-        }
-    }
-    isMobile = () => this.#device.isMobile();
-    isTablet = () => this.#device.isTablet();
-    isDesktop = () => this.#device.isDesktop();
-    isPortrait = () => this.#device.orientation === 'portrait';
-    isLandscape = () => this.#device.orientation === 'landscape';
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyDeviceService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyDeviceService, providedIn: 'root' });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyDeviceService, decorators: [{
-            type: Injectable,
-            args: [{ providedIn: 'root' }]
-        }] });
-
-const SERVICES = [
-    BizyAnimationService,
-    BizyDeviceService,
-    BizyCacheService,
-    BizyCopyToClipboardService,
-    BizyExportToCSVService,
-    BizyFormatSecondsService,
-    BizyKeyboardService,
-    BizyLogService,
-    BizyRouterService,
-    BizyStorageService,
-    BizyValidatorService,
-    BizyViewportService
-];
-class BizyServicesModule {
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyServicesModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.10", ngImport: i0, type: BizyServicesModule });
-    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyServicesModule, providers: SERVICES });
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyServicesModule, decorators: [{
-            type: NgModule,
-            args: [{
-                    providers: SERVICES
-                }]
-        }] });
-
 class BizyFilterPipe {
-    validator = inject(BizyValidatorService);
     transform(items, property, states) {
         if (!items || items.length === 0) {
             return [];
@@ -3730,29 +2568,57 @@ class BizyFilterPipe {
             });
             output = output.concat(res);
         });
-        function deepEqual(a, b, seen = new WeakMap()) {
-            if (a === b)
-                return true;
-            if (typeof a !== "object" || typeof b !== "object" || a === null || b === null)
-                return false;
-            // Circular reference check
-            if (seen.has(a))
-                return seen.get(a) === b;
-            seen.set(a, b);
-            const aKeys = Object.keys(a);
-            const bKeys = Object.keys(b);
-            if (aKeys.length !== bKeys.length)
-                return false;
-            for (let key of aKeys) {
-                if (!bKeys.includes(key))
-                    return false;
-                if (!deepEqual(a[key], b[key], seen))
-                    return false;
+        function safeStringify(obj) {
+            const seen = new WeakSet();
+            function replacer(_key, value) {
+                // Handle circular references
+                if (typeof value === 'object' && value !== null) {
+                    if (seen.has(value))
+                        return '[Circular]';
+                    seen.add(value);
+                }
+                // Handle BigInt
+                if (typeof value === 'bigint')
+                    return value.toString() + 'n';
+                // Handle Symbol and Function
+                if (typeof value === 'symbol')
+                    return value.toString();
+                if (typeof value === 'function')
+                    return `[Function: ${value.name || 'anonymous'}]`;
+                // Preserve Dates
+                if (value instanceof Date)
+                    return `__DATE__:${value.toISOString()}`;
+                return value;
             }
-            return true;
+            // Sort keys consistently
+            const ordered = sortKeys(obj);
+            return JSON.stringify(ordered, replacer);
+        }
+        function sortKeys(obj) {
+            if (Array.isArray(obj)) {
+                return obj.map(sortKeys);
+            }
+            else if (obj && typeof obj === 'object' && !(obj instanceof Date)) {
+                return Object.keys(obj)
+                    .sort()
+                    .reduce((acc, key) => {
+                    acc[key] = sortKeys(obj[key]);
+                    return acc;
+                }, {});
+            }
+            return obj;
         }
         function uniqueObjects(items) {
-            return items.filter((obj, index, self) => index === self.findIndex(other => deepEqual(obj, other)));
+            const seen = new Set();
+            const result = [];
+            for (const item of items) {
+                const str = safeStringify(item);
+                if (!seen.has(str)) {
+                    seen.add(str);
+                    result.push(item);
+                }
+            }
+            return result;
         }
         return uniqueObjects(output);
     }
@@ -4842,6 +3708,1167 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImpo
                 type: ViewChild,
                 args: ['dynamicComponentContainer', { read: ViewContainerRef }]
             }] } });
+
+var BIZY_ANIMATION;
+(function (BIZY_ANIMATION) {
+    BIZY_ANIMATION["FADE_IN"] = "fade-in";
+    BIZY_ANIMATION["FADE_OUT"] = "fade-out";
+    BIZY_ANIMATION["FADE_IN_UP"] = "fade-in-up";
+    BIZY_ANIMATION["FADE_IN_RIGHT"] = "fade-in-right";
+    BIZY_ANIMATION["FADE_IN_DOWN"] = "fade-in-down";
+    BIZY_ANIMATION["FADE_IN_LEFT"] = "fade-in-left";
+    BIZY_ANIMATION["SLIDE_IN_UP"] = "slide-in-up";
+    BIZY_ANIMATION["SLIDE_IN_RIGHT"] = "slide-in-right";
+    BIZY_ANIMATION["SLIDE_IN_DOWN"] = "slide-in-down";
+    BIZY_ANIMATION["SLIDE_IN_LEFT"] = "slide-in-left";
+    BIZY_ANIMATION["SLIDE_OUT_UP"] = "slide-out-up";
+    BIZY_ANIMATION["SLIDE_OUT_DOWN"] = "slide-out-down";
+    BIZY_ANIMATION["SLIDE_OUT_RIGHT"] = "slide-out-right";
+    BIZY_ANIMATION["SLIDE_OUT_LEFT"] = "slide-out-left";
+})(BIZY_ANIMATION || (BIZY_ANIMATION = {}));
+class BizyAnimationService {
+    rendererFactory;
+    #renderer;
+    constructor(rendererFactory) {
+        this.rendererFactory = rendererFactory;
+        this.#renderer = this.rendererFactory.createRenderer(null, null);
+    }
+    setAnimation(element, animation) {
+        return new Promise(resolve => {
+            if (!element || !animation || !this.#renderer) {
+                return;
+            }
+            const root = this.#renderer.selectRootElement(':root', true);
+            const animationTimeout = getComputedStyle(root).getPropertyValue('--bizy-animation-timeout').trim();
+            this.#renderer.addClass(element, 'animated');
+            this.#renderer.addClass(element, animation);
+            setTimeout(() => {
+                this.#renderer.removeClass(element, 'animated');
+                this.#renderer.removeClass(element, animation);
+                resolve();
+            }, Number(animationTimeout.match(/\d/g).join('')));
+        });
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyAnimationService, deps: [{ token: RendererFactory2 }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyAnimationService, providedIn: 'root' });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyAnimationService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
+        }], ctorParameters: () => [{ type: i0.RendererFactory2, decorators: [{
+                    type: Inject,
+                    args: [RendererFactory2]
+                }] }] });
+
+class BizyViewportService {
+    window;
+    #viewportSizeChanged;
+    get sizeChange$() {
+        return this.#viewportSizeChanged.asObservable();
+    }
+    constructor(window) {
+        this.window = window;
+        this.#viewportSizeChanged = new BehaviorSubject({
+            width: this.window.innerWidth,
+            height: this.window.innerHeight
+        });
+        fromEvent(window, 'resize')
+            .pipe(debounceTime(200), map((event) => ({
+            width: event.currentTarget.innerWidth,
+            height: event.currentTarget.innerHeight
+        })))
+            .subscribe(windowSize => {
+            this.#viewportSizeChanged.next(windowSize);
+        });
+    }
+    width() {
+        return this.window.screen.availWidth;
+    }
+    height() {
+        return this.window.screen.availHeight;
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyViewportService, deps: [{ token: Window }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyViewportService, providedIn: 'root' });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyViewportService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
+        }], ctorParameters: () => [{ type: Window, decorators: [{
+                    type: Inject,
+                    args: [Window]
+                }] }] });
+
+class BizyKeyboardService {
+    document;
+    #shiftHolding = new BehaviorSubject(false);
+    #controlHolding = new BehaviorSubject(false);
+    get shiftHolding$() {
+        return this.#shiftHolding.asObservable();
+    }
+    get controlHolding$() {
+        return this.#controlHolding.asObservable();
+    }
+    constructor(document) {
+        this.document = document;
+        this.document.addEventListener('visibilitychange', () => {
+            this.#shiftHolding.next(false);
+            this.#controlHolding.next(false);
+        });
+        this.document.addEventListener('keydown', (event) => {
+            if (event.key === 'Shift') {
+                this.#shiftHolding.next(true);
+            }
+            if (event.key === 'Meta' || event.key === 'Control') {
+                this.#controlHolding.next(true);
+            }
+        });
+        this.document.addEventListener('keyup', (event) => {
+            if (event.key === 'Shift') {
+                this.#shiftHolding.next(false);
+            }
+            if (event.key === 'Meta' || event.key === 'Control') {
+                this.#controlHolding.next(false);
+            }
+        });
+    }
+    isShiftHolding() {
+        return this.#shiftHolding.value;
+    }
+    isControlHolding() {
+        return this.#controlHolding.value;
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyKeyboardService, deps: [{ token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyKeyboardService, providedIn: 'root' });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyKeyboardService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
+        }], ctorParameters: () => [{ type: Document, decorators: [{
+                    type: Inject,
+                    args: [DOCUMENT]
+                }] }] });
+
+class BizyExportToCSVService {
+    document;
+    rendererFactory;
+    #loading = false;
+    #renderer;
+    constructor(document, rendererFactory) {
+        this.document = document;
+        this.rendererFactory = rendererFactory;
+        this.#renderer = this.rendererFactory.createRenderer(null, null);
+    }
+    download(data) {
+        if (this.#loading || !data.items || !Array.isArray(data.items) || !data.model) {
+            return;
+        }
+        try {
+            this.#loading = true;
+            const csv = this.getCSV(data);
+            if (!data.fileName) {
+                data.fileName = 'bizy-csv';
+            }
+            this.#downloadCSV({ csv, fileName: data.fileName });
+        }
+        finally {
+            this.#loading = false;
+        }
+    }
+    getCSV(data) {
+        let csv = '';
+        function escapeCommas(str) {
+            return str.includes(',') ? `"${str}"` : str;
+        }
+        for (const key in data.model) {
+            if (key) {
+                csv += `${data.model[key]},`;
+            }
+        }
+        data.items.forEach(_item => {
+            // Remove the last character (',')
+            csv = csv.slice(0, -1);
+            csv += '\n';
+            for (const key in data.model) {
+                let value = _item;
+                const nestedProperty = key.split('.');
+                for (let i = 0; i < nestedProperty.length; i++) {
+                    const _property = nestedProperty[i];
+                    if (value) {
+                        value = value[_property];
+                    }
+                    else {
+                        break;
+                    }
+                }
+                if (typeof value !== undefined && value !== null) {
+                    csv += `${escapeCommas(String(value).replace(/\n/g, ''))},`;
+                }
+                else {
+                    csv += ',';
+                }
+            }
+        });
+        if (csv && csv[csv.length - 1] === ',') {
+            // Remove the last character (',')
+            csv = csv.slice(0, -1);
+        }
+        return csv;
+    }
+    #downloadCSV(data) {
+        const blob = new Blob([data.csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const downloadButton = this.#renderer.createElement('a');
+        downloadButton.setAttribute('download', data.fileName);
+        downloadButton.href = url;
+        this.#renderer.appendChild(this.document.body, downloadButton);
+        downloadButton.click();
+        this.#renderer.removeChild(this.document.body, downloadButton);
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyExportToCSVService, deps: [{ token: DOCUMENT }, { token: RendererFactory2 }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyExportToCSVService, providedIn: 'root' });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyExportToCSVService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
+        }], ctorParameters: () => [{ type: Document, decorators: [{
+                    type: Inject,
+                    args: [DOCUMENT]
+                }] }, { type: i0.RendererFactory2, decorators: [{
+                    type: Inject,
+                    args: [RendererFactory2]
+                }] }] });
+
+class BizyRouterService {
+    router;
+    static backPath = '';
+    transitionsEnd$;
+    transitionsStart$;
+    popStateEvent$;
+    routeChange$;
+    constructor(router) {
+        this.router = router;
+        this.transitionsEnd$ = this.router.events.pipe(filter$1(event => event instanceof NavigationEnd), map((event) => event.id), distinctUntilChanged(), map(() => this.router.routerState.snapshot.root));
+        this.transitionsStart$ = this.router.events.pipe(filter$1(event => event instanceof NavigationStart), map((event) => event.id), distinctUntilChanged(), map(() => this.router.routerState.snapshot.root));
+        this.popStateEvent$ = fromEvent(window, 'popstate');
+        this.routeChange$ = merge(this.transitionsEnd$, this.popStateEvent$).pipe(map(() => void 0));
+    }
+    getURL() {
+        return window.location.pathname;
+    }
+    getBackPath() {
+        return BizyRouterService.backPath;
+    }
+    getId(activatedRoute, param) {
+        return activatedRoute.snapshot.paramMap.get(param);
+    }
+    getQueryParam(activatedRoute, param) {
+        return activatedRoute.snapshot.queryParamMap.get(param);
+    }
+    getAllQueryParam() {
+        const params = new URL(window.location.href).searchParams;
+        const queryParams = {};
+        for (const [key, value] of params.entries()) {
+            queryParams[key] = value;
+        }
+        return queryParams;
+    }
+    goTo(data) {
+        if (data.replace) {
+            BizyRouterService.backPath = '';
+        }
+        else {
+            BizyRouterService.backPath = this.getURL();
+        }
+        if (data.path[0] === '/') {
+            this.router.navigateByUrl(`${data.path}${this._serialize(data.params)}`, { replaceUrl: data.replace ?? false, skipLocationChange: data.skip ?? false });
+            return;
+        }
+        const path = this.getURL();
+        const index = path.indexOf('?');
+        const url = index !== -1 ? path.substring(0, index) : path;
+        this.router.navigateByUrl(`${url}/${data.path}${this._serialize(data.params)}`, { replaceUrl: data.replace ?? false, skipLocationChange: data.skip ?? false });
+    }
+    goBack(data) {
+        if (BizyRouterService.backPath) {
+            history.back();
+            BizyRouterService.backPath = '';
+        }
+        else if (data && data.path) {
+            this.router.navigateByUrl(data.path, { replaceUrl: true });
+        }
+        else {
+            const index = this.getURL().lastIndexOf('/');
+            const backURL = this.getURL().substring(0, index);
+            this.router.navigateByUrl(backURL, { replaceUrl: true });
+        }
+    }
+    reload(force) {
+        if (force) {
+            window.location.reload();
+        }
+        else {
+            setTimeout(() => {
+                this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+                    this.goTo({ path: this.getURL(), params: this.getAllQueryParam() });
+                });
+            }, 1);
+        }
+    }
+    _serialize(params) {
+        if (!params) {
+            return '';
+        }
+        const str = [];
+        for (const param in params) {
+            if (params[param]) {
+                str.push(encodeURIComponent(param) + '=' + encodeURIComponent(params[param]));
+            }
+        }
+        const queryParams = str.length > 0 ? `?${str.join('&')}` : '';
+        return queryParams;
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyRouterService, deps: [{ token: Router }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyRouterService, providedIn: 'root' });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyRouterService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
+        }], ctorParameters: () => [{ type: i1$1.Router, decorators: [{
+                    type: Inject,
+                    args: [Router]
+                }] }] });
+
+class BizyCacheService {
+    router;
+    CACHE_PREFIX = 'BIZY-CACHE';
+    constructor(router) {
+        this.router = router;
+    }
+    getData(key) {
+        if (!key) {
+            key = this.router.getURL();
+        }
+        const data = sessionStorage.getItem(`${this.CACHE_PREFIX}-${key}`);
+        if (data) {
+            const _data = JSON.parse(data);
+            return Date.now() < _data.expiresAt ? _data.value : {};
+        }
+        return {};
+    }
+    setData(value, key, expiresAt) {
+        if (typeof value === 'undefined' || value === null) {
+            return;
+        }
+        if (!key) {
+            key = this.router.getURL();
+        }
+        if (!expiresAt) {
+            const date = new Date();
+            date.setHours(23, 59, 59);
+            expiresAt = date.getTime();
+        }
+        const data = {
+            expiresAt,
+            value
+        };
+        sessionStorage.setItem(`${this.CACHE_PREFIX}-${key}`, JSON.stringify(data));
+    }
+    remove(key) {
+        if (!key) {
+            key = this.router.getURL();
+        }
+        sessionStorage.removeItem(`${this.CACHE_PREFIX}-${key}`);
+    }
+    removeAll() {
+        const cacheKeys = Object.keys(sessionStorage).filter(key => {
+            return key.includes(this.CACHE_PREFIX);
+        });
+        cacheKeys.forEach(value => {
+            sessionStorage.removeItem(value);
+        });
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyCacheService, deps: [{ token: BizyRouterService }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyCacheService, providedIn: 'root' });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyCacheService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
+        }], ctorParameters: () => [{ type: BizyRouterService, decorators: [{
+                    type: Inject,
+                    args: [BizyRouterService]
+                }] }] });
+
+class BizyValidatorService {
+    isEmail = (value) => validator.isEmail(value, { allow_utf8_local_part: false });
+    dateIsAfter = (data) => {
+        if (!data || !data.date || !data.comparisonDate) {
+            return false;
+        }
+        const date = new Date(data.date);
+        const comparisonDate = new Date(data.comparisonDate);
+        return validator.isAfter(date.toString(), comparisonDate.toString());
+    };
+    dateIsBefore = (data) => {
+        if (!data || !data.date || !data.comparisonDate) {
+            return false;
+        }
+        const date = new Date(data.date);
+        const comparisonDate = new Date(data.comparisonDate);
+        return validator.isBefore(date.toString(), comparisonDate.toString());
+    };
+    isAlpha = (value) => validator.isAlpha(value);
+    isAlphanumeric = (value) => validator.isAlphanumeric(value);
+    isNumeric = (value) => validator.isNumeric(value);
+    isNumber(number) {
+        const regex = /^-?\d+(\.\d+)?$/;
+        return regex.test(String(number).toLowerCase());
+    }
+    isString(string) {
+        return typeof string === 'string' || string instanceof String;
+    }
+    isInteger = (value) => validator.isInt(value);
+    isBoolean = (value) => validator.isBoolean(value);
+    isCreditCard = (value) => validator.isCreditCard(value);
+    isDataURI = (value) => validator.isDataURI(value);
+    isURL = (value) => validator.isURL(value);
+    isDate = (value) => validator.isDate(value);
+    isJSON = (value) => validator.isJSON(value);
+    isIP = (value, version) => validator.isIP(value, { version });
+    isJWT = (value) => validator.isJWT(value);
+    isLowercase = (value) => validator.isLowercase(value);
+    isUppercase = (value) => validator.isUppercase(value);
+    isMobilePhone = (data) => validator.isMobilePhone(data.value, data.locale);
+    isCUIT(cuit) {
+        const regex = /(^[0-9]{2}-[0-9]{8}-[0-9]$)/i;
+        const isCUIT = regex.test(String(cuit).toLowerCase());
+        if (!isCUIT) {
+            return false;
+        }
+        cuit = String(cuit).replace(/[-_]/g, '');
+        if (cuit.length == 11) {
+            const mult = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
+            let total = 0;
+            for (let i = 0; i < mult.length; i++) {
+                total += parseInt(cuit[i]) * mult[i];
+            }
+            const mod = total % 11;
+            const digit = mod === 0 ? 0 : mod === 1 ? 9 : 11 - mod;
+            return digit === parseInt(cuit[10]);
+        }
+        return false;
+    }
+    isDNI(dni) {
+        const regex = /(^[1-9]{1}[0-9]{7}$)/i;
+        return regex.test(String(dni).toLowerCase());
+    }
+    isCBU(cbu) {
+        const _isLengthOk = (cbu) => {
+            return cbu.length === 22;
+        };
+        const _isValidAccount = (account) => {
+            if (account.length !== 14) {
+                return false;
+            }
+            const sum = Number(account[0]) * 3 +
+                Number(account[1]) * 9 +
+                Number(account[2]) * 7 +
+                Number(account[3]) * 1 +
+                Number(account[4]) * 3 +
+                Number(account[5]) * 9 +
+                Number(account[6]) * 7 +
+                Number(account[7]) * 1 +
+                Number(account[8]) * 3 +
+                Number(account[9]) * 9 +
+                Number(account[10]) * 7 +
+                Number(account[11]) * 1 +
+                Number(account[12]) * 3;
+            const diff = (10 - (sum % 10)) % 10; // The result of this should be only 1 digit
+            const checksum = Number(account[13]);
+            return diff === checksum;
+        };
+        const _isValidBankCode = (code) => {
+            if (code.length !== 8) {
+                return false;
+            }
+            const bank = code.substring(0, 3);
+            const checksumOne = code[3];
+            const branch = code.substring(4, 4 + 3);
+            const checksumTwo = code[7];
+            const sum = (Number(bank[0]) * 7) +
+                (Number(bank[1]) * 1) +
+                (Number(bank[2]) * 3) +
+                (Number(checksumOne) * 9) +
+                (Number(branch[0]) * 7) +
+                (Number(branch[1]) * 1) +
+                (Number(branch[2]) * 3);
+            const diff = (10 - (sum % 10)) % 10; // The result of this should be only 1 digit
+            return diff === Number(checksumTwo);
+        };
+        const bankCode = cbu.substring(0, 8);
+        const accountCode = cbu.substring(8, 8 + 14);
+        return (_isLengthOk(cbu) &&
+            _isValidBankCode(bankCode) &&
+            _isValidAccount(accountCode));
+    }
+    emailValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isEmail(control.value))
+                ? null
+                : { bizyEmail: true };
+        };
+    }
+    mobilePhoneValidator(locale) {
+        return (control) => {
+            return !control.value || !locale ||
+                (control.value && locale && this.isMobilePhone({ value: control.value, locale }))
+                ? null
+                : { bizyMobilePhone: true };
+        };
+    }
+    numberValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isNumber(control.value))
+                ? null
+                : { bizyNumber: true };
+        };
+    }
+    numericValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isNumeric(control.value))
+                ? null
+                : { bizyNumeric: true };
+        };
+    }
+    dateIsAfterValidator(comparisonDate) {
+        return (control) => {
+            return !control.value || !comparisonDate || (control.value && comparisonDate && !this.dateIsAfter({ date: control.value, comparisonDate }))
+                ? null
+                : { bizyDateIsAfter: true };
+        };
+    }
+    dateIsBeforeValidator(comparisonDate) {
+        return (control) => {
+            return !control.value || !comparisonDate || (control.value && comparisonDate && !this.dateIsBefore({ date: control.value, comparisonDate }))
+                ? null
+                : { bizyDateIsBefore: true };
+        };
+    }
+    alphaValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isAlpha(control.value))
+                ? null
+                : { bizyAlpha: true };
+        };
+    }
+    alphanumericValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isAlphanumeric(control.value))
+                ? null
+                : { bizyAlphanumeric: true };
+        };
+    }
+    integerValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isInteger(control.value))
+                ? null
+                : { bizyInteger: true };
+        };
+    }
+    dataURIValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isDataURI(control.value))
+                ? null
+                : { bizyDataURI: true };
+        };
+    }
+    urlValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isURL(control.value))
+                ? null
+                : { bizyURL: true };
+        };
+    }
+    jsonValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isJSON(control.value))
+                ? null
+                : { bizyJSON: true };
+        };
+    }
+    jwtValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isJWT(control.value))
+                ? null
+                : { bizyJWT: true };
+        };
+    }
+    lowerCaseValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isLowercase(control.value))
+                ? null
+                : { bizyLowerCase: true };
+        };
+    }
+    upperCaseValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isUppercase(control.value))
+                ? null
+                : { bizyUpperCase: true };
+        };
+    }
+    cuitValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isCUIT(control.value))
+                ? null
+                : { bizyCUIT: true };
+        };
+    }
+    dniValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isDNI(control.value))
+                ? null
+                : { bizyDNI: true };
+        };
+    }
+    cbuValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isCBU(control.value))
+                ? null
+                : { bizyCBU: true };
+        };
+    }
+    creditCardValidator() {
+        return (control) => {
+            return !control.value || (control.value && this.isCreditCard(control.value))
+                ? null
+                : { bizyCreditCard: true };
+        };
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyValidatorService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyValidatorService, providedIn: 'root' });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyValidatorService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
+        }] });
+
+class BizyStorageService {
+    get(key) {
+        const item = localStorage.getItem(key);
+        try {
+            return JSON.parse(item);
+        }
+        catch (e) {
+            return item;
+        }
+    }
+    set(key, value) {
+        if (typeof value === 'object') {
+            localStorage.setItem(key, JSON.stringify(value));
+        }
+        else if (typeof value === 'string') {
+            localStorage.setItem(key, value);
+        }
+        else {
+            localStorage.setItem(key, String(value));
+        }
+    }
+    remove(key) {
+        localStorage.removeItem(key);
+    }
+    clear() {
+        localStorage.clear();
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyStorageService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyStorageService, providedIn: 'root' });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyStorageService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
+        }] });
+
+var COLOR;
+(function (COLOR) {
+    COLOR["DEFAULT"] = "#666666";
+    COLOR["INFO"] = "#2484C6";
+    COLOR["SUCCESS"] = "#65BF6C";
+    COLOR["WARNING"] = "#F7A64C";
+    COLOR["ERROR"] = "#EF4C59";
+})(COLOR || (COLOR = {}));
+class BizyLogService {
+    #lastLogTimestamp = 0;
+    #log(log, color, param) {
+        const difference = this.#lastLogTimestamp ? Date.now() - this.#lastLogTimestamp : 0;
+        this.#lastLogTimestamp = Date.now();
+        const timestampStyles = 'color: #EE5DFF';
+        const logStyles = `color: ${color}; font-size: 12px;`;
+        const date = new Date();
+        if (param) {
+            console.log(`%c${date.toLocaleString()}: %c${log} %c(+${difference}ms)`, timestampStyles, logStyles, timestampStyles, param);
+        }
+        else {
+            console.log(`%c${date.toLocaleString()}: %c${log} %c(+${difference}ms)`, timestampStyles, logStyles, timestampStyles);
+        }
+    }
+    debug(data, param) {
+        if (typeof data === 'string') {
+            this.#log(data, COLOR.DEFAULT, param);
+        }
+        else {
+            this.#template({ ...data, param: data.param, title: 'Debug', color: COLOR.DEFAULT });
+        }
+    }
+    info(data, param) {
+        if (typeof data === 'string') {
+            this.#log(data, COLOR.INFO, param);
+        }
+        else {
+            this.#template({ ...data, param: data.param, title: 'Info', color: COLOR.INFO });
+        }
+    }
+    success(data, param) {
+        if (typeof data === 'string') {
+            this.#log(data, COLOR.SUCCESS, param);
+        }
+        else {
+            this.#template({ ...data, param: data.param, title: 'Success', color: COLOR.SUCCESS });
+        }
+    }
+    warning(data, param) {
+        if (typeof data === 'string') {
+            this.#log(data, COLOR.WARNING, param);
+        }
+        else {
+            this.#template({ ...data, param: data.param, title: 'Warning', color: COLOR.WARNING });
+        }
+    }
+    error(data, param) {
+        if (typeof data === 'string') {
+            this.#log(data, COLOR.ERROR, param);
+        }
+        else {
+            this.#template({ ...data, param: data.param, title: 'Error', color: COLOR.ERROR });
+        }
+    }
+    /** DEPRECATED */
+    templateDebug(data) {
+        this.#template({ ...data, title: 'Debug', color: COLOR.DEFAULT });
+    }
+    /** DEPRECATED */
+    templateSucc(data) {
+        this.#template({ ...data, title: 'Success', color: COLOR.SUCCESS });
+    }
+    /** DEPRECATED */
+    templateInfo(data) {
+        this.#template({ ...data, title: 'Info', color: COLOR.INFO });
+    }
+    /** DEPRECATED */
+    templateWarn(data) {
+        this.#template({ ...data, title: 'Warning', color: COLOR.WARNING });
+    }
+    /** DEPRECATED */
+    templateError(data) {
+        this.#template({ ...data, title: 'Error', color: COLOR.ERROR });
+    }
+    #template(data) {
+        const log = `(${data.title}) ${data.fileName} - ${data.functionName}`;
+        this.#log(log, data.color, data.param);
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyLogService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyLogService, providedIn: 'root' });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyLogService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
+        }] });
+
+class BizyCopyToClipboardService {
+    #clipboard = inject(Clipboard);
+    copy(data) {
+        return new Promise((resolve, reject) => {
+            try {
+                if (!data) {
+                    resolve();
+                    return;
+                }
+                setTimeout(() => {
+                    let toCopy = '';
+                    if (typeof data === 'string' || data instanceof String) {
+                        toCopy = data;
+                    }
+                    else if (data.items && data.items.length > 0 && data.model) {
+                        for (const key in data.model) {
+                            if (key) {
+                                toCopy += `${data.model[key]},`;
+                            }
+                        }
+                        data.items.forEach(_item => {
+                            // Remove the last character (',')
+                            toCopy = toCopy.slice(0, -2);
+                            toCopy += '\n';
+                            for (const key in data.model) {
+                                let value = _item;
+                                const nestedProperty = key.split('.');
+                                nestedProperty.forEach(_property => {
+                                    value = value[_property];
+                                });
+                                if (typeof value !== undefined && value !== null) {
+                                    toCopy += `${String(value).replace(/\n/g, '')},`;
+                                }
+                                else {
+                                    toCopy += ',';
+                                }
+                            }
+                        });
+                    }
+                    const pending = this.#clipboard.beginCopy(toCopy);
+                    let remainingAttempts = 3;
+                    const attempt = () => {
+                        const result = pending.copy();
+                        if (!result && --remainingAttempts) {
+                            setTimeout(attempt);
+                        }
+                        else {
+                            // Remember to destroy when you're done!
+                            pending.destroy();
+                            resolve();
+                        }
+                    };
+                    attempt();
+                }, 100);
+            }
+            catch (error) {
+                reject(error);
+            }
+        });
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyCopyToClipboardService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyCopyToClipboardService, providedIn: 'root' });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyCopyToClipboardService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
+        }] });
+
+var BIZY_FORMAT_SECONDS_LANGUAGE;
+(function (BIZY_FORMAT_SECONDS_LANGUAGE) {
+    BIZY_FORMAT_SECONDS_LANGUAGE["SPANISH"] = "es";
+    BIZY_FORMAT_SECONDS_LANGUAGE["ENGLISH"] = "en";
+})(BIZY_FORMAT_SECONDS_LANGUAGE || (BIZY_FORMAT_SECONDS_LANGUAGE = {}));
+var BIZY_FORMAT_SECONDS_FORMAT;
+(function (BIZY_FORMAT_SECONDS_FORMAT) {
+    BIZY_FORMAT_SECONDS_FORMAT["DATE_TIME"] = "date-time";
+    BIZY_FORMAT_SECONDS_FORMAT["TIME"] = "time";
+})(BIZY_FORMAT_SECONDS_FORMAT || (BIZY_FORMAT_SECONDS_FORMAT = {}));
+class BizyFormatSecondsService {
+    #options = {
+        language: BIZY_FORMAT_SECONDS_LANGUAGE.SPANISH,
+        format: BIZY_FORMAT_SECONDS_FORMAT.TIME
+    };
+    getOptions() {
+        return this.#options;
+    }
+    setOptions(options) {
+        if (options && options.language) {
+            this.#options.language = options.language;
+        }
+        if (options && options.format) {
+            this.#options.format = options.format;
+        }
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyFormatSecondsService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyFormatSecondsService, providedIn: 'root' });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyFormatSecondsService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
+        }] });
+
+/**
+ * Copyright 2020 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the 'License');
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an 'AS IS' BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+// This function's role is to enable smooth transition to the brave new world of
+// User-Agent Client Hints. If you have legacy code that relies on
+// `navigator.userAgent` and which relies on entropy that will go away by
+// default, you *need* to refactor it to use UA-CH. This function is to be used
+// as a stop gap, to enable smooth transition during that period.
+/**
+* @param {string[]} hints
+* @return {Promise<string|undefined>} A Promise that resolves to a string if a
+*   UA could be synthesized from client hints, otherwise undefined.
+*/
+async function getUserAgentUsingClientHints(hints) {
+    // Helper functions for platform specific strings
+    const GetCrosSpecificString = (values) => {
+        let osCPUFragment = '';
+        if (values.bitness == '64') {
+            if (values.architecture == 'x86') {
+                osCPUFragment = 'x86_64';
+            }
+            else if (values.architecture == 'arm') {
+                osCPUFragment = 'aarch64';
+            }
+        }
+        else if (values.architecture == 'arm' && values.bitness == '32') {
+            osCPUFragment = 'armv7l';
+        }
+        if (osCPUFragment == '') {
+            return `X11; CrOS ${values.platformVersion}`;
+        }
+        return `X11; CrOS ${osCPUFragment} ${values.platformVersion}`;
+    };
+    const GetWindowsSpecificString = (values) => {
+        let osCPUFragment = '';
+        if (values.architecture == 'x86' && values.bitness == '64') {
+            osCPUFragment = '; Win64; x64';
+        }
+        else if (values.architecture == 'arm') {
+            osCPUFragment = '; ARM';
+        }
+        else if (values.wow64 === true) {
+            osCPUFragment = '; WOW64';
+        }
+        return `Windows NT ${getWindowsPlatformVersion(values.platformVersion)}${osCPUFragment}`;
+    };
+    const GetMacSpecificString = (values) => {
+        let newUA = 'Macintosh;';
+        newUA += values.architecture === 'arm' ? ' ARM ' : ' Intel ';
+        newUA += 'Mac OS X ';
+        let macVersion = values.platformVersion;
+        if (macVersion.indexOf('.') > -1) {
+            macVersion = macVersion.split('.').join('_');
+        }
+        newUA += macVersion;
+        return newUA;
+    };
+    const GetAndroidSpecificString = (values) => {
+        let newUA = 'Linux; Android ';
+        newUA += values.platformVersion;
+        if (values.model) {
+            newUA += '; ';
+            newUA += values.model;
+        }
+        return newUA;
+    };
+    const Initialize = (values) => {
+        if (!values.architecture) {
+            values.architecture = 'x86';
+        }
+        if (!values.bitness) {
+            values.bitness = '64';
+        }
+        if (!values.model) {
+            values.model = '';
+        }
+        if (!values.platform) {
+            values.platform = 'Windows';
+        }
+        if (!values.platformVersion) {
+            values.platformVersion = '10.0';
+        }
+        if (!values.wow64) {
+            values.wow64 = false;
+        }
+        return values;
+    };
+    // @ts-ignore-error
+    if (!navigator.userAgentData) {
+        return Promise.resolve('');
+    }
+    // Verify that this is a Chromium-based browser
+    let isChromium = false;
+    let chromiumVersion;
+    // eslint-disable-next-line prefer-regex-literals
+    const isChromeUAPattern = new RegExp('AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/\\d+.\\d+.\\d+.\\d+ (Mobile )?Safari/537.36$');
+    // @ts-ignore-error
+    navigator.userAgentData.brands.forEach(value => {
+        if (value.brand == 'Chromium') {
+            // Let's double check the UA string as well, so we don't accidentally
+            // capture a headless browser or friendly bot (which should report as
+            // HeadlessChrome or something entirely different).
+            isChromium = isChromeUAPattern.test(navigator.userAgent);
+            chromiumVersion = value.version;
+        }
+    });
+    // @ts-ignore
+    if (!isChromium || chromiumVersion < 100) {
+        // If this is not a Chromium-based browser, the UA string should be very
+        // different. Or, if this is a Chromium lower than 100, it doesn't have
+        // all the hints we rely on. So let's bail.
+        return Promise.resolve('');
+    }
+    // Main logic
+    return new Promise(resolve => {
+        // @ts-ignore-error
+        navigator.userAgentData.getHighEntropyValues(hints).then(values => {
+            let initialValues = {
+                // @ts-ignore-error
+                platform: navigator.userAgentData?.platform,
+                version: chromiumVersion
+            };
+            values = Object.assign(initialValues, values);
+            values = Initialize(values);
+            let newUA = 'Mozilla/5.0 (';
+            if (['Chrome OS', 'Chromium OS'].includes(values.platform)) {
+                newUA += GetCrosSpecificString(values);
+            }
+            else if (values.platform == 'Windows') {
+                newUA += GetWindowsSpecificString(values);
+            }
+            else if (values.platform == 'macOS') {
+                newUA += GetMacSpecificString(values);
+            }
+            else if (values.platform == 'Android') {
+                newUA += GetAndroidSpecificString(values);
+            }
+            else {
+                newUA += 'X11; Linux x86_64';
+            }
+            newUA += ') AppleWebKit/537.36 (KHTML, like Gecko) Chrome/';
+            newUA += getVersion(values?.fullVersionList, initialValues.version);
+            // @ts-ignore-error
+            if (navigator.userAgentData.mobile) {
+                newUA += ' Mobile';
+            }
+            newUA += ' Safari/537.36';
+            resolve(newUA);
+        });
+    });
+}
+function getVersion(fullVersionList, majorVersion) {
+    // If we don't get a fullVersionList, or it's somehow undefined, return
+    // the reduced version number.
+    return (fullVersionList?.find((item) => item.brand == 'Google Chrome')?.version ||
+        `${majorVersion}.0.0.0`);
+}
+function getWindowsPlatformVersion(platformVersion) {
+    // https://wicg.github.io/ua-client-hints/#get-the-legacy-windows-version-number
+    const versionMap = new Map([
+        ['0.3.0', '6.3'], // Windows 8.1
+        ['0.2.0', '6.2'], // Windows 8
+        ['0.1.0', '6.1'] // Windows 7
+    ]);
+    if (versionMap.has(platformVersion)) {
+        return versionMap.get(platformVersion);
+    }
+    // Windows 10 and above send "Windows NT 10.0"
+    return '10.0';
+}
+/**
+   * @param {string[]} hints
+   * @return {Promise<string|undefined>} A Promise that resolves on overriding the
+   *   navigator.userAgent string.
+   */
+async function overrideUserAgentUsingClientHints(hints) {
+    return new Promise(resolve => {
+        getUserAgentUsingClientHints(hints).then(newUA => {
+            if (newUA) {
+                // Got a new UA value. Now override `navigator.userAgent`.
+                Object.defineProperty(navigator, 'userAgent', {
+                    value: newUA,
+                    writable: false,
+                    configurable: true
+                });
+            }
+            else {
+                newUA = navigator.userAgent;
+            }
+            resolve(newUA);
+        });
+    });
+}
+const exportedForTests = { getVersion, getWindowsPlatformVersion };
+
+class BizyDeviceService {
+    #device = inject(DeviceDetectorService);
+    async getUserAgent() {
+        try {
+            const userAgent = await overrideUserAgentUsingClientHints([
+                'architecture',
+                'bitness',
+                'model',
+                'platformVersion',
+                'uaFullVersion',
+                'fullVersionList'
+            ]);
+            return userAgent;
+        }
+        catch {
+            return window.navigator.userAgent;
+        }
+    }
+    isMobile = () => this.#device.isMobile();
+    isTablet = () => this.#device.isTablet();
+    isDesktop = () => this.#device.isDesktop();
+    isPortrait = () => this.#device.orientation === 'portrait';
+    isLandscape = () => this.#device.orientation === 'landscape';
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyDeviceService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyDeviceService, providedIn: 'root' });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyDeviceService, decorators: [{
+            type: Injectable,
+            args: [{ providedIn: 'root' }]
+        }] });
+
+const SERVICES = [
+    BizyAnimationService,
+    BizyDeviceService,
+    BizyCacheService,
+    BizyCopyToClipboardService,
+    BizyExportToCSVService,
+    BizyFormatSecondsService,
+    BizyKeyboardService,
+    BizyLogService,
+    BizyRouterService,
+    BizyStorageService,
+    BizyValidatorService,
+    BizyViewportService
+];
+class BizyServicesModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyServicesModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.10", ngImport: i0, type: BizyServicesModule });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyServicesModule, providers: SERVICES });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyServicesModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    providers: SERVICES
+                }]
+        }] });
 
 class BizyPopupService {
     #animation = inject(BizyAnimationService);

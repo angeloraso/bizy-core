@@ -159,7 +159,7 @@ export class BizyValidatorService {
     return (control: AbstractControl): ValidationErrors | null => {
       return !control.value || (control.value && this.isEmail(control.value))
         ? null
-        : { anuraEmail: true };
+        : { bizyEmail: true };
     };
   }
 
@@ -168,7 +168,7 @@ export class BizyValidatorService {
       return !control.value || !locale ||
         (control.value && locale && this.isMobilePhone({value: control.value, locale}))
         ? null
-        : { anuraMobilePhone: true };
+        : { bizyMobilePhone: true };
     };
   }
 
@@ -176,7 +176,7 @@ export class BizyValidatorService {
     return (control: AbstractControl): ValidationErrors | null => {
       return !control.value || (control.value && this.isNumber(control.value))
         ? null
-        : { anuraNumber: true };
+        : { bizyNumber: true };
     };
   }
 
@@ -184,7 +184,7 @@ export class BizyValidatorService {
     return (control: AbstractControl): ValidationErrors | null => {
       return !control.value || (control.value && this.isNumeric(control.value))
         ? null
-        : { anuraNumeric: true };
+        : { bizyNumeric: true };
     };
   }
 
@@ -192,7 +192,7 @@ export class BizyValidatorService {
     return (control: AbstractControl): ValidationErrors | null => {
       return !control.value || !comparisonDate || (control.value && comparisonDate && !this.dateIsAfter({date: control.value, comparisonDate}))
         ? null
-        : { anuraDateIsAfter: true };
+        : { bizyDateIsAfter: true };
     };
   }
 
@@ -200,7 +200,7 @@ export class BizyValidatorService {
     return (control: AbstractControl): ValidationErrors | null => {
       return !control.value || !comparisonDate || (control.value && comparisonDate && !this.dateIsBefore({date: control.value, comparisonDate}))
         ? null
-        : { anuraDateIsBefore: true };
+        : { bizyDateIsBefore: true };
     };
   }
 
@@ -208,7 +208,7 @@ export class BizyValidatorService {
     return (control: AbstractControl): ValidationErrors | null => {
       return !control.value || (control.value && this.isAlpha(control.value))
         ? null
-        : { anuraAlpha: true };
+        : { bizyAlpha: true };
     };
   }
 
@@ -216,7 +216,7 @@ export class BizyValidatorService {
     return (control: AbstractControl): ValidationErrors | null => {
       return !control.value || (control.value && this.isAlphanumeric(control.value))
         ? null
-        : { anuraAlphanumeric: true };
+        : { bizyAlphanumeric: true };
     };
   }
 
@@ -224,7 +224,7 @@ export class BizyValidatorService {
     return (control: AbstractControl): ValidationErrors | null => {
       return !control.value || (control.value && this.isInteger(control.value))
         ? null
-        : { anuraInteger: true };
+        : { bizyInteger: true };
     };
   }
 
@@ -232,7 +232,7 @@ export class BizyValidatorService {
     return (control: AbstractControl): ValidationErrors | null => {
       return !control.value || (control.value && this.isDataURI(control.value))
         ? null
-        : { anuraDataURI: true };
+        : { bizyDataURI: true };
     };
   }
 
@@ -240,7 +240,7 @@ export class BizyValidatorService {
     return (control: AbstractControl): ValidationErrors | null => {
       return !control.value || (control.value && this.isURL(control.value))
         ? null
-        : { anuraURL: true };
+        : { bizyURL: true };
     };
   }
 
@@ -248,7 +248,7 @@ export class BizyValidatorService {
     return (control: AbstractControl): ValidationErrors | null => {
       return !control.value || (control.value && this.isJSON(control.value))
         ? null
-        : { anuraJSON: true };
+        : { bizyJSON: true };
     };
   }
 
@@ -256,7 +256,7 @@ export class BizyValidatorService {
     return (control: AbstractControl): ValidationErrors | null => {
       return !control.value || (control.value && this.isJWT(control.value))
         ? null
-        : { anuraJWT: true };
+        : { bizyJWT: true };
     };
   }
 
@@ -264,7 +264,7 @@ export class BizyValidatorService {
     return (control: AbstractControl): ValidationErrors | null => {
       return !control.value || (control.value && this.isLowercase(control.value))
         ? null
-        : { anuraLowerCase: true };
+        : { bizyLowerCase: true };
     };
   }
 
@@ -272,7 +272,7 @@ export class BizyValidatorService {
     return (control: AbstractControl): ValidationErrors | null => {
       return !control.value || (control.value && this.isUppercase(control.value))
         ? null
-        : { anuraUpperCase: true };
+        : { bizyUpperCase: true };
     };
   }
 
@@ -280,7 +280,7 @@ export class BizyValidatorService {
     return (control: AbstractControl): ValidationErrors | null => {
       return !control.value || (control.value && this.isCUIT(control.value))
         ? null
-        : { anuraCUIT: true };
+        : { bizyCUIT: true };
     };
   }
 
@@ -288,7 +288,7 @@ export class BizyValidatorService {
     return (control: AbstractControl): ValidationErrors | null => {
       return !control.value || (control.value && this.isDNI(control.value))
         ? null
-        : { anuraDNI: true };
+        : { bizyDNI: true };
     };
   }
 
@@ -296,7 +296,7 @@ export class BizyValidatorService {
     return (control: AbstractControl): ValidationErrors | null => {
       return !control.value || (control.value && this.isCBU(control.value))
         ? null
-        : { anuraCBU: true };
+        : { bizyCBU: true };
     };
   }
 
@@ -304,7 +304,7 @@ export class BizyValidatorService {
     return (control: AbstractControl): ValidationErrors | null => {
       return !control.value || (control.value && this.isCreditCard(control.value))
         ? null
-        : { anuraCreditCard: true };
+        : { bizyCreditCard: true };
     };
   }
 }
