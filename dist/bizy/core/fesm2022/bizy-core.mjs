@@ -12,7 +12,7 @@ import { isSameMonth, isSameDay } from 'date-fns';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import localeEs from '@angular/common/locales/es';
 import * as i2$1 from '@angular/forms';
-import { FormsModule, Validators, FormBuilder } from '@angular/forms';
+import { FormsModule, FormBuilder, Validators } from '@angular/forms';
 import flatpickr from 'flatpickr';
 import monthSelectPlugin from 'flatpickr/dist/plugins/monthSelect/index.js';
 import { Spanish } from 'flatpickr/dist/l10n/es.js';
@@ -2028,8 +2028,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImpo
         }] });
 
 class BizyFilterSectionRangeOptionComponent {
-    fb;
-    ref;
+    #fb = inject(FormBuilder);
+    #ref = inject(ChangeDetectorRef);
     id = `bizy-filter-section-range-option-${Math.random()}`;
     disabled = false;
     customClass = '';
@@ -2040,16 +2040,20 @@ class BizyFilterSectionRangeOptionComponent {
     get activated$() {
         return this.#activated.asObservable();
     }
-    form;
+    #form = this.#fb.group({
+        minValue: [null],
+        maxValue: [null]
+    });
+    ;
     set min(min) {
         if (typeof min === 'undefined' || min === null) {
             this.minValue.setValue(null);
         }
         else {
-            this.minValue.setValue(min);
+            this.minValue.setValue(Number(min));
         }
-        this.#activated.next(Boolean(min));
-        this.ref.detectChanges();
+        this.#activated.next(Boolean(min) || min === 0 || Boolean(this.maxValue.value) || this.maxValue.value === 0);
+        this.#ref.detectChanges();
     }
     ;
     set max(max) {
@@ -2057,10 +2061,10 @@ class BizyFilterSectionRangeOptionComponent {
             this.maxValue.setValue(null);
         }
         else {
-            this.maxValue.setValue(max);
+            this.maxValue.setValue(Number(max));
         }
-        this.#activated.next(Boolean(max));
-        this.ref.detectChanges();
+        this.#activated.next(Boolean(max) || max === 0 || Boolean(this.minValue.value) || this.minValue.value === 0);
+        this.#ref.detectChanges();
     }
     ;
     set minLimit(min) {
@@ -2089,14 +2093,6 @@ class BizyFilterSectionRangeOptionComponent {
         }
     }
     ;
-    constructor(fb, ref) {
-        this.fb = fb;
-        this.ref = ref;
-        this.form = this.fb.group({
-            minValue: [null],
-            maxValue: [null]
-        });
-    }
     setMinValue(value) {
         let min = value === '' ? null : Number(value);
         const max = this.maxValue.value === null || this.maxValue.value === '' ? null : Number(this.maxValue.value);
@@ -2107,8 +2103,8 @@ class BizyFilterSectionRangeOptionComponent {
             min = this._minLimit;
         }
         this.onChange.emit({ min, max });
-        this.#activated.next(Boolean(min) || Boolean(max));
-        this.ref.detectChanges();
+        this.#activated.next(Boolean(min) || Boolean(max) || min === 0 || max === 0);
+        this.#ref.detectChanges();
     }
     setMaxValue(value) {
         let max = !Boolean(value) && value !== 0 ? null : Number(value);
@@ -2120,21 +2116,21 @@ class BizyFilterSectionRangeOptionComponent {
             max = this._maxLimit;
         }
         this.onChange.emit({ min, max });
-        this.#activated.next(Boolean(min) || Boolean(max));
-        this.ref.detectChanges();
+        this.#activated.next(Boolean(min) || Boolean(max) || min === 0 || max === 0);
+        this.#ref.detectChanges();
     }
     get minValue() {
-        return this.form.get('minValue');
+        return this.#form.get('minValue');
     }
     get maxValue() {
-        return this.form.get('maxValue');
+        return this.#form.get('maxValue');
     }
     onClean = () => {
         this.minValue.setValue(null);
         this.maxValue.setValue(null);
         this.onChange.emit({ min: null, max: null });
         this.#activated.next(false);
-        this.ref.detectChanges();
+        this.#ref.detectChanges();
     };
     getId = () => {
         return this.id;
@@ -2142,19 +2138,13 @@ class BizyFilterSectionRangeOptionComponent {
     isActivated = () => {
         return this.#activated.value;
     };
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyFilterSectionRangeOptionComponent, deps: [{ token: FormBuilder }, { token: ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyFilterSectionRangeOptionComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
     static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.10", type: BizyFilterSectionRangeOptionComponent, isStandalone: true, selector: "bizy-filter-section-range-option", inputs: { id: "id", disabled: "disabled", customClass: "customClass", min: "min", max: "max", minLimit: "minLimit", maxLimit: "maxLimit" }, outputs: { onChange: "onChange" }, ngImport: i0, template: "<div \n    class=\"bizy-filter-section-range-option {{customClass}}\"\n    [id]=\"id\">\n\n    <span class=\"bizy-filter-section-range-option__inputs\">\n\n        <bizy-input\n            class=\"bizy-filter-section-range-option__input\"\n            type=\"number\"\n            [value]=\"minValue.value\"\n            (onChange)=\"setMinValue($event)\">\n\n            <ng-container slot=\"header\">\n                <ng-content select=\"[slot=min-header]\"></ng-content>\n            </ng-container>\n\n        </bizy-input>\n\n        <bizy-input\n            class=\"bizy-filter-section-range-option__input\"\n            type=\"number\"\n            [value]=\"maxValue.value\"\n            (onChange)=\"setMaxValue($event)\">\n\n            <ng-container slot=\"header\">\n                <ng-content select=\"[slot=max-header]\"></ng-content>\n            </ng-container>\n\n        </bizy-input>\n\n    </span>\n    \n</div>", styles: [":host{font-size:1rem}.bizy-filter-section-range-option{display:flex;flex-direction:column;row-gap:1rem}.bizy-filter-section-range-option__inputs{display:flex;align-items:center;column-gap:.5rem}.bizy-filter-section-range-option__input{--bizy-input-background-color: #f3f3f3 !important}\n"], dependencies: [{ kind: "component", type: BizyInputComponent, selector: "bizy-input", inputs: ["id", "name", "type", "customClass", "placeholder", "debounceTime", "rows", "disabled", "readonly", "autofocus", "value"], outputs: ["valueChange", "onChange", "onEnter", "onBackspace", "onSelect", "onBlur", "onFocus"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyFilterSectionRangeOptionComponent, decorators: [{
             type: Component,
             args: [{ selector: 'bizy-filter-section-range-option', imports: [BizyInputComponent], changeDetection: ChangeDetectionStrategy.OnPush, template: "<div \n    class=\"bizy-filter-section-range-option {{customClass}}\"\n    [id]=\"id\">\n\n    <span class=\"bizy-filter-section-range-option__inputs\">\n\n        <bizy-input\n            class=\"bizy-filter-section-range-option__input\"\n            type=\"number\"\n            [value]=\"minValue.value\"\n            (onChange)=\"setMinValue($event)\">\n\n            <ng-container slot=\"header\">\n                <ng-content select=\"[slot=min-header]\"></ng-content>\n            </ng-container>\n\n        </bizy-input>\n\n        <bizy-input\n            class=\"bizy-filter-section-range-option__input\"\n            type=\"number\"\n            [value]=\"maxValue.value\"\n            (onChange)=\"setMaxValue($event)\">\n\n            <ng-container slot=\"header\">\n                <ng-content select=\"[slot=max-header]\"></ng-content>\n            </ng-container>\n\n        </bizy-input>\n\n    </span>\n    \n</div>", styles: [":host{font-size:1rem}.bizy-filter-section-range-option{display:flex;flex-direction:column;row-gap:1rem}.bizy-filter-section-range-option__inputs{display:flex;align-items:center;column-gap:.5rem}.bizy-filter-section-range-option__input{--bizy-input-background-color: #f3f3f3 !important}\n"] }]
-        }], ctorParameters: () => [{ type: i2$1.FormBuilder, decorators: [{
-                    type: Inject,
-                    args: [FormBuilder]
-                }] }, { type: i0.ChangeDetectorRef, decorators: [{
-                    type: Inject,
-                    args: [ChangeDetectorRef]
-                }] }], propDecorators: { id: [{
+        }], propDecorators: { id: [{
                 type: Input
             }], disabled: [{
                 type: Input

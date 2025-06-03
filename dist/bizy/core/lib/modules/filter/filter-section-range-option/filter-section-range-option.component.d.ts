@@ -1,11 +1,9 @@
-import { EventEmitter, ChangeDetectorRef } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
+import { EventEmitter } from '@angular/core';
+import { AbstractControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import * as i0 from "@angular/core";
 export declare class BizyFilterSectionRangeOptionComponent {
     #private;
-    private fb;
-    private ref;
     id: string;
     disabled: boolean;
     customClass: string;
@@ -16,12 +14,10 @@ export declare class BizyFilterSectionRangeOptionComponent {
     _minLimit: number;
     _maxLimit: number;
     get activated$(): Observable<boolean>;
-    form: FormGroup;
     set min(min: number | null);
     set max(max: number | null);
     set minLimit(min: number | null);
     set maxLimit(max: number | null);
-    constructor(fb: FormBuilder, ref: ChangeDetectorRef);
     setMinValue(value: number | string): void;
     setMaxValue(value: number | string | null): void;
     get minValue(): AbstractControl<number | string>;
