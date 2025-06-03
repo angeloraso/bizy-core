@@ -4141,23 +4141,27 @@ class BizyValidatorService {
     isUppercase = (value) => validator.isUppercase(value);
     isMobilePhone = (data) => validator.isMobilePhone(data.value, data.locale);
     isCUIT(cuit) {
-        const regex = /(^[0-9]{2}-[0-9]{8}-[0-9]$)/i;
-        const isCUIT = regex.test(String(cuit).toLowerCase());
-        if (!isCUIT) {
+        if (!cuit) {
             return false;
         }
-        cuit = String(cuit).replace(/[-_]/g, '');
-        if (cuit.length == 11) {
-            const mult = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
-            let total = 0;
-            for (let i = 0; i < mult.length; i++) {
-                total += parseInt(cuit[i]) * mult[i];
-            }
-            const mod = total % 11;
-            const digit = mod === 0 ? 0 : mod === 1 ? 9 : 11 - mod;
-            return digit === parseInt(cuit[10]);
+        if (this.isString(cuit)) {
+            cuit = cuit.replace(/[-]/g, '');
         }
-        return false;
+        else {
+            cuit = String(cuit);
+        }
+        // 20, 23, 24, 25, 26 y 27 Personas Físicas
+        // 30, 33 y 34 Personas Jurídicas.
+        if (!/^(20|23|24|25|26|27|30|33|34)\d{8}\d$/.test(cuit)) {
+            return false;
+        }
+        const multipliers = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
+        const digits = cuit.split('').map(Number);
+        const checkDigit = digits[10];
+        const sum = multipliers.reduce((acc, _multiplier, i) => acc + _multiplier * digits[i], 0);
+        const mod11 = 11 - (sum % 11);
+        const expectedDigit = mod11 === 11 ? 0 : mod11 === 10 ? 9 : mod11;
+        return checkDigit === expectedDigit;
     }
     isDNI(dni) {
         const regex = /(^[1-9]{1}[0-9]{7}$)/i;
