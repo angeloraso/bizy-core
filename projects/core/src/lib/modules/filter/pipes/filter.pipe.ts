@@ -55,10 +55,10 @@ export class BizyFilterPipe implements PipeTransform {
       output = output.concat(res);
     });
 
-    function safeStringify(obj: any): string {
+    function safeStringify(obj: unknown): string {
       const seen = new WeakSet();
 
-      function replacer(_key: string, value: any) {
+      function replacer(_key: string, value: unknown) {
         // Handle circular references
         if (typeof value === 'object' && value !== null) {
           if (seen.has(value)) return '[Circular]';
@@ -78,23 +78,7 @@ export class BizyFilterPipe implements PipeTransform {
         return value;
       }
 
-      // Sort keys consistently
-      const ordered = sortKeys(obj);
-      return JSON.stringify(ordered, replacer);
-    }
-
-    function sortKeys(obj: any): any {
-      if (Array.isArray(obj)) {
-        return obj.map(sortKeys);
-      } else if (obj && typeof obj === 'object' && !(obj instanceof Date)) {
-        return Object.keys(obj)
-          .sort()
-          .reduce((acc, key) => {
-            acc[key] = sortKeys(obj[key]);
-            return acc;
-          }, {} as any);
-      }
-      return obj;
+      return JSON.stringify(obj, replacer);
     }
 
     function uniqueObjects<T>(items: T[]): T[] {
