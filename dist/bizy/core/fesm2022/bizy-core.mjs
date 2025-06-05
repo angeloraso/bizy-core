@@ -2580,23 +2580,7 @@ class BizyFilterPipe {
                     return `__DATE__:${value.toISOString()}`;
                 return value;
             }
-            // Sort keys consistently
-            const ordered = sortKeys(obj);
-            return JSON.stringify(ordered, replacer);
-        }
-        function sortKeys(obj) {
-            if (Array.isArray(obj)) {
-                return obj.map(sortKeys);
-            }
-            else if (obj && typeof obj === 'object' && !(obj instanceof Date)) {
-                return Object.keys(obj)
-                    .sort()
-                    .reduce((acc, key) => {
-                    acc[key] = sortKeys(obj[key]);
-                    return acc;
-                }, {});
-            }
-            return obj;
+            return JSON.stringify(obj, replacer);
         }
         function uniqueObjects(items) {
             const seen = new Set();
