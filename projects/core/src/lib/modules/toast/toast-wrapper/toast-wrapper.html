@@ -1,5 +1,13 @@
 <div class="bizy-toast-wrapper bizy-toast-wrapper--{{type}}">
 
+    <span class="bizy-toast-wrapper__content">
+
+        <h4 class="bizy-toast-wrapper__title--{{type}}" *ngIf="title">{{title}}</h4>
+    
+        <h6 *ngIf="msg">{{msg}}</h6>
+
+    </span>
+
     <button (click)="close()" (keyup.enter)="close()" class="bizy-toast-wrapper__close-button">
 
         <svg 
@@ -11,12 +19,6 @@
         </svg>
 
     </button>
-
-
-    <h3 class="bizy-toast-wrapper__title bizy-toast-wrapper__title--{{type}}" *ngIf="title">{{title}}</h3>
-
-    <h5 class="bizy-toast-wrapper__msg" *ngIf="msg">{{msg}}</h5>
-
 
     <span class="bizy-toast__progress bizy-toast__progress--{{type}}"></span>
     

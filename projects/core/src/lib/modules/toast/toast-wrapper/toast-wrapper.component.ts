@@ -19,7 +19,7 @@ export class BizyToastWrapperComponent {
   id: string;
 
   constructor(
-    @Inject(DIALOG_DATA) private data: {type: TOAST, title: string, msg: string, id: string},
+    @Inject(DIALOG_DATA) private data: {type: TOAST, title: string, msg: string, id: string, duration: number},
     @Inject(BizyToastService) private toast: BizyToastService,
   ) {
     this.type = this.data.type;
@@ -29,7 +29,7 @@ export class BizyToastWrapperComponent {
 
     setTimeout(() => {
       this.close();
-    }, 3000);
+    }, this.data.duration || 3000);
   }
 
   close() {

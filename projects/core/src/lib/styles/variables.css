@@ -325,9 +325,8 @@
     --bizy-tag-danger-color: var(--bizy-dark-danger-color);
     --bizy-tag-padding: 0.1rem 0.3rem;
 
-    --bizy-toast-border-left: 0.4rem solid #fff;
-    --bizy-toast-default-background-color: #fff;
-    --bizy-toast-default-color: var(--bizy-default-color);
+    --bizy-toast-debug-background-color: #fff;
+    --bizy-toast-debug-color: var(--bizy-default-color);
     --bizy-toast-info-background-color: #fff;
     --bizy-toast-info-color: var(--bizy-info-color);
     --bizy-toast-success-background-color: #fff;
@@ -338,6 +337,22 @@
     --bizy-toast-danger-color: var(--bizy-danger-color);
     --bizy-toast-close-button-color: var(--bizy-default-color);
     --bizy-toast-close-button-hover-color: var(--bizy-dark-default-color);
+    --bizy-toast-progress-bar-height: 0.2rem;
+    --bizy-toast-border-top-width: 0.1rem;
+    --bizy-toast-border-right-width: 0.1rem;
+    --bizy-toast-border-bottom-width: 0.1rem;
+    --bizy-toast-border-left-width: 0.1rem;
+    --bizy-toast-border-top-style: solid;
+    --bizy-toast-border-right-style: solid;
+    --bizy-toast-border-bottom-style: solid;
+    --bizy-toast-border-left-style: solid;
+    --bizy-toast-border-top-left-radius: 0.5rem;
+    --bizy-toast-border-top-right-radius: 0;
+    --bizy-toast-border-bottom-left-radius: 0;
+    --bizy-toast-border-bottom-right-radius: 0;
+    --bizy-toast-duration: 3000ms;
+    --bizy-toast-scroll-bar-color: var(--bizy-default-color);
+    --bizy-toast-scroll-bar-hover-color: #999;
 
     --bizy-toggle-color: var(--bizy-danger-color);
     --bizy-toggle-background-color: #f2d5d7;

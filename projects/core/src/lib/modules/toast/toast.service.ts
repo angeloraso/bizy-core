@@ -1,9 +1,10 @@
-import { Inject, Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { BizyToastWrapperComponent } from './toast-wrapper/toast-wrapper.component';
 import { Dialog, DialogConfig, DialogRef } from '@angular/cdk/dialog';
+import { DOCUMENT } from '@angular/common';
 
 export enum TOAST {
-  DEFAULT = 'default',
+  DEBUG = 'debug',
   SUCCESS = 'success',
   INFO = 'info',
   WARNING = 'warning',
@@ -12,18 +13,27 @@ export enum TOAST {
 
 @Injectable()
 export class BizyToastService {
+  readonly #document = inject(DOCUMENT);
+  readonly #dialog = inject(Dialog);
+
   static toasts = new Set<DialogRef<BizyToastWrapperComponent>>();
   
   duration: number = 3000;
+  defaultDebugTitle = 'Ha sucedido un evento';
+  defaultInfoTitle = 'Observación';
   defaultSuccessTitle = 'Operación exitosa';
+  defaultWarningTitle = 'Advertencia';
   defaultDangerTitle = 'Hubo un problema';
 
-  constructor(@Inject(Dialog) private dialog: Dialog) { }
+  #open(data: {type: TOAST, data: string | {title: string, msg?: string, duration?: number} }) {
 
-  #open(data: {type: TOAST, data: string | {title: string, msg?: string} }) {
+    if (typeof data.data !== 'string' && data.data.duration) {
+      this.duration = data.data.duration;
+      this.#document.documentElement.style.setProperty('--bizy-toast-duration', `${data.data.duration}ms`);
+    }
 
     const id = `bizy-toast-${Math.random()}`;
-    const toastRef = this.dialog.open(BizyToastWrapperComponent, ({
+    const toastRef = this.#dialog.open(BizyToastWrapperComponent, ({
       id,
       data: {
         type: data.type,
@@ -41,13 +51,32 @@ export class BizyToastService {
     BizyToastService.toasts.add(toastRef);
   }
 
-  config(data: {defaultSuccessTitle?: string, defaultDangerTitle?: string, duration?: number}) {
+  config(data: {
+    defaultDebugTitle?: string,
+    defaultInfoTitle?: string,
+    defaultSuccessTitle?: string,
+    defaultWarningTitle?: string,
+    defaultDangerTitle?: string,
+    duration?: number
+  }) {
     if (!data) {
       return;
     }
 
+    if (data.defaultDebugTitle) {
+      this.defaultDebugTitle = data.defaultDebugTitle;
+    }
+
+    if (data.defaultInfoTitle) {
+      this.defaultInfoTitle = data.defaultInfoTitle;
+    }
+
     if (data.defaultSuccessTitle) {
       this.defaultSuccessTitle = data.defaultSuccessTitle;
+    }
+
+    if (data.defaultWarningTitle) {
+      this.defaultWarningTitle = data.defaultWarningTitle;
     }
 
     if (data.defaultDangerTitle) {
@@ -56,26 +85,27 @@ export class BizyToastService {
 
     if (data.duration) {
       this.duration = data.duration;
+      this.#document.documentElement.style.setProperty('--bizy-toast-duration', `${data.duration}ms`);
     }
   }
 
-  default(data: string | {title: string, msg?: string}) {
-    this.#open({type: TOAST.DEFAULT, data});
+  debug(data: string | {title: string, msg?: string, duration?: number}) {
+    this.#open({type: TOAST.DEBUG, data});
   }
 
-  info(data: string | {title: string, msg?: string}) {
+  info(data: string | {title: string, msg?: string, duration?: number}) {
     this.#open({type: TOAST.INFO, data});
   }
 
-  success(data: string | {title: string, msg?: string} = this.defaultSuccessTitle) {
+  success(data: string | {title: string, msg?: string, duration?: number} = this.defaultSuccessTitle) {
     this.#open({type: TOAST.SUCCESS, data});
   }
 
-  warning(data: string | {title: string, msg?: string}) {
+  warning(data: string | {title: string, msg?: string, duration?: number}) {
     this.#open({type: TOAST.WARNING, data});
   }
 
-  danger(data: string | {title: string, msg?: string} = this.defaultDangerTitle) {
+  danger(data: string | {title: string, msg?: string, duration?: number} = this.defaultDangerTitle) {
     this.#open({type: TOAST.DANGER, data});
   }
 
