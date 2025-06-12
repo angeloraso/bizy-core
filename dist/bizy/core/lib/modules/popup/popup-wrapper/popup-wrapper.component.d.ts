@@ -6,6 +6,13 @@ export declare class BizyPopupWrapperComponent<T> {
     disabled: boolean;
     disableClose: boolean;
     disableDrag: boolean;
+    position: {
+        top: string;
+        right: string;
+        bottom: string;
+        left: string;
+    } | null;
+    ngOnInit(): void;
     ngAfterViewInit(): void;
     loadDynamicComponent: () => void;
     close(): Promise<void>;

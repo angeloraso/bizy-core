@@ -18,6 +18,12 @@ export declare class BizyPopupService {
         id?: string;
         disableCloseButton?: boolean;
         disableDragButton?: boolean;
+        position?: {
+            top?: string;
+            right?: string;
+            bottom?: string;
+            left?: string;
+        };
     }, callback?: (res: R) => void): void;
     getData<D>(): D;
     close(data?: {
