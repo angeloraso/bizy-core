@@ -18,7 +18,7 @@ export class BizyPopupService {
    * 
    * @param data.disableClose Deprecated
    */
-  open<R>(data: {component: ComponentType<unknown>, data?: unknown, customClass?: Array<string> | string, fullScreen?: boolean, disableClose?: boolean, disableBackdropClose?: boolean, id?: string, disableCloseButton?: boolean, disableDragButton?: boolean}, callback?: (res: R) => void) {
+  open<R>(data: {component: ComponentType<unknown>, data?: unknown, customClass?: Array<string> | string, fullScreen?: boolean, disableClose?: boolean, disableBackdropClose?: boolean, id?: string, disableCloseButton?: boolean, disableDragButton?: boolean, position?: {top?: string, right?: string, bottom?: string, left?: string}}, callback?: (res: R) => void) {
     this.#data = data.data;
     const component: ComponentType<unknown> = data.fullScreen ? BizyFullScreenPopupWrapperComponent : BizyPopupWrapperComponent;
     const dialogRef = this.#dialog.open(component, ({
@@ -26,11 +26,12 @@ export class BizyPopupService {
       data: {
         component: data.component,
         disableClose: data.disableCloseButton ?? false,
-        disableDrag: data.disableDragButton ?? false
+        disableDrag: data.disableDragButton ?? false,
+        position: data.position,
       },
       autoFocus: true,
       hasBackdrop: true,
-      disableClose: data.disableBackdropClose ? data.disableBackdropClose : data.disableClose ? data.disableClose : true,
+      disableClose: typeof data.disableBackdropClose !== 'undefined' && data.disableBackdropClose !== null ? data.disableBackdropClose : typeof data.disableClose !== 'undefined' && data.disableClose !== null ? data.disableClose : true,
       panelClass: Array.isArray(data.customClass) ? data.customClass : this.#validator.isString(data.customClass) ? [data.customClass] : []
     }));
 
@@ -43,7 +44,6 @@ export class BizyPopupService {
       }
     });
   }
-
 
   getData<D>() {
     return this.#data as D;
@@ -65,8 +65,6 @@ export class BizyPopupService {
       dialogRef.close(data ? data.response : null);
       BizyPopupService.dialogs.delete(dialogRef);
     }
-
-    this.#data = null;
   }
 
   closeAll() {
@@ -74,7 +72,6 @@ export class BizyPopupService {
       _dialogRef.close();
     });
     BizyPopupService.dialogs.clear();
-    this.#data = null;
   }
 
   openedPopups(): number {

@@ -27,16 +27,20 @@ export class BizyFullScreenPopupWrapperComponent<T> {
   disableClose: boolean = false;
   disableDrag: boolean = false;
 
+  ngOnInit() {
+    if (this.#data) {
+      if (this.#data.disableClose) {
+          this.disableClose = this.#data.disableClose;
+      }
+  
+      if (this.#data.disableDrag) {
+        this.disableDrag = this.#data.disableDrag;
+      }
+    }
+  }
+
   ngAfterViewInit() {
     this.loadDynamicComponent();
-
-    if (this.#data && this.#data.disableClose) {
-        this.disableClose = this.#data.disableClose;
-    }
-
-    if (this.#data && this.#data.disableDrag) {
-      this.disableDrag = this.#data.disableDrag;
-    }
   }
 
   loadDynamicComponent = () => {

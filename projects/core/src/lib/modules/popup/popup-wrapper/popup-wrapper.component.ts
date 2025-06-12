@@ -10,12 +10,19 @@ import { BizyPopupService } from '../popup.service';
   templateUrl: './popup-wrapper.html',
   styleUrls: ['./popup-wrapper.css'],
   imports: [CommonModule, DialogModule, DragDropModule],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '[style.top]': 'position && position.top ? position.top : position ? "" : "50%"',
+    '[style.right]': 'position && position.right ? position.right : position ? "" : "50%"',
+    '[style.bottom]': 'position && position.bottom ? position.bottom : position ? "" : "50%"',
+    '[style.left]': 'position && position.left ? position.left : position ? "" : "50%"',
+    '[style.transform]': 'position ? "" : "translate(-50%, -50%)"'
+  }
 })
 export class BizyPopupWrapperComponent<T> {
   @ViewChild('dynamicComponentContainer', { read: ViewContainerRef }) dynamicComponentContainer: ViewContainerRef;
 
-  readonly #data: {component: ComponentType<T>, disableClose: boolean, disableDrag: boolean} = inject(DIALOG_DATA);
+  readonly #data: {component: ComponentType<T>, disableClose: boolean, disableDrag: boolean, position?: {top: string, right: string, bottom: string, left: string}} = inject(DIALOG_DATA);
   readonly #dialogRef: DialogRef<void> = inject(DialogRef);
   readonly #popup = inject(BizyPopupService);
   readonly #ref = inject(ChangeDetectorRef);
@@ -24,17 +31,26 @@ export class BizyPopupWrapperComponent<T> {
 
   disableClose: boolean = false;
   disableDrag: boolean = false;
+  position: {top: string, right: string, bottom: string, left: string} | null = null;
+
+  ngOnInit() {
+    if (this.#data) {
+      if (this.#data.position) {
+        this.position = this.#data.position;
+      }
+
+      if (this.#data.disableClose) {
+          this.disableClose = this.#data.disableClose;
+      }
+  
+      if (this.#data.disableDrag) {
+        this.disableDrag = this.#data.disableDrag;
+      }
+    }
+  }
 
   ngAfterViewInit() {
     this.loadDynamicComponent();
-
-    if (this.#data && this.#data.disableClose) {
-        this.disableClose = this.#data.disableClose;
-    }
-
-    if (this.#data && this.#data.disableDrag) {
-      this.disableDrag = this.#data.disableDrag;
-    }
   }
 
   loadDynamicComponent = () => {
