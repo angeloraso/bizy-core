@@ -1,8 +1,8 @@
 import { BizyToastWrapperComponent } from './toast-wrapper/toast-wrapper.component';
-import { Dialog, DialogRef } from '@angular/cdk/dialog';
+import { DialogRef } from '@angular/cdk/dialog';
 import * as i0 from "@angular/core";
 export declare enum TOAST {
-    DEFAULT = "default",
+    DEBUG = "debug",
     SUCCESS = "success",
     INFO = "info",
     WARNING = "warning",
@@ -10,36 +10,45 @@ export declare enum TOAST {
 }
 export declare class BizyToastService {
     #private;
-    private dialog;
     static toasts: Set<DialogRef<BizyToastWrapperComponent, unknown>>;
     duration: number;
+    defaultDebugTitle: string;
+    defaultInfoTitle: string;
     defaultSuccessTitle: string;
+    defaultWarningTitle: string;
     defaultDangerTitle: string;
-    constructor(dialog: Dialog);
     config(data: {
+        defaultDebugTitle?: string;
+        defaultInfoTitle?: string;
         defaultSuccessTitle?: string;
+        defaultWarningTitle?: string;
         defaultDangerTitle?: string;
         duration?: number;
     }): void;
-    default(data: string | {
+    debug(data: string | {
         title: string;
         msg?: string;
+        duration?: number;
     }): void;
     info(data: string | {
         title: string;
         msg?: string;
+        duration?: number;
     }): void;
     success(data?: string | {
         title: string;
         msg?: string;
+        duration?: number;
     }): void;
     warning(data: string | {
         title: string;
         msg?: string;
+        duration?: number;
     }): void;
     danger(data?: string | {
         title: string;
         msg?: string;
+        duration?: number;
     }): void;
     close: (id: string) => void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyToastService, never>;

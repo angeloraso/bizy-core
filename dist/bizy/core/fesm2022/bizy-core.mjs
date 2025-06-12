@@ -27,7 +27,6 @@ import XHRUpload from '@uppy/xhr-upload';
 import * as i3 from '@angular/cdk/portal';
 import { TemplatePortal, PortalModule } from '@angular/cdk/portal';
 import { ScrollingModule, CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import * as i1$2 from '@angular/cdk/dialog';
 import { DIALOG_DATA, DialogRef, DialogModule, Dialog } from '@angular/cdk/dialog';
 import * as i2$3 from '@angular/cdk/drag-drop';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -37,7 +36,7 @@ import validator from 'validator';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
-import * as i1$3 from '@angular/platform-browser';
+import * as i1$2 from '@angular/platform-browser';
 import { DomSanitizer } from '@angular/platform-browser';
 import Fuse from 'fuse.js';
 
@@ -6528,24 +6527,29 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImpo
 var _a;
 var TOAST;
 (function (TOAST) {
-    TOAST["DEFAULT"] = "default";
+    TOAST["DEBUG"] = "debug";
     TOAST["SUCCESS"] = "success";
     TOAST["INFO"] = "info";
     TOAST["WARNING"] = "warning";
     TOAST["DANGER"] = "danger";
 })(TOAST || (TOAST = {}));
 class BizyToastService {
-    dialog;
+    #document = inject(DOCUMENT);
+    #dialog = inject(Dialog);
     static toasts = new Set();
     duration = 3000;
+    defaultDebugTitle = 'Ha sucedido un evento';
+    defaultInfoTitle = 'Observación';
     defaultSuccessTitle = 'Operación exitosa';
+    defaultWarningTitle = 'Advertencia';
     defaultDangerTitle = 'Hubo un problema';
-    constructor(dialog) {
-        this.dialog = dialog;
-    }
     #open(data) {
+        if (typeof data.data !== 'string' && data.data.duration) {
+            this.duration = data.data.duration;
+            this.#document.documentElement.style.setProperty('--bizy-toast-duration', `${data.data.duration}ms`);
+        }
         const id = `bizy-toast-${Math.random()}`;
-        const toastRef = this.dialog.open(BizyToastWrapperComponent, {
+        const toastRef = this.#dialog.open(BizyToastWrapperComponent, {
             id,
             data: {
                 type: data.type,
@@ -6565,18 +6569,28 @@ class BizyToastService {
         if (!data) {
             return;
         }
+        if (data.defaultDebugTitle) {
+            this.defaultDebugTitle = data.defaultDebugTitle;
+        }
+        if (data.defaultInfoTitle) {
+            this.defaultInfoTitle = data.defaultInfoTitle;
+        }
         if (data.defaultSuccessTitle) {
             this.defaultSuccessTitle = data.defaultSuccessTitle;
+        }
+        if (data.defaultWarningTitle) {
+            this.defaultWarningTitle = data.defaultWarningTitle;
         }
         if (data.defaultDangerTitle) {
             this.defaultDangerTitle = data.defaultDangerTitle;
         }
         if (data.duration) {
             this.duration = data.duration;
+            this.#document.documentElement.style.setProperty('--bizy-toast-duration', `${data.duration}ms`);
         }
     }
-    default(data) {
-        this.#open({ type: TOAST.DEFAULT, data });
+    debug(data) {
+        this.#open({ type: TOAST.DEBUG, data });
     }
     info(data) {
         this.#open({ type: TOAST.INFO, data });
@@ -6605,16 +6619,13 @@ class BizyToastService {
             }, 500);
         }
     };
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyToastService, deps: [{ token: Dialog }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyToastService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
     static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyToastService });
 }
 _a = BizyToastService;
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyToastService, decorators: [{
             type: Injectable
-        }], ctorParameters: () => [{ type: i1$2.Dialog, decorators: [{
-                    type: Inject,
-                    args: [Dialog]
-                }] }] });
+        }] });
 
 class BizyToastWrapperComponent {
     data;
@@ -6632,17 +6643,17 @@ class BizyToastWrapperComponent {
         this.id = this.data.id;
         setTimeout(() => {
             this.close();
-        }, 3000);
+        }, this.data.duration || 3000);
     }
     close() {
         this.toast.close(this.id);
     }
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyToastWrapperComponent, deps: [{ token: DIALOG_DATA }, { token: BizyToastService }], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.10", type: BizyToastWrapperComponent, isStandalone: true, selector: "bizy-toast-wrapper", providers: [BizyToastService], ngImport: i0, template: "<div class=\"bizy-toast-wrapper bizy-toast-wrapper--{{type}}\">\n\n    <button (click)=\"close()\" (keyup.enter)=\"close()\" class=\"bizy-toast-wrapper__close-button\">\n\n        <svg \n            data-name=\"Cancel button\"\n            id=\"bizy-toast-wrapper-close-svg\" \n            viewBox=\"0 0 200 200\"\n            xmlns=\"http://www.w3.org/2000/svg\">\n            <path id=\"bizy-toast-wrapper-close-svg-content\" d=\"M114,100l49-49a9.9,9.9,0,0,0-14-14L100,86,51,37A9.9,9.9,0,0,0,37,51l49,49L37,149a9.9,9.9,0,0,0,14,14l49-49,49,49a9.9,9.9,0,0,0,14-14Z\"/>\n        </svg>\n\n    </button>\n\n\n    <h3 class=\"bizy-toast-wrapper__title bizy-toast-wrapper__title--{{type}}\" *ngIf=\"title\">{{title}}</h3>\n\n    <h5 class=\"bizy-toast-wrapper__msg\" *ngIf=\"msg\">{{msg}}</h5>\n\n\n    <span class=\"bizy-toast__progress bizy-toast__progress--{{type}}\"></span>\n    \n</div>", styles: [":host{font-size:1rem}.bizy-toast-wrapper{position:relative;width:100%;min-width:20rem;height:fit-content;min-height:3rem;border-left:var(--bizy-toast-border-left);border-top-left-radius:.5rem;border-bottom-left-radius:.5rem;display:flex;flex-direction:column;justify-content:center;row-gap:.5rem;padding:.5rem;box-shadow:0 18px 25px #32325d40,0 3px 6px #0000001a}.bizy-toast-wrapper__title{max-width:min(28rem,60vw)}.bizy-toast-wrapper__msg{max-width:min(30rem,70vw)}.bizy-toast-wrapper--default{background-color:var(--bizy-toast-default-background-color, );border-left-color:var(--bizy-toast-default-color)}.bizy-toast-wrapper__title--default{color:var(--bizy-toast-default-color)}.bizy-toast-wrapper--info{background-color:var(--bizy-toast-info-background-color, );border-left-color:var(--bizy-toast-info-color)}.bizy-toast-wrapper__title--info{color:var(--bizy-toast-info-color)}.bizy-toast-wrapper--success{background-color:var(--bizy-toast-success-background-color);border-left-color:var(--bizy-toast-success-color)}.bizy-toast-wrapper__title--success{color:var(--bizy-toast-success-color)}.bizy-toast-wrapper--warning{background-color:var(--bizy-toast-warning-background-color);border-left-color:var(--bizy-toast-warning-color)}.bizy-toast-wrapper__title--warning{color:var(--bizy-toast-warning-color)}.bizy-toast-wrapper--danger{background-color:var(--bizy-toast-danger-background-color);border-left-color:var(--bizy-toast-danger-color)}.bizy-toast-wrapper__title--danger{color:var(--bizy-toast-danger-color)}.bizy-toast-wrapper__close-button{position:absolute;right:.5rem;top:.5rem;border:none;cursor:pointer;background-color:transparent;transition:color .2s;z-index:1}.bizy-toast-wrapper__close-button #bizy-toast-wrapper-close-svg{height:1rem}.bizy-toast-wrapper__close-button #bizy-toast-wrapper-close-svg-content{fill:var(--bizy-toast-close-button-color)}.bizy-toast-wrapper__close-button:hover #bizy-toast-wrapper-close-svg-content{fill:var(--bizy-toast-close-button-hover-color)}.bizy-toast__progress{width:100%;height:.1rem;display:inline-block;position:absolute;bottom:0;left:0;right:0;overflow:hidden}.bizy-toast__progress--default{background-color:var(--bizy-toast-default-color)}.bizy-toast__progress--info{background-color:var(--bizy-toast-info-color)}.bizy-toast__progress--success{background-color:var(--bizy-toast-success-color)}.bizy-toast__progress--warning{background-color:var(--bizy-toast-warning-color)}.bizy-toast__progress--danger{background-color:var(--bizy-toast-danger-color)}.bizy-toast__progress:after{content:\"\";box-sizing:border-box;width:0;height:.1rem;background-color:#fff;position:absolute;top:0;left:0;animation:progress 2.5s linear infinite}@keyframes progress{0%{width:0}to{width:100%}}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }, { kind: "directive", type: i1.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "ngmodule", type: DialogModule }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.10", type: BizyToastWrapperComponent, isStandalone: true, selector: "bizy-toast-wrapper", providers: [BizyToastService], ngImport: i0, template: "<div class=\"bizy-toast-wrapper bizy-toast-wrapper--{{type}}\">\n\n    <span class=\"bizy-toast-wrapper__content\">\n\n        <h4 class=\"bizy-toast-wrapper__title--{{type}}\" *ngIf=\"title\">{{title}}</h4>\n    \n        <h6 *ngIf=\"msg\">{{msg}}</h6>\n\n    </span>\n\n    <button (click)=\"close()\" (keyup.enter)=\"close()\" class=\"bizy-toast-wrapper__close-button\">\n\n        <svg \n            data-name=\"Cancel button\"\n            id=\"bizy-toast-wrapper-close-svg\" \n            viewBox=\"0 0 200 200\"\n            xmlns=\"http://www.w3.org/2000/svg\">\n            <path id=\"bizy-toast-wrapper-close-svg-content\" d=\"M114,100l49-49a9.9,9.9,0,0,0-14-14L100,86,51,37A9.9,9.9,0,0,0,37,51l49,49L37,149a9.9,9.9,0,0,0,14,14l49-49,49,49a9.9,9.9,0,0,0,14-14Z\"/>\n        </svg>\n\n    </button>\n\n    <span class=\"bizy-toast__progress bizy-toast__progress--{{type}}\"></span>\n    \n</div>", styles: [":host{font-size:1rem}.bizy-toast-wrapper{position:relative;width:100%;min-width:20rem;max-width:min(30rem,80dvw);height:fit-content;min-height:3rem;max-height:95dvh;overflow-y:auto;border-top-width:var(--bizy-toast-border-top-width);border-right-width:var(--bizy-toast-border-right-width);border-bottom-width:var(--bizy-toast-border-bottom-width);border-left-width:var(--bizy-toast-border-left-width);border-top-style:var(--bizy-toast-border-top-style);border-right-style:var(--bizy-toast-border-right-style);border-bottom-style:var(--bizy-toast-border-bottom-style);border-left-style:var(--bizy-toast-border-left-style);border-top-left-radius:var(--bizy-toast-border-top-left-radius);border-top-right-radius:var(--bizy-toast-border-top-right-radius);border-bottom-left-radius:var(--bizy-toast-border-bottom-left-radius);border-bottom-right-radius:var(--bizy-toast-border-bottom-right-radius);display:flex;align-items:center;column-gap:.5rem;padding:.5rem;box-shadow:0 18px 25px #32325d40,0 3px 6px #0000001a}.bizy-toast-wrapper::-webkit-scrollbar{width:.5rem;height:.5rem}.bizy-toast-wrapper::-webkit-scrollbar-thumb{border-radius:1rem;background-color:var(--bizy-toast-scroll-bar-color)}.bizy-toast-wrapper::-webkit-scrollbar-thumb:hover{background-color:var(--bizy-toast-scroll-bar-hover-color)}.bizy-toast-wrapper__content{flex:1;display:flex;flex-direction:column;row-gap:.1rem}.bizy-toast-wrapper--debug{background-color:var(--bizy-toast-debug-background-color, );border-top-color:var(--bizy-toast-debug-color);border-right-color:var(--bizy-toast-debug-color);border-bottom-color:var(--bizy-toast-debug-color);border-left-color:var(--bizy-toast-debug-color)}.bizy-toast-wrapper__title--debug{color:var(--bizy-toast-debug-color)}.bizy-toast-wrapper--info{background-color:var(--bizy-toast-info-background-color, );border-top-color:var(--bizy-toast-info-color);border-right-color:var(--bizy-toast-info-color);border-bottom-color:var(--bizy-toast-info-color);border-left-color:var(--bizy-toast-info-color)}.bizy-toast-wrapper__title--info{color:var(--bizy-toast-info-color)}.bizy-toast-wrapper--success{background-color:var(--bizy-toast-success-background-color);border-top-color:var(--bizy-toast-success-color);border-right-color:var(--bizy-toast-success-color);border-bottom-color:var(--bizy-toast-success-color);border-left-color:var(--bizy-toast-success-color)}.bizy-toast-wrapper__title--success{color:var(--bizy-toast-success-color)}.bizy-toast-wrapper--warning{background-color:var(--bizy-toast-warning-background-color);border-top-color:var(--bizy-toast-warning-color);border-right-color:var(--bizy-toast-warning-color);border-bottom-color:var(--bizy-toast-warning-color);border-left-color:var(--bizy-toast-warning-color)}.bizy-toast-wrapper__title--warning{color:var(--bizy-toast-warning-color)}.bizy-toast-wrapper--danger{background-color:var(--bizy-toast-danger-background-color);border-top-color:var(--bizy-toast-danger-color);border-right-color:var(--bizy-toast-danger-color);border-bottom-color:var(--bizy-toast-danger-color);border-left-color:var(--bizy-toast-danger-color)}.bizy-toast-wrapper__title--danger{color:var(--bizy-toast-danger-color)}.bizy-toast-wrapper__close-button{border:none;cursor:pointer;align-self:flex-start;background-color:transparent;transition:color .2s;justify-self:flex-start}.bizy-toast-wrapper__close-button #bizy-toast-wrapper-close-svg{height:1rem}.bizy-toast-wrapper__close-button #bizy-toast-wrapper-close-svg-content{fill:var(--bizy-toast-close-button-color)}.bizy-toast-wrapper__close-button:hover #bizy-toast-wrapper-close-svg-content{fill:var(--bizy-toast-close-button-hover-color)}.bizy-toast__progress{width:100%;height:var(--bizy-toast-progress-bar-height);display:inline-block;position:fixed;bottom:0;left:0;right:0;overflow:hidden}.bizy-toast__progress--debug{background-color:var(--bizy-toast-debug-color)}.bizy-toast__progress--info{background-color:var(--bizy-toast-info-color)}.bizy-toast__progress--success{background-color:var(--bizy-toast-success-color)}.bizy-toast__progress--warning{background-color:var(--bizy-toast-warning-color)}.bizy-toast__progress--danger{background-color:var(--bizy-toast-danger-color)}.bizy-toast__progress:after{content:\"\";box-sizing:border-box;width:0;height:var(--bizy-toast-progress-bar-height);background-color:#fff;position:absolute;top:0;left:0;animation:progress var(--bizy-toast-duration) linear infinite}@keyframes progress{0%{width:0}to{width:100%}}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }, { kind: "directive", type: i1.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "ngmodule", type: DialogModule }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyToastWrapperComponent, decorators: [{
             type: Component,
-            args: [{ selector: 'bizy-toast-wrapper', imports: [CommonModule, DialogModule], providers: [BizyToastService], changeDetection: ChangeDetectionStrategy.OnPush, template: "<div class=\"bizy-toast-wrapper bizy-toast-wrapper--{{type}}\">\n\n    <button (click)=\"close()\" (keyup.enter)=\"close()\" class=\"bizy-toast-wrapper__close-button\">\n\n        <svg \n            data-name=\"Cancel button\"\n            id=\"bizy-toast-wrapper-close-svg\" \n            viewBox=\"0 0 200 200\"\n            xmlns=\"http://www.w3.org/2000/svg\">\n            <path id=\"bizy-toast-wrapper-close-svg-content\" d=\"M114,100l49-49a9.9,9.9,0,0,0-14-14L100,86,51,37A9.9,9.9,0,0,0,37,51l49,49L37,149a9.9,9.9,0,0,0,14,14l49-49,49,49a9.9,9.9,0,0,0,14-14Z\"/>\n        </svg>\n\n    </button>\n\n\n    <h3 class=\"bizy-toast-wrapper__title bizy-toast-wrapper__title--{{type}}\" *ngIf=\"title\">{{title}}</h3>\n\n    <h5 class=\"bizy-toast-wrapper__msg\" *ngIf=\"msg\">{{msg}}</h5>\n\n\n    <span class=\"bizy-toast__progress bizy-toast__progress--{{type}}\"></span>\n    \n</div>", styles: [":host{font-size:1rem}.bizy-toast-wrapper{position:relative;width:100%;min-width:20rem;height:fit-content;min-height:3rem;border-left:var(--bizy-toast-border-left);border-top-left-radius:.5rem;border-bottom-left-radius:.5rem;display:flex;flex-direction:column;justify-content:center;row-gap:.5rem;padding:.5rem;box-shadow:0 18px 25px #32325d40,0 3px 6px #0000001a}.bizy-toast-wrapper__title{max-width:min(28rem,60vw)}.bizy-toast-wrapper__msg{max-width:min(30rem,70vw)}.bizy-toast-wrapper--default{background-color:var(--bizy-toast-default-background-color, );border-left-color:var(--bizy-toast-default-color)}.bizy-toast-wrapper__title--default{color:var(--bizy-toast-default-color)}.bizy-toast-wrapper--info{background-color:var(--bizy-toast-info-background-color, );border-left-color:var(--bizy-toast-info-color)}.bizy-toast-wrapper__title--info{color:var(--bizy-toast-info-color)}.bizy-toast-wrapper--success{background-color:var(--bizy-toast-success-background-color);border-left-color:var(--bizy-toast-success-color)}.bizy-toast-wrapper__title--success{color:var(--bizy-toast-success-color)}.bizy-toast-wrapper--warning{background-color:var(--bizy-toast-warning-background-color);border-left-color:var(--bizy-toast-warning-color)}.bizy-toast-wrapper__title--warning{color:var(--bizy-toast-warning-color)}.bizy-toast-wrapper--danger{background-color:var(--bizy-toast-danger-background-color);border-left-color:var(--bizy-toast-danger-color)}.bizy-toast-wrapper__title--danger{color:var(--bizy-toast-danger-color)}.bizy-toast-wrapper__close-button{position:absolute;right:.5rem;top:.5rem;border:none;cursor:pointer;background-color:transparent;transition:color .2s;z-index:1}.bizy-toast-wrapper__close-button #bizy-toast-wrapper-close-svg{height:1rem}.bizy-toast-wrapper__close-button #bizy-toast-wrapper-close-svg-content{fill:var(--bizy-toast-close-button-color)}.bizy-toast-wrapper__close-button:hover #bizy-toast-wrapper-close-svg-content{fill:var(--bizy-toast-close-button-hover-color)}.bizy-toast__progress{width:100%;height:.1rem;display:inline-block;position:absolute;bottom:0;left:0;right:0;overflow:hidden}.bizy-toast__progress--default{background-color:var(--bizy-toast-default-color)}.bizy-toast__progress--info{background-color:var(--bizy-toast-info-color)}.bizy-toast__progress--success{background-color:var(--bizy-toast-success-color)}.bizy-toast__progress--warning{background-color:var(--bizy-toast-warning-color)}.bizy-toast__progress--danger{background-color:var(--bizy-toast-danger-color)}.bizy-toast__progress:after{content:\"\";box-sizing:border-box;width:0;height:.1rem;background-color:#fff;position:absolute;top:0;left:0;animation:progress 2.5s linear infinite}@keyframes progress{0%{width:0}to{width:100%}}\n"] }]
+            args: [{ selector: 'bizy-toast-wrapper', imports: [CommonModule, DialogModule], providers: [BizyToastService], changeDetection: ChangeDetectionStrategy.OnPush, template: "<div class=\"bizy-toast-wrapper bizy-toast-wrapper--{{type}}\">\n\n    <span class=\"bizy-toast-wrapper__content\">\n\n        <h4 class=\"bizy-toast-wrapper__title--{{type}}\" *ngIf=\"title\">{{title}}</h4>\n    \n        <h6 *ngIf=\"msg\">{{msg}}</h6>\n\n    </span>\n\n    <button (click)=\"close()\" (keyup.enter)=\"close()\" class=\"bizy-toast-wrapper__close-button\">\n\n        <svg \n            data-name=\"Cancel button\"\n            id=\"bizy-toast-wrapper-close-svg\" \n            viewBox=\"0 0 200 200\"\n            xmlns=\"http://www.w3.org/2000/svg\">\n            <path id=\"bizy-toast-wrapper-close-svg-content\" d=\"M114,100l49-49a9.9,9.9,0,0,0-14-14L100,86,51,37A9.9,9.9,0,0,0,37,51l49,49L37,149a9.9,9.9,0,0,0,14,14l49-49,49,49a9.9,9.9,0,0,0,14-14Z\"/>\n        </svg>\n\n    </button>\n\n    <span class=\"bizy-toast__progress bizy-toast__progress--{{type}}\"></span>\n    \n</div>", styles: [":host{font-size:1rem}.bizy-toast-wrapper{position:relative;width:100%;min-width:20rem;max-width:min(30rem,80dvw);height:fit-content;min-height:3rem;max-height:95dvh;overflow-y:auto;border-top-width:var(--bizy-toast-border-top-width);border-right-width:var(--bizy-toast-border-right-width);border-bottom-width:var(--bizy-toast-border-bottom-width);border-left-width:var(--bizy-toast-border-left-width);border-top-style:var(--bizy-toast-border-top-style);border-right-style:var(--bizy-toast-border-right-style);border-bottom-style:var(--bizy-toast-border-bottom-style);border-left-style:var(--bizy-toast-border-left-style);border-top-left-radius:var(--bizy-toast-border-top-left-radius);border-top-right-radius:var(--bizy-toast-border-top-right-radius);border-bottom-left-radius:var(--bizy-toast-border-bottom-left-radius);border-bottom-right-radius:var(--bizy-toast-border-bottom-right-radius);display:flex;align-items:center;column-gap:.5rem;padding:.5rem;box-shadow:0 18px 25px #32325d40,0 3px 6px #0000001a}.bizy-toast-wrapper::-webkit-scrollbar{width:.5rem;height:.5rem}.bizy-toast-wrapper::-webkit-scrollbar-thumb{border-radius:1rem;background-color:var(--bizy-toast-scroll-bar-color)}.bizy-toast-wrapper::-webkit-scrollbar-thumb:hover{background-color:var(--bizy-toast-scroll-bar-hover-color)}.bizy-toast-wrapper__content{flex:1;display:flex;flex-direction:column;row-gap:.1rem}.bizy-toast-wrapper--debug{background-color:var(--bizy-toast-debug-background-color, );border-top-color:var(--bizy-toast-debug-color);border-right-color:var(--bizy-toast-debug-color);border-bottom-color:var(--bizy-toast-debug-color);border-left-color:var(--bizy-toast-debug-color)}.bizy-toast-wrapper__title--debug{color:var(--bizy-toast-debug-color)}.bizy-toast-wrapper--info{background-color:var(--bizy-toast-info-background-color, );border-top-color:var(--bizy-toast-info-color);border-right-color:var(--bizy-toast-info-color);border-bottom-color:var(--bizy-toast-info-color);border-left-color:var(--bizy-toast-info-color)}.bizy-toast-wrapper__title--info{color:var(--bizy-toast-info-color)}.bizy-toast-wrapper--success{background-color:var(--bizy-toast-success-background-color);border-top-color:var(--bizy-toast-success-color);border-right-color:var(--bizy-toast-success-color);border-bottom-color:var(--bizy-toast-success-color);border-left-color:var(--bizy-toast-success-color)}.bizy-toast-wrapper__title--success{color:var(--bizy-toast-success-color)}.bizy-toast-wrapper--warning{background-color:var(--bizy-toast-warning-background-color);border-top-color:var(--bizy-toast-warning-color);border-right-color:var(--bizy-toast-warning-color);border-bottom-color:var(--bizy-toast-warning-color);border-left-color:var(--bizy-toast-warning-color)}.bizy-toast-wrapper__title--warning{color:var(--bizy-toast-warning-color)}.bizy-toast-wrapper--danger{background-color:var(--bizy-toast-danger-background-color);border-top-color:var(--bizy-toast-danger-color);border-right-color:var(--bizy-toast-danger-color);border-bottom-color:var(--bizy-toast-danger-color);border-left-color:var(--bizy-toast-danger-color)}.bizy-toast-wrapper__title--danger{color:var(--bizy-toast-danger-color)}.bizy-toast-wrapper__close-button{border:none;cursor:pointer;align-self:flex-start;background-color:transparent;transition:color .2s;justify-self:flex-start}.bizy-toast-wrapper__close-button #bizy-toast-wrapper-close-svg{height:1rem}.bizy-toast-wrapper__close-button #bizy-toast-wrapper-close-svg-content{fill:var(--bizy-toast-close-button-color)}.bizy-toast-wrapper__close-button:hover #bizy-toast-wrapper-close-svg-content{fill:var(--bizy-toast-close-button-hover-color)}.bizy-toast__progress{width:100%;height:var(--bizy-toast-progress-bar-height);display:inline-block;position:fixed;bottom:0;left:0;right:0;overflow:hidden}.bizy-toast__progress--debug{background-color:var(--bizy-toast-debug-color)}.bizy-toast__progress--info{background-color:var(--bizy-toast-info-color)}.bizy-toast__progress--success{background-color:var(--bizy-toast-success-color)}.bizy-toast__progress--warning{background-color:var(--bizy-toast-warning-color)}.bizy-toast__progress--danger{background-color:var(--bizy-toast-danger-color)}.bizy-toast__progress:after{content:\"\";box-sizing:border-box;width:0;height:var(--bizy-toast-progress-bar-height);background-color:#fff;position:absolute;top:0;left:0;animation:progress var(--bizy-toast-duration) linear infinite}@keyframes progress{0%{width:0}to{width:100%}}\n"] }]
         }], ctorParameters: () => [{ type: undefined, decorators: [{
                     type: Inject,
                     args: [DIALOG_DATA]
@@ -7038,7 +7049,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImpo
             args: [{
                     name: 'bizySafe'
                 }]
-        }], ctorParameters: () => [{ type: i1$3.DomSanitizer, decorators: [{
+        }], ctorParameters: () => [{ type: i1$2.DomSanitizer, decorators: [{
                     type: Inject,
                     args: [DomSanitizer]
                 }] }] });

@@ -12,6 +12,7 @@ export declare class BizyToastWrapperComponent {
         title: string;
         msg: string;
         id: string;
+        duration: number;
     }, toast: BizyToastService);
     close(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<BizyToastWrapperComponent, never>;
