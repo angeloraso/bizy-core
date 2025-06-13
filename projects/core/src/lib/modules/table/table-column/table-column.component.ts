@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, inject, ElementRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, inject, ElementRef, HostListener } from '@angular/core';
 
 @Component({
   selector: 'bizy-table-column',
@@ -11,9 +11,15 @@ import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, inject
 export class BizyTableColumnComponent {
   @Input() id: string = `bizy-table-column-${Math.random()}`;
   @Input() customClass: string = '';
+  @Output() contextMenu = new EventEmitter<MouseEvent>();
   @Output() onSelect = new EventEmitter<PointerEvent>();
 
   readonly #elementRef = inject(ElementRef);
+
+  @HostListener('contextmenu', ['$event'])
+  onRightClick(event: MouseEvent) {
+    this.contextMenu.emit(event);
+  }
 
   getId = (): string => {
     return this.id;
