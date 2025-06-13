@@ -5759,8 +5759,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImpo
 class BizyTableColumnComponent {
     id = `bizy-table-column-${Math.random()}`;
     customClass = '';
+    contextMenu = new EventEmitter();
     onSelect = new EventEmitter();
     #elementRef = inject(ElementRef);
+    onRightClick(event) {
+        this.contextMenu.emit(event);
+    }
     getId = () => {
         return this.id;
     };
@@ -5771,7 +5775,7 @@ class BizyTableColumnComponent {
         this.#elementRef.nativeElement.setMarginLeft(margin);
     }
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyTableColumnComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.10", type: BizyTableColumnComponent, isStandalone: true, selector: "bizy-table-column", inputs: { id: "id", customClass: "customClass" }, outputs: { onSelect: "onSelect" }, ngImport: i0, template: "<button \n    type=\"button\"\n    [id]=\"id\"\n    (click)=\"onSelect.emit($event)\"\n    (keyup.enter)=\"onSelect.emit($event)\"\n    class=\"bizy-table-column {{customClass}}\">\n\n    <ng-content></ng-content>\n    \n</button>", styles: [":host{font-size:1rem;flex:1;background-color:inherit;min-height:var(--bizy-table-row-height);display:flex;-webkit-user-select:text;-moz-user-select:text;-ms-user-select:text;user-select:text}:host:has(.bizy-table-column-arrows) .bizy-table-column{cursor:pointer!important}.bizy-table-column{font-size:1rem;min-width:var(--bizy-table-column-min-width);width:100%;cursor:var(--bizy-table-column-cursor);border-top:var(--bizy-table-column-border-top);border-right:var(--bizy-table-column-border-right);border-bottom:var(--bizy-table-column-border-bottom);border-left:var(--bizy-table-column-border-left);background-color:var(--bizy-table-column-background-color);display:flex;align-items:center;justify-content:var(--bizy-table-column-justify-content);column-gap:.3rem;padding-right:.3rem}::ng-deep .bizy-table-column *{text-align:start}::ng-deep .bizy-table-column:hover .bizy-table-column-arrows{display:inline-block}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.10", type: BizyTableColumnComponent, isStandalone: true, selector: "bizy-table-column", inputs: { id: "id", customClass: "customClass" }, outputs: { contextMenu: "contextMenu", onSelect: "onSelect" }, host: { listeners: { "contextmenu": "onRightClick($event)" } }, ngImport: i0, template: "<button \n    type=\"button\"\n    [id]=\"id\"\n    (click)=\"onSelect.emit($event)\"\n    (keyup.enter)=\"onSelect.emit($event)\"\n    class=\"bizy-table-column {{customClass}}\">\n\n    <ng-content></ng-content>\n    \n</button>", styles: [":host{font-size:1rem;flex:1;background-color:inherit;min-height:var(--bizy-table-row-height);display:flex;-webkit-user-select:text;-moz-user-select:text;-ms-user-select:text;user-select:text}:host:has(.bizy-table-column-arrows) .bizy-table-column{cursor:pointer!important}.bizy-table-column{font-size:1rem;min-width:var(--bizy-table-column-min-width);width:100%;cursor:var(--bizy-table-column-cursor);border-top:var(--bizy-table-column-border-top);border-right:var(--bizy-table-column-border-right);border-bottom:var(--bizy-table-column-border-bottom);border-left:var(--bizy-table-column-border-left);background-color:var(--bizy-table-column-background-color);display:flex;align-items:center;justify-content:var(--bizy-table-column-justify-content);column-gap:.3rem;padding-right:.3rem}::ng-deep .bizy-table-column *{text-align:start}::ng-deep .bizy-table-column:hover .bizy-table-column-arrows{display:inline-block}\n"], dependencies: [{ kind: "ngmodule", type: CommonModule }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyTableColumnComponent, decorators: [{
             type: Component,
@@ -5780,8 +5784,13 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImpo
                 type: Input
             }], customClass: [{
                 type: Input
+            }], contextMenu: [{
+                type: Output
             }], onSelect: [{
                 type: Output
+            }], onRightClick: [{
+                type: HostListener,
+                args: ['contextmenu', ['$event']]
             }] } });
 
 class BizyTableHeaderComponent {
