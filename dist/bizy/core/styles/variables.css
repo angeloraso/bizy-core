@@ -325,6 +325,20 @@
     --bizy-tag-danger-color: var(--bizy-dark-danger-color);
     --bizy-tag-padding: 0.1rem 0.3rem;
 
+    --bizy-timeline-color: var(--bizy-info-color);
+    --bizy-timeline-row-gap: 0.5rem;
+    --bizy-timeline-line-background-color: var(--bizy-timeline-color);
+    --bizy-timeline-line-width: 0.2rem;
+    --bizy-timeline-line-min-height: 1rem;
+    --bizy-timeline-event-column-gap: 1rem;
+    --bizy-timeline-bullet-border: 0.2rem solid var(--bizy-timeline-color);
+    --bizy-timeline-bullet-border-color: var(--bizy-info-color);
+    --bizy-timeline-bullet-min-height: 2rem;
+    --bizy-timeline-bullet-min-width: 2rem;
+    --bizy-timeline-bullet-background-color: transparent;
+    --bizy-timeline-bullet-padding: 0.1rem;
+    --bizy-timeline-bullet-section-min-width: 2rem;
+
     --bizy-toast-debug-background-color: #fff;
     --bizy-toast-debug-color: var(--bizy-default-color);
     --bizy-toast-info-background-color: #fff;
