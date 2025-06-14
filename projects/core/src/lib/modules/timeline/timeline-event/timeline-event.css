@@ -43,6 +43,7 @@
 
 
 .bizy-timeline-event-line {
+  height: 100%;
   min-height: var(--bizy-timeline-line-min-height);
   width: var(--bizy-timeline-line-width);
   background-color: var(--bizy-timeline-line-background-color);
