@@ -25,6 +25,7 @@ export * from './slider';
 export * from './table';
 export * from './tabs';
 export * from './tag';
+export * from './timeline';
 export * from './toast';
 export * from './toggle';
 export * from './toolbar';
