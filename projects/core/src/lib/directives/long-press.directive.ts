@@ -1,4 +1,4 @@
-import { Directive, ElementRef, EventEmitter, Inject, Input, OnDestroy, Output } from '@angular/core';
+import { Directive, ElementRef, EventEmitter, inject, Inject, Input, OnDestroy, Output } from '@angular/core';
 import { fromEvent, merge, of, Subscription, timer } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 
@@ -6,20 +6,21 @@ import { filter, map, switchMap } from 'rxjs/operators';
   selector: '[bizyLongPress]',
 })
 export class BizyLongPressDirective implements OnDestroy {
+  readonly #elementRef = inject(ElementRef);
   @Input() threshold = 500;
-  @Output() press = new EventEmitter<void>();
+  @Output() bizyLongPress = new EventEmitter<void>();
   
   #event: Subscription;
   
-  constructor(@Inject(ElementRef) private elementRef: ElementRef) {
-    const mousedown = fromEvent<MouseEvent>(this.elementRef.nativeElement, 'mousedown').pipe(
+  constructor() {
+    const mousedown = fromEvent<MouseEvent>(this.#elementRef.nativeElement, 'mousedown').pipe(
       filter((event) => event.button == 0), // Only allow left button (Primary button)
       map(() => true) // turn on threshold counter
     );
 
-    const touchstart = fromEvent(this.elementRef.nativeElement, 'touchstart').pipe(map(() => true));
+    const touchstart = fromEvent(this.#elementRef.nativeElement, 'touchstart').pipe(map(() => true));
 
-    const touchEnd = fromEvent(this.elementRef.nativeElement, 'touchend').pipe(map(() => false));
+    const touchEnd = fromEvent(this.#elementRef.nativeElement, 'touchend').pipe(map(() => false));
     
     const mouseup = fromEvent<MouseEvent>(window, 'mouseup').pipe(
       filter((event) => event.button == 0), // Only allow left button (Primary button)
@@ -31,7 +32,7 @@ export class BizyLongPressDirective implements OnDestroy {
         switchMap(state => (state ? timer(this.threshold, 100) : of(null))),
         filter(value => Boolean(value))
       )
-      .subscribe(() => this.press.emit());
+      .subscribe(() => this.bizyLongPress.emit());
   }
 
   ngOnDestroy(): void {
