@@ -145,7 +145,7 @@
 
     --bizy-menu-title-background-color: transparent;
     --bizy-menu-title-color: #000;
-    --bizy-menu-title-underline-color: var(--bizy-info-color);
+    --bizy-menu-title-text-decoration: none;
 
     --bizy-menu-padding: 0;
     --bizy-menu-color: #fff;
