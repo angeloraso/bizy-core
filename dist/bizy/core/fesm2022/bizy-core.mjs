@@ -3328,14 +3328,20 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImpo
             }] } });
 
 class BizyMenuTitleComponent {
+    id = `bizy-menu-title-${Math.random()}`;
     customClass = '';
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyMenuTitleComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.10", type: BizyMenuTitleComponent, isStandalone: true, selector: "bizy-menu-title", inputs: { customClass: "customClass" }, ngImport: i0, template: "<span class=\"bizy-menu-title {{customClass}}\">\n    <ng-content></ng-content>\n</span>\n", styles: [":host{font-size:1rem}.bizy-menu-title{background-color:var(--bizy-menu-title-background-color);color:var(--bizy-menu-title-color);padding:.5rem;cursor:default;text-decoration:underline .1rem var(--bizy-menu-title-underline-color);text-underline-offset:.3rem;display:flex;align-items:center}\n"], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "19.2.10", type: BizyMenuTitleComponent, isStandalone: true, selector: "bizy-menu-title", inputs: { id: "id", customClass: "customClass" }, host: { properties: { "id": "id", "class": "customClass" } }, ngImport: i0, template: "<ng-content></ng-content>\n", styles: [":host{font-size:1rem;background-color:var(--bizy-menu-title-background-color);color:var(--bizy-menu-title-color);padding:.5rem;cursor:default;text-decoration:var(--bizy-menu-title-text-decoration);text-underline-offset:.3rem;display:flex;align-items:center}\n"], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyMenuTitleComponent, decorators: [{
             type: Component,
-            args: [{ selector: 'bizy-menu-title', changeDetection: ChangeDetectionStrategy.OnPush, template: "<span class=\"bizy-menu-title {{customClass}}\">\n    <ng-content></ng-content>\n</span>\n", styles: [":host{font-size:1rem}.bizy-menu-title{background-color:var(--bizy-menu-title-background-color);color:var(--bizy-menu-title-color);padding:.5rem;cursor:default;text-decoration:underline .1rem var(--bizy-menu-title-underline-color);text-underline-offset:.3rem;display:flex;align-items:center}\n"] }]
-        }], propDecorators: { customClass: [{
+            args: [{ selector: 'bizy-menu-title', changeDetection: ChangeDetectionStrategy.OnPush, host: {
+                        '[id]': 'id',
+                        '[class]': 'customClass'
+                    }, template: "<ng-content></ng-content>\n", styles: [":host{font-size:1rem;background-color:var(--bizy-menu-title-background-color);color:var(--bizy-menu-title-color);padding:.5rem;cursor:default;text-decoration:var(--bizy-menu-title-text-decoration);text-underline-offset:.3rem;display:flex;align-items:center}\n"] }]
+        }], propDecorators: { id: [{
+                type: Input
+            }], customClass: [{
                 type: Input
             }] } });
 
