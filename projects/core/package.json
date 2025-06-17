@@ -1,6 +1,6 @@
 {
   "name": "@bizy/core",
-  "version": "19.16.1",
+  "version": "19.17.0",
   "peerDependencies": {
     "@angular/animations": "19.2.10",
     "@angular/cdk": "19.2.16",
