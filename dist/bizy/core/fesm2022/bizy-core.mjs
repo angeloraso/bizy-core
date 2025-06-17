@@ -7623,43 +7623,39 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImpo
             }] } });
 
 class BizyLongPressDirective {
-    elementRef;
+    #elementRef = inject(ElementRef);
     threshold = 500;
-    press = new EventEmitter();
+    bizyLongPress = new EventEmitter();
     #event;
-    constructor(elementRef) {
-        this.elementRef = elementRef;
-        const mousedown = fromEvent(this.elementRef.nativeElement, 'mousedown').pipe(filter$1((event) => event.button == 0), // Only allow left button (Primary button)
+    constructor() {
+        const mousedown = fromEvent(this.#elementRef.nativeElement, 'mousedown').pipe(filter$1((event) => event.button == 0), // Only allow left button (Primary button)
         map(() => true) // turn on threshold counter
         );
-        const touchstart = fromEvent(this.elementRef.nativeElement, 'touchstart').pipe(map(() => true));
-        const touchEnd = fromEvent(this.elementRef.nativeElement, 'touchend').pipe(map(() => false));
+        const touchstart = fromEvent(this.#elementRef.nativeElement, 'touchstart').pipe(map(() => true));
+        const touchEnd = fromEvent(this.#elementRef.nativeElement, 'touchend').pipe(map(() => false));
         const mouseup = fromEvent(window, 'mouseup').pipe(filter$1((event) => event.button == 0), // Only allow left button (Primary button)
         map(() => false) // reset threshold counter
         );
         this.#event = merge(mousedown, mouseup, touchstart, touchEnd)
             .pipe(switchMap(state => (state ? timer(this.threshold, 100) : of(null))), filter$1(value => Boolean(value)))
-            .subscribe(() => this.press.emit());
+            .subscribe(() => this.bizyLongPress.emit());
     }
     ngOnDestroy() {
         if (this.#event) {
             this.#event.unsubscribe();
         }
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyLongPressDirective, deps: [{ token: ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
-    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "19.2.10", type: BizyLongPressDirective, isStandalone: true, selector: "[bizyLongPress]", inputs: { threshold: "threshold" }, outputs: { press: "press" }, ngImport: i0 });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyLongPressDirective, deps: [], target: i0.ɵɵFactoryTarget.Directive });
+    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "19.2.10", type: BizyLongPressDirective, isStandalone: true, selector: "[bizyLongPress]", inputs: { threshold: "threshold" }, outputs: { bizyLongPress: "bizyLongPress" }, ngImport: i0 });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyLongPressDirective, decorators: [{
             type: Directive,
             args: [{
                     selector: '[bizyLongPress]',
                 }]
-        }], ctorParameters: () => [{ type: i0.ElementRef, decorators: [{
-                    type: Inject,
-                    args: [ElementRef]
-                }] }], propDecorators: { threshold: [{
+        }], ctorParameters: () => [], propDecorators: { threshold: [{
                 type: Input
-            }], press: [{
+            }], bizyLongPress: [{
                 type: Output
             }] } });
 
