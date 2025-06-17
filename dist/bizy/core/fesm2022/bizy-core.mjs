@@ -2,8 +2,8 @@ import * as i0 from '@angular/core';
 import { EventEmitter, ChangeDetectorRef, Output, Input, Inject, ChangeDetectionStrategy, Component, NgModule, inject, Renderer2, ElementRef, Injectable, Directive, ViewChild, ContentChildren, ContentChild, Pipe, ViewContainerRef, TemplateRef, RendererFactory2, HostListener, Host } from '@angular/core';
 import * as i1 from '@angular/common';
 import { CommonModule, DOCUMENT, registerLocaleData, DatePipe } from '@angular/common';
-import { Subject, Subscription, BehaviorSubject, filter, take, skip, auditTime, throttleTime, debounceTime as debounceTime$1, interval, fromEvent, merge, timer, of } from 'rxjs';
-import { debounceTime, distinctUntilChanged, takeUntil, map, filter as filter$1, switchMap, take as take$1 } from 'rxjs/operators';
+import { Subject, Subscription, BehaviorSubject, filter, take, skip, auditTime, throttleTime, debounceTime as debounceTime$1, interval, fromEvent, merge } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil, map, filter as filter$1, take as take$1 } from 'rxjs/operators';
 import * as echarts from 'echarts';
 import html2canvas from 'html2canvas';
 import * as i2 from 'angular-calendar';
@@ -7623,40 +7623,57 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImpo
             }] } });
 
 class BizyLongPressDirective {
-    #elementRef = inject(ElementRef);
     threshold = 500;
     bizyLongPress = new EventEmitter();
-    #event;
-    constructor() {
-        const mousedown = fromEvent(this.#elementRef.nativeElement, 'mousedown').pipe(filter$1((event) => event.button == 0), // Only allow left button (Primary button)
-        map(() => true) // turn on threshold counter
-        );
-        const touchstart = fromEvent(this.#elementRef.nativeElement, 'touchstart').pipe(map(() => true));
-        const touchEnd = fromEvent(this.#elementRef.nativeElement, 'touchend').pipe(map(() => false));
-        const mouseup = fromEvent(window, 'mouseup').pipe(filter$1((event) => event.button == 0), // Only allow left button (Primary button)
-        map(() => false) // reset threshold counter
-        );
-        this.#event = merge(mousedown, mouseup, touchstart, touchEnd)
-            .pipe(switchMap(state => (state ? timer(this.threshold, 100) : of(null))), filter$1(value => Boolean(value)))
-            .subscribe(() => this.bizyLongPress.emit());
+    #pressTimeout = null;
+    onPressStart(event) {
+        this.clearTimeout(); // Clear any existing timeout
+        this.#pressTimeout = setTimeout(() => {
+            this.bizyLongPress.emit(event);
+        }, this.threshold);
     }
-    ngOnDestroy() {
-        if (this.#event) {
-            this.#event.unsubscribe();
+    onPressEnd() {
+        this.clearTimeout();
+    }
+    clearTimeout() {
+        if (this.#pressTimeout) {
+            clearTimeout(this.#pressTimeout);
+            this.#pressTimeout = null;
         }
     }
+    ngOnDestroy() {
+        this.clearTimeout();
+    }
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyLongPressDirective, deps: [], target: i0.ɵɵFactoryTarget.Directive });
-    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "19.2.10", type: BizyLongPressDirective, isStandalone: true, selector: "[bizyLongPress]", inputs: { threshold: "threshold" }, outputs: { bizyLongPress: "bizyLongPress" }, ngImport: i0 });
+    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "19.2.10", type: BizyLongPressDirective, isStandalone: true, selector: "[bizyLongPress]", inputs: { threshold: "threshold" }, outputs: { bizyLongPress: "bizyLongPress" }, host: { listeners: { "mousedown": "onPressStart($event)", "touchstart": "onPressStart($event)", "mouseup": "onPressEnd()", "mouseleave": "onPressEnd()", "touchend": "onPressEnd()", "touchcancel": "onPressEnd()" } }, ngImport: i0 });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.10", ngImport: i0, type: BizyLongPressDirective, decorators: [{
             type: Directive,
             args: [{
                     selector: '[bizyLongPress]',
                 }]
-        }], ctorParameters: () => [], propDecorators: { threshold: [{
+        }], propDecorators: { threshold: [{
                 type: Input
             }], bizyLongPress: [{
                 type: Output
+            }], onPressStart: [{
+                type: HostListener,
+                args: ['mousedown', ['$event']]
+            }, {
+                type: HostListener,
+                args: ['touchstart', ['$event']]
+            }], onPressEnd: [{
+                type: HostListener,
+                args: ['mouseup']
+            }, {
+                type: HostListener,
+                args: ['mouseleave']
+            }, {
+                type: HostListener,
+                args: ['touchend']
+            }, {
+                type: HostListener,
+                args: ['touchcancel']
             }] } });
 
 class BizyOnlyNumbersDirective {
