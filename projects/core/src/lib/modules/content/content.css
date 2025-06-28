@@ -1,0 +1,10 @@
+:host {
+  flex: 1;
+  padding: var(--bizy-content-padding);
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--bizy-content-row-gap);
+}

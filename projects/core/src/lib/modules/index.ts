@@ -6,6 +6,7 @@ export * from './button';
 export * from './calendar';
 export * from './card';
 export * from './checkbox';
+export * from './content';
 export * from './date-picker';
 export * from './file-uploader';
 export * from './filter';

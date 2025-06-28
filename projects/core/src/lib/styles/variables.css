@@ -81,6 +81,9 @@
     --bizy-checkbox-hover-color: var(--bizy-accent-hover-color);
     --bizy-checkbox-color: var(--bizy-accent-color);
 
+    --bizy-content-padding: 0.5rem;
+    --bizy-content-row-gap: 0.7rem;
+
     --bizy-copy-to-clipboard-default-color: #2484c6;
     --bizy-copy-to-clipboard-success-color: #5fbc5a;
     --bizy-copy-to-clipboard-danger-color: #e76565;
