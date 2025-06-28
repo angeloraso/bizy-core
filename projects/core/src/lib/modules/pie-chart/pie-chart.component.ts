@@ -10,7 +10,6 @@ import {
   EventEmitter,
   DOCUMENT
 } from '@angular/core';
-import * as echarts from 'echarts';
 import { IBizyPieChartData } from './pie-chart.types';
 import { CommonModule } from '@angular/common';
 import html2canvas from 'html2canvas';
@@ -194,29 +193,31 @@ export class BizyPieChartComponent {
         series
       };
       
-      this.#echarts = echarts.init(this.#chartContainer);
-      this.#echarts.setOption(option);
-      this.#echarts.on('click', params => {
-        this.onSelect.emit(params.name)
-      });
-
-      this.#resizeObserver = new ResizeObserver(() => this.#resize$.next());
-      const resizeRef = this.resizeRef ? this.resizeRef : this.renderer.parentNode(this.elementRef.nativeElement) ? this.renderer.parentNode(this.elementRef.nativeElement) : this.elementRef.nativeElement;
-      this.#resizeObserver.observe(resizeRef);
-      this.#subscription.add(this.#resize$.pipe(skip(1), auditTime(300), throttleTime(500)).subscribe(() => {
-        this.#deleteChartContainer();
-        this.#createChartContainer();
-
-        if (!this.#chartContainer) {
-          return;
-        }
-
+      import('echarts').then(echarts => {
         this.#echarts = echarts.init(this.#chartContainer);
-        this.#echarts.setOption({...option, series: option.series.map(_serie => { return {..._serie, data: this.#data}})});
+        this.#echarts.setOption(option);
         this.#echarts.on('click', params => {
           this.onSelect.emit(params.name)
         });
-      }));
+  
+        this.#resizeObserver = new ResizeObserver(() => this.#resize$.next());
+        const resizeRef = this.resizeRef ? this.resizeRef : this.renderer.parentNode(this.elementRef.nativeElement) ? this.renderer.parentNode(this.elementRef.nativeElement) : this.elementRef.nativeElement;
+        this.#resizeObserver.observe(resizeRef);
+        this.#subscription.add(this.#resize$.pipe(skip(1), auditTime(300), throttleTime(500)).subscribe(() => {
+          this.#deleteChartContainer();
+          this.#createChartContainer();
+  
+          if (!this.#chartContainer) {
+            return;
+          }
+  
+          this.#echarts = echarts.init(this.#chartContainer);
+          this.#echarts.setOption({...option, series: option.series.map(_serie => { return {..._serie, data: this.#data}})});
+          this.#echarts.on('click', params => {
+            this.onSelect.emit(params.name)
+          });
+        }));
+      })
     }));
   }
 
