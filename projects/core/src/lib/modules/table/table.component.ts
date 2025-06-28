@@ -1,8 +1,8 @@
-import { Component, Input, ChangeDetectionStrategy, ContentChildren, QueryList, ContentChild, Inject, ChangeDetectorRef, ViewChild, AfterContentInit, ElementRef, Renderer2 } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, ContentChildren, QueryList, ContentChild, Inject, ChangeDetectorRef, ViewChild, AfterContentInit, ElementRef, Renderer2, DOCUMENT } from '@angular/core';
 import { BizyTableHeaderComponent } from './table-header/table-header.component';
 import { BizyTableFooterComponent } from './table-footer/table-footer.component';
 import { BizyTableRowComponent } from './table-row/table-row.component';
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Subject, Subscription, debounceTime, fromEvent, skip } from 'rxjs';
 import { BizyTableScrollingComponent } from './table-scrolling/table-scrolling.component';
 import { BizyTableScrollingDirective } from './table-scrolling/table-scrolling.directive';

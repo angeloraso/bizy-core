@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, EventEmitter, Inject, Input, Output, QueryList } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, EventEmitter, Inject, Input, Output, QueryList, DOCUMENT } from '@angular/core';
 import { BizyFilterSectionComponent } from './filter-section/filter-section.component';
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { BizyFilterSectionsComponent } from './filter-sections/filter-sections.component';

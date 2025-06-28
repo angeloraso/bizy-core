@@ -1,7 +1,7 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, DOCUMENT } from '@angular/core';
 import { BizyToastWrapperComponent } from './toast-wrapper/toast-wrapper.component';
 import { Dialog, DialogConfig, DialogRef } from '@angular/cdk/dialog';
-import { DOCUMENT } from '@angular/common';
+
 
 export enum TOAST {
   DEBUG = 'debug',

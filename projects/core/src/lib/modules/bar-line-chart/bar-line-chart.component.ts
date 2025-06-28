@@ -9,11 +9,12 @@ import {
   Input,
   OnDestroy,
   Output,
-  Renderer2
+  Renderer2,
+  DOCUMENT
 } from '@angular/core';
 import * as echarts from 'echarts';
 import { IBizyBarLineChartData } from './bar-line-chart.types';
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import html2canvas from 'html2canvas';
 import { auditTime, BehaviorSubject, filter, skip, Subject, Subscription, take, throttleTime } from 'rxjs';
 

@@ -1,5 +1,5 @@
-import { inject } from '@angular/core';
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { inject, DOCUMENT } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';

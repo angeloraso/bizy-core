@@ -9,10 +9,11 @@ import {
   Input,
   OnDestroy,
   ChangeDetectorRef,
+  DOCUMENT
 } from '@angular/core';
 import { BizyTableRowComponent } from '../table-row/table-row.component';
 import { BizyTableScrollingDirective } from './table-scrolling.directive';
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 
 @Component({

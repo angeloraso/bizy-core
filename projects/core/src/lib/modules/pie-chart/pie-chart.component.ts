@@ -7,11 +7,12 @@ import {
   Input,
   Output,
   Renderer2,
-  EventEmitter
+  EventEmitter,
+  DOCUMENT
 } from '@angular/core';
 import * as echarts from 'echarts';
 import { IBizyPieChartData } from './pie-chart.types';
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import html2canvas from 'html2canvas';
 import { BehaviorSubject, Subject, Subscription, auditTime, filter, skip, take, throttleTime } from 'rxjs';
 

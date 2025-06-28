@@ -1,11 +1,11 @@
 import Uppy, { ErrorResponse, SuccessResponse, UppyFile } from '@uppy/core';
 import { Observable, Subject } from 'rxjs';
-import { Injectable, Renderer2, inject } from '@angular/core';
+import { Injectable, Renderer2, inject, DOCUMENT } from '@angular/core';
 import es_ES from '@uppy/locales/lib/es_ES';
 import en_US from '@uppy/locales/lib/en_US';
 import Dashboard from '@uppy/dashboard';
 import XHRUpload from '@uppy/xhr-upload';
-import { DOCUMENT } from '@angular/common';
+
 
 const ES = { 
   ...es_ES,

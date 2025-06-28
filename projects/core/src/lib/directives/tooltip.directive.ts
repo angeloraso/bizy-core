@@ -1,5 +1,5 @@
-import { DOCUMENT } from '@angular/common';
-import { Directive, Input, ElementRef, HostListener, Renderer2, Inject, OnDestroy, inject } from '@angular/core';
+
+import { Directive, Input, ElementRef, HostListener, Renderer2, Inject, OnDestroy, inject, DOCUMENT } from '@angular/core';
 
 @Directive({
   selector: '[bizyTooltip]'

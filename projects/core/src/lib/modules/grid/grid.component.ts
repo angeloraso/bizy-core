@@ -1,5 +1,5 @@
-import { Component, Input, ChangeDetectionStrategy, ContentChild, Inject, ChangeDetectorRef, ViewChild, AfterContentInit, ElementRef, Renderer2, TemplateRef, ViewContainerRef } from '@angular/core';
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { Component, Input, ChangeDetectionStrategy, ContentChild, Inject, ChangeDetectorRef, ViewChild, AfterContentInit, ElementRef, Renderer2, TemplateRef, ViewContainerRef, DOCUMENT } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Subject, Subscription, debounceTime } from 'rxjs';
 import { BizyGridForDirective } from './grid.directive';
 import { ScrollingModule } from '@angular/cdk/scrolling';

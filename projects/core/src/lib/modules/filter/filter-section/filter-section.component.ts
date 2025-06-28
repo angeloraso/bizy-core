@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, ContentChildren, QueryList, Inject, ContentChild, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, ContentChildren, QueryList, Inject, ContentChild, ChangeDetectorRef, DOCUMENT } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { DOCUMENT } from '@angular/common';
+
 import { BizyFilterSectionRangeOptionComponent } from '../filter-section-range-option/filter-section-range-option.component';
 import { BizyFilterSectionCheckboxOptionComponent } from '../filter-section-checkbox-option/filter-section-checkbox-option.component';
 import { BizyFilterSectionSearchOptionComponent } from '../filter-section-search-option/filter-section-search-option.component';

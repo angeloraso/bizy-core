@@ -7,14 +7,14 @@
     "build": "ng build core"
   },
   "dependencies": {
-    "@angular/animations": "19.2.10",
+    "@angular/animations": "20.0.5",
     "@angular/cdk": "19.2.16",
-    "@angular/common": "19.2.10",
-    "@angular/core": "19.2.10",
-    "@angular/forms": "19.2.10",
-    "@angular/platform-browser": "19.2.10",
-    "@angular/platform-browser-dynamic": "19.2.10",
-    "@angular/router": "19.2.10",
+    "@angular/common": "20.0.5",
+    "@angular/core": "20.0.5",
+    "@angular/forms": "20.0.5",
+    "@angular/platform-browser": "20.0.5",
+    "@angular/platform-browser-dynamic": "20.0.5",
+    "@angular/router": "20.0.5",
     "@ngx-translate/core": "16.0.4",
     "@uppy/core": "3.13.1",
     "@uppy/dashboard": "3.8.3",
@@ -35,12 +35,12 @@
     "zone.js": "0.15.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "19.2.12",
-    "@angular/cli": "19.2.12",
-    "@angular/compiler": "19.2.10",
-    "@angular/compiler-cli": "19.2.10",
+    "@angular/build": "^20.0.4",
+    "@angular/cli": "20.0.4",
+    "@angular/compiler": "20.0.5",
+    "@angular/compiler-cli": "20.0.5",
     "@types/node": "22.15.18",
-    "ng-packagr": "19.2.2",
+    "ng-packagr": "20.0.1",
     "ts-node": "10.9.2",
     "typescript": "5.8.3"
   }
