@@ -16,7 +16,7 @@ export class BizyToastService {
   readonly #document = inject(DOCUMENT);
   readonly #dialog = inject(Dialog);
 
-  static toasts = new Set<DialogRef<BizyToastWrapperComponent>>();
+  static toasts: Array<{ref: DialogRef<BizyToastWrapperComponent>, element: HTMLElement}> = [];
   
   duration: number = 3000;
   defaultDebugTitle = 'Ha sucedido un evento';
@@ -48,7 +48,34 @@ export class BizyToastService {
       panelClass: ['bizy-toast', 'bizy-toast--in'] 
     } as DialogConfig<unknown, DialogRef<BizyToastWrapperComponent>>));
 
-    BizyToastService.toasts.add(toastRef);
+    setTimeout(() => {
+      const container = this.#document.getElementById(id) as HTMLElement;
+
+      if (!container || !container.parentElement) {
+        return;
+      }
+
+      const offset = this.#calculateOffset();
+      container.parentElement.style.top = `${offset}px`;
+
+      BizyToastService.toasts.push({ref: toastRef, element: container.parentElement});
+    }, 100);
+  }
+
+  #calculateOffset = (): number => {
+    let offset = 10;
+    for (const toast of BizyToastService.toasts) {
+      offset += toast.element.offsetHeight + 10;
+    }
+    return offset;
+  }
+
+  #repositionToasts = () => {
+    let offset = 10;
+    for (const toast of BizyToastService.toasts) {
+      toast.element.style.top = `${offset}px`;
+      offset += toast.element.offsetHeight + 10;
+    }
   }
 
   config(data: {
@@ -114,16 +141,16 @@ export class BizyToastService {
       return;
     }
 
-    let toastRef: DialogRef<BizyToastWrapperComponent> | null = null;
-    toastRef = Array.from(BizyToastService.toasts).find(_toastRef => _toastRef.id === id);
+    const toast = BizyToastService.toasts.find(_toastRef => _toastRef.ref.id === id);
 
-    if (toastRef) {
-      toastRef.removePanelClass('bizy-toast--in');
-      toastRef.addPanelClass('bizy-toast--out');
+    if (toast.ref) {
+      toast.ref.removePanelClass('bizy-toast--in');
+      toast.ref.addPanelClass('bizy-toast--out');
 
       setTimeout(() => {
-        toastRef.close();
-        BizyToastService.toasts.delete(toastRef);
+        toast.ref.close();
+        BizyToastService.toasts = BizyToastService.toasts.filter(t => t.ref !== toast.ref);
+        this.#repositionToasts();
       }, 500);
     }
   }
