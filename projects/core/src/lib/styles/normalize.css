@@ -7,6 +7,10 @@ body {
     margin: 0;
     font-family: var(--bizy-font-family);
     font-size: clamp(12px, 1vmax, 16px) !important;
+    padding-top: env(safe-area-inset-top);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
 }
 
 p,
