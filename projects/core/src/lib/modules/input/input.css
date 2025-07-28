@@ -96,7 +96,7 @@
     padding-block: 0;
     padding-inline: 0;
     padding: 0 0 0.2rem;
-    font-size: 1rem;
+    font-size: var(--bizy-input-font-size);
 }
 
 .bizy-input__content__input:focus {

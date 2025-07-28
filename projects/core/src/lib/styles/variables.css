@@ -132,6 +132,7 @@
     --bizy-input-option-hover-background-color: var(--bizy-hover-color);
     --bizy-input-option-selected-color: #fff;
     --bizy-input-option-selected-background-color: var(--bizy-info-color);
+    --bizy-input-font-size: 1rem;
 
     --bizy-list-height: fit-content;
     --bizy-list-width: 100%;
