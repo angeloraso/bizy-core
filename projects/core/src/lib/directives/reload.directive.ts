@@ -10,7 +10,7 @@ import {
   selector: '[bizyReload]'
 })
 export class BizyReloadDirective {
-  @Input() threshold: number = 200;
+  @Input() bizyReloadThreshold: number = 200;
   @Output() bizyReload = new EventEmitter<void>();
 
   #startY: number | null = null;
@@ -31,7 +31,7 @@ export class BizyReloadDirective {
 
     const deltaY = this.#currentY - this.#startY;
 
-    if (deltaY > this.threshold) {
+    if (deltaY > this.bizyReloadThreshold) {
       this.#startY = null;
       this.bizyReload.emit();
     }
