@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Subject, Subscription, debounceTime } from 'rxjs';
 import { BizyGridForDirective } from './grid.directive';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { BizyGridRowComponent } from './grid-row/grid-row.component';
-
 @Component({
   selector: 'bizy-grid',
   templateUrl: './grid.html',
@@ -13,6 +13,7 @@ import { BizyGridRowComponent } from './grid-row/grid-row.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyGridComponent implements AfterContentInit {
+  @ViewChild('cdkVirtualScroll') private virtualScroll: CdkVirtualScrollViewport;
   @ViewChild('gridScrollingContent') content: TemplateRef<object>;
   @ContentChild(BizyGridForDirective) gridDirective: BizyGridForDirective;
   @Input() resizeRef: ElementRef | null = null;
@@ -128,6 +129,10 @@ export class BizyGridComponent implements AfterContentInit {
 
   trackById(index: number, item: any): any {
     return item?.id ?? index;
+  }
+
+  scrollTo(index: number, behavior: 'auto' | 'instant' | 'smooth' = 'smooth') {
+    this.virtualScroll.scrollToIndex(index, behavior);
   }
 
   ngOnDestroy() {
