@@ -17,6 +17,7 @@ export * from './list';
 export * from './menu';
 export * from './pie-chart';
 export * from './popup';
+export * from './progress-bar';
 export * from './radio';
 export * from './section';
 export * from './select';

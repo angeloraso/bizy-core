@@ -183,6 +183,11 @@
     --bizy-popup-full-screen-close-button-color: var(--bizy-default-color);
     --bizy-popup-full-screen-close-button-hover-color: var(--bizy-danger-color);
 
+    --bizy-progress-bar-height: 0.2rem;
+    --bizy-progress-bar-background-color: var(--bizy-light-default-color);
+    --bizy-progress-bar-border-radius: 1rem;
+    --bizy-progress-bar-progress-color: var(--bizy-accent-color); 
+
     --bizy-radio-color: var(--bizy-accent-color);
 
     --bizy-section-height: fit-content;
