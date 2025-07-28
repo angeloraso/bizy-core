@@ -165,6 +165,7 @@
     --bizy-popup-width: fit-content;
     --bizy-popup-max-width: 90vw;
     --bizy-popup-padding: 0.5rem;
+    --bizy-popup-border-radius: 0.3rem;
     --bizy-popup-drag-button-color: var(--bizy-default-color);
     --bizy-popup-drag-button-border: 0.1rem solid #ccc;
     --bizy-popup-drag-button-background-color: #fff;

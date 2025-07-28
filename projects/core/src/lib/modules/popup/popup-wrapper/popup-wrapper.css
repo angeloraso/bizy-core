@@ -15,6 +15,7 @@
     min-width: var(--bizy-popup-min-width);
     width: var(--bizy-popup-width);
     max-width: var(--bizy-popup-max-width);
+    border-radius: var(--bizy-popup-border-radius);
 }
 
 .bizy-popup-wrapper__drag-button {
