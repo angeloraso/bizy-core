@@ -5,19 +5,18 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Inject,
   Input,
   OnDestroy,
   Output,
   Renderer2,
-  DOCUMENT
+  DOCUMENT,
+  inject
 } from '@angular/core';
 import { IBizyBarLineChartData } from './bar-line-chart.types';
 import { CommonModule } from '@angular/common';
 import html2canvas from 'html2canvas';
 import { auditTime, BehaviorSubject, filter, skip, Subject, Subscription, take, throttleTime } from 'rxjs';
 
-const MIN_CHART_SIZE = 350 // px;
 const Y_AXIS_OFFSET = 80;
 const GRID_BOTTOM = 30;
 @Component({
@@ -27,6 +26,11 @@ const GRID_BOTTOM = 30;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyBarLineChartComponent implements OnDestroy, AfterViewInit {
+  readonly #elementRef = inject(ElementRef);
+  readonly #document = inject(DOCUMENT);
+  readonly #ref = inject(ChangeDetectorRef);
+  readonly #renderer = inject(Renderer2);
+
   @Input() resizeRef: HTMLElement | null = null;
   @Input() tooltip: boolean = true;
   @Input() download: {hide?: boolean, label: string, name: string} = {hide: false, label: 'Descargar', name: 'Bizy'};
@@ -39,7 +43,6 @@ export class BizyBarLineChartComponent implements OnDestroy, AfterViewInit {
 
   #echarts: echarts.ECharts | null = null
 
-  #mutationObserver: MutationObserver | null = null;
   #resizeObserver: ResizeObserver | null = null;
   #subscription = new Subscription();
   #chartContainer: HTMLDivElement | null = null;
@@ -52,22 +55,8 @@ export class BizyBarLineChartComponent implements OnDestroy, AfterViewInit {
   #chartStacks: Array<string> = [];
   #chartNames: Array<string> = [];
 
-  constructor(
-    @Inject(ElementRef) private elementRef: ElementRef,
-    @Inject(DOCUMENT) private document: Document,
-    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef,
-    @Inject(Renderer2) private renderer: Renderer2
-  ) {}
-
   ngAfterViewInit() {
-    this.#mutationObserver = new MutationObserver(() => {
-      if (this.elementRef && this.elementRef.nativeElement && (this.elementRef.nativeElement.offsetWidth || this.elementRef.nativeElement.offsetHeight)) {
-        this.#afterViewInit.next(true);
-        this.#mutationObserver.disconnect();
-      }
-    });
-
-    this.#mutationObserver.observe(this.document.body, { childList: true, subtree: true });
+    this.#afterViewInit.next(true);
   }
 
   @Input() set data(data: Array<IBizyBarLineChartData>) {
@@ -235,9 +224,9 @@ export class BizyBarLineChartComponent implements OnDestroy, AfterViewInit {
         data: legends
       };
 
-      const textColor = getComputedStyle(this.document.documentElement).getPropertyValue('--bizy-tooltip-color') ?? '#000';
-      const textBackgroundColor = getComputedStyle(this.document.documentElement).getPropertyValue('--bizy-tooltip-background-color') ?? '#fff';
-      const borderColor = getComputedStyle(this.document.documentElement).getPropertyValue('--bizy-tooltip-border-color') ?? '#fff';
+      const textColor = getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-tooltip-color') ?? '#000';
+      const textBackgroundColor = getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-tooltip-background-color') ?? '#fff';
+      const borderColor = getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-tooltip-border-color') ?? '#fff';
 
       const toolbox = {
         show: true,
@@ -275,12 +264,12 @@ export class BizyBarLineChartComponent implements OnDestroy, AfterViewInit {
 
               setTimeout(() => {
                   html2canvas(this.#chartContainer).then(canvas => {
-                      var link = document.createElement('a');
+                      var link = this.#renderer.createElement('a');
                       link.href = canvas.toDataURL('image/png');
                       link.download = `${this.download.name}.png`;
-                      this.renderer.appendChild(this.document.body, link);
+                      this.#renderer.appendChild(this.#document.body, link);
                       link.click();
-                      this.renderer.removeChild(this.document.body, link);
+                      this.#renderer.removeChild(this.#document.body, link);
                       restoreLegendType(this.#echarts);
                       this.onDownload.emit();
                   });
@@ -317,7 +306,7 @@ export class BizyBarLineChartComponent implements OnDestroy, AfterViewInit {
         });
   
         this.#resizeObserver = new ResizeObserver(() => this.#resize$.next());
-        const resizeRef = this.resizeRef ? this.resizeRef : this.renderer.parentNode(this.elementRef.nativeElement) ? this.renderer.parentNode(this.elementRef.nativeElement) : this.elementRef.nativeElement;
+        const resizeRef = this.resizeRef ? this.resizeRef : this.#renderer.parentNode(this.#elementRef.nativeElement) ? this.#renderer.parentNode(this.#elementRef.nativeElement) : this.#elementRef.nativeElement;
         this.#resizeObserver.observe(resizeRef);
         this.#subscription.add(this.#resize$.pipe(skip(1), auditTime(300), throttleTime(500)).subscribe(() => {
           this.#deleteChartContainer();
@@ -338,51 +327,52 @@ export class BizyBarLineChartComponent implements OnDestroy, AfterViewInit {
   }
 
   #createChartContainer = () => {
-    if (this.#chartContainer || !this.elementRef || !this.elementRef.nativeElement) {
+    if (this.#chartContainer || !this.#elementRef || !this.#elementRef.nativeElement) {
       return;
     }
 
-    let elementWidth = this.elementRef.nativeElement.offsetWidth || MIN_CHART_SIZE;
-    let elementHeight = this.elementRef.nativeElement.offsetHeight || MIN_CHART_SIZE;
+    let elementWidth = this.#elementRef.nativeElement.offsetWidth;
+    let elementHeight = this.#elementRef.nativeElement.offsetHeight;
 
-    let minWidth = MIN_CHART_SIZE;
-    let minHeight = MIN_CHART_SIZE;
-    const barChartMinWidth = getComputedStyle(this.document.body).getPropertyValue('--bizy-chart-min-width');
-    const barChartMinHeight = getComputedStyle(this.document.body).getPropertyValue('--bizy-chart-min-height');
-    if (Number(barChartMinWidth)) {
-      minWidth = Number(barChartMinWidth);
-    }
-    if (Number(barChartMinHeight)) {
-      minHeight = Number(barChartMinHeight);
-    }
+    let minWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-line-chart-min-width') || 0;
+    let minHeight = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-line-chart-min-height') || 0;
     
-    const width = Math.max(elementWidth, minWidth);
-    const height = Math.max(elementHeight, minHeight);
+    const width = elementWidth ? `${elementWidth}px` : minWidth;
+    const height = elementHeight ? `${elementHeight}px` : minHeight;
 
-    this.#chartContainer = this.renderer.createElement('div');
-    this.renderer.setStyle(this.#chartContainer, 'width', `${width}px`);
-    this.renderer.setStyle(this.#chartContainer, 'height', `${height}px`);
-    this.renderer.appendChild(this.elementRef.nativeElement, this.#chartContainer);
-    this.ref.detectChanges();
+    this.#chartContainer = this.#renderer.createElement('div');
+    this.#renderer.setStyle(this.#chartContainer, 'width', width);
+    this.#renderer.setStyle(this.#chartContainer, 'height', height);
+    this.#renderer.appendChild(this.#elementRef.nativeElement, this.#chartContainer);
+    this.#ref.detectChanges();
   }
 
   #deleteChartContainer = () => {
-    if (!this.#chartContainer || !this.elementRef || !this.elementRef.nativeElement) {
+    if (!this.#chartContainer || !this.#elementRef || !this.#elementRef.nativeElement) {
       return;
     }
 
     this.#echarts.clear();
-    this.renderer.removeChild(this.elementRef.nativeElement, this.#chartContainer);
+    this.#renderer.removeChild(this.#elementRef.nativeElement, this.#chartContainer);
     this.#chartContainer = null;
-    this.ref.detectChanges();
+    this.#ref.detectChanges();
+  }
+
+  #getClosestCssVariable = (element: HTMLElement, cssVariable: string): string | null => {
+    while (element) {
+      const value = getComputedStyle(element).getPropertyValue(cssVariable).trim();
+      if (value) {
+        return value;
+      }
+      element = element.parentElement as HTMLElement;
+    }
+
+    const rootValue = getComputedStyle(document.documentElement).getPropertyValue(cssVariable).trim();
+    return rootValue || null;
   }
 
   ngOnDestroy() {
     this.#subscription.unsubscribe();
-    if (this.#mutationObserver) {
-      this.#mutationObserver.disconnect();
-    }
-
     if (this.#resizeObserver) {
       this.#resizeObserver.disconnect();
     }
