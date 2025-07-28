@@ -9,12 +9,8 @@
 }
 
 .bizy-card {
-    height: inherit;
-    width: inherit;
-    min-height: inherit;
-    min-width: inherit;
-    max-height: inherit;
-    max-width: inherit;
+    height: 100%;
+    width: 100%;
     cursor: var(--bizy-card-cursor);
     border: var(--bizy-card-border);
     border-top: var(--bizy-card-border-top);
