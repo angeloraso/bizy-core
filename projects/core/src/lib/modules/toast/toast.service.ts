@@ -116,11 +116,11 @@ export class BizyToastService {
     }
   }
 
-  debug(data: string | {title: string, msg?: string, duration?: number}) {
+  debug(data: string | {title: string, msg?: string, duration?: number} = this.defaultDebugTitle) {
     this.#open({type: TOAST.DEBUG, data});
   }
 
-  info(data: string | {title: string, msg?: string, duration?: number}) {
+  info(data: string | {title: string, msg?: string, duration?: number} = this.defaultInfoTitle) {
     this.#open({type: TOAST.INFO, data});
   }
 
@@ -128,7 +128,7 @@ export class BizyToastService {
     this.#open({type: TOAST.SUCCESS, data});
   }
 
-  warning(data: string | {title: string, msg?: string, duration?: number}) {
+  warning(data: string | {title: string, msg?: string, duration?: number} = this.defaultWarningTitle) {
     this.#open({type: TOAST.WARNING, data});
   }
 
