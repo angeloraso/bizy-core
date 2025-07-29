@@ -3,12 +3,12 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  Inject,
   Input,
   Output,
   Renderer2,
   EventEmitter,
-  DOCUMENT,
-  inject
+  DOCUMENT
 } from '@angular/core';
 import { IBizyPieChartData } from './pie-chart.types';
 import { CommonModule } from '@angular/common';
@@ -16,6 +16,7 @@ import html2canvas from 'html2canvas';
 import { BehaviorSubject, Subject, Subscription, auditTime, filter, skip, take, throttleTime } from 'rxjs';
 
 const EMPTY_CHART = [0];
+const MIN_CHART_SIZE = 350 // px;
 
 @Component({
   selector: 'bizy-pie-chart',
@@ -24,11 +25,6 @@ const EMPTY_CHART = [0];
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyPieChartComponent {
-  readonly #elementRef = inject(ElementRef);
-  readonly #document = inject(DOCUMENT);
-  readonly #ref = inject(ChangeDetectorRef);
-  readonly #renderer = inject(Renderer2);
-
   @Input() resizeRef: HTMLElement | null = null;
   @Input() tooltip: boolean = true;
   @Input() type: 'pie' | 'donut' = 'pie';
@@ -40,6 +36,7 @@ export class BizyPieChartComponent {
 
   #echarts: echarts.ECharts | null = null
 
+  #mutationObserver: MutationObserver | null = null;
   #resizeObserver: ResizeObserver | null = null;
   #subscription = new Subscription();
   #chartContainer: HTMLDivElement | null = null;
@@ -47,8 +44,22 @@ export class BizyPieChartComponent {
   #resize$ = new Subject<void>();
   #data:  Array<{name: string, value: number, itemStyle: {color?: string}}> | typeof EMPTY_CHART = EMPTY_CHART;
 
+  constructor(
+    @Inject(ElementRef) private elementRef: ElementRef,
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef,
+    @Inject(Renderer2) private renderer: Renderer2
+  ) {}
+
   ngAfterViewInit() {
-    this.#afterViewInit.next(true);
+    this.#mutationObserver = new MutationObserver(() => {
+      if (this.elementRef && this.elementRef.nativeElement && (this.elementRef.nativeElement.offsetWidth || this.elementRef.nativeElement.offsetHeight)) {
+        this.#afterViewInit.next(true);
+        this.#mutationObserver.disconnect();
+      }
+    });
+
+    this.#mutationObserver.observe(this.document.body, { childList: true, subtree: true });
   }
 
   @Input() set data(data: Array<IBizyPieChartData>) {
@@ -129,9 +140,9 @@ export class BizyPieChartComponent {
         label
       }];
 
-      const textColor = getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-tooltip-color') ?? '#000';
-      const textBackgroundColor = getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-tooltip-background-color') ?? '#fff';
-      const borderColor = getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-tooltip-border-color') ?? '#fff';
+      const textColor = getComputedStyle(this.document.documentElement).getPropertyValue('--bizy-tooltip-color') ?? '#000';
+      const textBackgroundColor = getComputedStyle(this.document.documentElement).getPropertyValue('--bizy-tooltip-background-color') ?? '#fff';
+      const borderColor = getComputedStyle(this.document.documentElement).getPropertyValue('--bizy-tooltip-border-color') ?? '#fff';
 
       const toolbox = {
         show: true,
@@ -143,12 +154,12 @@ export class BizyPieChartComponent {
             onclick: () => {
               setTimeout(() => {
                   html2canvas(this.#chartContainer).then(canvas => {
-                      var link = this.#renderer.createElement('a');
+                      var link = document.createElement('a');
                       link.href = canvas.toDataURL('image/png');
                       link.download = `${this.download.name}.png`;
-                      this.#renderer.appendChild(this.#document.body, link);
+                      this.renderer.appendChild(this.document.body, link);
                       link.click();
-                      this.#renderer.removeChild(this.#document.body, link);
+                      this.renderer.removeChild(this.document.body, link);
                       this.onDownload.emit();
                   });
               }, 500);
@@ -190,7 +201,7 @@ export class BizyPieChartComponent {
         });
   
         this.#resizeObserver = new ResizeObserver(() => this.#resize$.next());
-        const resizeRef = this.resizeRef ? this.resizeRef : this.#renderer.parentNode(this.#elementRef.nativeElement) ? this.#renderer.parentNode(this.#elementRef.nativeElement) : this.#elementRef.nativeElement;
+        const resizeRef = this.resizeRef ? this.resizeRef : this.renderer.parentNode(this.elementRef.nativeElement) ? this.renderer.parentNode(this.elementRef.nativeElement) : this.elementRef.nativeElement;
         this.#resizeObserver.observe(resizeRef);
         this.#subscription.add(this.#resize$.pipe(skip(1), auditTime(300), throttleTime(500)).subscribe(() => {
           this.#deleteChartContainer();
@@ -211,52 +222,50 @@ export class BizyPieChartComponent {
   }
 
   #createChartContainer = () => {
-    if (this.#chartContainer || !this.#elementRef || !this.#elementRef.nativeElement) {
+    if (this.#chartContainer || !this.elementRef || !this.elementRef.nativeElement) {
       return;
     }
 
-    let elementWidth = this.#elementRef.nativeElement.offsetWidth;
-    let elementHeight = this.#elementRef.nativeElement.offsetHeight;
+    let elementWidth = this.elementRef.nativeElement.offsetWidth || MIN_CHART_SIZE;
+    let elementHeight = this.elementRef.nativeElement.offsetHeight || MIN_CHART_SIZE;
 
-    let minWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-pie-chart-min-width') || 0;
-    let minHeight = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-pie-chart-min-height') || 0;
+    let minWidth = MIN_CHART_SIZE;
+    let minHeight = MIN_CHART_SIZE;
+    const chartMinWidth = getComputedStyle(this.document.body).getPropertyValue('--bizy-chart-min-width');
+    const pieChartMinHeight = getComputedStyle(this.document.body).getPropertyValue('--bizy-chart-min-height');
+    if (Number(chartMinWidth)) {
+      minWidth = Number(chartMinWidth);
+    }
+    if (Number(pieChartMinHeight)) {
+      minHeight = Number(pieChartMinHeight);
+    }
     
-    const width = elementWidth ? `${elementWidth}px` : minWidth;
-    const height = elementHeight ? `${elementHeight}px` : minHeight;
+    const width = Math.max(elementWidth, minWidth);
+    const height = Math.max(elementHeight, minHeight);
 
-    this.#chartContainer = this.#renderer.createElement('div');
-    this.#renderer.setStyle(this.#chartContainer, 'width', width);
-    this.#renderer.setStyle(this.#chartContainer, 'height', height);
-    this.#renderer.appendChild(this.#elementRef.nativeElement, this.#chartContainer);
-    this.#ref.detectChanges();
+    this.#chartContainer = this.renderer.createElement('div');
+    this.renderer.setStyle(this.#chartContainer, 'width', `${width}px`);
+    this.renderer.setStyle(this.#chartContainer, 'height', `${height}px`);
+    this.renderer.appendChild(this.elementRef.nativeElement, this.#chartContainer);
+    this.ref.detectChanges();
   }
 
   #deleteChartContainer = () => {
-    if (!this.#chartContainer || !this.#elementRef || !this.#elementRef.nativeElement) {
+    if (!this.#chartContainer || !this.elementRef || !this.elementRef.nativeElement) {
       return;
     }
 
     this.#echarts.clear();
-    this.#renderer.removeChild(this.#elementRef.nativeElement, this.#chartContainer);
+    this.renderer.removeChild(this.elementRef.nativeElement, this.#chartContainer);
     this.#chartContainer = null;
-    this.#ref.detectChanges();
-  }
-
-  #getClosestCssVariable = (element: HTMLElement, cssVariable: string): string | null => {
-    while (element) {
-      const value = getComputedStyle(element).getPropertyValue(cssVariable).trim();
-      if (value) {
-        return value;
-      }
-      element = element.parentElement as HTMLElement;
-    }
-
-    const rootValue = getComputedStyle(document.documentElement).getPropertyValue(cssVariable).trim();
-    return rootValue || null;
+    this.ref.detectChanges();
   }
 
   ngOnDestroy() {
     this.#subscription.unsubscribe();
+    if (this.#mutationObserver) {
+      this.#mutationObserver.disconnect();
+    }
 
     if (this.#resizeObserver) {
       this.#resizeObserver.disconnect();
@@ -266,4 +275,5 @@ export class BizyPieChartComponent {
       this.#echarts.clear();
     }
   }
+
 }
