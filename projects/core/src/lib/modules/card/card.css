@@ -12,11 +12,10 @@
     height: 100%;
     width: 100%;
     cursor: var(--bizy-card-cursor);
-    border: var(--bizy-card-border);
-    border-top: var(--bizy-card-border-top);
-    border-right: var(--bizy-card-border-right);
-    border-bottom: var(--bizy-card-border-bottom);
-    border-left: var(--bizy-card-border-left);
+    border-top: var(--bizy-card-border-top, var(--bizy-card-border, none));
+    border-right: var(--bizy-card-border-right, var(--bizy-card-border, none));
+    border-bottom: var(--bizy-card-border-bottom, var(--bizy-card-border, none));
+    border-left: var(--bizy-card-border-left, var(--bizy-card-border, none));
     border-radius: var(--bizy-card-border-radius);
     overflow: hidden;
     padding: var(--bizy-card-padding);
