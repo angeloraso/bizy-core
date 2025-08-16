@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, inject, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'bizy-button',
@@ -9,6 +9,8 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyButtonComponent {
+  readonly #elementRef = inject(ElementRef);
+
   @Input() id: string = `bizy-button-${Math.random()}`;
   @Input() disabled: boolean = false;
   @Input() type: 'button' | 'submit' = 'button';
@@ -24,4 +26,6 @@ export class BizyButtonComponent {
 
     this.onSelect.emit(event);
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 }

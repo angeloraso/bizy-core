@@ -1,7 +1,7 @@
 import { DIALOG_DATA, DialogModule, DialogRef } from '@angular/cdk/dialog';
 import { ComponentType } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild, ViewContainerRef, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, ViewChild, ViewContainerRef, inject } from '@angular/core';
 import { BizyPopupService } from '../popup.service';
 
 @Component({
@@ -15,12 +15,13 @@ import { BizyPopupService } from '../popup.service';
   }
 })
 export class BizyFullScreenPopupWrapperComponent<T> {
-  @ViewChild('dynamicComponentContainer', { read: ViewContainerRef }) dynamicComponentContainer: ViewContainerRef;
-
+  readonly #elementRef = inject(ElementRef);
   readonly #data: {component: ComponentType<T>, disableClose: boolean, disableDrag: boolean} = inject(DIALOG_DATA);
   readonly #dialogRef: DialogRef<void> = inject(DialogRef);
   readonly #popup = inject(BizyPopupService);
   readonly #ref = inject(ChangeDetectorRef);
+
+  @ViewChild('dynamicComponentContainer', { read: ViewContainerRef }) dynamicComponentContainer: ViewContainerRef;
 
   disabled: boolean = false;
 
@@ -51,6 +52,8 @@ export class BizyFullScreenPopupWrapperComponent<T> {
       this.#ref.detectChanges();
     }
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 
   async close() {
     this.disabled = true;

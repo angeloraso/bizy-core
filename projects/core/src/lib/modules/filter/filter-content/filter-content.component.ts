@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, inject } from '@angular/core';
 
 @Component({
   selector: 'bizy-filter-content',
@@ -7,4 +7,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyFilterContentComponent {
+  readonly #elementRef = inject(ElementRef);
+  getNativeElement = () => this.#elementRef?.nativeElement;
 }

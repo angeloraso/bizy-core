@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy, ContentChildren, QueryList, ContentChild, Inject, ChangeDetectorRef, ViewChild, AfterContentInit, ElementRef, Renderer2, DOCUMENT } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, ContentChildren, QueryList, ContentChild, ChangeDetectorRef, ViewChild, AfterContentInit, ElementRef, Renderer2, DOCUMENT, inject } from '@angular/core';
 import { BizyTableHeaderComponent } from './table-header/table-header.component';
 import { BizyTableFooterComponent } from './table-footer/table-footer.component';
 import { BizyTableRowComponent } from './table-row/table-row.component';
@@ -20,6 +20,11 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyTableComponent implements AfterContentInit {
+  readonly #elementRef = inject(ElementRef);
+  readonly #document = inject(DOCUMENT);
+  readonly #ref = inject(ChangeDetectorRef);
+  readonly #renderer = inject(Renderer2);
+
   @ViewChild(BizyTableScrollingComponent) viewport: BizyTableScrollingComponent;
   @ContentChild(BizyTableScrollingDirective) virtualFor: BizyTableScrollingDirective;
   @ContentChildren(BizyTableRowComponent) rows: QueryList<BizyTableRowComponent>;
@@ -56,18 +61,11 @@ export class BizyTableComponent implements AfterContentInit {
         _footer.setSelectable(selectable);
       });
 
-      this.ref.detectChanges();      
+      this.#ref.detectChanges();      
     });
 
-    this.#selectableMutationObserver.observe(this.document.body, { childList: true, subtree: true });
+    this.#selectableMutationObserver.observe(this.#document.body, { childList: true, subtree: true });
   };
-
-  constructor(
-    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef,
-    @Inject(DOCUMENT) private document: Document,
-    @Inject(Renderer2) private renderer: Renderer2,
-    @Inject(ElementRef) private elementRef: ElementRef
-  ) {}
 
   ngAfterContentInit() {
     this.#rowScrollingMutationObserver = new MutationObserver(() => {
@@ -75,33 +73,33 @@ export class BizyTableComponent implements AfterContentInit {
         return;
       }
 
-      if (this.elementRef.nativeElement.offsetHeight) {
-        const fontSize =  getComputedStyle(this.document.documentElement).getPropertyValue('font-size');
+      if (this.#elementRef.nativeElement.offsetHeight) {
+        const fontSize =  getComputedStyle(this.#document.documentElement).getPropertyValue('font-size');
         const gap = Number(fontSize.split('px')[0]) * 0.3;
         let headersHeight = 0;
         this.headers.forEach(_header => {
-          headersHeight += _header.elementRef.nativeElement.offsetHeight + gap;
+          headersHeight += _header.getNativeElement().offsetHeight + gap;
         });
 
         let footersHeight = 0;
         this.footers.forEach(_footer => {
-          footersHeight += _footer.elementRef.nativeElement.offsetHeight + gap;
+          footersHeight += _footer.getNativeElement().offsetHeight + gap;
         });
-        this.renderer.setStyle(this.viewport.elementRef.nativeElement, 'height', `${this.elementRef.nativeElement.offsetHeight - headersHeight - footersHeight}px`)
+        this.#renderer.setStyle(this.viewport.getNativeElement(), 'height', `${this.#elementRef.nativeElement.offsetHeight - headersHeight - footersHeight}px`)
       }
 
       this.viewport.attachView(this.virtualFor);
       this.#rowScrollingMutationObserver.disconnect();
   
-      this.ref.detectChanges();     
+      this.#ref.detectChanges();     
       
       this.#afterContentInitObserver = new MutationObserver(() => {
-        if (!this.elementRef.nativeElement.offsetWidth) {
+        if (!this.#elementRef.nativeElement.offsetWidth) {
           return;
         }
   
-        this.marginRight = this.elementRef.nativeElement.scrollWidth ? (this.elementRef.nativeElement.scrollWidth - this.elementRef.nativeElement.offsetWidth) - this.elementRef.nativeElement.scrollLeft : 0;
-        this.marginLeft = this.elementRef.nativeElement.scrollLeft;
+        this.marginRight = this.#elementRef.nativeElement.scrollWidth ? (this.#elementRef.nativeElement.scrollWidth - this.#elementRef.nativeElement.offsetWidth) - this.#elementRef.nativeElement.scrollLeft : 0;
+        this.marginLeft = this.#elementRef.nativeElement.scrollLeft;
         this.rows.forEach(_row => {
           _row.setMarginRight(this.marginRight);
           _row.setMarginLeft(this.marginLeft);
@@ -117,9 +115,9 @@ export class BizyTableComponent implements AfterContentInit {
           _footer.setMarginLeft(this.marginLeft);
         });
 
-        this.#subscription.add(fromEvent(this.elementRef.nativeElement, 'scroll', { capture: true }).subscribe(() => {
-          this.marginRight = this.elementRef.nativeElement.scrollWidth ? (this.elementRef.nativeElement.scrollWidth - this.elementRef.nativeElement.offsetWidth) - this.elementRef.nativeElement.scrollLeft : 0;
-          this.marginLeft = this.elementRef.nativeElement.scrollLeft;
+        this.#subscription.add(fromEvent(this.#elementRef.nativeElement, 'scroll', { capture: true }).subscribe(() => {
+          this.marginRight = this.#elementRef.nativeElement.scrollWidth ? (this.#elementRef.nativeElement.scrollWidth - this.#elementRef.nativeElement.offsetWidth) - this.#elementRef.nativeElement.scrollLeft : 0;
+          this.marginLeft = this.#elementRef.nativeElement.scrollLeft;
           this.rows.forEach(_row => {
             _row.setMarginRight(this.marginRight);
             _row.setMarginLeft(this.marginLeft);
@@ -137,35 +135,35 @@ export class BizyTableComponent implements AfterContentInit {
         }));
   
         this.#afterContentInitObserver.disconnect();   
-        this.ref.detectChanges();   
+        this.#ref.detectChanges();   
       });
 
-      this.#afterContentInitObserver.observe(this.document.body, { childList: true, subtree: true });
+      this.#afterContentInitObserver.observe(this.#document.body, { childList: true, subtree: true });
     });
 
-    this.#rowScrollingMutationObserver.observe(this.document.body, { childList: true, subtree: true });
+    this.#rowScrollingMutationObserver.observe(this.#document.body, { childList: true, subtree: true });
 
 
     this.#resizeObserver = new ResizeObserver(() => this.notifier$.next());
-    const resizeRef = this.resizeRef ? this.resizeRef : this.renderer.parentNode(this.elementRef.nativeElement) ? this.renderer.parentNode(this.elementRef.nativeElement) : this.elementRef.nativeElement;
+    const resizeRef = this.resizeRef ? this.resizeRef : this.#renderer.parentNode(this.#elementRef.nativeElement) ? this.#renderer.parentNode(this.#elementRef.nativeElement) : this.#elementRef.nativeElement;
     this.#resizeObserver.observe(resizeRef);
     this.#subscription.add(this.notifier$.pipe(skip(1), debounceTime(200)).subscribe(() => {
-      if (this.viewport && this.elementRef.nativeElement.offsetHeight) {
-        const fontSize =  getComputedStyle(this.document.documentElement).getPropertyValue('font-size');
+      if (this.viewport && this.#elementRef.nativeElement.offsetHeight) {
+        const fontSize =  getComputedStyle(this.#document.documentElement).getPropertyValue('font-size');
         const gap = Number(fontSize.split('px')[0]) * 0.3;
         let headersHeight = 0;
         this.headers.forEach(_header => {
-          headersHeight += _header.elementRef.nativeElement.offsetHeight + gap;
+          headersHeight += _header.getNativeElement().offsetHeight + gap;
         });
 
         let footersHeight = 0;
         this.footers.forEach(_footer => {
-          footersHeight += _footer.elementRef.nativeElement.offsetHeight + gap;
+          footersHeight += _footer.getNativeElement().offsetHeight + gap;
         });
-        this.renderer.setStyle(this.viewport.elementRef.nativeElement, 'height', `${this.elementRef.nativeElement.offsetHeight - headersHeight - footersHeight}px`)
+        this.#renderer.setStyle(this.viewport.getNativeElement(), 'height', `${this.#elementRef.nativeElement.offsetHeight - headersHeight - footersHeight}px`)
       }
-      this.marginRight = this.elementRef.nativeElement.scrollWidth ? (this.elementRef.nativeElement.scrollWidth - this.elementRef.nativeElement.offsetWidth) - this.elementRef.nativeElement.scrollLeft : 0;
-      this.marginLeft = this.elementRef.nativeElement.scrollLeft;
+      this.marginRight = this.#elementRef.nativeElement.scrollWidth ? (this.#elementRef.nativeElement.scrollWidth - this.#elementRef.nativeElement.offsetWidth) - this.#elementRef.nativeElement.scrollLeft : 0;
+      this.marginLeft = this.#elementRef.nativeElement.scrollLeft;
       this.rows.forEach(_row => {
         _row.setMarginRight(this.marginRight);
         _row.setMarginLeft(this.marginLeft);
@@ -202,4 +200,6 @@ export class BizyTableComponent implements AfterContentInit {
       this.#resizeObserver.disconnect();
     }
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 }

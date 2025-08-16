@@ -1,6 +1,6 @@
 import { Subject, Subscription } from 'rxjs';
 import { UppyFile } from '@uppy/core';
-import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, inject, Inject, Input, OnDestroy, Output } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, inject, Input, OnDestroy, Output } from '@angular/core';
 import { BizyFileUploaderService } from './file-uploader.service';
 @Component({
   selector: 'bizy-file-uploader',
@@ -9,6 +9,7 @@ import { BizyFileUploaderService } from './file-uploader.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyFileUploaderComponent implements AfterViewInit, OnDestroy {
+  readonly #elementRef = inject(ElementRef);
   readonly #fileUploader = inject(BizyFileUploaderService);
   @Input() dragDropAreaWidth: string = '100%';
   @Input() dragDropAreaHeight: string = '16rem';
@@ -106,6 +107,8 @@ export class BizyFileUploaderComponent implements AfterViewInit, OnDestroy {
       this.loadedFiles.emit(Array.from(this.#files));
     }));
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 
   ngOnDestroy() {
     this.#fileUploader.cleanAllFiles();

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -10,6 +10,8 @@ import { FormsModule } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyCheckboxComponent {
+  readonly #elementRef = inject(ElementRef);
+
   @Input() id: string = `bizy-checkbox-${Math.random()}`;
   @Input() selected: boolean = false;
   @Input() disabled: boolean = false;
@@ -26,4 +28,6 @@ export class BizyCheckboxComponent {
     this.selectedChange.emit(!this.selected);
     this.onSelect.emit(event)
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 }

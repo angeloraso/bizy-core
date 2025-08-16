@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, inject, Input, Output, TemplateRef } from '@angular/core';
 import { BIZY_CALENDAR_MODE, IBizyCalendarEvent, BIZY_CALENDAR_LANGUAGE, BIZY_CALENDAR_EVENT_ACTION, BIZY_CALENDAR_DAY } from './calendar.types';
 import { CalendarA11y, CalendarDateFormatter, CalendarEvent, CalendarEventAction, CalendarEventTitleFormatter, CalendarModule, CalendarMonthViewDay, CalendarUtils, DateAdapter } from 'angular-calendar';
 import { Subject } from 'rxjs';
@@ -30,6 +30,7 @@ registerLocaleData(localeEs);
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyCalendarComponent {
+  readonly #elementRef = inject(ElementRef);
   @Input() id: string = `bizy-calendar-${Math.random()}`;
   @Input() hideHeaderDate: boolean = false;
   @Input() preventExpand: boolean = false;
@@ -217,4 +218,6 @@ export class BizyCalendarComponent {
 
     return actions;
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 }

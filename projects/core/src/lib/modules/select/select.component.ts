@@ -1,5 +1,5 @@
 import { BizySelectOptionComponent } from './select-option/select-option.component';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Inject, Input, Output, QueryList, ContentChildren, AfterViewInit, ViewChild, ContentChild, TemplateRef, inject, ViewContainerRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, QueryList, ContentChildren, AfterViewInit, ViewChild, ContentChild, TemplateRef, inject, ViewContainerRef, ElementRef } from '@angular/core';
 import { filter, Subscription } from 'rxjs';
 import { BizyInputComponent } from '../input/input.component';
 import { Portal, PortalModule, TemplatePortal } from '@angular/cdk/portal';
@@ -14,6 +14,8 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizySelectComponent implements AfterViewInit {
+  readonly #elementRef = inject(ElementRef);
+  readonly #ref = inject(ChangeDetectorRef);
   #viewContainerRef = inject(ViewContainerRef);
   @ViewChild('templatePortalContent') templatePortalContent: TemplateRef<unknown>;
   @ContentChildren(BizySelectOptionComponent) options: QueryList<BizySelectOptionComponent>;
@@ -35,10 +37,6 @@ export class BizySelectComponent implements AfterViewInit {
   #subscription = new Subscription();
   #contentChildrenSubscription = new Subscription();
 
-  constructor(
-    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
-  ) {}
-
   get touched(): boolean {
     return this.bizyInput ? this.bizyInput.touched : false;
   }
@@ -56,12 +54,12 @@ export class BizySelectComponent implements AfterViewInit {
     this.options.forEach(_option => {
       this.#subscription.add(_option.onSelect.subscribe(() => {
         this.close();
-        this.ref.detectChanges();
+        this.#ref.detectChanges();
       }));
 
       this.#subscription.add(_option.selected$.pipe(filter(_value => _value === true)).subscribe(() => {
         this._optionValue = _option.getValue();
-        this.ref.detectChanges();
+        this.#ref.detectChanges();
       }));
     });
 
@@ -72,16 +70,16 @@ export class BizySelectComponent implements AfterViewInit {
       this.options.forEach(_option => {
         this.#subscription.add(_option.onSelect.subscribe(() => {
           this.close();
-          this.ref.detectChanges();
+          this.#ref.detectChanges();
         }));
 
         this.#subscription.add(_option.selected$.pipe(filter(_value => _value === true)).subscribe(() => {
           this._optionValue = _option.getValue();
-          this.ref.detectChanges();
+          this.#ref.detectChanges();
         }));
       });
     }));
-    this.ref.detectChanges();
+    this.#ref.detectChanges();
   }
 
   _onOpen(event: PointerEvent) {
@@ -97,7 +95,7 @@ export class BizySelectComponent implements AfterViewInit {
     if (this.bizyInput) {
       this.bizyInput.setFocus(true);
     }
-    this.ref.detectChanges();
+    this.#ref.detectChanges();
   }
 
   close = (event?: PointerEvent & {target: {id: string}}, select?: BizyInputComponent) => {
@@ -108,15 +106,17 @@ export class BizySelectComponent implements AfterViewInit {
     this.opened = false;
     this.openedChange.emit(this.opened);
     this.onOpen.emit(this.opened);
-    this.ref.detectChanges();
+    this.#ref.detectChanges();
   }
 
   setTouched(touched: boolean) {
     if (this.bizyInput) {
       this.bizyInput.setTouched(touched);
-      this.ref.detectChanges();
+      this.#ref.detectChanges();
     }
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 
   ngOnDestroy() {
     this.#subscription.unsubscribe();

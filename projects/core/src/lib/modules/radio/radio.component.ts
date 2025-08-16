@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, inject, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'bizy-radio',
@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyRadioComponent {
+  readonly #elementRef = inject(ElementRef);
   @Input() id: string = `bizy-radio-${Math.random()}`;
   @Input() name: string;
   @Input() selected: boolean = false;
@@ -24,4 +25,6 @@ export class BizyRadioComponent {
     this.selectedChange.emit(!this.selected);
     this.onSelect.emit(event)
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 }

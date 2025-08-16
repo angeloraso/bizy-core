@@ -4,6 +4,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
   Output,
   ViewChild,
@@ -18,6 +19,7 @@ import { FormsModule } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BizySliderComponent {
+  readonly #elementRef = inject(ElementRef);
   @ViewChild('fromSlider') fromSlider: ElementRef
   @ViewChild('toSlider') toSlider: ElementRef
   @Input() minLimit: number = 0;
@@ -54,6 +56,8 @@ export class BizySliderComponent {
 
     this.onChange.emit({min: this._min, max: this._max})
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 
   setToSlider(value: number) {
     if (value < this._min ) {

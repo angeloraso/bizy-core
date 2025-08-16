@@ -2,7 +2,7 @@ import { DIALOG_DATA, DialogModule, DialogRef } from '@angular/cdk/dialog';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ComponentType } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild, ViewContainerRef, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, ViewChild, ViewContainerRef, inject } from '@angular/core';
 import { BizyPopupService } from '../popup.service';
 
 @Component({
@@ -20,12 +20,13 @@ import { BizyPopupService } from '../popup.service';
   }
 })
 export class BizyPopupWrapperComponent<T> {
-  @ViewChild('dynamicComponentContainer', { read: ViewContainerRef }) dynamicComponentContainer: ViewContainerRef;
-
+  readonly #elementRef = inject(ElementRef);
   readonly #data: {component: ComponentType<T>, disableClose: boolean, disableDrag: boolean, position?: {top: string, right: string, bottom: string, left: string}} = inject(DIALOG_DATA);
   readonly #dialogRef: DialogRef<void> = inject(DialogRef);
   readonly #popup = inject(BizyPopupService);
   readonly #ref = inject(ChangeDetectorRef);
+
+  @ViewChild('dynamicComponentContainer', { read: ViewContainerRef }) dynamicComponentContainer: ViewContainerRef;
 
   disabled: boolean = false;
 
@@ -52,6 +53,8 @@ export class BizyPopupWrapperComponent<T> {
   ngAfterViewInit() {
     this.loadDynamicComponent();
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 
   loadDynamicComponent = () => {
     if (this.#data && this.#data.component) {

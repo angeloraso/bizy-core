@@ -28,4 +28,6 @@ export class BizyGridRowComponent {
     this.#renderer.setStyle(this.#elementRef.nativeElement, 'gridTemplateColumns', `repeat(${itemsPerRow}, minmax(0, 1fr)`);
     this.#ref.detectChanges();
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 }

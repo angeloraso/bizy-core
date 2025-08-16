@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, inject, Input } from '@angular/core';
 @Component({
   selector: 'bizy-menu-title',
   templateUrl: './menu-title.html',
@@ -10,6 +10,9 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   }
 })
 export class BizyMenuTitleComponent {
+  readonly #elementRef = inject(ElementRef);
   @Input() id: string = `bizy-menu-title-${Math.random()}`;
   @Input() customClass: string = '';
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, ElementRef, inject } from '@angular/core';
 @Component({
   selector: 'bizy-toggle',
   templateUrl: './toggle.html',
@@ -8,6 +8,8 @@ import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from 
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyToggleComponent {
+  readonly #elementRef = inject(ElementRef);
+
   @Input() id: string = `bizy-toggle-${Math.random()}`;
   @Input() disabled: boolean = false;
   @Input() selected: boolean = false;
@@ -22,4 +24,6 @@ export class BizyToggleComponent {
     this.selectedChange.emit(!this.selected);
     this.onSelect.emit(event);
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 }

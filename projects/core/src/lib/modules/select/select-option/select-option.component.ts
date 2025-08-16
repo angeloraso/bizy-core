@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, Inject, ChangeDetectorRef, Output, EventEmitter, ElementRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, ChangeDetectorRef, Output, EventEmitter, ElementRef, inject } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
@@ -10,6 +10,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizySelectOptionComponent {
+  readonly #elementRef = inject(ElementRef);
+  readonly #ref = inject(ChangeDetectorRef);
+
   @Input() id: string = `bizy-select-option-${Math.random()}`;
   @Input() disabled: boolean = false;
   @Input() customClass: string = '';
@@ -29,18 +32,13 @@ export class BizySelectOptionComponent {
     return this.#selected.asObservable();
   }
 
-  constructor(
-    @Inject(ElementRef) private elementRef: ElementRef,
-    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
-  ) {}
-
   _onSelect(): void {
     if (this.disabled) {
       return;
     }
 
     this.onSelect.emit();
-    this.ref.detectChanges();
+    this.#ref.detectChanges();
   }
 
   getId = (): string => {
@@ -51,8 +49,10 @@ export class BizySelectOptionComponent {
     return this.#selected.value;
   }
 
+  getNativeElement = () => this.#elementRef?.nativeElement;
+
   getValue = (): string => {
-    const value = this.elementRef?.nativeElement?.firstChild?.children[0]?.innerText;
+    const value = this.#elementRef?.nativeElement?.firstChild?.children[0]?.innerText;
     return value ?? '';
   }
 }

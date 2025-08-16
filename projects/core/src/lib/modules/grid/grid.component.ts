@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy, ContentChild, Inject, ChangeDetectorRef, ViewChild, AfterContentInit, ElementRef, Renderer2, TemplateRef, ViewContainerRef, DOCUMENT } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, ContentChild, ChangeDetectorRef, ViewChild, AfterContentInit, ElementRef, Renderer2, TemplateRef, ViewContainerRef, DOCUMENT, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subject, Subscription, debounceTime } from 'rxjs';
 import { BizyGridForDirective } from './grid.directive';
@@ -13,6 +13,11 @@ import { BizyGridRowComponent } from './grid-row/grid-row.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyGridComponent implements AfterContentInit {
+  readonly #elementRef = inject(ElementRef);
+  readonly #ref = inject(ChangeDetectorRef);
+  readonly #document = inject(DOCUMENT);
+  readonly #renderer = inject(Renderer2);
+  
   @ViewChild('cdkVirtualScroll') private virtualScroll: CdkVirtualScrollViewport;
   @ViewChild('gridScrollingContent') content: TemplateRef<object>;
   @ContentChild(BizyGridForDirective) gridDirective: BizyGridForDirective;
@@ -30,13 +35,6 @@ export class BizyGridComponent implements AfterContentInit {
   itemTemplate: TemplateRef<unknown>;
   itemsPerRow: number = 1;
 
-  constructor(
-    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef,
-    @Inject(DOCUMENT) private document: Document,
-    @Inject(Renderer2) private renderer: Renderer2,
-    @Inject(ElementRef) private elementRef: ElementRef
-  ) {}
-
   ngAfterContentInit() {
     if (this.gridDirective) {
       this.#initView();
@@ -50,10 +48,10 @@ export class BizyGridComponent implements AfterContentInit {
   
         this.#rowScrollingMutationObserver.disconnect();
   
-        this.ref.detectChanges();
+        this.#ref.detectChanges();
       });
   
-      this.#rowScrollingMutationObserver.observe(this.document.body, { childList: true, subtree: true });
+      this.#rowScrollingMutationObserver.observe(this.#document.body, { childList: true, subtree: true });
     }
   }
 
@@ -73,7 +71,7 @@ export class BizyGridComponent implements AfterContentInit {
     }
 
     this.#resizeObserver = new ResizeObserver(() => this.notifier$.next());
-    const resizeRef = this.resizeRef ? this.resizeRef : this.renderer.parentNode(this.elementRef.nativeElement) ? this.renderer.parentNode(this.elementRef.nativeElement) : this.elementRef.nativeElement;
+    const resizeRef = this.resizeRef ? this.resizeRef : this.#renderer.parentNode(this.#elementRef.nativeElement) ? this.#renderer.parentNode(this.#elementRef.nativeElement) : this.#elementRef.nativeElement;
     this.#resizeObserver.observe(resizeRef);
     this.#subscription.add(this.notifier$.pipe(debounceTime(50)).subscribe(() => {
       this.#updateView();
@@ -82,11 +80,11 @@ export class BizyGridComponent implements AfterContentInit {
 
   #updateView = () => {
     this.itemTemplate = this.gridDirective.templateRef;
-    const rowWidth = this.elementRef.nativeElement.offsetWidth || this.elementRef.nativeElement.firstChild.offsetWidth;
+    const rowWidth = this.#elementRef.nativeElement.offsetWidth || this.#elementRef.nativeElement.firstChild.offsetWidth;
     let columnWidth = 100;
-    const fontSize = Number(getComputedStyle(this.elementRef.nativeElement).getPropertyValue('font-size').split('px')[0]);
+    const fontSize = Number(getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('font-size').split('px')[0]);
 
-    const rowHeightParameter = getComputedStyle(this.elementRef.nativeElement).getPropertyValue('--bizy-grid-row-height');
+    const rowHeightParameter = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-grid-row-height');
     if (rowHeightParameter && rowHeightParameter.includes('rem')) {
       this.rowHeight = fontSize * Number(rowHeightParameter.split('rem')[0]);
     } else if (rowHeightParameter && rowHeightParameter.includes('px')) {
@@ -94,14 +92,14 @@ export class BizyGridComponent implements AfterContentInit {
     }
 
     let gap = 10;
-    const gapParameter = getComputedStyle(this.elementRef.nativeElement).getPropertyValue('--bizy-grid-gap');
+    const gapParameter = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-grid-gap');
     if (gapParameter && gapParameter.includes('rem')) {
       gap = fontSize * Number(gapParameter.split('rem')[0]);
     } else if (gapParameter && gapParameter.includes('px')) {
       gap = Number(gapParameter.split('px')[0]);
     }
 
-    const columnWidthParameter = getComputedStyle(this.elementRef.nativeElement).getPropertyValue('--bizy-grid-column-width');
+    const columnWidthParameter = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-grid-column-width');
     if (columnWidthParameter && columnWidthParameter.includes('rem')) {
       columnWidth = fontSize * Number(columnWidthParameter.split('rem')[0]);
     } else if (columnWidthParameter && columnWidthParameter.includes('px')) {
@@ -124,7 +122,7 @@ export class BizyGridComponent implements AfterContentInit {
     }
 
     this.itemRows = itemRows;
-    this.ref.detectChanges();
+    this.#ref.detectChanges();
   }
 
   trackById(index: number, item: any): any {
@@ -146,4 +144,6 @@ export class BizyGridComponent implements AfterContentInit {
       this.#resizeObserver.disconnect();
     }
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 }

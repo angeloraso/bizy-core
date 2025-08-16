@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, EventEmitter, Inject, Input, OnInit, Output, QueryList } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, ElementRef, EventEmitter, inject, Input, Output, QueryList } from '@angular/core';
 import { BizySidebarOptionComponent } from '../sidebar-option/sidebar-option.component';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { OverlayModule } from '@angular/cdk/overlay';
@@ -12,6 +12,9 @@ import { OverlayModule } from '@angular/cdk/overlay';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizySidebarFloatingOptionComponent implements AfterContentInit {
+  readonly #elementRef = inject(ElementRef);
+  readonly #ref = inject(ChangeDetectorRef);
+
   @ContentChildren(BizySidebarOptionComponent) options!: QueryList<BizySidebarOptionComponent>;
   @Input() id: string = `bizy-sidebar-floating-option-${Math.random()}`;
   @Input() disabled: boolean = false;
@@ -35,15 +38,11 @@ export class BizySidebarFloatingOptionComponent implements AfterContentInit {
     this._turnOn$.next(turnOn);
     this._opened = turnOn;
     this._selected = selected;
-    this.ref.detectChanges();
+    this.#ref.detectChanges();
   }
 
   #subscription = new Subscription();
   #optionSubscription = new Subscription();
-
-  constructor(
-    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
-  ) {}
 
   ngAfterContentInit() {
     if (this.options && this.options.length > 0) {
@@ -56,13 +55,15 @@ export class BizySidebarFloatingOptionComponent implements AfterContentInit {
     }
   }
 
+  getNativeElement = () => this.#elementRef?.nativeElement;
+
   _onSelect(event: PointerEvent) {
     if (this.disabled || !this.selectable) {
       return;
     }
 
     this._opened = !this._opened;
-    this.ref.detectChanges();
+    this.#ref.detectChanges();
     this.selectedChange.emit(this._opened);
     this.onSelect.emit(event);
   }
@@ -73,7 +74,7 @@ export class BizySidebarFloatingOptionComponent implements AfterContentInit {
     }
 
     this._opened = false;
-    this.ref.detectChanges();
+    this.#ref.detectChanges();
   }
 
   getId = (): string  => {
@@ -90,7 +91,7 @@ export class BizySidebarFloatingOptionComponent implements AfterContentInit {
         if (turnOn) {
           if (!_option.options || _option.options.length === 0) {
             this._opened = false;
-            this.ref.detectChanges();
+            this.#ref.detectChanges();
           }
 
           this.#selectParents(this.options.toArray(), _option);

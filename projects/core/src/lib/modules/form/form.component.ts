@@ -1,5 +1,5 @@
 import { BizyDatePickerComponent } from './../date-picker/date-picker.component';
-import { ChangeDetectionStrategy, Component, ContentChildren, Input, QueryList } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ContentChildren, ElementRef, inject, Input, QueryList } from '@angular/core';
 import { BizyInputComponent } from '../input/input.component';
 import { BizySelectComponent } from '../select/select.component';
 import { CommonModule } from '@angular/common';
@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyFormComponent {
+  readonly #elementRef = inject(ElementRef);
   @ContentChildren(BizyInputComponent, { descendants: true }) inputs: QueryList<BizyInputComponent>;
   @ContentChildren(BizySelectComponent, { descendants: true }) selects: QueryList<BizySelectComponent>;
   @ContentChildren(BizyDatePickerComponent, { descendants: true }) datePickers: QueryList<BizyDatePickerComponent>;
@@ -43,4 +44,6 @@ export class BizyFormComponent {
       });
     }
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 }

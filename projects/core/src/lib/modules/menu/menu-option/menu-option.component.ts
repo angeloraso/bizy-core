@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, ElementRef, inject } from '@angular/core';
 
 @Component({
   selector: 'bizy-menu-option',
@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from 
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyMenuOptionComponent {
+  readonly #elementRef = inject(ElementRef);
   @Input() id: string = `bizy-menu-option-${Math.random()}`;
   @Input() disabled: boolean = false;
   @Input() customClass: string = '';
@@ -22,4 +23,6 @@ export class BizyMenuOptionComponent {
 
     this.onSelect.emit(event);
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 }

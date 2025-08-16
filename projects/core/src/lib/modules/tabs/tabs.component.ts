@@ -1,4 +1,4 @@
-import { AfterContentInit, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, ElementRef, Inject, Input, QueryList, ViewChild } from '@angular/core';
+import { AfterContentInit, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, ElementRef, inject, Input, QueryList, ViewChild } from '@angular/core';
 import { Subject, Subscription, debounceTime } from 'rxjs';
 import { BizyTabComponent } from './tab/tab.component';
 import { CommonModule } from '@angular/common';
@@ -11,6 +11,9 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyTabsComponent implements AfterViewInit, AfterContentInit {
+  readonly #elementRef = inject(ElementRef);
+  readonly #ref = inject(ChangeDetectorRef);
+
   @ContentChildren(BizyTabComponent) tabs!: QueryList<BizyTabComponent>;
   @ViewChild('bizyTabs') private bizyTabs: ElementRef; 
   @ViewChild('bizyTabsWrapper') private bizyTabsWrapper: ElementRef; 
@@ -26,10 +29,6 @@ export class BizyTabsComponent implements AfterViewInit, AfterContentInit {
   #resize$ = new Subject<void>();
   #initialScroll: number = 0;
 
-  constructor(
-    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
-  ) {}
-
   ngAfterViewInit(): void {
     this.bizyTabsWrapper.nativeElement.scrollLeft = this.#initialScroll;
     this.#resizeObserver = new ResizeObserver(() => this.#resize$.next());
@@ -42,7 +41,7 @@ export class BizyTabsComponent implements AfterViewInit, AfterContentInit {
   ngAfterContentInit(): void {
     for (let i = 0; i < this.tabs.length; i++) {
       if (this.tabs.get(i).selected) {
-        this.#initialScroll = this.tabs.get(i).elementRef.nativeElement.offsetLeft;
+        this.#initialScroll = this.tabs.get(i).getNativeElement().offsetLeft;
         break;
       }
     }
@@ -61,8 +60,10 @@ export class BizyTabsComponent implements AfterViewInit, AfterContentInit {
   #checkButtons() {
     this.showLeftButton = this.bizyTabsWrapper.nativeElement.scrollLeft > 0;
     this.showRightButton = (this.bizyTabsWrapper.nativeElement.scrollWidth - this.bizyTabs.nativeElement.offsetWidth) > 0 && (this.bizyTabsWrapper.nativeElement.scrollLeft < (this.bizyTabsWrapper.nativeElement.scrollWidth - this.bizyTabs.nativeElement.offsetWidth));
-    this.ref.detectChanges();
+    this.#ref.detectChanges();
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 
   ngOnDestroy() {
     this.#subscription.unsubscribe();

@@ -9,7 +9,8 @@ import {
   Input,
   OnDestroy,
   ChangeDetectorRef,
-  DOCUMENT
+  DOCUMENT,
+  inject
 } from '@angular/core';
 import { BizyTableRowComponent } from '../table-row/table-row.component';
 import { BizyTableScrollingDirective } from './table-scrolling.directive';
@@ -26,6 +27,10 @@ import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrollin
 // FIX: This components fixes the bug with Angular CDK virtual scrolling not supporting content projection.
 // https://github.com/angular/components/issues/15277
 export class BizyTableScrollingComponent implements OnDestroy {
+  readonly #elementRef = inject(ElementRef);
+  readonly #document = inject(DOCUMENT);
+  readonly #ref = inject(ChangeDetectorRef);
+
   @ViewChild(CdkVirtualScrollViewport) viewport!: CdkVirtualScrollViewport;
   @ViewChild('tableScrollingContent') content: TemplateRef<object>;
 
@@ -38,12 +43,6 @@ export class BizyTableScrollingComponent implements OnDestroy {
   #subscription = new Subscription();
   #scrollTop: number = 0;
 
-  constructor(
-    @Inject(DOCUMENT) private document: Document,
-    @Inject(ElementRef) public elementRef: ElementRef,
-    @Inject(ChangeDetectorRef) public ref: ChangeDetectorRef
-  ) {}
-
   /** Called by the virtual-for directive inside of the viewport. */
   public attachView(tableDirective: BizyTableScrollingDirective) {
     if (this.#view) {
@@ -51,8 +50,8 @@ export class BizyTableScrollingComponent implements OnDestroy {
     }
     
     let itemSize = 30;
-    const rowHeight = getComputedStyle(this.document.documentElement).getPropertyValue('--bizy-table-row-height');
-    const fontSize =  getComputedStyle(this.document.documentElement).getPropertyValue('font-size');
+    const rowHeight = getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-table-row-height');
+    const fontSize =  getComputedStyle(this.#document.documentElement).getPropertyValue('font-size');
     const gap = Number(fontSize.split('px')[0]) * 0.1;
     if (rowHeight && rowHeight.includes('rem')) {
       itemSize = Number(fontSize.split('px')[0]) * Number(rowHeight.split('rem')[0]);
@@ -64,19 +63,21 @@ export class BizyTableScrollingComponent implements OnDestroy {
     this.itemTemplate = tableDirective.template;
     this.#view = tableDirective.viewContainerRef;
     this.#view.createEmbeddedView(this.content);
-    this.ref.detectChanges();
+    this.#ref.detectChanges();
 
-    this.#subscription.add(fromEvent(this.elementRef.nativeElement, 'scroll', { capture: true }).pipe(debounceTime(100)).subscribe(() => {
+    this.#subscription.add(fromEvent(this.#elementRef.nativeElement, 'scroll', { capture: true }).pipe(debounceTime(100)).subscribe(() => {
       this.#scrollTop = this.viewport.measureScrollOffset();
     }));
 
     this.#subscription.add(this.items$.pipe(skip(1)).subscribe(() => {
       if (this.viewport) {
         this.viewport.scrollToOffset(this.#scrollTop);
-        this.ref.detectChanges();
+        this.#ref.detectChanges();
       }
     }));
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 
   ngOnDestroy() {
     this.#subscription.unsubscribe();

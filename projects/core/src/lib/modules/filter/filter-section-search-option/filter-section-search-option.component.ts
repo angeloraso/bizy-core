@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, Inject, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, ChangeDetectorRef, ElementRef, inject } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { BizyInputComponent } from '../../input/input.component';
 
@@ -10,6 +10,9 @@ import { BizyInputComponent } from '../../input/input.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyFilterSectionSearchOptionComponent {
+  readonly #elementRef = inject(ElementRef);
+  readonly #ref = inject(ChangeDetectorRef);
+
   @Input() id: string = `bizy-filter-section-search-option-${Math.random()}`;
   @Input() customClass: string = '';
   @Output() valueChange = new EventEmitter<string>();
@@ -34,18 +37,14 @@ export class BizyFilterSectionSearchOptionComponent {
 
     this._value = value;
     this.#activated.next(Boolean(value));
-    this.ref.detectChanges();
+    this.#ref.detectChanges();
   }
-
-  constructor(
-    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
-  ) {}
 
   _onChange(value: string) {
     this.valueChange.emit(value);
     this.onChange.emit(value);
     this.#activated.next(Boolean(value));
-    this.ref.detectChanges();
+    this.#ref.detectChanges();
   }
 
   getId = () => {
@@ -55,6 +54,8 @@ export class BizyFilterSectionSearchOptionComponent {
   getValue = () => {
     return this._value;
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 
   isActivated = () => {
     return this.#activated.value;

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, ContentChildren, QueryList, AfterContentInit} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, ContentChildren, QueryList, AfterContentInit, ElementRef, inject} from '@angular/core';
 import { BizySidebarOptionComponent } from './sidebar-option/sidebar-option.component';
 import { Subscription } from 'rxjs';
 import { BizySidebarFloatingOptionComponent } from './sidebar-floating-option/sidebar-floating-option.component';
@@ -16,6 +16,7 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizySidebarComponent implements AfterContentInit {
+  readonly #elementRef = inject(ElementRef);
   @Input() id: string = `bizy-sidebar-${Math.random()}`;
   @ContentChildren(BizySidebarOptionComponent) options!: QueryList<BizySidebarOptionComponent>;
   @ContentChildren(BizySidebarFloatingOptionComponent) floatingOptions!: QueryList<BizySidebarFloatingOptionComponent>;
@@ -131,6 +132,8 @@ export class BizySidebarComponent implements AfterContentInit {
     this.#optionSubscription.unsubscribe();
     this.#floatingOptionSubscription.unsubscribe();
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 
   _onToggle(event: PointerEvent) {
     this.toggleChange.emit(!this._toggle);

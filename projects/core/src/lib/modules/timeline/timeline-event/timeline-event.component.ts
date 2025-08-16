@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, inject, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'bizy-timeline-event',
@@ -13,6 +13,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
   }
 })
 export class BizyTimelineEventComponent {
+  readonly #elementRef = inject(ElementRef);
   @Input() id: string = `bizy-timeline-event-${Math.random()}`;
   @Input() customClass: string = '';
   @Input() showLine: boolean = true;
@@ -28,4 +29,6 @@ export class BizyTimelineEventComponent {
 
     this.onSelect.emit(event);
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 }

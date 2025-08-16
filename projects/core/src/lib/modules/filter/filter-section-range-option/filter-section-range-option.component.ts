@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, ChangeDetectorRef, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, ChangeDetectorRef, inject, ElementRef } from '@angular/core';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { BizyInputComponent } from '../../input/input.component';
@@ -11,8 +11,10 @@ import { BizyInputComponent } from '../../input/input.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyFilterSectionRangeOptionComponent {
+  readonly #elementRef = inject(ElementRef);
   readonly #fb = inject(FormBuilder);
   readonly #ref = inject(ChangeDetectorRef);
+
   @Input() id: string = `bizy-filter-section-range-option-${Math.random()}`;
   @Input() disabled: boolean = false;
   @Input() customClass: string = '';
@@ -134,6 +136,8 @@ export class BizyFilterSectionRangeOptionComponent {
   getId = () => {
     return this.id;
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 
   isActivated = () => {
     return this.#activated.value;

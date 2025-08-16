@@ -1,5 +1,5 @@
 import { takeUntil } from 'rxjs/operators';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, Input, OnDestroy, Output, ViewChild, ContentChildren, QueryList } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnDestroy, Output, ViewChild, ContentChildren, QueryList, inject } from '@angular/core';
 import { Subject, Subscription, debounceTime, interval } from 'rxjs';
 import { BizyInputOptionComponent } from './input-option/input-option.component';
 import { CommonModule } from '@angular/common';
@@ -15,6 +15,9 @@ import { BizyCurrencyFormatDirective } from '../../directives/currency-format.di
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyInputComponent implements OnDestroy {
+  readonly #elementRef = inject(ElementRef);
+  readonly #ref = inject(ChangeDetectorRef);
+
   @ContentChildren(BizyInputOptionComponent) options: QueryList<BizyInputOptionComponent>;
   @ViewChild('bizyInputWrapper') bizyInputWrapper: ElementRef;
   @ViewChild('bizyInput') bizyInput: ElementRef;
@@ -76,11 +79,6 @@ export class BizyInputComponent implements OnDestroy {
   #optionSubscription = new Subscription();
   onChange$ = new Subject<string | number>();
 
-
-  constructor(
-    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
-  ) {}
-
   getWidth(): number {
     return this.bizyInputWrapper && this.bizyInputWrapper.nativeElement && this.bizyInputWrapper.nativeElement.offsetWidth ? this.bizyInputWrapper.nativeElement.offsetWidth : 0;
   }
@@ -120,7 +118,7 @@ export class BizyInputComponent implements OnDestroy {
     setTimeout(() => {
       this.focused = false;
       this.touched = true;
-      this.ref.detectChanges();
+      this.#ref.detectChanges();
       this.onBlur.emit(event);
     }, 250)
   }
@@ -137,13 +135,13 @@ export class BizyInputComponent implements OnDestroy {
     }
 
     this.focused = true;
-    this.ref.detectChanges();
+    this.#ref.detectChanges();
     this.onFocus.emit(event);
   }
 
   setTouched(touched: boolean) {
     this.touched = touched;
-    this.ref.detectChanges();
+    this.#ref.detectChanges();
   }
 
   ngAfterViewInit() {
@@ -162,7 +160,7 @@ export class BizyInputComponent implements OnDestroy {
     }
 
     this.opened = !this.opened;
-    this.ref.detectChanges();
+    this.#ref.detectChanges();
 
     if (!this.options) {
       return;
@@ -173,7 +171,7 @@ export class BizyInputComponent implements OnDestroy {
     this.options.forEach(_option => {
       this.#optionSubscription.add(_option.onSelect.subscribe(() => {
         this.close();
-        this.ref.detectChanges();
+        this.#ref.detectChanges();
         this.#optionSubscription.unsubscribe();
       }));
     });
@@ -194,7 +192,7 @@ export class BizyInputComponent implements OnDestroy {
         
         finish$.next();
         finish$.complete();
-        this.ref.detectChanges();
+        this.#ref.detectChanges();
       }
     }))
   }
@@ -205,11 +203,13 @@ export class BizyInputComponent implements OnDestroy {
     }
 
     this.opened = false;
-    this.ref.detectChanges();
+    this.#ref.detectChanges();
   }
 
   ngOnDestroy() {
     this.#subscription.unsubscribe();
     this.#optionSubscription.unsubscribe();
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 }

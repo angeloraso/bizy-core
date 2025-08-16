@@ -1,4 +1,4 @@
-import { inject, DOCUMENT } from '@angular/core';
+import { inject, DOCUMENT, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
@@ -16,6 +16,7 @@ import { BizyButtonModule } from '../button';
 export class BizyAudioPlayerComponent {
   readonly #document = inject(DOCUMENT);
   readonly #renderer = inject(Renderer2);
+  readonly #elementRef = inject(ElementRef);
   @Input() id: string = `bizy-audio-player-${Math.random()}`;
   @Input() mimeType: string;
   @Input() audioPlayerError: string = 'Error';
@@ -140,6 +141,8 @@ export class BizyAudioPlayerComponent {
     this.#renderer.removeChild(this.#document.body, downloadButton);
     this.onDownload.emit();
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 
   ngOnDestroy() {
     this.#subscription.unsubscribe();

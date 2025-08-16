@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, ContentChildren, QueryList, Inject, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, ContentChildren, QueryList, ChangeDetectorRef, ElementRef, inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { BizyAccordionComponent } from '../../accordion/accordion.component';
 import { CommonModule } from '@angular/common';
@@ -11,6 +11,9 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizySidebarOptionComponent {
+  readonly #elementRef = inject(ElementRef);
+  readonly #ref = inject(ChangeDetectorRef);
+
   @ContentChildren(BizySidebarOptionComponent) options: QueryList<BizySidebarOptionComponent>;
   @Input() id: string = `bizy-sidebar-option-${Math.random()}`;
   @Input() disabled: boolean = false;
@@ -30,12 +33,8 @@ export class BizySidebarOptionComponent {
     const turnOn = selected && selected !== this._selected;
     this._turnOn$.next(turnOn);
     this._selected = selected;
-    this.ref.detectChanges();
+    this.#ref.detectChanges();
   }
-
-  constructor(
-    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
-  ) {}
 
   _onSelect(event: PointerEvent): void {
     if (this.disabled || !this.selectable) {
@@ -53,6 +52,8 @@ export class BizySidebarOptionComponent {
   getId = (): string  => {
     return this.id;
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 
   getSelected = (): boolean  => {
     return this._selected;

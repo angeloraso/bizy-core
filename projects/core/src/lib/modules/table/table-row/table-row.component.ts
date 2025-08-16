@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, ChangeDetectorRef, Inject, ContentChildren, QueryList } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, ChangeDetectorRef, ContentChildren, QueryList, ElementRef, inject } from '@angular/core';
 import { BizyTableColumnComponent } from '../table-column/table-column.component';
 import { CommonModule } from '@angular/common';
 import { BizyAccordionComponent } from '../../accordion/accordion.component';
@@ -11,6 +11,9 @@ import { BizyAccordionComponent } from '../../accordion/accordion.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyTableRowComponent {
+  readonly #elementRef = inject(ElementRef);
+  readonly #ref = inject(ChangeDetectorRef);
+
   @ContentChildren(BizyTableColumnComponent) columns: QueryList<BizyTableColumnComponent>;
   @Input() id: string = `bizy-table-row-${Math.random()}`;
   @Input() customClass: string = '';
@@ -25,9 +28,7 @@ export class BizyTableRowComponent {
 
   marginRight = 0;
 
-  constructor(
-    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
-  ) {}
+  getNativeElement = () => this.#elementRef?.nativeElement;
 
   _onOpen(event: PointerEvent) {
     if (this.disabled) {
@@ -52,7 +53,7 @@ export class BizyTableRowComponent {
     }
 
     this.selectable = selectable;
-    this.ref.detectChanges();
+    this.#ref.detectChanges();
   }
 
   setSelected = (selected: boolean): void => {
@@ -62,12 +63,12 @@ export class BizyTableRowComponent {
     
     this.selected = selected;
     this.selectedChange.emit(selected);
-    this.ref.detectChanges();
+    this.#ref.detectChanges();
   }
 
   setMarginRight(margin: number) {
     this.marginRight = margin - 5;
-    this.ref.detectChanges();
+    this.#ref.detectChanges();
   }
 
   setMarginLeft(margin: number) {
@@ -77,7 +78,7 @@ export class BizyTableRowComponent {
 
     this.columns.forEach(_column => {
       _column.setMarginLeft(margin);
-      this.ref.detectChanges();
+      this.#ref.detectChanges();
     })
   }
 }

@@ -1,5 +1,5 @@
 import { DIALOG_DATA, DialogModule } from '@angular/cdk/dialog';
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, inject } from '@angular/core';
 import { TOAST, BizyToastService } from '../toast.service';
 import { CommonModule } from '@angular/common';
 
@@ -12,27 +12,34 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyToastWrapperComponent {
+  readonly #elementRef = inject(ElementRef);
+  readonly #data: {type: TOAST, title: string, msg: string, id: string, duration: number} = inject(DIALOG_DATA);
+  readonly #toast = inject(BizyToastService);
 
   type: TOAST = TOAST.INFO;
   title: string = '';
   msg: string = '';
   id: string;
 
-  constructor(
-    @Inject(DIALOG_DATA) private data: {type: TOAST, title: string, msg: string, id: string, duration: number},
-    @Inject(BizyToastService) private toast: BizyToastService,
-  ) {
-    this.type = this.data.type;
-    this.title = this.data.title;
-    this.msg = this.data.msg;
-    this.id = this.data.id;
+  ngOnInit() {
+    if (!this.#data) {
+      this.close();
+      return;
+    }
+
+    this.type = this.#data.type;
+    this.title = this.#data.title;
+    this.msg = this.#data.msg;
+    this.id = this.#data.id;
 
     setTimeout(() => {
       this.close();
-    }, this.data.duration || 3000);
+    }, this.#data.duration || 3000);
   }
 
+  getNativeElement = () => this.#elementRef?.nativeElement;
+
   close() {
-    this.toast.close(this.id);
+    this.#toast.close(this.id);
   }
 }

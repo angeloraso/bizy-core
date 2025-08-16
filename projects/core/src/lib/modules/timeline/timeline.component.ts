@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, inject, Input } from '@angular/core';
 
 @Component({
   selector: 'bizy-timeline',
@@ -13,6 +13,9 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   }
 })
 export class BizyTimelineComponent {
+  readonly #elementRef = inject(ElementRef);
   @Input() id: string = `bizy-timeline-${Math.random()}`;
   @Input() customClass: string = '';
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 }

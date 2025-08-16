@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, inject, Input } from '@angular/core';
 import { BIZY_SKELETON_SHAPE } from './skeleton.types';
 import { CommonModule } from '@angular/common';
 
@@ -19,6 +19,7 @@ import { CommonModule } from '@angular/common';
   }
 })
 export class BizySkeletonComponent {
+  readonly #elementRef = inject(ElementRef);
   @Input() id: string = `bizy-skeleton-${Math.random()}`;
   @Input() shape: BIZY_SKELETON_SHAPE = BIZY_SKELETON_SHAPE.SQUARE;
   @Input() height: string;
@@ -26,4 +27,6 @@ export class BizySkeletonComponent {
   @Input() customClass: string = '';
 
   readonly BIZY_SKELETON_SHAPE = BIZY_SKELETON_SHAPE;
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 }

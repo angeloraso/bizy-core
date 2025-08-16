@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, EventEmitter, Inject, Input, Output, QueryList, DOCUMENT } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, EventEmitter, Input, Output, QueryList, DOCUMENT, ElementRef, inject } from '@angular/core';
 import { BizyFilterSectionComponent } from './filter-section/filter-section.component';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
@@ -17,6 +17,9 @@ import { BizyFilterSectionsComponent } from './filter-sections/filter-sections.c
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyFilterComponent {
+  readonly #elementRef = inject(ElementRef);
+  readonly #document = inject(DOCUMENT);
+  readonly #ref = inject(ChangeDetectorRef);
   @ContentChildren(BizyFilterSectionComponent, { descendants: true }) private sections: QueryList<BizyFilterSectionComponent>;
   @Input() id: string = `bizy-filter-${Math.random()}`;
   @Input() disabled: boolean = false;
@@ -31,11 +34,6 @@ export class BizyFilterComponent {
 
   #subscription = new Subscription();
 
-  constructor(
-    @Inject(DOCUMENT) private document: Document,
-    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
-  ) {}
-
   ngAfterViewInit() {
     const mutationObserver = new MutationObserver(() => {
       if (this.sections && this.sections.length > 0) {
@@ -44,7 +42,7 @@ export class BizyFilterComponent {
         if (this._activated !== activated) {
           this._activated = activated;
           this.onChange.emit(this._activated);
-          this.ref.detectChanges();
+          this.#ref.detectChanges();
         }
 
         this.sections.forEach(_section => {
@@ -54,7 +52,7 @@ export class BizyFilterComponent {
             if (this._activated !== activated) {
               this._activated = activated;
               this.onChange.emit(this._activated);
-              this.ref.detectChanges();
+              this.#ref.detectChanges();
             }
           }));
         });
@@ -63,7 +61,7 @@ export class BizyFilterComponent {
       }
     });
 
-    mutationObserver.observe(this.document.body, { childList: true, subtree: true });
+    mutationObserver.observe(this.#document.body, { childList: true, subtree: true });
   }
 
   _onOpen = (event: any) => {
@@ -86,8 +84,10 @@ export class BizyFilterComponent {
     }
 
     this.opened = false;
-    this.ref.detectChanges();
+    this.#ref.detectChanges();
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 
   ngOnDestroy() {
     this.#subscription.unsubscribe();

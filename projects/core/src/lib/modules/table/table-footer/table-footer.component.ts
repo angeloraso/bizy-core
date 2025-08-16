@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, ElementRef, Inject, Input, QueryList } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, ElementRef, inject, Input, QueryList } from '@angular/core';
 import { BizyTableColumnComponent } from '../table-column/table-column.component';
 import { CommonModule } from '@angular/common';
 
@@ -10,6 +10,9 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyTableFooterComponent {
+  readonly #elementRef = inject(ElementRef);
+  readonly #ref = inject(ChangeDetectorRef);
+
   @ContentChildren(BizyTableColumnComponent) columns: QueryList<BizyTableColumnComponent>;
   @Input() id: string = `bizy-table-footer-${Math.random()}`;
   @Input() customClass: string = '';
@@ -18,23 +21,20 @@ export class BizyTableFooterComponent {
 
   _selectable: boolean = false;
 
-  constructor(
-    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef,
-    @Inject(ElementRef) public elementRef: ElementRef
-  ) {}
-
   getId = (): string => {
     return this.id;
   }
 
   setSelectable = (selectable: boolean): void => {
     this._selectable = selectable;
-    this.ref.detectChanges();
+    this.#ref.detectChanges();
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 
   setMarginRight(margin: number) {
     this.marginRight = margin - 5;
-    this.ref.detectChanges();
+    this.#ref.detectChanges();
   }
 
   setMarginLeft(margin: number) {
@@ -44,7 +44,7 @@ export class BizyTableFooterComponent {
 
     this.columns.forEach(_column => {
       _column.setMarginLeft(margin);
-      this.ref.detectChanges();
+      this.#ref.detectChanges();
     })
   }
 }

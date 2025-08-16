@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, Inject, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, ChangeDetectorRef, ElementRef, inject } from '@angular/core';
 import { BizyCheckboxComponent } from '../../checkbox/checkbox.component';
 
 @Component({
@@ -9,6 +9,9 @@ import { BizyCheckboxComponent } from '../../checkbox/checkbox.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyFilterSectionCheckboxOptionComponent {
+  readonly #elementRef = inject(ElementRef);
+  readonly #ref = inject(ChangeDetectorRef);
+
   @Input() id: string = `bizy-filter-section-checkbox-option-${Math.random()}`;
   @Input() disabled: boolean = false;
   @Input() customClass: string = '';
@@ -25,10 +28,6 @@ export class BizyFilterSectionCheckboxOptionComponent {
 
   _selected: boolean = true;
 
-  constructor(
-    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
-  ) {}
-
   onSelect = (selected: boolean) => {
     if (this.disabled) {
       return;
@@ -36,12 +35,14 @@ export class BizyFilterSectionCheckboxOptionComponent {
 
     this._selected = selected;
     this.onChange.emit(selected);
-    this.ref.detectChanges();
+    this.#ref.detectChanges();
   }
 
   getSelected = () => {
     return this._selected;
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 
   getId = () => {
     return this.id;

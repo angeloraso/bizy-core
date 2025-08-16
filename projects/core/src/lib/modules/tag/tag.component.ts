@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, inject, Input, Output } from '@angular/core';
 import { BIZY_TAG_TYPE } from './tag.types';
 import { CommonModule } from '@angular/common';
 
@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyTagComponent {
+  readonly #elementRef = inject(ElementRef);
   @Input() id: string = `bizy-tag-${Math.random()}`;
   @Input() customClass: string = '';
   @Input() disabled: boolean = false;
@@ -25,4 +26,6 @@ export class BizyTagComponent {
 
     this.onSelect.emit(event);
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 }

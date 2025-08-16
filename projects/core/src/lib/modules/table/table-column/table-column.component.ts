@@ -9,12 +9,12 @@ import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, inject
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyTableColumnComponent {
+  readonly #elementRef = inject(ElementRef);
+
   @Input() id: string = `bizy-table-column-${Math.random()}`;
   @Input() customClass: string = '';
   @Output() contextMenu = new EventEmitter<MouseEvent>();
   @Output() onSelect = new EventEmitter<PointerEvent>();
-
-  readonly #elementRef = inject(ElementRef);
 
   @HostListener('contextmenu', ['$event'])
   onRightClick(event: MouseEvent) {
@@ -24,6 +24,8 @@ export class BizyTableColumnComponent {
   getId = (): string => {
     return this.id;
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 
   setMarginLeft(margin: number): void {
     if (!this.#elementRef.nativeElement || !this.#elementRef.nativeElement.setMarginLeft) {

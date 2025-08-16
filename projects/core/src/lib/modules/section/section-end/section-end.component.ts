@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, inject, Input } from '@angular/core';
 
 @Component({
   selector: 'bizy-section-end',
@@ -12,5 +12,8 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   }
 })
 export class BizySectionEndComponent {
+  readonly #elementRef = inject(ElementRef);
   @Input() id: string = `bizy-section-end-${Math.random()}`;
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 }

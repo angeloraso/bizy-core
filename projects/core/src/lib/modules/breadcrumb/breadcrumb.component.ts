@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Inject, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, inject, Input, Output } from '@angular/core';
 import { IBizyBreadcrumb } from './breadcrumb.types';
 import { CommonModule } from '@angular/common';
 
@@ -10,13 +10,11 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyBreadcrumbComponent {
+  readonly #elementRef = inject(ElementRef);
+  readonly #ref = inject(ChangeDetectorRef);
   @Output() onSelect = new EventEmitter<IBizyBreadcrumb>();
   _breadcrumbs: Array<IBizyBreadcrumb> = [];
   showGoBack: boolean = false;
-
-  constructor(
-    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
-  ) {}
 
   @Input() set breadcrumbs(breadcrumbs: Array<IBizyBreadcrumb>) {
     if (breadcrumbs) {
@@ -30,7 +28,7 @@ export class BizyBreadcrumbComponent {
 
         if (counter > 1) {
           this.showGoBack = true;
-          this.ref.detectChanges();
+          this.#ref.detectChanges();
           break;
         }
       }
@@ -56,5 +54,9 @@ export class BizyBreadcrumbComponent {
         break;
       }
     }
+  }
+
+  getNativeElement() {
+    return this.#elementRef.nativeElement;
   }
 }

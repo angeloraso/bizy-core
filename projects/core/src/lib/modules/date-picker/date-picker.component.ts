@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, inject, Inject, Input, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, inject, Input, Output, ViewChild } from '@angular/core';
 import flatpickr from "flatpickr";
 import monthSelectPlugin from 'flatpickr/dist/plugins/monthSelect/index.js';
 import { Spanish } from "flatpickr/dist/l10n/es.js"
@@ -15,6 +15,10 @@ import { CommonModule, DatePipe } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyDatePickerComponent {
+  readonly #elementRef = inject(ElementRef);
+  readonly #datePipe = inject(DatePipe);
+  readonly #ref = inject(ChangeDetectorRef);
+
   @ViewChild('bizyDatePicker') private bizyDatePicker: BizyInputComponent;
   @Input() id: string = `bizy-date-picker-${Math.random()}`;
   @Input() disabled: boolean = false;
@@ -29,9 +33,6 @@ export class BizyDatePickerComponent {
   @Output() openedChange = new EventEmitter<boolean>();
   @Output() onOpen = new EventEmitter<boolean>();
   @Output() onSelect = new EventEmitter<PointerEvent>();
-
-  readonly #datePipe = inject(DatePipe);
-  readonly #ref = inject(ChangeDetectorRef);
 
   dateFormat: string = 'Y-m-d';
   datePipeFormat: string = 'yyyy-MM-dd'
@@ -177,6 +178,8 @@ export class BizyDatePickerComponent {
       this.#ref.detectChanges();
     }
   }
+  
+  getNativeElement = () => this.#elementRef?.nativeElement;
 
   #getHour(time: number): number {
     const date = new Date(time);

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, inject } from '@angular/core';
 
 @Component({
   selector: 'bizy-table-row-expand-content',
@@ -6,4 +6,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrls: ['./table-row-expand-content.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BizyTableRowExpandContentComponent {}
+export class BizyTableRowExpandContentComponent {
+  readonly #elementRef = inject(ElementRef);
+  getNativeElement = () => this.#elementRef?.nativeElement;
+}

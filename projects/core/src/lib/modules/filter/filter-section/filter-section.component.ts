@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, ContentChildren, QueryList, Inject, ContentChild, ChangeDetectorRef, DOCUMENT } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, ContentChildren, QueryList, ContentChild, ChangeDetectorRef, DOCUMENT, ElementRef, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { BizyFilterSectionRangeOptionComponent } from '../filter-section-range-option/filter-section-range-option.component';
@@ -14,6 +14,10 @@ import { BizyCheckboxComponent } from '../../checkbox/checkbox.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyFilterSectionComponent {
+  readonly #elementRef = inject(ElementRef);
+  readonly #document = inject(DOCUMENT);
+  readonly #ref = inject(ChangeDetectorRef);
+
   @ContentChildren(BizyFilterSectionCheckboxOptionComponent) private checkboxOptions: QueryList<BizyFilterSectionCheckboxOptionComponent>;
   @ContentChild(BizyFilterSectionRangeOptionComponent) private rangeOption: BizyFilterSectionRangeOptionComponent;
   @ContentChild(BizyFilterSectionSearchOptionComponent) private searchOption: BizyFilterSectionSearchOptionComponent;
@@ -28,10 +32,6 @@ export class BizyFilterSectionComponent {
   #checkboxOptions: Array<BizyFilterSectionCheckboxOptionComponent> = [];
   _activated: boolean = false;
 
-  constructor(
-    @Inject(DOCUMENT) private document: Document,
-    @Inject(ChangeDetectorRef) private ref: ChangeDetectorRef
-  ) {}
 
   ngAfterViewInit() {
     this.#mutationObserver = new MutationObserver(() => {
@@ -42,7 +42,7 @@ export class BizyFilterSectionComponent {
         const selectedOptions = this.checkboxOptions.filter(_option => _option.getSelected() === true);
         this._activated = selectedOptions.length !== this.checkboxOptions.length;
         this.onSelect.emit(this._activated);
-        this.ref.detectChanges();
+        this.#ref.detectChanges();
   
         this.checkboxOptions.forEach(_option => {
 
@@ -50,7 +50,7 @@ export class BizyFilterSectionComponent {
             const selectedOptions = this.checkboxOptions.filter(_option => _option.getSelected() === true);
             this._activated = selectedOptions.length !== this.checkboxOptions.length;
             this.onSelect.emit(this._activated);
-            this.ref.detectChanges();
+            this.#ref.detectChanges();
           }));
         });
       } else if (this.rangeOption) {
@@ -58,7 +58,7 @@ export class BizyFilterSectionComponent {
           setTimeout(() => {
             this._activated = value;
             this.onSelect.emit(value);
-            this.ref.detectChanges();
+            this.#ref.detectChanges();
           })
         }));
         this.#mutationObserver.disconnect();
@@ -67,14 +67,14 @@ export class BizyFilterSectionComponent {
           setTimeout(() => {  
             this._activated = value;
             this.onSelect.emit(value);
-            this.ref.detectChanges();
+            this.#ref.detectChanges();
           });
         }));
         this.#mutationObserver.disconnect();
       }
     });
 
-    this.#mutationObserver.observe(this.document.body, { childList: true, subtree: true });
+    this.#mutationObserver.observe(this.#document.body, { childList: true, subtree: true });
   }
 
   _onSelect = (selected: boolean) => {
@@ -121,6 +121,8 @@ export class BizyFilterSectionComponent {
 
     return true;
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 
   ngOnDestroy() {
     this.#subscription.unsubscribe();

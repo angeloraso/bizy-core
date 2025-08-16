@@ -1,6 +1,6 @@
 import { OverlayModule } from '@angular/cdk/overlay';
 import { BizyMenuOptionComponent } from './menu-option/menu-option.component';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, EventEmitter, inject, Input, Output, QueryList } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, ElementRef, EventEmitter, inject, Input, Output, QueryList } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyMenuComponent {
+  readonly #elementRef = inject(ElementRef);
   readonly #ref = inject(ChangeDetectorRef);
 
   @ContentChildren(BizyMenuOptionComponent) options!: QueryList<BizyMenuOptionComponent>;
@@ -83,6 +84,8 @@ export class BizyMenuComponent {
     this.#subscription.unsubscribe();
     this.#ref.detectChanges();
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 
   ngOnDestroy() {
     this.#subscription.unsubscribe();
