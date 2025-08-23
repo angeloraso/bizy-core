@@ -82,6 +82,9 @@
 
     --bizy-content-padding: 0.5rem;
     --bizy-content-row-gap: 0.7rem;
+    --bizy-content-width: auto;
+    --bizy-content-height: auto;
+    --bizy-content-flex-direction: column;
 
     --bizy-copy-to-clipboard-default-color: #2484c6;
     --bizy-copy-to-clipboard-success-color: #5fbc5a;
