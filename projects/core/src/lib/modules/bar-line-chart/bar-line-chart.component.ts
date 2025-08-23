@@ -125,6 +125,9 @@ export class BizyBarLineChartComponent implements OnDestroy, AfterViewInit {
 
         let position = 'right';
         let offset = 0;
+        let max: number | undefined = undefined;
+        let min: number | undefined = undefined;
+        let interval: number | undefined = undefined;
         let formatter = null
         const xName = _d.xAxi &&  _d.xAxi.name ?  _d.xAxi.name : _d.label;
         let yName = _d.label;
@@ -139,6 +142,18 @@ export class BizyBarLineChartComponent implements OnDestroy, AfterViewInit {
           if (_d.yAxi.hide) {
             axisLine.show = false;
             formatter = null;
+          } else {
+            if (_d.yAxi.max || _d.yAxi.max === 0) {
+              max = _d.yAxi.max;
+            }
+  
+            if (_d.yAxi.min || _d.yAxi.min === 0) {
+              min = _d.yAxi.min;
+            }
+
+            if (_d.yAxi.interval || _d.yAxi.interval === 0) {
+              interval = _d.yAxi.interval;
+            }
           }
         }
 
@@ -156,6 +171,9 @@ export class BizyBarLineChartComponent implements OnDestroy, AfterViewInit {
           type: 'value',
           name: _d.yAxi && _d.yAxi.hide ? '' : yName,
           position,
+          min,
+          max,
+          interval,
           alignTicks: true,
           offset,
           axisLine,
@@ -181,14 +199,38 @@ export class BizyBarLineChartComponent implements OnDestroy, AfterViewInit {
           this.#chartNames.push(yName);
         }
   
-        series.push({...{
-          type: _d.type,
-          name: xName,
-          yAxisIndex,
-          smooth: !_d.discrete,
-          stack: _d.stack,
-          data: _d.values
-        }, ...color});
+        if (_d.barMinHeight) {
+          const values = _d.values.map(v => v > 0 ? v : '-'); // use '-' for missing data
+          const emptyValues = _d.values.map(v => v === 0 ? 0 : '-');
+
+          series.push({...{
+            type: _d.type,
+            name: xName,
+            yAxisIndex,
+            smooth: !_d.discrete,
+            stack: _d.stack,
+            barMinHeight: _d.barMinHeight,
+            data: values
+          }, ...color});
+
+          series.push({...{
+            type: _d.type,
+            name: '-',
+            yAxisIndex,
+            smooth: !_d.discrete,
+            stack: _d.stack,
+            data: emptyValues
+          }, ...color});
+        } else {
+          series.push({...{
+            type: _d.type,
+            name: xName,
+            yAxisIndex,
+            smooth: !_d.discrete,
+            stack: _d.stack,
+            data: _d.values
+          }, ...color});
+        }
       });
 
       const tooltip = {
