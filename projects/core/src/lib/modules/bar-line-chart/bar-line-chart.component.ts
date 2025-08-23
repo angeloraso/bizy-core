@@ -34,7 +34,7 @@ export class BizyBarLineChartComponent implements OnDestroy, AfterViewInit {
 
   @Input() resizeRef: HTMLElement | null = null;
   @Input() tooltip: boolean = true;
-  @Input() download: {show?: boolean, label: string, name: string} = {show: true, label: 'Descargar', name: 'Bizy'};
+  @Input() download: {label?: string, name?: string} | null = null;
   @Input() axisPointer: 'line' | 'cross' = 'line';
   @Input() xAxisLabels: Array<string> = [];
   @Input() onTooltipFormatter: (item: any ) => string;
@@ -272,13 +272,16 @@ export class BizyBarLineChartComponent implements OnDestroy, AfterViewInit {
       const textBackgroundColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-line-chart-tooltip-background-color');
       const borderColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-line-chart-tooltip-border-color');
 
+      const downloadTitle = this.download?.label || 'Descargar';
+      const downloadName = this.download?.name || 'bizy_chart';
+
       const toolbox = {
         show: true,
         feature: {
           mySaveAsImage: {
-            show: this.download.show,
+            show: Boolean(this.download),
             icon: 'path://M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 242.7-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7 288 32zM64 352c-35.3 0-64 28.7-64 64l0 32c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-32c0-35.3-28.7-64-64-64l-101.5 0-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352 64 352zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z',
-            title: this.download.label,
+            title: downloadTitle,
             onclick: () => {
               const showAllLegends = (chart: echarts.ECharts) => {
                   const option = chart.getOption();
@@ -310,7 +313,7 @@ export class BizyBarLineChartComponent implements OnDestroy, AfterViewInit {
                   html2canvas(this.#chartContainer).then(canvas => {
                       var link = this.#renderer.createElement('a');
                       link.href = canvas.toDataURL('image/png');
-                      link.download = `${this.download.name}.png`;
+                      link.download = downloadName;
                       this.#renderer.appendChild(this.#document.body, link);
                       link.click();
                       this.#renderer.removeChild(this.#document.body, link);
