@@ -50,7 +50,7 @@ export class BizyTableScrollingComponent implements OnDestroy {
     }
     
     let itemSize = 30;
-    const rowHeight = getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-table-row-height');
+    const rowHeight = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--anura-table-row-height');
     const fontSize =  getComputedStyle(this.#document.documentElement).getPropertyValue('font-size');
     const gap = Number(fontSize.split('px')[0]) * 0.1;
     if (rowHeight && rowHeight.includes('rem')) {
@@ -78,6 +78,20 @@ export class BizyTableScrollingComponent implements OnDestroy {
   }
 
   getNativeElement = () => this.#elementRef?.nativeElement;
+
+  #getClosestCssVariable = (element: HTMLElement, cssVariable: string): string | null => {
+    while (element) {
+      const value = getComputedStyle(element).getPropertyValue(cssVariable).trim();
+      if (value) {
+        return value;
+      }
+      element = element.parentElement as HTMLElement;
+    }
+
+    const rootValue = getComputedStyle(this.#document.documentElement).getPropertyValue(cssVariable).trim();
+    return rootValue || null;
+  }
+
 
   ngOnDestroy() {
     this.#subscription.unsubscribe();
