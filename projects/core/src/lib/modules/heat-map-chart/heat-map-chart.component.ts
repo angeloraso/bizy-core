@@ -1,30 +1,31 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
-  Input,
-  Output,
-  Renderer2,
   EventEmitter,
-  DOCUMENT,
-  inject
+  inject,
+  Input,
+  OnDestroy,
+  Output,
+  Renderer2
 } from '@angular/core';
-import { IBizyPieChartData } from './pie-chart.types';
-import { CommonModule } from '@angular/common';
+import { IBizyHeatMapChartData, IBizyHeatMapChartRange } from './heat-map-chart.types';
+import { CommonModule, DOCUMENT } from '@angular/common';
+import { auditTime, BehaviorSubject, filter, skip, Subject, Subscription, take, throttleTime } from 'rxjs';
 import html2canvas from 'html2canvas';
-import { BehaviorSubject, Subject, Subscription, auditTime, filter, skip, take, throttleTime } from 'rxjs';
 
 const EMPTY_CHART = [0];
-const DEFAULT_CHART_SIZE = '300px';
+const DEFAULT_CHART_SIZE = '300px'
 
 @Component({
-  selector: 'bizy-pie-chart',
+  selector: 'bizy-heat-map-chart',
   template: '',
   imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BizyPieChartComponent {
+export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
   readonly #elementRef = inject(ElementRef);
   readonly #document = inject(DOCUMENT);
   readonly #ref = inject(ChangeDetectorRef);
@@ -32,14 +33,15 @@ export class BizyPieChartComponent {
 
   @Input() resizeRef: HTMLElement | null = null;
   @Input() tooltip: boolean = true;
-  @Input() centerLabel: string | null = null;
-  @Input() type: 'pie' | 'donut' = 'pie';
-  @Input() legend: {show?: boolean, orient?: 'vertical' | 'horizontal', position?: {x: 'left' | 'right' | 'center', y: 'top' | 'bottom' | 'center'}} | null = null;
+  @Input() ranges: Array<IBizyHeatMapChartRange> = [];
   @Input() download: {show?: boolean, label: string, name: string} = {show: true, label: 'Descargar', name: 'Bizy'};
-  @Input() onLabelFormatter: (item: any ) => string;
+  @Input() xAxisLabels: Array<string> = [];
+  @Input() yAxisLabels: Array<string> = [];
   @Input() onTooltipFormatter: (item: any ) => string;
-  @Output() onSelect = new EventEmitter<string>();
+  @Input() onXAxisLabelFormatter: (item: any ) => string;
+  @Input() onYAxisLabelFormatter: (item: any ) => string;
   @Output() onDownload = new EventEmitter<void>();
+  @Output() onSelect = new EventEmitter<string>();
 
   #echarts: echarts.ECharts | null = null
 
@@ -48,15 +50,14 @@ export class BizyPieChartComponent {
   #chartContainer: HTMLDivElement | null = null;
   #afterViewInit = new BehaviorSubject<boolean>(false);
   #resize$ = new Subject<void>();
-  #data:  Array<IBizyPieChartData> | typeof EMPTY_CHART = EMPTY_CHART;
+  #data:  Array<IBizyHeatMapChartData> | typeof EMPTY_CHART = EMPTY_CHART;
+
 
   ngAfterViewInit() {
     this.#afterViewInit.next(true);
   }
 
-  getNativeElement = () => this.#elementRef?.nativeElement;
-
-  @Input() set data(data: Array<IBizyPieChartData>) {
+  @Input() set data(data: Array<IBizyHeatMapChartData>) {
     if (!data) {
       return;
     }
@@ -65,12 +66,11 @@ export class BizyPieChartComponent {
       this.#setChartData(data);
     } else {
       this.#deleteChartContainer();
-
-      this.#setChartData(EMPTY_CHART);
     }
   }
 
-  async #setChartData(data: Array<IBizyPieChartData> | typeof EMPTY_CHART) {
+  async #setChartData(data: Array<IBizyHeatMapChartData>) {
+    this.#data = data;
     this.#subscription.add(this.#afterViewInit.pipe(filter(value => value === true), take(1)).subscribe(() => {
       this.#createChartContainer()
 
@@ -78,65 +78,60 @@ export class BizyPieChartComponent {
         return;
       }
 
-      if (data && data.length > 0 && data[0] !== 0) {
-        this.#data = [];
-        (<Array<IBizyPieChartData>>data).forEach(_d => {
-          if (!_d.value) {
-            _d.value = 0;
-          }
-
-          if (!_d.name) {
-            _d.name = '---'
-          }
-
-          const itemStyle = _d.color ? {color: _d.color} : {};
-          
-          (<Array<{name: string, value: number, itemStyle: {color?: string}}>>this.#data).push({
-              name: _d.name,
-              value: _d.value,
-              itemStyle
-            })
-        });
-      } else {
-        this.#data = EMPTY_CHART;
+      const series: Array<any> = [{
+        type: 'heatmap',
+        data: this.#data.map(_cell => [_cell.x, _cell.y, _cell.value ?? '-'])
+      }];
+  
+      const tooltip = {
+        show: this.tooltip,
+        trigger: 'item',
+        appendToBody: true,
+        formatter: this.onTooltipFormatter
       }
 
-      const itemStyle = this.type === 'pie' ? {
-        emphasis: {
-          label: {
+      const xAxis = [
+        {
+          type: 'category',
+          splitArea: {
             show: true
-          }
-        },
-        normal: {
-          label: {
-            position: 'outer',
-            formatter: this.onLabelFormatter
           },
-          labelLine: {
-            show: true
+          position: 'top',
+          data: this.xAxisLabels,
+          axisLabel: {
+            formatter: this.onXAxisLabelFormatter,
           }
         }
-      } : 
-      {
-        borderRadius: 10,
-        borderColor: '#fff',
-        borderWidth: 2
+      ];
+
+      const yAxis = [
+        {
+          type: 'category',
+          data: this.yAxisLabels,
+          splitArea: {
+            show: true
+          },
+          axisLabel: {
+            formatter: this.onYAxisLabelFormatter,
+          }
+        }
+      ];
+
+      const outOfRangeColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-out-of-range-color');
+
+      const visualMap = {
+        type: 'piecewise',
+        orient: 'horizontal',
+        left: 'center',
+        pieces: this.ranges,
+        outOfRange: {
+          color: outOfRangeColor
+        }
       };
 
-      const label = this.type === 'pie' ? undefined : { show: false, position: 'center' };
-
-      const series = [{
-        type: 'pie',
-        radius: this.type === 'pie' ? '50%' : ['50%', '70%'],
-        center: ['50%', '50%'],
-        data: this.#data,
-        itemStyle,
-        label
-      }];
-
-      const textColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-pie-chart-tooltip-color');
-      const textBackgroundColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-pie-chart-tooltip-background-color');
-      const borderColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-pie-chart-tooltip-border-color');
+      const textColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-tooltip-color');
+      const textBackgroundColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-tooltip-background-color');
+      const borderColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-tooltip-border-color');
 
       const toolbox = {
         show: true,
@@ -171,61 +166,20 @@ export class BizyPieChartComponent {
         }
       };
 
-      const tooltip = {
-        show: this.tooltip,
-        trigger: 'item',
-        appendToBody: true,
-        formatter: this.onTooltipFormatter
-      };
-
-      let legend: any = {};
-      if (this.legend) {
-        legend.show = this.legend.show;
-        legend.orient = this.legend.orient;
-        legend.left = this.legend.position ? this.legend.position.x : 'auto';
-        legend.top = this.legend.position ? this.legend.position.y : 'auto';
-      } else {
-        legend = this.type === 'pie' ? { show: false } : {
-          show: true,
-          orient: 'vertical',
-          left: 'left'
-        };
-      }
-
-      let graphic: any;
-      if (this.centerLabel) {
-
-        let centerLabelColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-pie-chart-center-label-color');
-        let { width, height } = this.#chartContainer.getBoundingClientRect();
-        let base = Math.min(width, height);
-        let fontSize = base / 6;
-        graphic = {
-          type: 'text',
-          left: 'center',
-          top: 'center',
-          style: {
-            text: this.centerLabel,
-            fill: centerLabelColor,
-            textAlign: 'center',
-            fontSize,
-            fontWeight: 'bold'
-          }
-        };
-      }
-
       const option: any = {
         tooltip,
+        xAxis,
+        yAxis,
         toolbox,
-        legend,
         series,
-        graphic
+        visualMap
       };
-      
+
       import('echarts').then(echarts => {
         this.#echarts = echarts.init(this.#chartContainer);
         this.#echarts.setOption(option);
         this.#echarts.on('click', params => {
-          this.onSelect.emit(params.name)
+            this.onSelect.emit(params.name)
         });
   
         this.#resizeObserver = new ResizeObserver(() => this.#resize$.next());
@@ -240,12 +194,12 @@ export class BizyPieChartComponent {
           }
   
           this.#echarts = echarts.init(this.#chartContainer);
-          this.#echarts.setOption({...option, series: option.series.map(_serie => { return {..._serie, data: this.#data}})});
+          this.#echarts.setOption(option);
           this.#echarts.on('click', params => {
             this.onSelect.emit(params.name)
           });
         }));
-      })
+      });
     }));
   }
 
@@ -257,8 +211,8 @@ export class BizyPieChartComponent {
     let elementWidth = this.#elementRef.nativeElement.offsetWidth;
     let elementHeight = this.#elementRef.nativeElement.offsetHeight;
 
-    let minWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-pie-chart-width');
-    let minHeight = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-pie-chart-height');
+    let minWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-width');
+    let minHeight = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-height');
 
     const width = minWidth ? minWidth : elementWidth ? `${elementWidth}px` : DEFAULT_CHART_SIZE;
     const height = minHeight ? minHeight : elementHeight ? `${elementHeight}px` : DEFAULT_CHART_SIZE;
@@ -290,8 +244,8 @@ export class BizyPieChartComponent {
       element = element.parentElement as HTMLElement;
     }
 
-    const rootValue = getComputedStyle(document.documentElement).getPropertyValue(cssVariable).trim();
-    return rootValue || null;
+    const rootValue = getComputedStyle(this.#document.documentElement).getPropertyValue(cssVariable).trim();
+    return rootValue;
   }
 
   ngOnDestroy() {
@@ -305,5 +259,4 @@ export class BizyPieChartComponent {
       this.#echarts.clear();
     }
   }
-
 }

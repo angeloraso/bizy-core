@@ -12,6 +12,7 @@ export * from './file-uploader';
 export * from './filter';
 export * from './form';
 export * from './grid';
+export * from './heat-map-chart';
 export * from './input';
 export * from './list';
 export * from './menu';
