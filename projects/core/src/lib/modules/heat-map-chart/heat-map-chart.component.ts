@@ -16,7 +16,6 @@ import { CommonModule, DOCUMENT } from '@angular/common';
 import { auditTime, BehaviorSubject, filter, skip, Subject, Subscription, take, throttleTime } from 'rxjs';
 import html2canvas from 'html2canvas';
 
-const EMPTY_CHART = [0];
 const DEFAULT_CHART_SIZE = '300px'
 
 @Component({
@@ -50,12 +49,14 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
   #chartContainer: HTMLDivElement | null = null;
   #afterViewInit = new BehaviorSubject<boolean>(false);
   #resize$ = new Subject<void>();
-  #data:  Array<IBizyHeatMapChartData> | typeof EMPTY_CHART = EMPTY_CHART;
+  #data:  Array<IBizyHeatMapChartData> = [];
 
 
   ngAfterViewInit() {
     this.#afterViewInit.next(true);
   }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
 
   @Input() set data(data: Array<IBizyHeatMapChartData>) {
     if (!data) {
