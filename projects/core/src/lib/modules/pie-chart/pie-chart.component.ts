@@ -31,8 +31,8 @@ export class BizyPieChartComponent {
   readonly #renderer = inject(Renderer2);
 
   @Input() resizeRef: HTMLElement | null = null;
-  @Input() centerLabel: {value: string | number, color: string} | null = null;
   @Input() type: 'pie' | 'donut' = 'pie';
+  @Input() centerLabel: {value: string | number, color?: string} | null = null;
   @Input() legend: {show?: boolean, orient?: 'vertical' | 'horizontal', position?: {x: 'left' | 'right' | 'center', y: 'top' | 'bottom' | 'center'}} | null = null;
   @Input() download: {show?: boolean, label?: string, name?: string} | null = null;
   @Input() label: { show?: boolean, overflow?: 'break' | 'truncate', line: boolean, formatter?: (item: any ) => string} | null = null;
