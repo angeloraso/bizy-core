@@ -31,13 +31,12 @@ export class BizyPieChartComponent {
   readonly #renderer = inject(Renderer2);
 
   @Input() resizeRef: HTMLElement | null = null;
-  @Input() tooltip: boolean = true;
   @Input() centerLabel: string | null = null;
   @Input() type: 'pie' | 'donut' = 'pie';
   @Input() legend: {show?: boolean, orient?: 'vertical' | 'horizontal', position?: {x: 'left' | 'right' | 'center', y: 'top' | 'bottom' | 'center'}} | null = null;
-  @Input() download: {label?: string, name?: string} | null = null;
-  @Input() onLabelFormatter: (item: any ) => string;
-  @Input() onTooltipFormatter: (item: any ) => string;
+  @Input() download: {show?: boolean, label?: string, name?: string} | null = null;
+  @Input() label: { show?: boolean, overflow?: 'break' | 'truncate', line: boolean, formatter?: (item: any ) => string} | null = null;
+  @Input() tooltip: { show?: boolean, formatter?: (item: any ) => string} | null = null;
   @Output() onSelect = new EventEmitter<string>();
   @Output() onDownload = new EventEmitter<void>();
 
@@ -56,7 +55,7 @@ export class BizyPieChartComponent {
 
   getNativeElement = () => this.#elementRef?.nativeElement;
 
-  @Input() set data(data: Array<IBizyPieChartData>) {
+  @Input() set data(data: Array<IBizyPieChartData> | null) {
     if (!data) {
       return;
     }
@@ -101,29 +100,31 @@ export class BizyPieChartComponent {
         this.#data = EMPTY_CHART;
       }
 
-      const itemStyle = this.type === 'pie' ? {
-        emphasis: {
-          label: {
-            show: true
-          }
-        },
-        normal: {
-          label: {
-            position: 'outer',
-            formatter: this.onLabelFormatter
-          },
-          labelLine: {
-            show: true
-          }
-        }
-      } : 
-      {
-        borderRadius: 10,
-        borderColor: '#fff',
-        borderWidth: 2
-      };
+      const itemStyle = this.type === 'donut' ? 
+        {
+          borderRadius: 10,
+          borderColor: '#fff',
+          borderWidth: 2
+        } : {};
 
-      const label = this.type === 'pie' ? undefined : { show: false, position: 'center' };
+      const label = this.label ?
+        {
+          show: this.label.show ?? true,
+          overflow: this.label.overflow ?? 'break',
+          formatter: this.label?.formatter
+        } :
+        this.type === 'pie' ?
+        {
+          show: true
+        } :
+        { 
+          show: false,
+          position: 'center'
+        };
+  
+        const labelLine = {
+          show: this.label?.line ?? true
+        }
 
       const series = [{
         type: 'pie',
@@ -131,7 +132,8 @@ export class BizyPieChartComponent {
         center: ['50%', '50%'],
         data: this.#data,
         itemStyle,
-        label
+        label,
+        labelLine
       }];
 
       const textColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-pie-chart-tooltip-color');
@@ -146,7 +148,7 @@ export class BizyPieChartComponent {
         show: true,
         feature: {
           mySaveAsImage: {
-            show: Boolean(this.download),
+            show: this.download?.show,
             icon: 'path://M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 242.7-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7 288 32zM64 352c-35.3 0-64 28.7-64 64l0 32c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-32c0-35.3-28.7-64-64-64l-101.5 0-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352 64 352zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z',
             title: downloadTitle,
             onclick: () => {
@@ -176,10 +178,10 @@ export class BizyPieChartComponent {
       };
 
       const tooltip = {
-        show: this.tooltip,
+        show: this.tooltip?.show,
         trigger: 'item',
         appendToBody: true,
-        formatter: this.onTooltipFormatter
+        formatter: this.tooltip?.formatter
       };
 
       let legend: any = {};

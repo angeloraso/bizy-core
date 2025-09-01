@@ -31,14 +31,11 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
   readonly #renderer = inject(Renderer2);
 
   @Input() resizeRef: HTMLElement | null = null;
-  @Input() tooltip: boolean = true;
+  @Input() tooltip: { show?: boolean, formatter?: (item: any ) => string} | null = null;
+  @Input() download: {show?: boolean, label?: string, name?: string} | null = null;
   @Input() ranges: Array<IBizyHeatMapChartRange> = [];
-  @Input() download: {label?: string, name?: string} | null = null;
-  @Input() xAxisLabels: Array<string> = [];
-  @Input() yAxisLabels: Array<string> = [];
-  @Input() onTooltipFormatter: (item: any ) => string;
-  @Input() onXAxisLabelFormatter: (item: any ) => string;
-  @Input() onYAxisLabelFormatter: (item: any ) => string;
+  @Input() xAxis: { labels?: Array<string>, formatter?: (item: any ) => string} | null = null;
+  @Input() yAxis: { labels?: Array<string>, formatter?: (item: any ) => string} | null = null;
   @Output() onDownload = new EventEmitter<void>();
   @Output() onSelect = new EventEmitter<string>();
 
@@ -58,7 +55,7 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
 
   getNativeElement = () => this.#elementRef?.nativeElement;
 
-  @Input() set data(data: Array<IBizyHeatMapChartData>) {
+  @Input() set data(data: Array<IBizyHeatMapChartData> | null) {
     if (!data) {
       return;
     }
@@ -88,7 +85,7 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
         show: this.tooltip,
         trigger: 'item',
         appendToBody: true,
-        formatter: this.onTooltipFormatter
+        formatter: this.tooltip?.formatter
       }
 
       const xAxis = [
@@ -98,9 +95,9 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
             show: true
           },
           position: 'top',
-          data: this.xAxisLabels,
+          data: this.xAxis?.labels,
           axisLabel: {
-            formatter: this.onXAxisLabelFormatter,
+            formatter: this.xAxis?.formatter,
           }
         }
       ];
@@ -108,12 +105,12 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
       const yAxis = [
         {
           type: 'category',
-          data: this.yAxisLabels,
+          data: this.yAxis?.labels,
           splitArea: {
             show: true
           },
           axisLabel: {
-            formatter: this.onYAxisLabelFormatter,
+            formatter: this.yAxis?.formatter,
           }
         }
       ];
@@ -141,7 +138,7 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
         show: true,
         feature: {
           mySaveAsImage: {
-            show: Boolean(this.download),
+            show: this.download?.show,
             icon: 'path://M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 242.7-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7 288 32zM64 352c-35.3 0-64 28.7-64 64l0 32c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-32c0-35.3-28.7-64-64-64l-101.5 0-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352 64 352zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z',
             title: downloadTitle,
             onclick: () => {
