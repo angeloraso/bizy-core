@@ -72,6 +72,7 @@
     --bizy-card-header-background-color: transparent;
     --bizy-card-content-background-color: transparent;
     --bizy-card-footer-background-color: transparent;
+    --bizy-card-row-gap: 0.3rem;
 
     --bizy-calendar-event-color: var(--bizy-dark-default-color);
     --bizy-calendar-event-delete-action-color: var(--bizy-danger-color);

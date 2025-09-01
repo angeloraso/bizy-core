@@ -50,7 +50,7 @@ export class BizyTableScrollingComponent implements OnDestroy {
     }
     
     let itemSize = 30;
-    const rowHeight = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--anura-table-row-height');
+    const rowHeight = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-table-row-height');
     const fontSize =  getComputedStyle(this.#document.documentElement).getPropertyValue('font-size');
     const gap = Number(fontSize.split('px')[0]) * 0.1;
     if (rowHeight && rowHeight.includes('rem')) {
