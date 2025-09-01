@@ -1,22 +1,23 @@
 <audio
-    class="bizy-audio-player__audio"
-    [ngClass]="{'bizy-audio-player__audio--disabled': disabled || !_audioURL || !_ready}"
+    class="bizy-audio-player__normal animated fade-in"
+    [ngClass]="{'bizy-audio-player--disabled': disabled || !_audioURL, 'animated fade-in': !disabled }"
     [id]="id"
-    [autoplay]="autoplay"
+    *ngIf="_mode === MODE.NORMAL"
     controls
-    (canplaythrough)="_ready = true; canPlayThrough.emit($event)"
     controlslist="nodownload noplaybackrate">
-    <source [src]="_audioURL" [type]="mimeType">
+    <source [src]="_audioURL" [type]="MIME_TYPE.WAV">
+    <source [src]="_audioURL" [type]="MIME_TYPE.OGG">
+    <source [src]="_audioURL" [type]="MIME_TYPE.MPEG">
     {{audioPlayerError}}
 </audio>
 
-<bizy-button customClass="bizy-audio-player__playback-rate" (onSelect)="_onTrackPlayerRate()" [disabled]="disabled || !_audioURL || !_ready">
-    <span>{{_playbackRate}}x</span>
+<bizy-button class="bizy-audio-player__rate-button" (onSelect)="_onTrackPlayerRate()" [disabled]="disabled || !_audioURL || _loading">
+    <h6>{{_playbackRate}}x</h6>
 </bizy-button>
 
-<bizy-button customClass="bizy-audio-player__download-button" *ngIf="showDownload" (onSelect)="_onDownload()" [disabled]="disabled || !_audioURL || !_ready">
+<bizy-button class="bizy-audio-player__download-button" *ngIf="showDownload" (onSelect)="_onDownload()" [disabled]="disabled || !_audioURL">
     <svg 
-        class="bizy-audio-player__download-button__icon"
+        class="bizy-audio-player__button__icon"
         fill="none"
         stroke="currentColor"
         stroke-linecap="round"

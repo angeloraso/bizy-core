@@ -32,8 +32,10 @@
 
     --bizy-animation-timeout: 500ms;
 
-    --bizy-audio-player-playback-rate-background-color: #f3f3f3;
-    --bizy-audio-player-playback-rate-color: var(--bizy-dark-default-color);
+    --bizy-audio-player-min-width: 20rem;
+    --bizy-audio-player-max-width: 100%;
+    --bizy-audio-player-rate-button-background-color: var(--bizy-default-color);
+    --bizy-audio-player-rate-button-color: #fff;
     --bizy-audio-player-download-button-background-color: var(--bizy-accent-color);
     --bizy-audio-player-download-button-color: #fff;
 

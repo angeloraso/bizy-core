@@ -1,40 +1,37 @@
 :host {
   font-size: 1rem;
-  width: 100%;
+  max-width: var(--bizy-audio-player-max-width);
+  flex: 1;
   display: flex;
+  justify-content: flex-end;
   align-items: center;
   column-gap: 1rem;
 }
 
-.bizy-audio-player__audio--disabled {
+.bizy-audio-player__normal {
+  flex: 1;
+  width: 100%;
+  overflow: hidden;
+  min-width: var(--bizy-audio-player-min-width);
+}
+
+.bizy-audio-player--disabled {
   opacity: 0.5;
   pointer-events: none;
   cursor: not-allowed !important;
 }
 
-.bizy-audio-player__audio {
-  flex: 1;
-  width: 100%;
+.bizy-audio-player__rate-button {
+  --bizy-button-min-width: 2rem;
+  --bizy-button-background-color: var(--bizy-audio-player-rate-button-background-color);
+  --bizy-button-color: var(--bizy-audio-player-rate-button-color);
 }
 
-::ng-deep .bizy-audio-player__playback-rate {
-  font-size: 1rem;
-  --bizy-button-background-color: var(--bizy-audio-player-playback-rate-background-color);
-  --bizy-button-color: var(--bizy-audio-player-playback-rate-color);
-  font-weight: bold;
-  border-radius: 50% !important;
-  width: 4rem;
-  height: 2rem;
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-}
-
-::ng-deep .bizy-audio-player__download-button {
+.bizy-audio-player__download-button {
   --bizy-button-background-color: var(--bizy-audio-player-download-button-background-color);
   --bizy-button-color: var(--bizy-audio-player-download-button-color);
 }
 
-.bizy-audio-player__download-button__icon {
+.bizy-audio-player__button__icon {
   height: 1rem;
 }
