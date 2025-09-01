@@ -31,7 +31,7 @@ export class BizyPieChartComponent {
   readonly #renderer = inject(Renderer2);
 
   @Input() resizeRef: HTMLElement | null = null;
-  @Input() centerLabel: string | null = null;
+  @Input() centerLabel: {value: string | number, color: string} | null = null;
   @Input() type: 'pie' | 'donut' = 'pie';
   @Input() legend: {show?: boolean, orient?: 'vertical' | 'horizontal', position?: {x: 'left' | 'right' | 'center', y: 'top' | 'bottom' | 'center'}} | null = null;
   @Input() download: {show?: boolean, label?: string, name?: string} | null = null;
@@ -200,7 +200,6 @@ export class BizyPieChartComponent {
 
       let graphic: any;
       if (this.centerLabel) {
-
         let centerLabelColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-pie-chart-center-label-color');
         let { width, height } = this.#chartContainer.getBoundingClientRect();
         let base = Math.min(width, height);
@@ -210,8 +209,8 @@ export class BizyPieChartComponent {
           left: 'center',
           top: 'center',
           style: {
-            text: this.centerLabel,
-            fill: centerLabelColor,
+            text: String(this.centerLabel.value),
+            fill: this.centerLabel.color || centerLabelColor,
             textAlign: 'center',
             fontSize,
             fontWeight: 'bold'
