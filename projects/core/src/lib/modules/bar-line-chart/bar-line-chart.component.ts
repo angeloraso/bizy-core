@@ -43,7 +43,8 @@ export class BizyBarLineChartComponent implements OnDestroy, AfterViewInit {
   #echarts: echarts.ECharts | null = null
 
   #resizeObserver: ResizeObserver | null = null;
-  #subscription = new Subscription();
+  #afterViewInitSubscription = new Subscription();
+  #resizeSubscription = new Subscription();
   #chartContainer: HTMLDivElement | null = null;
   #afterViewInit = new BehaviorSubject<boolean>(false);
   #resize$ = new Subject<void>();
@@ -78,7 +79,7 @@ export class BizyBarLineChartComponent implements OnDestroy, AfterViewInit {
     this.#leftYAxis = 0;
     this.#chartStacks = [];
     this.#chartNames = [];
-    this.#subscription.add(this.#afterViewInit.pipe(filter(value => value === true), take(1)).subscribe(() => {
+    this.#afterViewInitSubscription.add(this.#afterViewInit.pipe(filter(value => value === true), take(1)).subscribe(() => {
       this.#createChartContainer()
 
       if (!this.#chartContainer) {
@@ -350,10 +351,12 @@ export class BizyBarLineChartComponent implements OnDestroy, AfterViewInit {
             this.onSelect.emit(params.name)
         });
   
+        this.#resizeSubscription.unsubscribe();
         this.#resizeObserver = new ResizeObserver(() => this.#resize$.next());
         const resizeRef = this.resizeRef ? this.resizeRef : this.#renderer.parentNode(this.#elementRef.nativeElement) ? this.#renderer.parentNode(this.#elementRef.nativeElement) : this.#elementRef.nativeElement;
         this.#resizeObserver.observe(resizeRef);
-        this.#subscription.add(this.#resize$.pipe(skip(1), auditTime(300), throttleTime(500)).subscribe(() => {
+        this.#resizeSubscription = new Subscription();
+        this.#resizeSubscription.add(this.#resize$.pipe(skip(1), auditTime(300), throttleTime(500)).subscribe(() => {
           this.#deleteChartContainer();
           this.#createChartContainer();
   
@@ -417,7 +420,8 @@ export class BizyBarLineChartComponent implements OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy() {
-    this.#subscription.unsubscribe();
+    this.#afterViewInitSubscription.unsubscribe();
+    this.#resizeSubscription.unsubscribe();
 
     if (this.#resizeObserver) {
       this.#resizeObserver.disconnect();
