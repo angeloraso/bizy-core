@@ -18,8 +18,45 @@ export class BizyPopupService {
    * 
    * @param data.disableClose Deprecated
    */
-  open<R>(data: {component: ComponentType<unknown>, data?: unknown, customClass?: Array<string> | string, fullScreen?: boolean, disableClose?: boolean, disableBackdropClose?: boolean, id?: string, disableCloseButton?: boolean, disableDragButton?: boolean, position?: {top?: string, right?: string, bottom?: string, left?: string}}, callback?: (res: R) => void) {
+  open<R>(data: {
+    component: ComponentType<unknown>,
+    data?: unknown,
+    customClass?: Array<string> | string,
+    fullScreen?: boolean,
+    disableClose?: boolean,
+    disableBackdropClose?: boolean,
+    id?: string,
+    disableCloseButton?: boolean,
+    disableDragButton?: boolean,
+    element?: HTMLElement,
+    position?: {top?: string, right?: string, bottom?: string, left?: string},
+    placement?: 'top' | 'right' | 'bottom' | 'left'},
+    callback?: (res: R) => void) {
+    if (!data) {
+      return;
+    }
+
     this.#data = data.data;
+
+    let position: {top?: string, right?: string, bottom?: string, left?: string} | null = data.position ?? null;
+    let placement: 'top' | 'right' | 'bottom' | 'left' | null = null;
+
+    if (data.element) {
+      const rect = data.element.getBoundingClientRect();
+      if (!data.placement) {
+        data.placement = 'right';
+      }
+
+      position = {
+        top: data.placement === 'top' ? `${rect.top - data.element.offsetHeight + Number(position.top)}px ` : `${rect.top + Number(position.top)}px`,
+        left: data.placement === 'left' ? `${rect.left - data.element.offsetWidth + Number(position.left)}px` : `${rect.left + Number(position.left)}px`,
+        bottom: data.placement === 'bottom' ? `${rect.bottom + data.element.offsetHeight + Number(position.bottom)}px` : `${rect.bottom + Number(position.bottom)}px`,
+        right: data.placement === 'right' ? `${rect.right + data.element.offsetWidth + Number(position.right)}px` : `${rect.right + Number(position.right)}px`,
+      }
+    } else {
+      placement = data.placement ?? null;
+    }
+
     const component: ComponentType<unknown> = data.fullScreen ? BizyFullScreenPopupWrapperComponent : BizyPopupWrapperComponent;
     const dialogRef = this.#dialog.open(component, ({
       id: data.id,
@@ -27,7 +64,8 @@ export class BizyPopupService {
         component: data.component,
         disableClose: data.disableCloseButton ?? false,
         disableDrag: data.disableDragButton ?? false,
-        position: data.position,
+        position,
+        placement
       },
       autoFocus: true,
       hasBackdrop: true,

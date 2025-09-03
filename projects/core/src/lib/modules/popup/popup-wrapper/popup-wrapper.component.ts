@@ -12,16 +12,22 @@ import { BizyPopupService } from '../popup.service';
   imports: [CommonModule, DialogModule, DragDropModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[style.top]': 'position && position.top ? position.top : position ? "" : "50%"',
-    '[style.right]': 'position && position.right ? position.right : position ? "" : "50%"',
-    '[style.bottom]': 'position && position.bottom ? position.bottom : position ? "" : "50%"',
-    '[style.left]': 'position && position.left ? position.left : position ? "" : "50%"',
-    '[style.transform]': 'position ? "" : "translate(-50%, -50%)"'
+    '[style.top]': 'position.top',
+    '[style.right]': 'position.right',
+    '[style.bottom]': 'position.bottom',
+    '[style.left]': 'position.left',
+    '[style.transform]': 'position.transform'
   }
 })
 export class BizyPopupWrapperComponent<T> {
   readonly #elementRef = inject(ElementRef);
-  readonly #data: {component: ComponentType<T>, disableClose: boolean, disableDrag: boolean, position?: {top: string, right: string, bottom: string, left: string}} = inject(DIALOG_DATA);
+  readonly #data: {
+    component: ComponentType<T>,
+    disableClose: boolean,
+    disableDrag: boolean,
+    position: {top: string, right: string, bottom: string, left: string} | null,
+    placement: 'top' | 'right' | 'bottom' | 'left' | null
+  } = inject(DIALOG_DATA);
   readonly #dialogRef: DialogRef<void> = inject(DialogRef);
   readonly #popup = inject(BizyPopupService);
   readonly #ref = inject(ChangeDetectorRef);
@@ -32,12 +38,32 @@ export class BizyPopupWrapperComponent<T> {
 
   disableClose: boolean = false;
   disableDrag: boolean = false;
-  position: {top: string, right: string, bottom: string, left: string} | null = null;
+  position: {top: string, right: string, bottom: string, left: string, transform: string} | null = {
+    top: '50%',
+    right: '50%',
+    bottom: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+  };
 
   ngOnInit() {
     if (this.#data) {
       if (this.#data.position) {
-        this.position = this.#data.position;
+        this.position = {
+          top: this.#data.position.top,
+          right: this.#data.position.right,
+          bottom: this.#data.position.bottom,
+          left: this.#data.position.left,
+          transform: '',
+        }
+      } else if (this.#data.placement) {
+        this.position = {
+          top: this.#data.placement === 'top' ? '2rem' : '',
+          right: this.#data.placement === 'right' ? '2rem' : '',
+          bottom: this.#data.placement === 'bottom' ? '2rem' : '',
+          left: this.#data.placement === 'left' ? '2rem' : '',
+          transform: this.#data.placement === 'top' || this.#data.placement === 'bottom' ? 'translateX(-50%)' : this.#data.placement === 'right' || this.#data.placement === 'left' ? 'translatey(-50%)' : '',
+        }
       }
 
       if (this.#data.disableClose) {
