@@ -175,6 +175,12 @@
     --bizy-menu-scroll-bar-color: var(--bizy-default-color);
     --bizy-menu-scroll-bar-hover-color: #999;
 
+    --bizy-menu-bar-option-background-color: #fff;
+    --bizy-menu-bar-option-border: 0.1rem solid var(--bizy-dark-info-color);
+    --bizy-menu-bar-option-color: var(--bizy-dark-info-color);;
+    --bizy-menu-bar-option-min-width: 8rem;
+    --bizy-menu-bar-option-selected-background-color: var(--bizy-light-info-color);
+
     --bizy-pie-chart-tooltip-color: #000;
     --bizy-pie-chart-tooltip-background-color: #fff;
     --bizy-pie-chart-tooltip-border-color: #fff;

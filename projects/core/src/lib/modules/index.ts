@@ -16,6 +16,7 @@ export * from './heat-map-chart';
 export * from './input';
 export * from './list';
 export * from './menu';
+export * from './menu-bar';
 export * from './pie-chart';
 export * from './popup';
 export * from './progress-bar';

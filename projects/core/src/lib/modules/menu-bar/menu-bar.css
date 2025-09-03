@@ -1,0 +1,26 @@
+:host {
+    font-size: 1rem;
+    display: flex;
+    flex: 1;
+    height: fit-content;
+    width: 100%;
+    background-color: transparent;
+    align-items: center;
+    column-gap: 0;
+}
+
+:host ::ng-deep > bizy-menu-bar-option:first-child {
+    --bizy-menu-bar-option-border-radius: 1rem 0 0 1rem;
+}
+
+:host ::ng-deep > bizy-menu-bar-option:last-child {
+    --bizy-menu-bar-option-border-radius: 0 1rem 1rem 0;
+}
+
+:host ::ng-deep > bizy-menu-bar-option:not(:first-child):not(:last-child) {
+    --bizy-menu-bar-option-border-radius: 0;
+}
+
+:host ::ng-deep > bizy-menu-bar-option:only-child {
+    --bizy-menu-bar-option-border-radius: 1rem;
+}

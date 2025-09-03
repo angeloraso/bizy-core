@@ -1,0 +1,12 @@
+:host {
+    font-size: 1rem;
+    --bizy-button-background-color: var(--bizy-menu-bar-option-background-color);
+    --bizy-button-border: var(--bizy-menu-bar-option-border);
+    --bizy-button-color: var(--bizy-menu-bar-option-color);
+    --bizy-button-min-width: var(--bizy-menu-bar-option-min-width);
+    --bizy-button-border-radius: var(--bizy-menu-bar-option-border-radius);
+}
+
+.bizy-menu-bar-option--selected {
+    --bizy-button-background-color: var(--bizy-menu-bar-option-selected-background-color);
+}

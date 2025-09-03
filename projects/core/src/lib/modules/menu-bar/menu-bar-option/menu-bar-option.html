@@ -1,0 +1,7 @@
+<bizy-button 
+    [disabled]="disabled"
+    [id]="id"
+    [ngClass]="{'bizy-menu-bar-option--selected': selected}"
+    (onSelect)="_onSelect($event)">
+    <ng-content></ng-content>
+</bizy-button>
