@@ -14,7 +14,6 @@ import {
 } from '@angular/core';
 import { IBizyBarLineChartData } from './bar-line-chart.types';
 import { CommonModule } from '@angular/common';
-import html2canvas from 'html2canvas';
 import { auditTime, BehaviorSubject, filter, skip, Subject, Subscription, take, throttleTime } from 'rxjs';
 
 const Y_AXIS_OFFSET = 80;
@@ -309,15 +308,18 @@ export class BizyBarLineChartComponent implements OnDestroy, AfterViewInit {
               showAllLegends(this.#echarts);
 
               setTimeout(() => {
-                  html2canvas(this.#chartContainer).then(canvas => {
-                      var link = this.#renderer.createElement('a');
-                      link.href = canvas.toDataURL('image/png');
-                      link.download = downloadName;
-                      this.#renderer.appendChild(this.#document.body, link);
-                      link.click();
-                      this.#renderer.removeChild(this.#document.body, link);
-                      restoreLegendType(this.#echarts);
-                      this.onDownload.emit();
+                  import('html2canvas').then(module => {
+                    const html2canvas = module.default;
+                    html2canvas(this.#chartContainer).then(canvas => {
+                        var link = this.#renderer.createElement('a');
+                        link.href = canvas.toDataURL('image/png');
+                        link.download = downloadName;
+                        this.#renderer.appendChild(this.#document.body, link);
+                        link.click();
+                        this.#renderer.removeChild(this.#document.body, link);
+                        restoreLegendType(this.#echarts);
+                        this.onDownload.emit();
+                    });
                   });
               }, 500);
             }

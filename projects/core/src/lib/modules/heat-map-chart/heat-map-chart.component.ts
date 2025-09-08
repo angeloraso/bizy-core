@@ -14,7 +14,6 @@ import {
 import { IBizyHeatMapChartData, IBizyHeatMapChartRange } from './heat-map-chart.types';
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { auditTime, BehaviorSubject, filter, skip, Subject, Subscription, take, throttleTime } from 'rxjs';
-import html2canvas from 'html2canvas';
 
 const DEFAULT_CHART_SIZE = '300px'
 
@@ -144,14 +143,17 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
             title: downloadTitle,
             onclick: () => {
               setTimeout(() => {
-                  html2canvas(this.#chartContainer).then(canvas => {
-                      var link = this.#renderer.createElement('a');
-                      link.href = canvas.toDataURL('image/png');
-                      link.download = downloadName;
-                      this.#renderer.appendChild(this.#document.body, link);
-                      link.click();
-                      this.#renderer.removeChild(this.#document.body, link);
-                      this.onDownload.emit();
+                import('html2canvas').then(module => {
+                    const html2canvas = module.default;
+                    html2canvas(this.#chartContainer).then(canvas => {
+                        var link = this.#renderer.createElement('a');
+                        link.href = canvas.toDataURL('image/png');
+                        link.download = downloadName;
+                        this.#renderer.appendChild(this.#document.body, link);
+                        link.click();
+                        this.#renderer.removeChild(this.#document.body, link);
+                        this.onDownload.emit();
+                    });
                   });
               }, 500);
             }

@@ -12,7 +12,6 @@ import {
 } from '@angular/core';
 import { IBizyPieChartData } from './pie-chart.types';
 import { CommonModule } from '@angular/common';
-import html2canvas from 'html2canvas';
 import { BehaviorSubject, Subject, Subscription, auditTime, filter, skip, take, throttleTime } from 'rxjs';
 
 const EMPTY_CHART = [0];
@@ -154,14 +153,17 @@ export class BizyPieChartComponent {
             title: downloadTitle,
             onclick: () => {
               setTimeout(() => {
-                  html2canvas(this.#chartContainer).then(canvas => {
-                      var link = this.#renderer.createElement('a');
-                      link.href = canvas.toDataURL('image/png');
-                      link.download = downloadName;
-                      this.#renderer.appendChild(this.#document.body, link);
-                      link.click();
-                      this.#renderer.removeChild(this.#document.body, link);
-                      this.onDownload.emit();
+                import('html2canvas').then(module => {
+                    const html2canvas = module.default;
+                    html2canvas(this.#chartContainer).then(canvas => {
+                        var link = this.#renderer.createElement('a');
+                        link.href = canvas.toDataURL('image/png');
+                        link.download = downloadName;
+                        this.#renderer.appendChild(this.#document.body, link);
+                        link.click();
+                        this.#renderer.removeChild(this.#document.body, link);
+                        this.onDownload.emit();
+                    });
                   });
               }, 500);
             }
