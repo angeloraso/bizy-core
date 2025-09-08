@@ -4,6 +4,7 @@ import { ComponentType } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, ViewChild, ViewContainerRef, inject } from '@angular/core';
 import { BizyPopupService } from '../popup.service';
+import { POPUP_PLACEMENT } from '../popup.types';
 
 @Component({
   selector: 'bizy-popup-wrapper',
@@ -26,7 +27,7 @@ export class BizyPopupWrapperComponent<T> {
     disableClose: boolean,
     disableDrag: boolean,
     position: {top: string, right: string, bottom: string, left: string} | null,
-    placement: 'top' | 'right' | 'bottom' | 'left' | null
+    placement: POPUP_PLACEMENT | null
   } = inject(DIALOG_DATA);
   readonly #dialogRef: DialogRef<void> = inject(DialogRef);
   readonly #popup = inject(BizyPopupService);
@@ -57,13 +58,7 @@ export class BizyPopupWrapperComponent<T> {
           transform: '',
         }
       } else if (this.#data.placement) {
-        this.position = {
-          top: this.#data.placement === 'top' ? '2rem' : '',
-          right: this.#data.placement === 'right' ? '2rem' : '',
-          bottom: this.#data.placement === 'bottom' ? '2rem' : '',
-          left: this.#data.placement === 'left' ? '2rem' : '',
-          transform: this.#data.placement === 'top' || this.#data.placement === 'bottom' ? 'translateX(-50%)' : this.#data.placement === 'right' || this.#data.placement === 'left' ? 'translatey(-50%)' : '',
-        }
+        this.setPlacement(this.#data.placement);
       }
 
       if (this.#data.disableClose) {
@@ -88,6 +83,22 @@ export class BizyPopupWrapperComponent<T> {
       this.dynamicComponentContainer.createComponent(this.#data.component);
       this.#ref.detectChanges();
     }
+  }
+
+  setPlacement = (placement: POPUP_PLACEMENT) => {
+    if (!placement) {
+      return;
+    }
+
+    this.position = {
+      top: placement === POPUP_PLACEMENT.TOP ? '2rem' : '',
+      right: placement === POPUP_PLACEMENT.RIGHT ? '2rem' : '',
+      bottom: placement === POPUP_PLACEMENT.BOTTOM ? '2rem' : '',
+      left: placement === POPUP_PLACEMENT.LEFT ? '2rem' : '',
+      transform: placement === POPUP_PLACEMENT.TOP || placement === POPUP_PLACEMENT.BOTTOM ? 'translateX(-50%)' : placement === POPUP_PLACEMENT.RIGHT || placement === POPUP_PLACEMENT.LEFT ? 'translatey(-50%)' : '',
+    }
+
+    this.#ref.detectChanges();
   }
 
   async close() {

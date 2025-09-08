@@ -5,6 +5,7 @@ import { BizyPopupWrapperComponent } from "./popup-wrapper/popup-wrapper.compone
 import { Dialog, DialogRef } from '@angular/cdk/dialog';
 import { BizyFullScreenPopupWrapperComponent } from "./full-screen-popup-wrapper/full-screen-popup-wrapper.component";
 import { BIZY_ANIMATION, BizyAnimationService, BizyValidatorService } from "../../services";
+import { POPUP_PLACEMENT } from "./popup.types";
 
 @Injectable()
 export class BizyPopupService {
@@ -30,7 +31,7 @@ export class BizyPopupService {
     disableDragButton?: boolean,
     element?: HTMLElement,
     position?: {top?: string, right?: string, bottom?: string, left?: string},
-    placement?: 'top' | 'right' | 'bottom' | 'left'},
+    placement?: POPUP_PLACEMENT},
     callback?: (res: R) => void) {
     if (!data) {
       return;
@@ -39,19 +40,19 @@ export class BizyPopupService {
     this.#data = data.data;
 
     let position: {top?: string, right?: string, bottom?: string, left?: string} | null = data.position ?? null;
-    let placement: 'top' | 'right' | 'bottom' | 'left' | null = null;
+    let placement: POPUP_PLACEMENT | null = null;
 
     if (data.element) {
       const rect = data.element.getBoundingClientRect();
       if (!data.placement) {
-        data.placement = 'right';
+        data.placement = POPUP_PLACEMENT.RIGHT;
       }
 
       position = {
-        top: data.placement === 'top' ? `${rect.top - data.element.offsetHeight + Number(position.top)}px ` : `${rect.top + Number(position.top)}px`,
-        left: data.placement === 'left' ? `${rect.left - data.element.offsetWidth + Number(position.left)}px` : `${rect.left + Number(position.left)}px`,
-        bottom: data.placement === 'bottom' ? `${rect.bottom + data.element.offsetHeight + Number(position.bottom)}px` : `${rect.bottom + Number(position.bottom)}px`,
-        right: data.placement === 'right' ? `${rect.right + data.element.offsetWidth + Number(position.right)}px` : `${rect.right + Number(position.right)}px`,
+        top: data.placement === POPUP_PLACEMENT.TOP ? `${rect.top - data.element.offsetHeight + Number(position.top)}px ` : `${rect.top + Number(position.top)}px`,
+        left: data.placement === POPUP_PLACEMENT.LEFT ? `${rect.left - data.element.offsetWidth + Number(position.left)}px` : `${rect.left + Number(position.left)}px`,
+        bottom: data.placement === POPUP_PLACEMENT.BOTTOM ? `${rect.bottom + data.element.offsetHeight + Number(position.bottom)}px` : `${rect.bottom + Number(position.bottom)}px`,
+        right: data.placement === POPUP_PLACEMENT.RIGHT ? `${rect.right + data.element.offsetWidth + Number(position.right)}px` : `${rect.right + Number(position.right)}px`,
       }
     } else {
       placement = data.placement ?? null;
@@ -81,6 +82,23 @@ export class BizyPopupService {
         callback(response as R);
       }
     });
+  }
+
+  setPlacement(data: {placement: POPUP_PLACEMENT, id?: string}) {
+    if (!data || !data.placement) {
+      return;
+    }
+
+    let dialogRef: DialogRef<unknown, any> | null = null;
+    if (data.id) {
+      dialogRef = Array.from(BizyPopupService.dialogs).find(_dialogRef => _dialogRef.id === data.id);
+    } else {
+      dialogRef = Array.from(BizyPopupService.dialogs).pop();
+    }
+
+    if (dialogRef && dialogRef.componentInstance instanceof BizyPopupWrapperComponent) {
+      dialogRef.componentInstance.setPlacement(data.placement);
+    }
   }
 
   getData<D>() {
