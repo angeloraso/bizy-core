@@ -53,7 +53,7 @@
 
 .bizy-card__content:not(:empty) {
     display: flex;
-    align-items: center;
+    align-items: var(--bizy-card-content-align-items);
     column-gap: 0.5rem;
     height: 100%;
     width: 100%;
@@ -69,7 +69,7 @@
     height: fit-content;
     display: grid;
     grid-template-columns: auto auto;
-    align-items: center;
+    align-items: var(--bizy-card-header-align-items);;
     column-gap: 0.5rem;
     background-color: var(--bizy-card-header-background-color);
 }
@@ -100,7 +100,7 @@
     height: fit-content;
     display: grid;
     grid-template-columns: auto auto;
-    align-items: center;
+    align-items: var(--bizy-card-footer-align-items);;
     column-gap: 0.5rem;
     background-color: var(--bizy-card-footer-background-color);
 }
