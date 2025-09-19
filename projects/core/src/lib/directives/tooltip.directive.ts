@@ -8,6 +8,7 @@ export class BizyTooltipDirective implements OnDestroy {
   @Input() tooltipCustomClass: string = '';
   @Input() tooltipPlacement: 'top' | 'right' | 'bottom' | 'left' = 'top';
   @Input() tooltipDelay: number = 0; // Milliseconds
+  @Input() showTooltip: boolean = true;
   @Input() tooltipLongPressDuration: number = 500; // Milliseconds
 
   readonly #elementRef = inject(ElementRef);
@@ -83,7 +84,7 @@ export class BizyTooltipDirective implements OnDestroy {
       }
 
       this.#hiding = false;
-      this.show();
+      this.#show();
     }
   }
 
@@ -98,7 +99,7 @@ export class BizyTooltipDirective implements OnDestroy {
       }
 
       this.#hiding = true;
-      this.hide();
+      this.#hide();
     }
 
     // Fix fixed tooltips
@@ -116,7 +117,7 @@ export class BizyTooltipDirective implements OnDestroy {
   @HostListener('click') onClick() {
     if (this.#tooltip && !this.#hiding) {
       this.#hiding = true;
-      this.hide();
+      this.#hide();
       return;
     }
 
@@ -128,18 +129,18 @@ export class BizyTooltipDirective implements OnDestroy {
     if (!this.#tooltip && this.#text) {
       this.#longPressTimeout = setTimeout(() => {
         this.#hiding = false;
-        this.show();
+        this.#show();
       }, this.tooltipLongPressDuration);
     }
   }
 
-  show() {
-    if (this.#lineClamp > 0 && !this.#isTextTruncated(this.#elementRef.nativeElement)) {
+  #show() {
+    if (!this.showTooltip || (this.#lineClamp > 0 && !this.#isTextTruncated(this.#elementRef.nativeElement))) {
       return;
     }
 
-    this.create();
-    this.setPosition();
+    this.#create();
+    this.#setPosition();
     this.#renderer.addClass(this.#tooltip, 'bizy-tooltip-identify');
     this.#renderer.addClass(this.#tooltip, 'bizy-tooltip--show');
     if (this.tooltipCustomClass) {
@@ -147,7 +148,7 @@ export class BizyTooltipDirective implements OnDestroy {
     }
   }
 
-  hide() {
+  #hide() {
     this.#renderer.removeClass(this.#tooltip, 'bizy-tooltip--show');
     window.setTimeout(() => {
       this.#renderer.removeChild(this.#document.body, this.#tooltip);
@@ -155,7 +156,7 @@ export class BizyTooltipDirective implements OnDestroy {
     }, this.tooltipDelay);
   }
 
-  create() {
+  #create() {
     this.#tooltip = this.#renderer.createElement('span');
 
     const sentences = String(this.#text).split('</br>');
@@ -183,7 +184,7 @@ export class BizyTooltipDirective implements OnDestroy {
     }
   }
 
-  setPosition() {
+  #setPosition() {
     const elRefPosition = this.#elementRef.nativeElement.getBoundingClientRect();
 
     const tooltipPos = this.#tooltip?.getBoundingClientRect();
