@@ -2,6 +2,7 @@ export interface IBizyHeatMapChartData {
   x: number;
   y: number;
   value: number | null;
+  metadata?: any;
 }
 
 export interface IBizyHeatMapChartRange {

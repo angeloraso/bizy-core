@@ -30,11 +30,11 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
   readonly #renderer = inject(Renderer2);
 
   @Input() resizeRef: HTMLElement | null = null;
-  @Input() tooltip: { show?: boolean, formatter?: (item: any ) => string} | null = null;
-  @Input() download: {show?: boolean, label?: string, name?: string} | null = null;
-  @Input() ranges: Array<IBizyHeatMapChartRange> = [];
-  @Input() xAxis: { labels?: Array<string>, formatter?: (item: any ) => string} | null = null;
-  @Input() yAxis: { labels?: Array<string>, formatter?: (item: any ) => string} | null = null;
+  @Input() tooltip: {show?: boolean, formatter?: (item: any ) => string} = {show: true};
+  @Input() download: {show?: boolean, label: string, name: string} = {show: true, label: 'Descargar', name: 'Bizy'};
+  @Input() ranges: Array<IBizyHeatMapChartRange> | {data: Array<IBizyHeatMapChartRange>, label?: {start?: string, end?: string}} = [];
+  @Input() xAxis: {labels: Array<string>, position: 'top' | 'bottom', formatter?: (item: any ) => string} = {labels: [], position: 'top'};
+  @Input() yAxis: {labels: Array<string>, position: 'left' | 'right', formatter?: (item: any ) => string} = {labels: [], position: 'left'};
   @Output() onDownload = new EventEmitter<void>();
   @Output() onSelect = new EventEmitter<string>();
 
@@ -78,11 +78,16 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
 
       const series: Array<any> = [{
         type: 'heatmap',
-        data: this.#data.map(_cell => [_cell.x, _cell.y, _cell.value ?? '-'])
+        data: this.#data.map(_cell => {
+          return {
+            value: [_cell.x, _cell.y, _cell.value ?? '-'],
+            metadata: _cell.metadata
+          }
+        })
       }];
   
       const tooltip = {
-        show: this.tooltip,
+        show: this.tooltip.show ?? true,
         trigger: 'item',
         appendToBody: true,
         formatter: this.tooltip?.formatter
@@ -94,7 +99,7 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
           splitArea: {
             show: true
           },
-          position: 'top',
+          position: this.xAxis?.position ?? 'top',
           data: this.xAxis?.labels,
           axisLabel: {
             formatter: this.xAxis?.formatter,
@@ -105,6 +110,7 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
       const yAxis = [
         {
           type: 'category',
+          position: this.yAxis?.position ?? 'left',
           data: this.yAxis?.labels,
           splitArea: {
             show: true
@@ -117,11 +123,29 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
 
       const outOfRangeColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-out-of-range-color');
 
+      let text: [string | null, string | null] | null = null;
+      let pieces: Array<IBizyHeatMapChartRange> = [];
+      if (Array.isArray(this.ranges)) {
+        pieces = this.ranges;
+      } else if (this.ranges && this.ranges.data) {
+        pieces = this.ranges.data;
+        if (this.ranges.label?.start) {
+          text = [null, this.ranges.label.start];
+        }
+
+        if (this.ranges.label?.end) {
+          text = [this.ranges.label.end, text && text[1] ? text[1] : null];
+        }
+      }
+
+
       const visualMap = {
         type: 'piecewise',
         orient: 'horizontal',
         left: 'center',
-        pieces: this.ranges,
+        text,
+        showLabel: true,
+        pieces,
         outOfRange: {
           color: outOfRangeColor
         }
@@ -170,13 +194,20 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
         }
       };
 
+      const grid = {
+        left: 0,
+        right: 0,
+        containLabel: true
+      }
+
       const option: any = {
         tooltip,
         xAxis,
         yAxis,
         toolbox,
         series,
-        visualMap
+        visualMap,
+        grid
       };
 
       import('echarts').then(echarts => {
