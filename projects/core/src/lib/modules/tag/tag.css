@@ -1,18 +1,30 @@
 :host {
   font-size: 1rem;
+  display: inline-block;
+  height: var(--bizy-tag-height);
+  width: var(--bizy-tag-width);
+  min-height: var(--bizy-tag-min-height);
+  min-width: var(--bizy-tag-min-width);
+  max-height: var(--bizy-tag-max-height);
+  max-width: var(--bizy-tag-max-width);
+
 }
 
 .bizy-tag {
-  border: none;
+  height: 100%;
+  width: 100%;
+  cursor: var(--bizy-tag-cursor);
+  border-top: var(--bizy-tag-border-top, var(--bizy-tag-border, none));
+  border-right: var(--bizy-tag-border-right, var(--bizy-tag-border, none));
+  border-bottom: var(--bizy-tag-border-bottom, var(--bizy-tag-border, none));
+  border-left: var(--bizy-tag-border-left, var(--bizy-tag-border, none));
+  border-radius: var(--bizy-tag-border-radius);
   padding: var(--bizy-tag-padding);
-  border-radius: 0.3rem;
   display: flex;
   justify-content: center;
-  cursor: pointer;
   column-gap: 0.5rem;
   align-items: center;
   text-wrap: nowrap;
-  width: fit-content;
 }
 
 .bizy-tag--default {

@@ -361,6 +361,14 @@
     --bizy-tag-warning-color: var(--bizy-dark-warning-color);
     --bizy-tag-danger-background-color: var(--bizy-light-danger-color);
     --bizy-tag-danger-color: var(--bizy-dark-danger-color);
+    --bizy-tag-cursor: pointer;
+    --bizy-tag-height: auto;
+    --bizy-tag-min-height: auto;
+    --bizy-tag-max-height: auto;
+    --bizy-tag-width: fit-content;
+    --bizy-tag-min-width: auto;
+    --bizy-tag-max-width: auto;
+    --bizy-tag-border-radius: 0.3rem;
     --bizy-tag-padding: 0.1rem 0.3rem;
 
     --bizy-timeline-color: var(--bizy-info-color);
