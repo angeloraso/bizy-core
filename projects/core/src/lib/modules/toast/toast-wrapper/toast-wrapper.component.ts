@@ -12,7 +12,6 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyToastWrapperComponent {
-  readonly #elementRef = inject(ElementRef);
   readonly #data: {type: TOAST, title: string, msg: string, id: string, duration: number} = inject(DIALOG_DATA);
   readonly #toast = inject(BizyToastService);
 
@@ -21,12 +20,12 @@ export class BizyToastWrapperComponent {
   msg: string = '';
   id: string;
 
-  ngOnInit() {
+  constructor() {
     if (!this.#data) {
       this.close();
       return;
     }
-
+    
     this.type = this.#data.type;
     this.title = this.#data.title;
     this.msg = this.#data.msg;
@@ -36,8 +35,6 @@ export class BizyToastWrapperComponent {
       this.close();
     }, this.#data.duration || 3000);
   }
-
-  getNativeElement = () => this.#elementRef?.nativeElement;
 
   close() {
     this.#toast.close(this.id);

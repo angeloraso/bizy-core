@@ -16,8 +16,8 @@ export class BizyToastService {
   readonly #document = inject(DOCUMENT);
   readonly #dialog = inject(Dialog);
 
-  static toasts: Array<{ref: DialogRef<BizyToastWrapperComponent>, element: HTMLElement}> = [];
-  
+  static toasts: Array<{ref: DialogRef<BizyToastWrapperComponent>, element: HTMLElement | null}> = [];
+
   duration: number = 3000;
   defaultDebugTitle = 'Ha sucedido un evento';
   defaultInfoTitle = 'Observación';
@@ -48,24 +48,35 @@ export class BizyToastService {
       panelClass: ['bizy-toast', 'bizy-toast--in'] 
     } as DialogConfig<unknown, DialogRef<BizyToastWrapperComponent>>));
 
-    setTimeout(() => {
-      const container = this.#document.getElementById(id) as HTMLElement;
+    let container: HTMLElement | null = null;
+    let tries: number = 3;
+    const interval = setInterval(() => {
+      if (tries <= 0) {
+        BizyToastService.toasts.push({ref: toastRef, element: null});
+        clearInterval(interval);
+      }
 
+      container = this.#document.getElementById(id) as HTMLElement;
       if (!container || !container.parentElement) {
+        tries--;
         return;
       }
 
       const offset = this.#calculateOffset();
       container.parentElement.style.top = `${offset}px`;
-
       BizyToastService.toasts.push({ref: toastRef, element: container.parentElement});
-    }, 100);
+
+      tries = 0;
+      clearInterval(interval);
+    }, 300);
   }
 
   #calculateOffset = (): number => {
     let offset = 10;
     for (const toast of BizyToastService.toasts) {
-      offset += toast.element.offsetHeight + 10;
+      if (toast.element) {
+        offset += toast.element.offsetHeight + 10;
+      }
     }
     return offset;
   }
@@ -73,8 +84,10 @@ export class BizyToastService {
   #repositionToasts = () => {
     let offset = 10;
     for (const toast of BizyToastService.toasts) {
-      toast.element.style.top = `${offset}px`;
-      offset += toast.element.offsetHeight + 10;
+      if (toast.element) { 
+        toast.element.style.top = `${offset}px`;
+        offset += toast.element.offsetHeight + 10;
+      }
     }
   }
 
@@ -137,11 +150,15 @@ export class BizyToastService {
   }
 
   close = (id: string) => {
-    if ( !id) {
+    if (!BizyToastService.toasts || BizyToastService.toasts.length === 0) {
       return;
-    }
+    } 
 
-    const toast = BizyToastService.toasts.find(_toastRef => _toastRef.ref.id === id);
+    let toast = BizyToastService.toasts.find(_toastRef => _toastRef.ref.id === id);
+
+    if (!toast) {
+      toast = BizyToastService.toasts[BizyToastService.toasts.length - 1];
+    }
 
     if (toast.ref) {
       toast.ref.removePanelClass('bizy-toast--in');
