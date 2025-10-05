@@ -1,3 +1,4 @@
+export { BizyUniquePipe } from "./unique.pipe";
 export { BizyRoundPipe } from "./round.pipe";
 export { BizyExtractNumbersPipe } from "./extractNumbers.pipe";
 export { BizyPipesModule } from "./pipes.module";

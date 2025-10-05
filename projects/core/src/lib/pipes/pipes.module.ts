@@ -10,6 +10,7 @@ import { BizySearchPipe } from './search';
 import { BizyFormatSecondsPipe } from './format-seconds.pipe';
 import { BizyExtractNumbersPipe } from './extractNumbers.pipe';
 import { BizyRoundPipe } from './round.pipe';
+import { BizyUniquePipe } from './unique.pipe';
 
 const PIPES: Array<any> = [
   BizyRepeatPipe,
@@ -22,7 +23,8 @@ const PIPES: Array<any> = [
   BizySearchPipe,
   BizyFormatSecondsPipe,
   BizyExtractNumbersPipe,
-  BizyRoundPipe
+  BizyRoundPipe,
+  BizyUniquePipe
 ]
 
 @NgModule({
