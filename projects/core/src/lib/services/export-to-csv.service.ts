@@ -61,7 +61,7 @@ export class BizyExportToCSVService {
           }
         }
 
-        if (typeof value !== undefined && value !== null) {
+        if (typeof value !== 'undefined' && value !== null) {
           csv += `${escapeCommas(String(value).replace(/\n/g, ''))},`;
         } else {
           csv += ',';

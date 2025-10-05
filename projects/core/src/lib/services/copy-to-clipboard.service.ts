@@ -39,7 +39,7 @@ export class BizyCopyToClipboardService {
                   value = value[_property];
                 });
   
-                if (typeof value !== undefined && value !== null) {
+                if (typeof value !== 'undefined' && value !== null) {
                   toCopy += `${String(value).replace(/\n/g, '')},`;
                 } else {
                   toCopy += ',';
