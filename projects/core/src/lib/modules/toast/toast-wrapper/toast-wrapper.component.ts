@@ -1,5 +1,5 @@
 import { DIALOG_DATA, DialogModule } from '@angular/cdk/dialog';
-import { ChangeDetectionStrategy, Component, ElementRef, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TOAST, BizyToastService } from '../toast.service';
 import { CommonModule } from '@angular/common';
 

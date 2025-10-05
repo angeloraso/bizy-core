@@ -219,8 +219,8 @@ export class BizyTooltipDirective implements OnDestroy {
   }
 
   #isTextTruncated = (element: HTMLElement) => {
-    const { scrollHeight, clientHeight } = element;
-    return scrollHeight > clientHeight;
+    const { scrollHeight, clientHeight, scrollWidth, clientWidth } = element;
+    return this.#lineClamp === 1 ? scrollWidth > clientWidth : scrollHeight > clientHeight;
   }
 
   ngOnDestroy() {
