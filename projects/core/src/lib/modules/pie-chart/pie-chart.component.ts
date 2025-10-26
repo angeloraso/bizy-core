@@ -11,7 +11,7 @@ import {
   inject
 } from '@angular/core';
 import { IBizyPieChartData } from './pie-chart.types';
-import { CommonModule } from '@angular/common';
+
 import { BehaviorSubject, Subject, Subscription, auditTime, filter, skip, take, throttleTime } from 'rxjs';
 import { BizyPieChartPopupComponent } from './pie-chart-popup.component';
 import { BizyPopupService } from '../popup';
@@ -44,7 +44,7 @@ const DEFAULT_TOOLTIP = {
       justify-content: center
     }
   `],
-  imports: [CommonModule],
+  imports: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyPieChartComponent {

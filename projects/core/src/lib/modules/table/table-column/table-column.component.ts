@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, inject, ElementRef, HostListener } from '@angular/core';
 
 @Component({
   selector: 'bizy-table-column',
   templateUrl: './table-column.html',
   styleUrls: ['./table-column.css'],
-  imports: [CommonModule],
+  imports: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyTableColumnComponent {

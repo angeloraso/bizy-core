@@ -1,21 +1,21 @@
-<div 
-    [id]="id"
-    class="bizy-table-header {{customClass}}">
+<div
+  [id]="id"
+  class="bizy-table-header {{customClass}}">
 
-    <ng-content select="bizy-table-column"></ng-content>
+  <ng-content select="bizy-table-column"></ng-content>
 
-    <span 
-        *ngIf="selectable !== null"
-        class="bizy-table-header__checkbox-wrapper"
-        [ngStyle]="{right: marginRight + 'px'}"
-        [ngClass]="{'bizy-table-footer__checkbox--shadow': marginRight > 0}">
-        
-        <bizy-checkbox 
-            [selected]="selected"
-            (selectedChange)="selectedChange.emit($event)"
-            (onSelect)="onSelect.emit($event)"
-            [ngClass]="{'bizy-table-header__checkbox--hidden': selectable === false}">
-        </bizy-checkbox>
+  @if (selectable !== null) {
+    <span
+      class="bizy-table-header__checkbox-wrapper"
+      [ngStyle]="{right: marginRight + 'px'}"
+      [ngClass]="{'bizy-table-footer__checkbox--shadow': marginRight > 0}">
+      <bizy-checkbox
+        [selected]="selected"
+        (selectedChange)="selectedChange.emit($event)"
+        (onSelect)="onSelect.emit($event)"
+        [ngClass]="{'bizy-table-header__checkbox--hidden': selectable === false}">
+      </bizy-checkbox>
     </span>
+  }
 
 </div>

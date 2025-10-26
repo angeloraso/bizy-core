@@ -1,14 +1,16 @@
 <bizy-accordion
-    class="{{customClass}}"
-    [id]="id"
-    customClass="bizy-sidebar-option {{_selected && (!options || options.length === 0) ? 'bizy-sidebar-option--selected' : ''}} {{!selectable ? 'bizy-sidebar-option--no-selectable' : ''}} {{disabled ? 'bizy-sidebar-option--disabled' : ''}}"
-    [opened]="_selected"
-    (onSelect)="_onSelect($event)">
+  class="{{customClass}}"
+  [id]="id"
+  customClass="bizy-sidebar-option {{_selected && (!options || options.length === 0) ? 'bizy-sidebar-option--selected' : ''}} {{!selectable ? 'bizy-sidebar-option--no-selectable' : ''}} {{disabled ? 'bizy-sidebar-option--disabled' : ''}}"
+  [opened]="_selected"
+  (onSelect)="_onSelect($event)">
 
-    <ng-content></ng-content>
+  <ng-content></ng-content>
 
-    <ng-container accordion-option *ngIf="options && options.length > 0">
-        <ng-content select="bizy-sidebar-option"></ng-content>
+  @if (options && options.length > 0) {
+    <ng-container accordion-option>
+      <ng-content select="bizy-sidebar-option"></ng-content>
     </ng-container>
+  }
 
 </bizy-accordion>

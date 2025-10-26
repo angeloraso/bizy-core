@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, ElementRef, inject, Input } from '@angular/core';
 import { BIZY_SKELETON_SHAPE } from './skeleton.types';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'bizy-skeleton',
   templateUrl: './skeleton.html',
   styleUrls: ['./skeleton.css'],
-  imports: [CommonModule],
+  imports: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[id]': 'id',

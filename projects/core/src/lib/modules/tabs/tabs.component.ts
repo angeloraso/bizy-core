@@ -1,13 +1,13 @@
 import { AfterContentInit, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, ElementRef, inject, Input, QueryList, ViewChild } from '@angular/core';
 import { Subject, Subscription, debounceTime } from 'rxjs';
 import { BizyTabComponent } from './tab/tab.component';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'bizy-tabs',
   templateUrl: './tabs.html',
   styleUrls: ['./tabs.css'],
-  imports: [CommonModule],
+  imports: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyTabsComponent implements AfterViewInit, AfterContentInit {

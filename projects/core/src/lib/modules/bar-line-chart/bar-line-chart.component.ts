@@ -13,7 +13,7 @@ import {
   inject
 } from '@angular/core';
 import { IBizyBarLineChartData } from './bar-line-chart.types';
-import { CommonModule } from '@angular/common';
+
 import { auditTime, BehaviorSubject, filter, skip, Subject, Subscription, take, throttleTime } from 'rxjs';
 import { BizyPopupService } from '../popup';
 import { BizyBarLineChartPopupComponent } from './bar-line-chart-popup.component';
@@ -40,7 +40,7 @@ const DEFAULT_TOOLTIP = {
       justify-content: center
     }
   `],
-  imports: [CommonModule],
+  imports: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyBarLineChartComponent implements OnDestroy, AfterViewInit {

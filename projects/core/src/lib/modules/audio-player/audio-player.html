@@ -1,30 +1,33 @@
-<audio
+@if (_mode === MODE.NORMAL) {
+  <audio
     class="bizy-audio-player__normal animated fade-in"
     [ngClass]="{'bizy-audio-player--disabled': disabled || !_audioURL, 'animated fade-in': !disabled }"
     [id]="id"
-    *ngIf="_mode === MODE.NORMAL"
     controls
     controlslist="nodownload noplaybackrate">
     <source [src]="_audioURL" [type]="MIME_TYPE.WAV">
     <source [src]="_audioURL" [type]="MIME_TYPE.OGG">
     <source [src]="_audioURL" [type]="MIME_TYPE.MPEG">
     {{audioPlayerError}}
-</audio>
+  </audio>
+}
 
 <bizy-button class="bizy-audio-player__rate-button" (onSelect)="_onTrackPlayerRate()" [disabled]="disabled || !_audioURL || _loading">
-    <h6>{{_playbackRate}}x</h6>
+  <h6>{{_playbackRate}}x</h6>
 </bizy-button>
 
-<bizy-button class="bizy-audio-player__download-button" *ngIf="showDownload" (onSelect)="_onDownload()" [disabled]="disabled || !_audioURL">
-    <svg 
-        class="bizy-audio-player__button__icon"
-        fill="none"
-        stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg">
-        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/>
+@if (showDownload) {
+  <bizy-button class="bizy-audio-player__download-button" (onSelect)="_onDownload()" [disabled]="disabled || !_audioURL">
+    <svg
+      class="bizy-audio-player__button__icon"
+      fill="none"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/>
     </svg>
-</bizy-button>
+  </bizy-button>
+}

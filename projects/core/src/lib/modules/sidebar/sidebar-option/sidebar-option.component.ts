@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, ContentChildren, QueryList, ChangeDetectorRef, ElementRef, inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { BizyAccordionComponent } from '../../accordion/accordion.component';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'bizy-sidebar-option',
   templateUrl: './sidebar-option.html',
   styleUrls: ['./sidebar-option.css'],
-  imports: [CommonModule, BizyAccordionComponent],
+  imports: [BizyAccordionComponent],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizySidebarOptionComponent {

@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, inject, ElementRef, AfterContentInit, ContentChildren, QueryList } from '@angular/core';
 import { BizyMenuBarOptionComponent } from './menu-bar-option/menu-bar-option.component';
 import { BehaviorSubject, filter, Subscription, take } from 'rxjs';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'bizy-menu-bar',
   templateUrl: './menu-bar.html',
   styleUrls: ['./menu-bar.css'],
-  imports: [CommonModule],
+  imports: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { 
     '[id]': 'id',

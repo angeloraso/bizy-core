@@ -2,7 +2,7 @@ import { Component, Input, ChangeDetectionStrategy, ContentChildren, QueryList, 
 import { BizyTableHeaderComponent } from './table-header/table-header.component';
 import { BizyTableFooterComponent } from './table-footer/table-footer.component';
 import { BizyTableRowComponent } from './table-row/table-row.component';
-import { CommonModule } from '@angular/common';
+
 import { Subject, Subscription, debounceTime, fromEvent, skip } from 'rxjs';
 import { BizyTableScrollingComponent } from './table-scrolling/table-scrolling.component';
 import { BizyTableScrollingDirective } from './table-scrolling/table-scrolling.directive';
@@ -13,10 +13,9 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
   templateUrl: './table.html',
   styleUrls: ['./table.css'],
   imports: [
-    CommonModule,
     ScrollingModule,
     BizyTableScrollingComponent
-  ],
+],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyTableComponent implements AfterContentInit {

@@ -1,6 +1,8 @@
-<span class="bizy-tab__selected-line" *ngIf="linePosition === 'top'" [ngClass]="{'bizy-tab__selected-line--visible': selected}"></span>
+@if (linePosition === 'top') {
+  <span class="bizy-tab__selected-line" [ngClass]="{'bizy-tab__selected-line--visible': selected}"></span>
+}
 
-<button 
+<button
   type="button"
   [id]="id"
   [ngClass]="{'bizy-tab--selected': selected, 'bizy-tab--disabled': disabled}"
@@ -12,4 +14,6 @@
 
 </button>
 
-<span class="bizy-tab__selected-line" *ngIf="linePosition === 'bottom'" [ngClass]="{'bizy-tab__selected-line--visible': selected}"></span>
+@if (linePosition === 'bottom') {
+  <span class="bizy-tab__selected-line" [ngClass]="{'bizy-tab__selected-line--visible': selected}"></span>
+}

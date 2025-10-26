@@ -1,27 +1,27 @@
 <div class="bizy-grid" [ngClass]="{'bizy-grid--empty': items && items.length === 0}">
 
-    <cdk-virtual-scroll-viewport
-        #cdkVirtualScroll 
-        class="bizy-grid__rows"
-        [itemSize]="rowHeight"
-        [minBufferPx]="rowHeight + (rowHeight * 5)"
-        [maxBufferPx]="rowHeight + (rowHeight * 10)">
+  <cdk-virtual-scroll-viewport
+    #cdkVirtualScroll
+    class="bizy-grid__rows"
+    [itemSize]="rowHeight"
+    [minBufferPx]="rowHeight + (rowHeight * 5)"
+    [maxBufferPx]="rowHeight + (rowHeight * 10)">
 
-        <ng-content></ng-content>
-        
-        <ng-template #gridScrollingContent>
-            <ng-template 
-                let-item
-                let-index="index"
-                let-first="first"
-                let-last="last"
-                let-even="even"
-                let-odd="odd"
-                cdkVirtualFor
-                [cdkVirtualForOf]="itemRows">
-                <bizy-grid-row [rowHeight]="rowHeight" [itemsPerRow]="itemsPerRow">
-                    <ng-container *ngFor="let it of item; trackBy: trackById; let i = index">
-                        <ng-template 
+    <ng-content></ng-content>
+
+    <ng-template #gridScrollingContent>
+      <ng-template
+        let-item
+        let-index="index"
+        let-first="first"
+        let-last="last"
+        let-even="even"
+        let-odd="odd"
+        cdkVirtualFor
+        [cdkVirtualForOf]="itemRows">
+        <bizy-grid-row [rowHeight]="rowHeight" [itemsPerRow]="itemsPerRow">
+          @for (it of item; track trackById(i, it); let i = $index) {
+            <ng-template
                             *ngTemplateOutlet="itemTemplate;
                             context: { 
                                 $implicit: it,
@@ -32,10 +32,10 @@
                                 rowEven: even,
                                 rowOdd: odd
                             }"></ng-template>
-                    </ng-container>
-                </bizy-grid-row>
-            </ng-template>
-        </ng-template>
-    </cdk-virtual-scroll-viewport>
+          }
+        </bizy-grid-row>
+      </ng-template>
+    </ng-template>
+  </cdk-virtual-scroll-viewport>
 
 </div>

@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, ElementRef, inject, Input } from '@angular/core';
 
 @Component({
   selector: 'bizy-section',
   templateUrl: './section.html',
   styleUrls: ['./section.css'],
-  imports: [CommonModule],
+  imports: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { 
     '[id]': 'id'

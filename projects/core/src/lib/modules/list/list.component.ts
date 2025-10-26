@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, ElementRef, inject, Input } from '@angular/core';
 
 @Component({
   selector: 'bizy-list',
   templateUrl: './list.html',
   styleUrls: ['./list.css'],
-  imports: [CommonModule],
+  imports: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { 
     '[id]': 'id'

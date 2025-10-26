@@ -2,14 +2,14 @@ import { BizyDatePickerComponent } from './../date-picker/date-picker.component'
 import { ChangeDetectionStrategy, Component, ContentChildren, ElementRef, inject, Input, QueryList } from '@angular/core';
 import { BizyInputComponent } from '../input/input.component';
 import { BizySelectComponent } from '../select/select.component';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'bizy-form',
   templateUrl: './form.html',
   styleUrls: ['./form.css'],
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyFormComponent {

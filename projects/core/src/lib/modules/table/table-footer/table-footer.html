@@ -1,19 +1,19 @@
-<div 
-    [id]="id"
-    class="bizy-table-footer {{customClass}}">
+<div
+  [id]="id"
+  class="bizy-table-footer {{customClass}}">
 
-    <ng-content select="bizy-table-column"></ng-content>
+  <ng-content select="bizy-table-column"></ng-content>
 
 
-    <span 
-        *ngIf="_selectable"
-        class="bizy-table-footer__checkbox-wrapper"
-        [ngStyle]="{right: marginRight + 'px'}"
-        [ngClass]="{'bizy-table-footer__checkbox--shadow': marginRight > 0}">
-        
-        <bizy-checkbox 
-            class="bizy-table-footer__checkbox">
-        </bizy-checkbox>
+  @if (_selectable) {
+    <span
+      class="bizy-table-footer__checkbox-wrapper"
+      [ngStyle]="{right: marginRight + 'px'}"
+      [ngClass]="{'bizy-table-footer__checkbox--shadow': marginRight > 0}">
+      <bizy-checkbox
+        class="bizy-table-footer__checkbox">
+      </bizy-checkbox>
     </span>
-    
+  }
+
 </div>

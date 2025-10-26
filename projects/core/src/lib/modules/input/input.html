@@ -1,83 +1,87 @@
 <button
-    #bizyInputWrapper
-    type="button"
-    (click)="_onClick($event)"
-    (keyup)="_onClick($event)"
-    class="bizy-input {{customClass}}"
-    (focus)="bizyInput.nativeElement.focus()"
-    cdkOverlayOrigin
-    #bizyInputTrigger="cdkOverlayOrigin"
-    [ngClass]="{'bizy-input--disabled': disabled, 'bizy-input--negative': type === 'currency' && _currencyValue < 0}">
+  #bizyInputWrapper
+  type="button"
+  (click)="_onClick($event)"
+  (keyup)="_onClick($event)"
+  class="bizy-input {{customClass}}"
+  (focus)="bizyInput.nativeElement.focus()"
+  cdkOverlayOrigin
+  #bizyInputTrigger="cdkOverlayOrigin"
+  [ngClass]="{'bizy-input--disabled': disabled, 'bizy-input--negative': type === 'currency' && _currencyValue < 0}">
 
-    <span class="bizy-input__header">
-        <ng-content select="[slot=header]"></ng-content>
+  <span class="bizy-input__header">
+    <ng-content select="[slot=header]"></ng-content>
+  </span>
+
+  <span class="bizy-input__content" [ngClass]="{'bizy-input__content--readonly': readonly}">
+
+    <span class="bizy-input__content__prefix">
+      <ng-content select="[slot=prefix]"></ng-content>
     </span>
 
-    <span class="bizy-input__content" [ngClass]="{'bizy-input__content--readonly': readonly}">
-        
-        <span class="bizy-input__content__prefix">
-            <ng-content select="[slot=prefix]"></ng-content>
-        </span>
-        
-        <input
-            #bizyInput
-            *ngIf="type !== 'textarea'"
-            [id]="id"
-            class="bizy-input__content__input"
-            [type]="type === 'currency' ? 'tel' : type"
-            [placeholder]="placeholder"
-            [readonly]="readonly"
-            [bizyCurrencyFormat]="type === 'currency'"
-            [bizyCurrencyOptions]="currencyOptions"
-            [bizyOnlyPhoneDigits]="type === 'tel'"
-            (blur)="_onBlur($event)"
-            (focus)="_onFocus($event)"
-            (keyup.enter)="_onEnter($event)"
-            (keyup.backspace)="_onBackspace($event)"
-            [ngModel]="_value"
-            (ngModelChange)="_onchange($event)"/>
-        
-        <textarea
-            #bizyInput
-            *ngIf="type === 'textarea'"
-            [id]="id"
-            [rows]="rows"
-            [placeholder]="placeholder"
-            [readonly]="readonly"
-            class="bizy-input__content__input"
-            (blur)="_onBlur($event)"
-            (focus)="_onFocus($event)"
-            (keyup.enter)="_onEnter($event)"
-            (keyup.backspace)="_onBackspace($event)"
-            [ngModel]="_value"
-            (ngModelChange)="_onchange($event)">
-        </textarea>
+    @if (type !== 'textarea') {
+      <input
+        #bizyInput
+        [id]="id"
+        class="bizy-input__content__input"
+        [type]="type === 'currency' ? 'tel' : type"
+        [placeholder]="placeholder"
+        [readonly]="readonly"
+        [bizyCurrencyFormat]="type === 'currency'"
+        [bizyCurrencyOptions]="currencyOptions"
+        [bizyOnlyPhoneDigits]="type === 'tel'"
+        (blur)="_onBlur($event)"
+        (focus)="_onFocus($event)"
+        (keyup.enter)="_onEnter($event)"
+        (keyup.backspace)="_onBackspace($event)"
+        [ngModel]="_value"
+        (ngModelChange)="_onchange($event)"/>
+    }
 
-        <span class="bizy-input__content__suffix">
-            <ng-content select="[slot=suffix]"></ng-content>
-        </span>
+    @if (type === 'textarea') {
+      <textarea
+        #bizyInput
+        [id]="id"
+        [rows]="rows"
+        [placeholder]="placeholder"
+        [readonly]="readonly"
+        class="bizy-input__content__input"
+        (blur)="_onBlur($event)"
+        (focus)="_onFocus($event)"
+        (keyup.enter)="_onEnter($event)"
+        (keyup.backspace)="_onBackspace($event)"
+        [ngModel]="_value"
+        (ngModelChange)="_onchange($event)">
+      </textarea>
+    }
 
+    <span class="bizy-input__content__suffix">
+      <ng-content select="[slot=suffix]"></ng-content>
     </span>
 
-    <span class="bizy-input__bottom-line" [ngClass]="{'bizy-input__bottom-line--visible': focused}"></span>
+  </span>
+
+  <span class="bizy-input__bottom-line" [ngClass]="{'bizy-input__bottom-line--visible': focused}"></span>
 
 </button>
 
 <ng-template
-    cdkConnectedOverlay
-    [cdkConnectedOverlayMinWidth]="bizyInputWrapper?.offsetWidth"
-    [cdkConnectedOverlayOrigin]="bizyInputTrigger"
-    (overlayOutsideClick)="close($event, bizyInputWrapper)"
-    [cdkConnectedOverlayOpen]="opened">
+  cdkConnectedOverlay
+  [cdkConnectedOverlayMinWidth]="bizyInputWrapper?.offsetWidth"
+  [cdkConnectedOverlayOrigin]="bizyInputTrigger"
+  (overlayOutsideClick)="close($event, bizyInputWrapper)"
+  [cdkConnectedOverlayOpen]="opened">
 
-    <span class="bizy-input__options">
+  <span class="bizy-input__options">
 
-        <ng-content select="bizy-input-option"></ng-content>
-    
-    </span>
+    <ng-content select="bizy-input-option"></ng-content>
+
+  </span>
 
 </ng-template>
 
-<span class="bizy-input__errors" *ngIf="touched">
+@if (touched) {
+  <span class="bizy-input__errors">
     <ng-content select="[slot=error]"></ng-content>
-</span>
+  </span>
+}

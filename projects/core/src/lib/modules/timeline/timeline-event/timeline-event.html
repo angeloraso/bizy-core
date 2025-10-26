@@ -5,19 +5,21 @@
 
 <span class="bizy-timeline-event-content" [ngClass]="{'bizy-timeline-event--disabled': disabled}">
 
-  <button 
-      type="button"
-      (focus)="_focused = true"
-      (blur)="_focused = false"
-      class="bizy-timeline-event-bullet"
-      (click)="_focused = true; _onSelect($event)"
-      (keyup.enter)="_onSelect($event)">
+  <button
+    type="button"
+    (focus)="_focused = true"
+    (blur)="_focused = false"
+    class="bizy-timeline-event-bullet"
+    (click)="_focused = true; _onSelect($event)"
+    (keyup.enter)="_onSelect($event)">
 
-      <ng-content select="[slot=bullet]"></ng-content>
-      
+    <ng-content select="[slot=bullet]"></ng-content>
+
   </button>
 
-  <span class="bizy-timeline-event-line" *ngIf="showLine"></span>
+  @if (showLine) {
+    <span class="bizy-timeline-event-line"></span>
+  }
 
 </span>
 

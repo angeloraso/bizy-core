@@ -12,7 +12,7 @@ import {
   Renderer2
 } from '@angular/core';
 import { IBizyHeatMapChartData, IBizyHeatMapChartRange } from './heat-map-chart.types';
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { auditTime, BehaviorSubject, filter, skip, Subject, Subscription, take, throttleTime } from 'rxjs';
 
 const DEFAULT_CHART_SIZE = '300px';
@@ -46,7 +46,7 @@ const DEFAULT_Y_AXIS = {
       justify-content: center
     }
   `],
-  imports: [CommonModule],
+  imports: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {

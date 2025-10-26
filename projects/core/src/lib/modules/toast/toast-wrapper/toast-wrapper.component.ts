@@ -1,13 +1,13 @@
 import { DIALOG_DATA, DialogModule } from '@angular/cdk/dialog';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TOAST, BizyToastService } from '../toast.service';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'bizy-toast-wrapper',
   templateUrl: './toast-wrapper.html',
   styleUrls: ['./toast-wrapper.css'],
-  imports: [CommonModule, DialogModule],
+  imports: [DialogModule],
   providers: [BizyToastService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, Renderer2, inject } from '@angular/core';
 
 @Component({
   selector: 'bizy-grid-row',
   templateUrl: './grid-row.html',
   styleUrls: ['./grid-row.css'],
-  imports: [CommonModule],
+  imports: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyGridRowComponent {
