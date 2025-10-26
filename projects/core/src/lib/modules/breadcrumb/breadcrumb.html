@@ -1,32 +1,34 @@
 <ul class="bizy-breadcrumb">
   @for (breadcrumb of _breadcrumbs; track breadcrumb; let last = $last; let i = $index) {
-    <li>
-      <button
-        class="bizy-breadcrumb__link"
-        [ngClass]="{'bizy-breadcrumb__link--skip': breadcrumb.skip || last}"
-        type="button"
-        (click)="goTo(breadcrumb)">
-        {{breadcrumb.label}}
-      </button>
-      @if (last && showGoBack) {
+    @if (breadcrumb.label) {
+      <li>
         <button
+          class="bizy-breadcrumb__link"
+          [ngClass]="{'bizy-breadcrumb__link--skip': breadcrumb.skip || last}"
           type="button"
-          class="bizy-breadcrumb__go-back"
-          (click)="goBack()">
-          <svg
-            class="bizy-breadcrumb__go-back__icon"
-            fill="none"
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 0h24v24H0z" fill="none" stroke="none"/>
-            <path d="M9 11l-4 4l4 4m-4 -4h11a4 4 0 0 0 0 -8h-1"/>
-          </svg>
+          (click)="goTo(breadcrumb)">
+          {{breadcrumb.label}}
         </button>
-      }
-    </li>
+        @if (last && showGoBack) {
+          <button
+            type="button"
+            class="bizy-breadcrumb__go-back"
+            (click)="goBack()">
+            <svg
+              class="bizy-breadcrumb__go-back__icon"
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 0h24v24H0z" fill="none" stroke="none"/>
+              <path d="M9 11l-4 4l4 4m-4 -4h11a4 4 0 0 0 0 -8h-1"/>
+            </svg>
+          </button>
+        }
+      </li>
+    }
   }
 </ul>
