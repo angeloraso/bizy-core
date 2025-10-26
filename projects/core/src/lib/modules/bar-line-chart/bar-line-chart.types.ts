@@ -6,12 +6,15 @@ export interface IBizyBarLineChartData {
   color?: string;
   stack?: string;
   barMinHeight?: number;
-  xAxi?: {name: string}
+  xAxi?: {
+    name: string
+  };
   yAxi?: {
     name?: string,
-    hide?: boolean,
+    show?: boolean,
     max?: number,
     min?: number,
+    width?: number,
     interval?: number,
     position?: 'left' | 'right',
     onValueFormatter?: (item: any ) => string

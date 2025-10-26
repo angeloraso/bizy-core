@@ -1,5 +1,5 @@
 import { ComponentType } from "@angular/cdk/portal";
-import { inject, Injectable } from "@angular/core";
+import { inject, Injectable, NgZone } from "@angular/core";
 import { take } from "rxjs";
 import { BizyPopupWrapperComponent } from "./popup-wrapper/popup-wrapper.component";
 import { Dialog, DialogRef } from '@angular/cdk/dialog';
@@ -12,6 +12,7 @@ export class BizyPopupService {
   readonly #animation = inject(BizyAnimationService);
   readonly #validator = inject(BizyValidatorService);
   readonly #dialog = inject(Dialog);
+  readonly #ngZone = inject(NgZone);
   static dialogs = new Set<DialogRef<unknown, any>>();
   #data: unknown = null;
   
@@ -59,28 +60,30 @@ export class BizyPopupService {
     }
 
     const component: ComponentType<unknown> = data.fullScreen ? BizyFullScreenPopupWrapperComponent : BizyPopupWrapperComponent;
-    const dialogRef = this.#dialog.open(component, ({
-      id: data.id,
-      data: {
-        component: data.component,
-        disableClose: data.disableCloseButton ?? false,
-        disableDrag: data.disableDragButton ?? false,
-        position,
-        placement
-      },
-      autoFocus: true,
-      hasBackdrop: true,
-      disableClose: typeof data.disableBackdropClose !== 'undefined' && data.disableBackdropClose !== null ? data.disableBackdropClose : typeof data.disableClose !== 'undefined' && data.disableClose !== null ? data.disableClose : true,
-      panelClass: Array.isArray(data.customClass) ? data.customClass : this.#validator.isString(data.customClass) ? [data.customClass] : []
-    }));
+    this.#ngZone.run(() => {
+      const dialogRef = this.#dialog.open(component, ({
+        id: data.id,
+        data: {
+          component: data.component,
+          disableClose: data.disableCloseButton ?? false,
+          disableDrag: data.disableDragButton ?? false,
+          position,
+          placement
+        },
+        autoFocus: true,
+        hasBackdrop: true,
+        disableClose: typeof data.disableBackdropClose !== 'undefined' && data.disableBackdropClose !== null ? data.disableBackdropClose : typeof data.disableClose !== 'undefined' && data.disableClose !== null ? data.disableClose : true,
+        panelClass: Array.isArray(data.customClass) ? data.customClass : this.#validator.isString(data.customClass) ? [data.customClass] : []
+      }));
 
-    BizyPopupService.dialogs.add(dialogRef);
+      BizyPopupService.dialogs.add(dialogRef);
 
-    dialogRef.closed.pipe(take(1)).subscribe(response => {
-      BizyPopupService.dialogs.delete(dialogRef);
-      if (callback) {
-        callback(response as R);
-      }
+      dialogRef.closed.pipe(take(1)).subscribe(response => {
+        BizyPopupService.dialogs.delete(dialogRef);
+        if (callback) {
+          callback(response as R);
+        }
+      });
     });
   }
 
