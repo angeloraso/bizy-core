@@ -1,5 +1,6 @@
 export * from './accordion';
 export * from './audio-player';
+export * from './audio-recorder';
 export * from './bar-line-chart';
 export * from './breadcrumb';
 export * from './button';

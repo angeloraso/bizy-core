@@ -9,6 +9,11 @@
       "glob": "**/*",
       "input": "src/lib/styles",
       "output": "styles"
+    },
+    {
+      "glob": "**/*",
+      "input": "src/lib/assets",
+      "output": "assets"
     }
   ]
 }

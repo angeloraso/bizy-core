@@ -1,17 +1,32 @@
-import { ChangeDetectorRef, ElementRef, inject } from '@angular/core';
+import { ChangeDetectorRef, ElementRef, inject, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule, DOCUMENT } from '@angular/common';
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
-import { BehaviorSubject, Subject, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged, skipWhile, take } from 'rxjs/operators';
-import { MIME_TYPE, MODE } from './audio-player.types';
-import { BizyButtonModule } from '../button';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  Renderer2
+} from '@angular/core';
+import { AnimationItem } from 'lottie-web';
+import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
+import playAnimation from '../../assets/animations/play.json';
+import muteAnimation from '../../assets/animations/mute.json';
+import { MIME_TYPE } from './audio-player.types';
+import { BizyAudioPlayerFormatSecondsPipe } from './audio-player-format-seconds.pipe';
 
+const DEFAULT_DOWNLOAD = {
+  show: true,
+  name: 'Bizy'
+};
+
+const DEFAULT_PLAYBACK_RATE = {
+  show: true,
+  default: 1
+};
 @Component({
   selector: 'bizy-audio-player',
   templateUrl: './audio-player.html',
   styleUrls: ['./audio-player.css'],
-  imports: [CommonModule, BizyButtonModule],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  imports: [CommonModule, BizyAudioPlayerFormatSecondsPipe],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BizyAudioPlayerComponent {
   readonly #document = inject(DOCUMENT);
@@ -19,16 +34,12 @@ export class BizyAudioPlayerComponent {
   readonly #ref = inject(ChangeDetectorRef);
   readonly #elementRef = inject(ElementRef);
 
-  @Input() id: string = `bizy-audio-player-${Math.random()}`;
-  @Input() enableLogs: boolean = false;
-  @Input() audioPlayerError: string = 'Error';
-  @Input() showDownload: boolean = true;
-  @Input() autoplay: boolean = false;
-  @Input() disabled: boolean = false;
-  @Input() downloadURL: string;
-  @Input() downloadFileName: string = 'bizy_audio';
+  @ViewChild('bizyAudioPlayerPlayButtonRef') playButtonRef: ElementRef<HTMLButtonElement>;
+  @ViewChild('bizyAudioPlayerAudioRef') audioRef: ElementRef<HTMLAudioElement>;
+  @ViewChild('bizyAudioPlayerSeekSliderRef') seekSliderRef: ElementRef<HTMLInputElement>;
+  @ViewChild('bizyAudioPlayerMuteButtonRef') muteButtonRef: ElementRef<HTMLButtonElement>;
 
-  @Output() onTrackPlayerRate = new EventEmitter<string>();
+  @Output() onPlaybackRate = new EventEmitter<string>();
   @Output() onDownload = new EventEmitter<void>();
   @Output() canPlay = new EventEmitter<Event>();
   @Output() onPause = new EventEmitter<Event>();
@@ -45,7 +56,6 @@ export class BizyAudioPlayerComponent {
   @Output() onPlay = new EventEmitter<Event>();
   @Output() onPlaying = new EventEmitter<Event>();
   @Output() onProgress = new EventEmitter<Event>();
-  @Output() onRateChange = new EventEmitter<Event>();
   @Output() onSeeked = new EventEmitter<Event>();
   @Output() onSeeking = new EventEmitter<Event>();
   @Output() onSuspend = new EventEmitter<Event>();
@@ -53,6 +63,53 @@ export class BizyAudioPlayerComponent {
   @Output() onVolumeChange = new EventEmitter<Event>();
   @Output() onWaiting = new EventEmitter<Event>();
 
+  @Input() enableLogs: boolean = false;
+  @Input() disabled: boolean = false;
+  @Input() autoplay: boolean = false;
+  @Input() set download(download: {show?: boolean, url?: string, name?: string}) {
+    if (!download) {
+      return;
+    }
+
+    this._showDownload = download.show ?? DEFAULT_DOWNLOAD.show;
+    this._downloadURL = download.url ?? null;
+    this._downloadFileName = download.name ?? DEFAULT_DOWNLOAD.name;
+  };
+
+  @Input() set playbackRate(playbackRate: {show?: boolean, default?: number}) {
+    if (!playbackRate) {
+      return;
+    }
+
+    this._showPlaybackRate = playbackRate.show ?? DEFAULT_PLAYBACK_RATE.show;
+    this._playbackRate = playbackRate.default ?? DEFAULT_PLAYBACK_RATE.default;
+  };
+
+  @Input() set src(src: string) {
+    if (!src) {
+      this.#removeListeners();
+      this._currentTime = 0;
+      this._duration = 0;
+      this._paused = true;
+      this.#audio = null;
+      this.#ref.detectChanges();
+      return;
+    }
+
+    this._src = src;
+
+    if (this.#audio) {
+      this.#audio.load();
+    }
+  }
+
+  #subscription = new Subscription();
+  #playAnimation: AnimationItem | null = null;
+  #muteAnimation: AnimationItem | null = null;
+  #audio: HTMLAudioElement | null = null;
+  #seekSlider: HTMLInputElement | null = null;
+  #playbackRate$ = new Subject<string>();
+  #currentTime$ = new Subject<number>();
   #abortAbortController = new AbortController();
   #canPlayAbortController = new AbortController();
   #canPlayThroughAbortController = new AbortController();
@@ -75,25 +132,23 @@ export class BizyAudioPlayerComponent {
   #timeUpdateAbortController = new AbortController();
   #volumeChangeAbortController = new AbortController();
   #waitingAbortController = new AbortController();
-
-  #afterViewInit = new BehaviorSubject<boolean>(false);
-
-  readonly MIME_TYPE = MIME_TYPE;
-  readonly MODE = MODE;
-
-  readonly BACKWARD_SECONDS = -15;
-  readonly FORWARD_SECONDS = 15;
+  #seekSliderAbortController = new AbortController();
 
   _duration: number = 0;
   _currentTime: number = 0;
   _paused: boolean = true;
-  #normalRef: HTMLAudioElement;
-  _mode: MODE = MODE.NORMAL;
-  _audioURL: string | null = null;
-  _playbackRate = 1;
-  _loading: boolean = false;
-  #trackPlaybackRate$ = new Subject<string>();
-  #subscription = new Subscription();
+  _muted: boolean = false;
+  _src: string | null = null;
+  _showDownload = DEFAULT_DOWNLOAD.show;
+  _downloadURL: string | null = null;
+  _downloadFileName: string | null = DEFAULT_DOWNLOAD.name;
+  _showPlaybackRate: boolean = DEFAULT_PLAYBACK_RATE.show;
+  _playbackRate: number = DEFAULT_PLAYBACK_RATE.default;
+
+  readonly MIME_TYPE = MIME_TYPE;
+  readonly BACKWARD_SECONDS = -15;
+  readonly FORWARD_SECONDS = 15;
+
 
   get duration(): number {
     return this._duration;
@@ -107,81 +162,292 @@ export class BizyAudioPlayerComponent {
     return this._paused;
   }
 
-  @Input() set audioURL(audioURL: string) {
-    if (!audioURL) {
-      this.#removeListeners();
-      this._currentTime = 0;
-      this._duration = 0;
-      this._paused = true;
-      this.#normalRef = null;
-      this.#ref.detectChanges();
-      return;
-    }
-
-    this._audioURL = audioURL;
-
-    if (this._mode === MODE.NORMAL) {
-      this.#onNormal()
-    }
-  }
-
-  @Input() set mode(mode: MODE) {
-    if (!mode) {
-      return;
-    }
-
-    this._mode = mode;
-    this.#ref.detectChanges();
-
-    if (this._audioURL) {
-      if (this._mode === MODE.NORMAL) {
-        this.#onNormal()
-      }
-    }
+  get muted(): boolean {
+    return this._muted;
   }
 
   ngAfterViewInit() {
-    this.#afterViewInit.next(true);
+    this.#subscription = new Subscription();
+    this.#subscription.add(this.#playbackRate$.pipe(
+      debounceTime(300),
+      distinctUntilChanged()
+    ).subscribe(value => {
+      this.onPlaybackRate.emit(value);
+    }));
+
+    this.#subscription.add(this.#currentTime$.pipe(
+      debounceTime(100),
+    ).subscribe(value => {
+      this.seekTo(value);
+    }));
+
+    import('lottie-web').then(module => {
+      const lottieWeb = module.default;
+      this.#playAnimation = lottieWeb.loadAnimation({
+        container: this.playButtonRef.nativeElement,
+        animationData: playAnimation,
+        renderer: 'svg',
+        loop: false,
+        autoplay: false,
+        name: 'Bizy audio player play Animation'
+      });
+
+      this.#playAnimation.setSpeed(2.5);
+
+      this.#playAnimation.addEventListener('DOMLoaded', this.#setPlayButtonColor);
+
+      this.#muteAnimation = lottieWeb.loadAnimation({
+        container: this.muteButtonRef.nativeElement,
+        animationData: muteAnimation,
+        renderer: 'svg',
+        loop: false,
+        autoplay: false,
+        name: 'Bizy audio player mute Animation'
+      });
+
+      this.#muteAnimation.setSpeed(2);
+
+      this.#muteAnimation.addEventListener('DOMLoaded', this.#setMuteButtonColor);
+
+      this.#audio = this.audioRef.nativeElement;
+      this.#seekSlider = this.seekSliderRef.nativeElement;
+
+      if (this.#audio) {
+        this.#addEventListeners();
+
+        this.#audio.playbackRate = this._playbackRate;
+        this.#audio.load();
+      }
+
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.setActionHandler('play', () => {
+          this.play();
+        });
+
+        navigator.mediaSession.setActionHandler('pause', () => {
+          this.pause();
+        });
+
+        navigator.mediaSession.setActionHandler('seekbackward', details => {
+          this.backward(details.seekOffset);
+        });
+
+        navigator.mediaSession.setActionHandler('seekforward', details => {
+          this.forward(details.seekOffset);
+        });
+
+        navigator.mediaSession.setActionHandler('seekto', details => {
+          this.seekTo(details.seekTime);
+        });
+
+        navigator.mediaSession.setActionHandler('stop', () => {
+          this.stop();
+        });
+      }
+    });
   }
 
   getNativeElement = () => this.#elementRef?.nativeElement;
 
-  #onNormal(): void {
-    this.#removeListeners();
-    this.#subscription = new Subscription();
+  togglePlay = async () => {
+    if (this.disabled) {
+      return;
+    }
 
-    this.#subscription.add(this.#afterViewInit.pipe(skipWhile(val => !val), take(1)).subscribe(() => {
-      this.#normalRef = this.#document.getElementById(this.id) as HTMLAudioElement;
-  
-      if (!this.#normalRef) {
-        return;
-      }
-  
-      this.#addEventListeners(this.#normalRef);
-
-      this.#normalRef.load();
-
-      if (this.autoplay) {
-        this.play();
-      }
-
-      this.#trackPlayerRate();
-      this.#normalRef.playbackRate = this._playbackRate;
-      this.#ref.detectChanges();
-    }));
-  } 
-
-  #trackPlayerRate() {
-    this.#subscription.add(this.#trackPlaybackRate$.pipe(
-      debounceTime(500),
-      distinctUntilChanged()
-    ).subscribe(value => {
-      this.onTrackPlayerRate.emit(value);
-    }));
+    if (this._paused) {
+      await this.play();
+    } else {
+      await this.pause();
+    }
   }
 
-  #addEventListeners = (audio: HTMLAudioElement) => {
-    if (!audio) {
+  toggleMute = () => {
+    if (this.disabled) {
+      return;
+    }
+
+    if (this._muted) {
+      this.unmute();
+    } else {
+      this.mute();
+    }
+  }
+
+  play = async (): Promise<void> => {
+    try {
+      if (this.disabled || !this._src || !this._paused) {
+        return Promise.resolve();
+      }
+
+      this._paused = false;
+      this.#ref.detectChanges();
+
+      if (!this.#audio) {
+        this._paused = true;
+        this.#ref.detectChanges();
+        return Promise.resolve();
+      }
+
+      if (this.#playAnimation) {
+        this.#playAnimation.playSegments([0, 27], true);
+        this.#ref.detectChanges();
+      }
+
+      await this.#audio.play();
+    } catch (error) {
+      this._paused = true;
+      return Promise.reject();
+    }
+  }
+
+  pause = async (): Promise<void> => {
+    try {
+      if (this.disabled || !this._src || this._paused) {
+        return Promise.resolve();
+      }
+
+      this._paused = true;
+      this.#ref.detectChanges();
+
+      if (!this.#audio) {
+        this._paused = false;
+        this.#ref.detectChanges();
+        return Promise.resolve();
+      }
+
+      if (this.#playAnimation) {
+        this.#playAnimation.playSegments([27, 0], true);
+        this.#ref.detectChanges();
+      }
+
+      await this.#audio.pause();
+    } catch (error) {
+      this._paused = false;
+      return Promise.reject();
+    }
+  }
+
+  mute = (): void => {
+    if (this.disabled || !this.#audio || this.#audio.muted) {
+      return;
+    }
+
+    this.#audio.muted = true;
+
+    if (this.#muteAnimation) {
+      this.#muteAnimation.playSegments([0, 25], true);
+    }
+
+    this.#ref.detectChanges();
+  }
+
+  unmute = (): void => {
+    if (this.disabled || !this.#audio || !this.#audio.muted) {
+      return;
+    }
+
+    this.#audio.muted = false;
+
+    if (this.#muteAnimation) {
+      this.#muteAnimation.playSegments([25, 0], true);
+    }
+
+    this.#ref.detectChanges();
+  }
+
+  stop = async (): Promise<void> => {
+    if (this.disabled || !this._src) {
+      return Promise.resolve();
+    }
+
+    await this.pause();
+
+    this.seekTo(0);
+
+    if (this.#seekSlider) {
+      this.#seekSlider.value = '0';
+      this.#elementRef.nativeElement.style.setProperty('--bizy-audio-player-seek-before-width', '0%');
+    }
+  }
+
+  backward = (seconds: number) => {
+    if (this.disabled || !this.#audio) {
+      return;
+    }
+  
+    this.seekTo(this.#audio.currentTime - (seconds || this.FORWARD_SECONDS))
+  }
+
+  forward = (seconds: number) => {
+    if (this.disabled || !this.#audio) {
+      return;
+    }
+  
+    this.seekTo(this.#audio.currentTime + (seconds || this.FORWARD_SECONDS))
+  }
+
+  seekTo(seconds: number) {
+    if (this.disabled || !this.#audio || typeof seconds === 'undefined' || seconds === null) {
+      return;
+    }
+
+    if (!this.#audio.duration) {
+      return;
+    }
+
+    if (seconds > this.#audio.duration) {
+      seconds = this.#audio.duration
+    }
+
+    if (seconds < 0) {
+      seconds = 0;
+    }
+
+    if (this.#audio.fastSeek) {
+      this.#audio.fastSeek(seconds);
+    } else {
+      this.#audio.currentTime = seconds;
+    }
+
+    this.#ref.detectChanges();
+  }
+
+  setPlaybackRate() {
+    if (this.disabled || !this.#audio) {
+      return;
+    }
+
+    switch (this.#audio.playbackRate) {
+      case 1:
+        this.#audio.playbackRate = 1.5;
+        break;
+      case 1.5:
+        this.#audio.playbackRate = 2;
+        break;
+      case 2:
+        this.#audio.playbackRate = 1;
+        break;
+      default:
+        this.#audio.playbackRate = DEFAULT_PLAYBACK_RATE.default;
+    }
+  }
+
+  downloadAudio = (): void => {
+    if (this.disabled || !this._showDownload) {
+      return;
+    }
+
+    const downloadButton = this.#renderer.createElement('a');
+    this.#renderer.setAttribute(downloadButton, 'download', this._downloadFileName);
+    this.#renderer.setProperty(downloadButton, 'href', this._downloadURL ?? this._src);
+    this.#renderer.appendChild(this.#document.body, downloadButton);
+    downloadButton.click();
+    this.#renderer.removeChild(this.#document.body, downloadButton);
+    this.onDownload.emit();
+  }
+
+  #addEventListeners = () => {
+    if (!this.#audio || !this.#seekSlider) {
       return;
     }
 
@@ -207,8 +473,9 @@ export class BizyAudioPlayerComponent {
     this.#timeUpdateAbortController = new AbortController();
     this.#volumeChangeAbortController = new AbortController();
     this.#waitingAbortController = new AbortController();
+    this.#seekSliderAbortController = new AbortController();
 
-    audio.addEventListener('abort', (event: any) => {
+    this.#audio.addEventListener('abort', (event: any) => {
       if (this.enableLogs) {
         console.debug('bizy audio player - abort', event);
       }
@@ -218,7 +485,7 @@ export class BizyAudioPlayerComponent {
       signal: this.#abortAbortController.signal
     });
 
-    audio.addEventListener('canplay', (event: Event) => {
+    this.#audio.addEventListener('canplay', (event: Event) => {
       if (this.enableLogs) {
         console.debug('bizy audio player - canplay', event);
       }
@@ -229,7 +496,7 @@ export class BizyAudioPlayerComponent {
       signal: this.#canPlayAbortController.signal
     });
 
-    audio.addEventListener('canplaythrough', (event: Event) => {
+    this.#audio.addEventListener('canplaythrough', (event: Event) => {
       if (this.enableLogs) {
         console.debug('bizy audio player - canplaythrough', event);
       }
@@ -239,7 +506,7 @@ export class BizyAudioPlayerComponent {
       signal: this.#canPlayThroughAbortController.signal
     });
 
-    audio.addEventListener('durationchange', (event: Event) => {
+    this.#audio.addEventListener('durationchange', (event: Event) => {
       if (this.enableLogs) {
         console.debug('bizy audio player - durationchange', event);
       }
@@ -249,7 +516,7 @@ export class BizyAudioPlayerComponent {
       signal: this.#durationChangeAbortController.signal
     });
 
-    audio.addEventListener('emptied', (event: any) => {
+    this.#audio.addEventListener('emptied', (event: any) => {
       if (this.enableLogs) {
         console.debug('bizy audio player - emptied', event);
       }
@@ -259,19 +526,18 @@ export class BizyAudioPlayerComponent {
       signal: this.#emptiedAbortController.signal
     });
 
-    audio.addEventListener('ended', (event: Event) => {
+    this.#audio.addEventListener('ended', (event: Event) => {
       if (this.enableLogs) {
         console.debug('bizy audio player - ended', event);
       }
 
-      this._paused = true;
-      this.#ref.detectChanges();
+      this.stop();
       this.onEnded.emit(event);
     }, {
       signal: this.#endedAbortController.signal
     });
 
-    audio.addEventListener('error', (event: any) => {
+    this.#audio.addEventListener('error', (event: any) => {
       if (this.enableLogs) {
         console.debug('bizy audio player - error', event);
       }
@@ -281,20 +547,19 @@ export class BizyAudioPlayerComponent {
       signal: this.#errorAbortController.signal
     });
 
-    audio.addEventListener('loadeddata', (event: Event) => {
+    this.#audio.addEventListener('loadeddata', (event: Event) => {
       if (this.enableLogs) {
         console.debug('bizy audio player - loadeddata', event);
       }
 
-      const audio = this.#normalRef;
-      this._duration = audio.duration;
-
+      this._duration = this.#audio!.duration;
+      this.#ref.detectChanges();
       this.onLoadedData.emit(event);
     }, {
       signal: this.#loadedDataAbortController.signal
     });
 
-    audio.addEventListener('loadedmetadata', (event: Event) => {
+    this.#audio.addEventListener('loadedmetadata', (event: Event) => {
       if (this.enableLogs) {
         console.debug('bizy audio player - loadedmetadata', event);
       }
@@ -304,7 +569,7 @@ export class BizyAudioPlayerComponent {
       signal: this.#loadedMetadataAbortController.signal
     });
 
-    audio.addEventListener('loadstart', (event: Event) => {
+    this.#audio.addEventListener('loadstart', (event: Event) => {
       if (this.enableLogs) {
         console.debug('bizy audio player - loadstart', event);
       }
@@ -314,63 +579,62 @@ export class BizyAudioPlayerComponent {
       signal: this.#loadStartAbortController.signal
     });
 
-    audio.addEventListener('pause', (event: Event) => {
+    this.#audio.addEventListener('pause', (event: Event) => {
       if (this.enableLogs) {
         console.debug('bizy audio player - pause', event);
       }
 
-      this._paused = true;
-      this.#ref.detectChanges();
       this.onPause.emit(event);
     }, {
       signal: this.#pauseAbortController.signal
     });
 
-    audio.addEventListener('play', (event: Event) => {
+    this.#audio.addEventListener('play', (event: Event) => {
       if (this.enableLogs) {
         console.debug('bizy audio player - play', event);
       }
 
-      this._paused = false;
-      this.#ref.detectChanges();
       this.onPlay.emit(event);
     }, {
       signal: this.#playAbortController.signal
     });
 
-    audio.addEventListener('playing', (event: Event) => {
+    this.#audio.addEventListener('playing', (event: Event) => {
       if (this.enableLogs) {
         console.debug('bizy audio player - playing', event);
       }
 
-      this._paused = false;
-      this.#ref.detectChanges();
       this.onPlaying.emit(event);
     }, {
       signal: this.#playingAbortController.signal
     });
 
-    audio.addEventListener('progress', (event: Event) => {
+    this.#audio.addEventListener('progress', (event: Event) => {
       if (this.enableLogs) {
         console.debug('bizy audio player - progress', event);
       }
+
+      const bufferedAmount = Math.floor(this.#audio!.buffered.end(this.#audio!.buffered.length - 1));
+      this.#elementRef.nativeElement.style.setProperty('--bizy-audio-player-buffered-width', Number(this.#seekSlider!.max) ? `${(bufferedAmount / Number(this.#seekSlider!.max)) * 100}%` : '0%');
+      this.#ref.detectChanges();
 
       this.onProgress.emit(event);
     }, {
       signal: this.#progressAbortController.signal
     });
 
-    audio.addEventListener('ratechange', (event: Event) => {
+    this.#audio.addEventListener('ratechange', (event: Event) => {
       if (this.enableLogs) {
         console.debug('bizy audio player - ratechange', event);
       }
 
-      this.onRateChange.emit(event);
+      this._playbackRate = this.#audio.playbackRate;
+      this.#playbackRate$.next(String(this.#audio.playbackRate));
     }, {
       signal: this.#rateChangeAbortController.signal
     });
 
-    audio.addEventListener('seeked', (event: Event) => {
+    this.#audio.addEventListener('seeked', (event: Event) => {
       if (this.enableLogs) {
         console.debug('bizy audio player - seeked', event);
       }
@@ -380,7 +644,7 @@ export class BizyAudioPlayerComponent {
       signal: this.#seekedAbortController.signal
     });
 
-    audio.addEventListener('seeking', (event: Event) => {
+    this.#audio.addEventListener('seeking', (event: Event) => {
       if (this.enableLogs) {
         console.debug('bizy audio player - seeking', event);
       }
@@ -390,17 +654,17 @@ export class BizyAudioPlayerComponent {
       signal: this.#seekingAbortController.signal
     });
 
-    audio.addEventListener('stalled', (event: Event) => {
+    this.#audio.addEventListener('stalled', (event: Event) => {
       if (this.enableLogs) {
         console.debug('bizy audio player - stalled', event);
       }
-      
+
       this.onStalled.emit(event);
     }, {
       signal: this.#stalledAbortController.signal
     });
 
-    audio.addEventListener('suspend', (event: Event) => {
+    this.#audio.addEventListener('suspend', (event: Event) => {
       if (this.enableLogs) {
         console.debug('bizy audio player - suspend', event);
       }
@@ -410,28 +674,32 @@ export class BizyAudioPlayerComponent {
       signal: this.#suspendAbortController.signal
     });
 
-    audio.addEventListener('timeupdate', (event: Event) => {
+    this.#audio.addEventListener('timeupdate', (event: Event) => {
       if (this.enableLogs) {
         console.debug('bizy audio player - timeupdate', event);
       }
 
-      this._currentTime = audio.currentTime;
+      this._currentTime = this.#audio!.currentTime;
+      this.#elementRef.nativeElement.style.setProperty('--bizy-audio-player-seek-before-width', this._duration ? `${(this._currentTime / this._duration) * 100}%` : '0%');
+      this.#ref.detectChanges();
       this.onTimeUpdate.emit(event);
     }, {
       signal: this.#timeUpdateAbortController.signal
     });
 
-    audio.addEventListener('volumechange', (event: Event) => {
+    this.#audio.addEventListener('volumechange', (event: Event) => {
       if (this.enableLogs) {
         console.debug('bizy audio player - volumechange', event);
       }
+
+      this._muted = this.#audio!.muted;
 
       this.onVolumeChange.emit(event);
     }, {
       signal: this.#volumeChangeAbortController.signal
     });
 
-    audio.addEventListener('waiting', (event: Event) => {
+    this.#audio.addEventListener('waiting', (event: Event) => {
       if (this.enableLogs) {
         console.debug('bizy audio player - waiting', event);
       }
@@ -440,6 +708,52 @@ export class BizyAudioPlayerComponent {
     }, {
       signal: this.#waitingAbortController.signal
     });
+
+    this.#seekSlider.addEventListener('input', (event: Event) => {
+      if (this.enableLogs) {
+        console.debug('bizy audio player - seeked', event);
+      }
+
+      this.#currentTime$.next(Number(this.#seekSlider!.value));
+    }, {
+      signal: this.#seekSliderAbortController.signal
+    });
+  }
+
+  #setPlayButtonColor = () => {
+    const playButtonColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-audio-player-play-button-color')!;
+    const svg = this.playButtonRef.nativeElement;
+    if (svg) {
+      svg.querySelectorAll('path').forEach((path: SVGPathElement) => {
+        this.#renderer.setAttribute(path, 'fill', playButtonColor);
+        this.#renderer.setAttribute(path, 'stroke', playButtonColor);
+      });
+    }
+  }
+
+  #setMuteButtonColor = () => {
+    const playButtonColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-audio-player-mute-button-color')!;
+    const svg = this.muteButtonRef.nativeElement;
+    if (svg) {
+      svg.querySelectorAll('path').forEach((path: SVGPathElement) => {
+        this.#renderer.setAttribute(path, 'fill', playButtonColor);
+        this.#renderer.setAttribute(path, 'stroke', playButtonColor);
+      });
+    }
+  }
+
+  #getClosestCssVariable = (element: HTMLElement, cssVariable: string): string | null => {
+    while (element) {
+      const value = getComputedStyle(element).getPropertyValue(cssVariable).trim();
+      if (value) {
+        return value;
+      }
+
+      element = element.parentElement as HTMLElement;
+    }
+
+    const rootValue = getComputedStyle(this.#document.documentElement).getPropertyValue(cssVariable).trim();
+    return rootValue || null;
   }
 
   #removeListeners = () => {
@@ -466,116 +780,8 @@ export class BizyAudioPlayerComponent {
     this.#timeUpdateAbortController.abort();
     this.#volumeChangeAbortController.abort();
     this.#waitingAbortController.abort();
-  }
-
-  async play(): Promise<void> {
-    try {
-      if (this.disabled || !this._audioURL || !this._paused) {
-        return Promise.resolve();
-      }
-
-      this._paused = false;
-      this.#ref.detectChanges();
-      const audio = this.#normalRef;
-      if (!audio) {
-        this._paused = true;
-        this.#ref.detectChanges();
-        return Promise.resolve();
-      }
-
-      await audio.play();
-    } catch (error) {
-      this._paused = true;
-      return Promise.reject();
-    }
-  }
-
-  async pause(): Promise<void> {
-    try {
-      if (this.disabled || !this._audioURL || this._paused) {
-        return Promise.resolve();
-      }
-
-      this._paused = true;
-      this.#ref.detectChanges();
-      const audio = this.#normalRef;
-      if (!audio) {
-        this._paused = false;
-        this.#ref.detectChanges();
-        return Promise.resolve();
-      }
-
-      await audio.pause();
-    } catch (error) {
-      this._paused = false;
-      return Promise.reject();
-    }
-  }
-
-  async stop(): Promise<void> {
-    if (this.disabled || !this._audioURL) {
-      return Promise.resolve();
-    }
-
-    await this.pause();
-    this.seekTo(0);
-  }
-
-  seekTo(seconds: number) {
-    if (this.disabled || this._loading) {
-      return;
-    }
-
-    const audio = this.#normalRef;
-
-    if (audio.duration && seconds <= audio.duration) {
-        audio.currentTime = seconds;
-    }
-  }
-
-  _onTrackPlayerRate() {
-    if (this.disabled || this._loading) {
-      return;
-    }
-
-    const audio = this.#normalRef;
-
-    if (audio) {
-      switch (audio.playbackRate) {
-        case 1:
-          audio.playbackRate = 1.5;
-          this._playbackRate = 1.5;
-          this.#trackPlaybackRate$.next('1.5');
-          break;
-        case 1.5:
-          audio.playbackRate = 2;
-          this._playbackRate = 2;
-          this.#trackPlaybackRate$.next('2');
-          break;
-        case 2:
-          audio.playbackRate = 1;
-          this._playbackRate = 1;
-          this.#trackPlaybackRate$.next('1');
-          break;
-        default:
-          audio.playbackRate = 1;
-          this._playbackRate = 1;
-          this.#trackPlaybackRate$.next('1');
-      }
-    }
-  }
-
-  _onDownload(): void {
-    if (this.disabled || !this.showDownload) {
-      return;
-    }
-    const downloadButton = this.#renderer.createElement('a');
-    this.#renderer.setAttribute(downloadButton, 'download', this.downloadFileName);
-    this.#renderer.setProperty(downloadButton, 'href', this.downloadURL);
-    this.#renderer.appendChild(this.#document.body, downloadButton);
-    downloadButton.click();
-    this.#renderer.removeChild(this.#document.body, downloadButton);
-    this.onDownload.emit();
+    this.#playAnimation?.removeEventListener('DOMLoaded', this.#setPlayButtonColor);
+    this.#muteAnimation?.removeEventListener('DOMLoaded', this.#setMuteButtonColor);
   }
 
   ngOnDestroy() {

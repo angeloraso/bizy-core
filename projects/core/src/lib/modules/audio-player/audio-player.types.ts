@@ -3,6 +3,3 @@ export enum MIME_TYPE {
     MPEG = 'audio/mpeg',
     WAV = 'audio/wav',
 }
-export enum MODE {
-    NORMAL = 'NORMAL'
-}

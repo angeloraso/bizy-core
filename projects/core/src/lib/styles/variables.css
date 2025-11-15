@@ -32,12 +32,21 @@
 
     --bizy-animation-timeout: 500ms;
 
-    --bizy-audio-player-min-width: 20rem;
-    --bizy-audio-player-max-width: 100%;
-    --bizy-audio-player-rate-button-background-color: var(--bizy-default-color);
-    --bizy-audio-player-rate-button-color: #fff;
-    --bizy-audio-player-download-button-background-color: var(--bizy-accent-color);
-    --bizy-audio-player-download-button-color: #fff;
+    --bizy-audio-player-width: 100%;
+    --bizy-audio-player-height: 2.6rem;
+    --bizy-audio-player-seek-before-width: 0;
+    --bizy-audio-player-seek-before-background-color: var(--bizy-info-color);
+    --bizy-audio-player-seek-slider-thumb-border: 0.1rem solid var(--bizy-info-color);;
+    --bizy-audio-player-seek-slider-thumb-background-color: #fff;
+    --bizy-audio-player-seek-slider-thumb-active-background-color: var(--bizy-light-info-color);
+    --bizy-audio-player-buffered-width: 0;
+    --bizy-audio-player-volume-before-width: 100%;
+    --bizy-audio-player-play-button-color: var(--bizy-info-color);
+    --bizy-audio-player-mute-button-color: var(--bizy-info-color);
+    --bizy-audio-player-playback-rate-button-color: var(--bizy-info-color);
+    --bizy-audio-player-playback-rate-button-hover-color: var(--bizy-light-info-color);
+    --bizy-audio-player-download-button-color: var(--bizy-info-color);
+    --bizy-audio-player-download-button-hover-color: var(--bizy-light-info-color);
 
     --bizy-audio-recorder-record-button-height: 8rem;
     --bizy-audio-recorder-record-button-width: 8rem;
