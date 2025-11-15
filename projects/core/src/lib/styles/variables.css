@@ -140,10 +140,18 @@
     --bizy-grid-column-width: 18rem;
     --bizy-grid-gap: 0.6rem;
 
-    --bizy-heat-map-chart-out-of-range-color: #fff;
-    --bizy-heat-map-chart-tooltip-color: #000;
+    --bizy-heat-map-chart-out-of-range-color: #f3f3f3;
+    --bizy-heat-map-chart-tooltip-color: var(--bizy-dark-default-color);
     --bizy-heat-map-chart-tooltip-background-color: #fff;
     --bizy-heat-map-chart-tooltip-border-color: #fff;
+    --bizy-heat-map-chart-x-highlight-area-background-color: #c5dcf34d;
+    --bizy-heat-map-chart-x-highlight-area-border-color: var(--bizy-info-color);
+    --bizy-heat-map-chart-y-highlight-area-background-color: #f3c5c54d;
+    --bizy-heat-map-chart-y-highlight-area-border-color: var(--bizy-danger-color);
+    --bizy-heat-map-chart-x-highlight-line-color: var(--bizy-danger-color);
+    --bizy-heat-map-chart-x-highlight-line-label-color: var(--bizy-default-color);
+    --bizy-heat-map-chart-y-highlight-line-color: var(--bizy-danger-color);
+    --bizy-heat-map-chart-y-highlight-line-label-color: var(--bizy-default-color);
 
     --bizy-input-background-color: #fff;
     --bizy-input-focus-color: var(--bizy-info-color);

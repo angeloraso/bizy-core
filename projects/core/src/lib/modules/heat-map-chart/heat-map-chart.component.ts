@@ -11,7 +11,7 @@ import {
   Output,
   Renderer2
 } from '@angular/core';
-import { IBizyHeatMapChartData, IBizyHeatMapChartRange } from './heat-map-chart.types';
+import { IBizyHeatMapChartData, IBizyHeatMapChartRange, IBizyHeatMapHighlightArea, IBizyHeatMapHighlightLine, IBizyHeatMapHighlightLineLabel } from './heat-map-chart.types';
 import { DOCUMENT } from '@angular/common';
 import { auditTime, BehaviorSubject, filter, skip, Subject, Subscription, take, throttleTime } from 'rxjs';
 
@@ -59,6 +59,8 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
   @Input() tooltip: {show?: boolean, formatter?: (item: any ) => string} = DEFAULT_TOOLTIP
   @Input() download: {show?: boolean, label?: string, name?: string} = DEFAULT_DOWNLOAD;
   @Input() ranges: Array<IBizyHeatMapChartRange> | {data: Array<IBizyHeatMapChartRange>, label?: {start?: string, end?: string}} = [];
+  @Input() highlightAreas: Array<IBizyHeatMapHighlightArea> | {data: Array<IBizyHeatMapHighlightArea>} = [];
+  @Input() highlightLines: Array<IBizyHeatMapHighlightLine> | {data: Array<IBizyHeatMapHighlightLine>, label: {x: IBizyHeatMapHighlightLineLabel, y: IBizyHeatMapHighlightLineLabel}} = [];
   @Input() xAxis: {labels: Array<string>, position: 'top' | 'bottom', formatter?: (item: any ) => string} = DEFAULT_X_AXIS;
   @Input() yAxis: {labels: Array<string>, position: 'left' | 'right', formatter?: (item: any ) => string} = DEFAULT_Y_AXIS;
   @Output() onDownload = new EventEmitter<void>();
@@ -104,6 +106,7 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
 
       const series: Array<any> = [{
         type: 'heatmap',
+        zlevel: 1,
         data: this.#data.map(_cell => {
           return {
             value: [_cell.x, _cell.y, _cell.value ?? '-'],
@@ -111,6 +114,216 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
           }
         })
       }];
+
+
+      const xAreaBackgroundColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-area-background-color');
+      const xAreaBorderColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-area-border-color');
+      const yAreaBackgroundColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-area-background-color');
+      const yAreaBorderColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-area-border-color');
+
+      const xAreas: Array<[number, number]>  = []
+      const yAreas: Array<[number, number]> = []
+      const highlightAreas: Array<IBizyHeatMapHighlightArea> = (<{data: Array<IBizyHeatMapHighlightArea>}>this.highlightAreas).data ?? (<Array<IBizyHeatMapHighlightArea>>this.highlightAreas);
+      highlightAreas.forEach(_area => {
+        if (typeof _area.from.x !== 'undefined' || _area.from.x !== null) {
+          xAreas.push([_area.from.x, _area.to.x]);
+        } else {
+          yAreas.push([_area.from.y, _area.to.y]);
+        }
+      });
+
+      if (xAreas.length > 0) {
+        series.push({
+          type: 'custom',
+          silent: true,
+          renderItem: function (params, api) {
+              var xStart = api.coord([api.value(0), 0])[0];
+              var xEnd = api.coord([api.value(1), 0])[0];
+              var cellWidth = Math.abs(xEnd - xStart) / (api.value(1) - api.value(0));
+
+              return {
+                  type: 'rect',
+                  shape: {
+                      x: xStart - cellWidth / 2,
+                      y: params.coordSys.y,
+                      width: Math.abs(xEnd - xStart) + cellWidth,
+                      height: params.coordSys.height
+                  },
+                  style: {
+                      fill: xAreaBackgroundColor,
+                      stroke: xAreaBorderColor,
+                      lineWidth: 0.5
+                  },
+                  silent: true,
+                  z2: 100
+              };
+          },
+          data: xAreas,
+          zlevel: 5
+        })
+      };
+
+      if (yAreas.length > 0) {
+        series.push({
+            type: 'custom',
+            silent: true,
+            renderItem: function (params, api) {
+                var yStart = api.coord([0, api.value(0)])[1];
+                var yEnd = api.coord([0, api.value(1)])[1];
+                var cellHeight = Math.abs(yEnd - yStart) / (api.value(1) - api.value(0));
+
+                return {
+                    type: 'rect',
+                    shape: {
+                        x: params.coordSys.x,
+                        y: yStart - cellHeight / 2,
+                        width: params.coordSys.width,
+                        height: Math.abs(yEnd - yStart) + cellHeight
+                    },
+                    style: {
+                        fill: yAreaBackgroundColor,
+                        stroke: yAreaBorderColor,
+                        lineWidth: 0.5
+                    },
+                    silent: true,
+                    z2: 100
+                };
+            },
+            data: yAreas,
+            zlevel: 5
+        })
+      }
+
+      const xLineColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-line-color');
+      const xLineLabelColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-line-label-color');
+      const yLineColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-line-color');
+      const yLineLabelColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-line-label-color');
+
+      const xLines: Array<[number]>  = []
+      const yLines: Array<[number]>  = []
+      const highlightLineLabel = (<{label: {x: IBizyHeatMapHighlightLineLabel, y: IBizyHeatMapHighlightLineLabel}}>this.highlightLines)?.label ?? null;
+      const highlightLines: Array<IBizyHeatMapHighlightLine> = (<{data: Array<IBizyHeatMapHighlightLine>}>this.highlightLines).data ?? (<Array<IBizyHeatMapHighlightLine>>this.highlightLines);
+      highlightLines.forEach(_line => {
+        if (typeof _line.x !== 'undefined' || _line.x !== null) {
+          xLines.push([_line.x]);
+        } else {
+          yLines.push([_line.y]);
+        }
+      });
+
+      if (xLines.length > 0) {
+        series.push({
+          type: 'custom',
+          renderItem: function (params, api) {
+            const xValue = api.value(0);
+        
+            const yStart = params.coordSys.y;
+            const yEnd = params.coordSys.y + params.coordSys.height;
+        
+            const xCoord = api.coord([xValue, 0])[0];
+
+            const children: Array<any> = [{
+              type: 'line',
+              shape: {
+                x1: xCoord,
+                y1: yStart,
+                x2: xCoord,
+                y2: yEnd
+              },
+              style: {
+                stroke: xLineColor,
+                lineWidth: 1
+              },
+              z: 100
+            }]
+
+            if (highlightLineLabel && highlightLineLabel.x) {
+              const top = yStart - 5;
+              const bottom = yEnd + 20;
+
+              const label = {
+                type: 'text',
+                style: {
+                  text: highlightLineLabel.x.formatter ? highlightLineLabel.x.formatter(xValue) : xValue,
+                  x: xCoord,
+                  y: highlightLineLabel.x.position === 'top' ? top : highlightLineLabel.x.position === 'bottom' ? bottom : bottom,
+                  fill: xLineLabelColor,
+                  textAlign: 'center',
+                  textVerticalAlign: 'bottom'
+                },
+                z: 101
+              }
+
+              children.push(label)
+            }
+        
+            return {
+              type: 'group',
+              children
+            };
+          },
+          data: xLines,
+          silent: true,
+          zlevel: 10
+        })
+      };
+
+      if (yLines.length > 0) {
+        series.push({
+          type: 'custom',
+          renderItem: function (params, api) {
+            const yValue = api.value(0);
+
+            const yCoord = api.coord([0, yValue])[1];
+
+            const xStart = params.coordSys.x;
+            const xEnd = params.coordSys.x + params.coordSys.width;
+
+            const children: Array<any> = [{
+              type: 'line',
+              shape: {
+                x1: xStart,
+                y1: yCoord,
+                x2: xEnd,
+                y2: yCoord
+              },
+              style: {
+                stroke: yLineColor,
+                lineWidth: 1
+              },
+              z: 100
+            }]
+
+            if (highlightLineLabel && highlightLineLabel.y) {
+              const left = xStart - 5;
+              const right = xEnd + 20;
+
+              const label = {
+                type: 'text',
+                style: {
+                  text: highlightLineLabel.y.formatter ? highlightLineLabel.y.formatter(yValue) : yValue,
+                  x: yCoord,
+                  y: highlightLineLabel.y.position === 'left' ? left : highlightLineLabel.y.position === 'right' ? right : right,
+                  fill: yLineLabelColor,
+                  textAlign: 'right',
+                  textVerticalAlign: 'middle'
+                },
+                z: 101
+              }
+
+              children.push(label)
+            }
+        
+            return {
+              type: 'group',
+              children
+            };
+          },
+          data: yLines,
+          silent: true,
+          zlevel: 10
+        })
+      };
   
       const tooltip = {
         show: this.tooltip?.show ?? DEFAULT_TOOLTIP.show,
