@@ -21,12 +21,17 @@
     cursor: not-allowed !important;
 }
 
+.bizy-checkbox--readonly {
+    pointer-events: none;
+    cursor: default !important;
+}
+
 .bizy-checkbox__input {
     position: relative;
-    min-width: 1rem;
-    min-height: 1rem;
     width: 1rem;
     height: 1rem;
+    min-width: 1rem;
+    min-height: 1rem;
     color: var(--bizy-checkbox-border-color);
     border: 0.1rem solid var(--bizy-checkbox-border-color);
     border-radius: 0.3rem;

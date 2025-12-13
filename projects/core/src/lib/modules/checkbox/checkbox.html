@@ -1,8 +1,20 @@
-<button type="button" [id]="id" (click)="_onSelect($event)" (keyup.enter)="_onSelect($event)" class="bizy-checkbox" [ngClass]="{'bizy-checkbox--disabled': disabled}">
+<button 
+  type="button" 
+  [id]="id" 
+  (click)="_onSelect($event)" 
+  (keyup.enter)="_onSelect($event)" 
+  class="bizy-checkbox"
+  [class.bizy-checkbox--readonly]="readonly"
+  [class.bizy-checkbox--disabled]="disabled">
 
   <ng-content select="[slot=start]"></ng-content>
 
-  <input class="bizy-checkbox__input" type="checkbox" [id]="_checkboxId" [disabled]="disabled" [ngModel]="selected">
+  <input 
+    class="bizy-checkbox__input" 
+    type="checkbox" 
+    [id]="_checkboxId" 
+    [disabled]="disabled" 
+    [ngModel]="selected">
 
   <ng-content select="[slot=end]"></ng-content>
 
