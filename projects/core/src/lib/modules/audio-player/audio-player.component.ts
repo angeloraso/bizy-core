@@ -490,6 +490,10 @@ export class BizyAudioPlayerComponent {
         console.debug('bizy audio player - canplay', event);
       }
 
+      if (this.autoplay) {
+        this.play();
+      }
+
       this.canPlay.emit(event);
     }, {
       once: true,

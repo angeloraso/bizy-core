@@ -7,7 +7,7 @@
     (keyup.enter)="togglePlay()">
 </button>
 
-<audio #bizyAudioPlayerAudioRef preload="metadata" [autoplay]="autoplay">
+<audio #bizyAudioPlayerAudioRef preload="metadata">
     <source [src]="_src" [type]="MIME_TYPE.WAV">
     <source [src]="_src" [type]="MIME_TYPE.OGG">
     <source [src]="_src" [type]="MIME_TYPE.MPEG">
