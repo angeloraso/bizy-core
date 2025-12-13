@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, ElementRef, inject, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import {
   Component,
   ChangeDetectionStrategy,
@@ -25,7 +25,7 @@ const DEFAULT_PLAYBACK_RATE = {
   selector: 'bizy-audio-player',
   templateUrl: './audio-player.html',
   styleUrls: ['./audio-player.css'],
-  imports: [CommonModule, BizyAudioPlayerFormatSecondsPipe],
+  imports: [BizyAudioPlayerFormatSecondsPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BizyAudioPlayerComponent {

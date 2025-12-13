@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
   selector: 'bizy-checkbox',
   templateUrl: './checkbox.html',
   styleUrls: ['./checkbox.css'],
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyCheckboxComponent {

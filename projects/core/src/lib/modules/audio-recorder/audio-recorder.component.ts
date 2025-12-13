@@ -1,4 +1,4 @@
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import {
   Component,
   OnDestroy,
@@ -17,7 +17,6 @@ import {
   selector: 'bizy-audio-recorder',
   templateUrl: './audio-recorder.html',
   styleUrls: ['./audio-recorder.css'],
-  imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyAudioRecorderComponent implements AfterViewInit, OnDestroy {
