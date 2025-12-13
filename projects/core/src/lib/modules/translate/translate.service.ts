@@ -1,5 +1,6 @@
-import { EventEmitter, inject, Injectable } from '@angular/core';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { inject, Injectable } from '@angular/core';
+import { LangChangeEvent, StrictTranslation, TranslateService } from '@ngx-translate/core';
+import { Observable } from 'rxjs';
 
 
 export enum LANGUAGE {
@@ -8,7 +9,7 @@ export enum LANGUAGE {
 }
 export interface ILocale {
   lang: LANGUAGE;
-  translations: Record<string, unknown>;
+  translations: Record<string, StrictTranslation>;
 }
 
 @Injectable({
@@ -17,7 +18,7 @@ export interface ILocale {
 export class BizyTranslateService {
   readonly #translate = inject(TranslateService);
 
-  get language$(): EventEmitter<LangChangeEvent> {
+  get language$(): Observable<LangChangeEvent> {
     return this.#translate.onLangChange;
   }
 

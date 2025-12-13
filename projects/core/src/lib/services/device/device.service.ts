@@ -28,7 +28,7 @@ export class BizyDeviceService {
 
   isDesktop = (): boolean => this.#device.isDesktop();
 
-  isPortrait = (): boolean => this.#device.orientation === 'portrait';
+  isPortrait = (): boolean => this.#device.orientation() === 'portrait';
 
-  isLandscape = (): boolean => this.#device.orientation === 'landscape';
+  isLandscape = (): boolean => this.#device.orientation() === 'landscape';
 }
