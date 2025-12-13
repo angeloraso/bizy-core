@@ -1,5 +1,6 @@
-import { inject, Injectable } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { EventEmitter, inject, Injectable } from '@angular/core';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+
 
 export enum LANGUAGE {
   SPANISH = 'es',
@@ -15,6 +16,11 @@ export interface ILocale {
 })
 export class BizyTranslateService {
   readonly #translate = inject(TranslateService);
+
+  get language$(): EventEmitter<LangChangeEvent> {
+    return this.#translate.onLangChange;
+  }
+
 
   public loadTranslations(...args: ILocale[]): void {
     const locales = [...args];

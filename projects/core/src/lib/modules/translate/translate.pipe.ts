@@ -3,6 +3,7 @@ import { BizyTranslateService } from './translate.service';
 
 @Pipe({
   name: 'translate',
+  pure: false
 })
 export class BizyTranslatePipe implements PipeTransform {
   constructor(@Inject(BizyTranslateService) private translate: BizyTranslateService) {}
