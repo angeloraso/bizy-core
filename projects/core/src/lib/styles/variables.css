@@ -133,6 +133,7 @@
     --bizy-filter-section-min-width: 8rem;
 
     --bizy-font-family: Roboto, "Helvetica Neue", sans-serif;
+    --bizy-font-size: clamp(12px, 1vmax, 16px);
 
     --bizy-form-max-width: 40rem;
     --bizy-form-row-gap: 1rem;
