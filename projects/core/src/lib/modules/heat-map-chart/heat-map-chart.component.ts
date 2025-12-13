@@ -21,7 +21,7 @@ const DEFAULT_DOWNLOAD = {
   show: true,
   label: 'Descargar',
   name: 'Bizy'
-}
+};
 
 const DEFAULT_TOOLTIP = {
   show: true
@@ -37,6 +37,10 @@ const DEFAULT_Y_AXIS = {
   position: 'left' as 'left' | 'right'
 };
 
+const LINE_DASH_SOLID = [0, 0];
+const LINE_DASH_DOTTED = [2, 4];
+const LINE_DASH_DASH = [6, 6];
+
 @Component({
   selector: 'bizy-heat-map-chart',
   template: '',
@@ -46,7 +50,6 @@ const DEFAULT_Y_AXIS = {
       justify-content: center
     }
   `],
-  imports: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
@@ -60,7 +63,7 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
   @Input() download: {show?: boolean, label?: string, name?: string} = DEFAULT_DOWNLOAD;
   @Input() ranges: Array<IBizyHeatMapChartRange> | {data: Array<IBizyHeatMapChartRange>, label?: {start?: string, end?: string}} = [];
   @Input() highlightAreas: Array<IBizyHeatMapHighlightArea> | {data: Array<IBizyHeatMapHighlightArea>} = [];
-  @Input() highlightLines: Array<IBizyHeatMapHighlightLine> | {data: Array<IBizyHeatMapHighlightLine>, label: {x: IBizyHeatMapHighlightLineLabel, y: IBizyHeatMapHighlightLineLabel}} = [];
+  @Input() highlightLines: Array<IBizyHeatMapHighlightLine> | {data: Array<IBizyHeatMapHighlightLine>, label: {x: IBizyHeatMapHighlightLineLabel, y: IBizyHeatMapHighlightLineLabel}, slot?: 'start' | 'center' | 'end'} = [];
   @Input() xAxis: {labels: Array<string>, position: 'top' | 'bottom', formatter?: (item: any ) => string} = DEFAULT_X_AXIS;
   @Input() yAxis: {labels: Array<string>, position: 'left' | 'right', formatter?: (item: any ) => string} = DEFAULT_Y_AXIS;
   @Output() onDownload = new EventEmitter<void>();
@@ -118,8 +121,10 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
 
       const xAreaBackgroundColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-area-background-color');
       const xAreaBorderColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-area-border-color');
+      const xAreaBorderWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-area-border-width');
       const yAreaBackgroundColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-area-background-color');
       const yAreaBorderColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-area-border-color');
+      const yAreaBorderWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-area-border-width');
 
       const xAreas: Array<[number, number]>  = []
       const yAreas: Array<[number, number]> = []
@@ -152,7 +157,7 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
                   style: {
                       fill: xAreaBackgroundColor,
                       stroke: xAreaBorderColor,
-                      lineWidth: 0.5
+                      lineWidth: xAreaBorderWidth
                   },
                   silent: true,
                   z2: 100
@@ -183,7 +188,7 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
                     style: {
                         fill: yAreaBackgroundColor,
                         stroke: yAreaBorderColor,
-                        lineWidth: 0.5
+                        lineWidth: yAreaBorderWidth
                     },
                     silent: true,
                     z2: 100
@@ -194,9 +199,13 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
         })
       }
 
+      const xLineWidth = Number(this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-line-width'));
       const xLineColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-line-color');
+      const xLineStyle = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-line-style');
       const xLineLabelColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-line-label-color');
+      const yLineWidth = Number(this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-line-width'));
       const yLineColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-line-color');
+      const yLineStyle = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-line-style');
       const yLineLabelColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-line-label-color');
 
       const xLines: Array<[number]>  = []
@@ -211,6 +220,8 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
         }
       });
 
+      const slot = (<{slot: 'start' | 'center' | 'end'}>this.highlightLines).slot ?? 'center';
+
       if (xLines.length > 0) {
         series.push({
           type: 'custom',
@@ -219,8 +230,12 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
         
             const yStart = params.coordSys.y;
             const yEnd = params.coordSys.y + params.coordSys.height;
+
+            const cellWidth = Math.abs(api.coord([1, 0])[0] - api.coord([0, 0])[0]);
         
-            const xCoord = api.coord([xValue, 0])[0];
+            const centerX = api.coord([xValue, 0])[0];
+
+            const xCoord = slot === 'start' ? centerX - (cellWidth / 2) : slot === 'end' ? centerX + (cellWidth / 2) : centerX;
 
             const children: Array<any> = [{
               type: 'line',
@@ -232,7 +247,8 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
               },
               style: {
                 stroke: xLineColor,
-                lineWidth: 1
+                lineWidth: xLineWidth,
+                lineDash: xLineStyle === 'solid' ? LINE_DASH_SOLID : xLineStyle === 'dotted' ? LINE_DASH_DOTTED : xLineStyle === 'dashed' ? LINE_DASH_DASH : LINE_DASH_SOLID
               },
               z: 100
             }]
@@ -274,10 +290,14 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
           renderItem: function (params, api) {
             const yValue = api.value(0);
 
-            const yCoord = api.coord([0, yValue])[1];
-
             const xStart = params.coordSys.x;
             const xEnd = params.coordSys.x + params.coordSys.width;
+
+            const cellHeight = Math.abs(api.coord([0, 1])[1] - api.coord([0, 0])[1]);
+
+            const centerY = api.coord([0, yValue])[1];
+
+            const yCoord = slot === 'start' ? centerY + (cellHeight / 2) : slot === 'end' ? centerY - (cellHeight / 2) : centerY;
 
             const children: Array<any> = [{
               type: 'line',
@@ -289,7 +309,8 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
               },
               style: {
                 stroke: yLineColor,
-                lineWidth: 1
+                lineWidth: yLineWidth,
+                lineDash: yLineStyle === 'solid' ? LINE_DASH_SOLID : yLineStyle === 'dotted' ? LINE_DASH_DOTTED : yLineStyle === 'dashed' ? LINE_DASH_DASH : LINE_DASH_SOLID
               },
               z: 100
             }]
@@ -324,6 +345,7 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
           zlevel: 10
         })
       };
+
   
       const tooltip = {
         show: this.tooltip?.show ?? DEFAULT_TOOLTIP.show,
@@ -404,20 +426,20 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
             onclick: () => {
               setTimeout(() => {
                 import('html2canvas').then(module => {
-                    const html2canvas = module.default;
-                    html2canvas(this.#chartContainer).then(canvas => {
-                        var link = this.#renderer.createElement('a');
-                        link.href = canvas.toDataURL('image/png');
-                        link.download = `${this.download.name ?? DEFAULT_DOWNLOAD.name}.png`;
-                        this.#renderer.appendChild(this.#document.body, link);
-                        link.click();
-                        this.#renderer.removeChild(this.#document.body, link);
-                        this.onDownload.emit();
-                    });
+                const html2canvas = module.default;
+                  html2canvas(this.#chartContainer).then(canvas => {
+                      var link = this.#renderer.createElement('a');
+                      link.href = canvas.toDataURL('image/png');
+                      link.download = `${this.download.name ?? DEFAULT_DOWNLOAD.name}.png`;
+                      this.#renderer.appendChild(this.#document.body, link);
+                      link.click();
+                      this.#renderer.removeChild(this.#document.body, link);
+                      this.onDownload.emit();
                   });
+                });
               }, 500);
             }
-          }
+          },
         },
         emphasis: {
           iconStyle: {
