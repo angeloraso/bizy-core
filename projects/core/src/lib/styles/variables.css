@@ -138,6 +138,10 @@
     --bizy-form-max-width: 40rem;
     --bizy-form-row-gap: 1rem;
 
+    --bizy-gauge-chart-tooltip-color: #000;
+    --bizy-gauge-chart-tooltip-background-color: #fff;
+    --bizy-gauge-chart-tooltip-border-color: #fff;
+
     --bizy-grid-height: 100%;
     --bizy-grid-min-height: 5rem;
     --bizy-grid-max-height: 100%;

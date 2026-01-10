@@ -12,6 +12,7 @@ export * from './date-picker';
 export * from './file-uploader';
 export * from './filter';
 export * from './form';
+export * from './gauge-chart';
 export * from './grid';
 export * from './heat-map-chart';
 export * from './input';
