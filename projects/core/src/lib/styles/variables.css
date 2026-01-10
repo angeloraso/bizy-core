@@ -146,6 +146,12 @@
     --bizy-gauge-chart-tooltip-color: #000;
     --bizy-gauge-chart-tooltip-background-color: #fff;
     --bizy-gauge-chart-tooltip-border-color: #fff;
+    --bizy-gauge-chart-background-color: var(--bizy-light-default-color);
+    --bizy-gauge-chart-progress-color: var(--bizy-accent-color);
+    --bizy-gauge-chart-value-color: var(--bizy-gauge-chart-progress-color);
+    --bizy-gauge-chart-text-color: var(--bizy-default-color);
+    --bizy-gauge-chart-anchor-color: var(--bizy-dark-default-color);
+    --bizy-gauge-chart-pointer-color: var(--bizy-dark-default-color);
 
     --bizy-grid-height: 100%;
     --bizy-grid-min-height: 5rem;
@@ -351,7 +357,8 @@
     --bizy-stacked-bar-chart-width: 100%;
     --bizy-stacked-bar-chart-height: 0.5rem;
     --bizy-stacked-bar-chart-border-radius: 0.3rem;
-    --bizy-stacked-bar-chart-background-color: var(var(--bizy-light-default-color));
+    --bizy-stacked-bar-chart-color: var(--bizy-accent-color);
+    --bizy-stacked-bar-chart-background-color: var(--bizy-default-color);
 
     --bizy-table-height: 100%;
     --bizy-table-min-height: 5rem;

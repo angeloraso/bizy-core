@@ -1,4 +1,4 @@
-@if(segments && _legends.show && _legends.position === ANURA_STACKED_BAR_CHART_LEGEND_POSITION.TOP) {
+@if(segments && _legends.show && _legends.position === BIZY_STACKED_BAR_CHART_LEGEND_POSITION.TOP) {
   <div class="bizy-stacked-bar-chart__legends">
     @for (segment of segments; track segment.id ?? i; let i = $index) {
       <button 
@@ -19,7 +19,7 @@
 </div>
 
 
-@if(segments && _legends.show && _legends.position === ANURA_STACKED_BAR_CHART_LEGEND_POSITION.BOTTOM) {
+@if(segments && _legends.show && _legends.position === BIZY_STACKED_BAR_CHART_LEGEND_POSITION.BOTTOM) {
   <div class="bizy-stacked-bar-chart__legends">
     @for (segment of segments; track segment.id ?? i; let i = $index) {
       <button 

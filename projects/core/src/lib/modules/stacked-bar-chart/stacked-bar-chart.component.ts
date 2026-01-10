@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, ContentChildren, ElementRef, inject, Input, QueryList } from '@angular/core';
 import { BizyStackedBarChartSegmentComponent } from './stacked-bar-chart-segment/stacked-bar-chart-segment.component';
-import { ANURA_STACKED_BAR_CHART_LEGEND_POSITION, IBizyStackedBarChartLegends } from './stacked-bar-chart.types';
+import { BIZY_STACKED_BAR_CHART_LEGEND_POSITION, IBizyStackedBarChartLegends } from './stacked-bar-chart.types';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
 const DEFAULT_LEGENDS: IBizyStackedBarChartLegends = {
   show: true,
-  position: ANURA_STACKED_BAR_CHART_LEGEND_POSITION.BOTTOM
+  position: BIZY_STACKED_BAR_CHART_LEGEND_POSITION.BOTTOM
 };
 
 @Component({
@@ -32,7 +32,7 @@ export class BizyStackedBarChartComponent {
   #segmentSubscription = new Subscription();
   #segmentValueSubscription = new Subscription();
 
-  readonly ANURA_STACKED_BAR_CHART_LEGEND_POSITION = ANURA_STACKED_BAR_CHART_LEGEND_POSITION;
+  readonly BIZY_STACKED_BAR_CHART_LEGEND_POSITION = BIZY_STACKED_BAR_CHART_LEGEND_POSITION;
 
   getNativeElement = () => this.#elementRef?.nativeElement;
 
