@@ -1,0 +1,22 @@
+:host {
+    font-size: 1rem;
+    display: flex;
+}
+
+.bizy-stacked-bar-chart-segment {
+    flex: 1;
+    transition: width 0.3s ease;
+    border: none;
+    cursor: pointer;
+    background-color: var(--bizy-stacked-bar-chart-color);
+}
+
+.bizy-stacked-bar-chart-segment--disabled {
+    opacity: 0.5;
+    cursor: not-allowed !important;
+    pointer-events: none;
+}
+
+.bizy-stacked-bar-chart-segment--empty {
+    background-color: var(--bizy-stacked-bar-chart-background-color) !important;
+}

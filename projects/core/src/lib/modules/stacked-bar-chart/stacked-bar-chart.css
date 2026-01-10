@@ -1,0 +1,47 @@
+:host {
+    font-size: 1rem;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.3rem;
+    height: fit-content;
+
+    width: var(--bizy-stacked-bar-chart-width);
+}
+
+.bizy-stacked-bar-chart {
+    display: flex;
+    width: 100%;
+    height: var(--bizy-stacked-bar-chart-height);
+    border-top: var(--bizy-stacked-bar-chart-border-top, var(--bizy-stacked-bar-chart-border, none));
+    border-right: var(--bizy-stacked-bar-chart-border-right, var(--bizy-stacked-bar-chart-border, none));
+    border-bottom: var(--bizy-stacked-bar-chart-border-bottom, var(--bizy-stacked-bar-chart-border, none));
+    border-left: var(--bizy-stacked-bar-chart-border-left, var(--bizy-stacked-bar-chart-border, none));
+    border-radius: var(--bizy-stacked-bar-chart-border-radius);
+    overflow: hidden;
+    background-color: var(--bizy-stacked-bar-chart-background-color);
+}
+
+.bizy-stacked-bar-chart__legends {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    column-gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.bizy-stacked-bar-chart__legends__legend {
+    display: flex;
+    align-items: center;
+    column-gap: 0.3rem;
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+.bizy-stacked-bar-chart__legends__legend__bullet {
+    border-radius: 50%;
+    width: 0.5rem;
+    height: 0.5rem;
+}

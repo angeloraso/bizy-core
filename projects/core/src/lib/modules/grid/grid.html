@@ -20,7 +20,7 @@
         cdkVirtualFor
         [cdkVirtualForOf]="itemRows">
         <bizy-grid-row [rowHeight]="rowHeight" [itemsPerRow]="itemsPerRow">
-          @for (it of item; track trackById(i, it); let i = $index) {
+          @for (it of item; track it.id ?? i; let i = $index) {
             <ng-template
                             *ngTemplateOutlet="itemTemplate;
                             context: { 

@@ -1,0 +1,36 @@
+@if(segments && _legends.show && _legends.position === ANURA_STACKED_BAR_CHART_LEGEND_POSITION.TOP) {
+  <div class="bizy-stacked-bar-chart__legends">
+    @for (segment of segments; track segment.id ?? i; let i = $index) {
+      <button 
+        type="button"
+        class="bizy-stacked-bar-chart__legends__legend"
+        [class.bizy-button--disabled]="segment.disabled"
+        (click)="segment.disabled ? null : segment.onLegendSelect.emit($event)"
+        (keyup.enter)="segment.disabled ? null : segment.onLegendSelect.emit($event)">
+        <span class="bizy-stacked-bar-chart__legends__legend__bullet"[style.backgroundColor]="(segment.color$ | async)"></span>
+        <h6>{{segment.name}} <strong>{{(segment.value$ | async) || 0}}</strong></h6>
+      </button>
+    }
+  </div>
+}
+
+<div class="bizy-stacked-bar-chart">
+  <ng-content select="bizy-stacked-bar-chart-segment"></ng-content>
+</div>
+
+
+@if(segments && _legends.show && _legends.position === ANURA_STACKED_BAR_CHART_LEGEND_POSITION.BOTTOM) {
+  <div class="bizy-stacked-bar-chart__legends">
+    @for (segment of segments; track segment.id ?? i; let i = $index) {
+      <button 
+        type="button"
+        class="bizy-stacked-bar-chart__legends__legend"
+        [class.bizy-button--disabled]="segment.disabled"
+        (click)="segment.disabled ? null : segment.onLegendSelect.emit($event)"
+        (keyup.enter)="segment.disabled ? null : segment.onLegendSelect.emit($event)">
+        <span class="bizy-stacked-bar-chart__legends__legend__bullet"[style.backgroundColor]="(segment.color$ | async)"></span>
+        <h6>{{segment.name}} <strong>{{(segment.value$ | async) || 0}}</strong></h6>
+      </button>
+    }
+  </div>
+}

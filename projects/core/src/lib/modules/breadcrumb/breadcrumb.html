@@ -1,5 +1,5 @@
 <ul class="bizy-breadcrumb">
-  @for (breadcrumb of _breadcrumbs; track breadcrumb; let last = $last; let i = $index) {
+  @for (breadcrumb of _breadcrumbs; track i; let last = $last; let i = $index) {
     @if (breadcrumb.label) {
       <li>
         <button

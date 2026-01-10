@@ -348,6 +348,11 @@
     --bizy-slider-range-color: var(--bizy-accent-color);
     --bizy-slider-accent-color: var(--bizy-info-color);
 
+    --bizy-stacked-bar-chart-width: 100%;
+    --bizy-stacked-bar-chart-height: 0.5rem;
+    --bizy-stacked-bar-chart-border-radius: 0.3rem;
+    --bizy-stacked-bar-chart-background-color: var(var(--bizy-light-default-color));
+
     --bizy-table-height: 100%;
     --bizy-table-min-height: 5rem;
     --bizy-table-max-height: 100%;

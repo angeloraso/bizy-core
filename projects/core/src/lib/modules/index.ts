@@ -29,6 +29,7 @@ export * from './select';
 export * from './sidebar';
 export * from './skeleton';
 export * from './slider';
+export * from './stacked-bar-chart';
 export * from './table';
 export * from './tabs';
 export * from './tag';

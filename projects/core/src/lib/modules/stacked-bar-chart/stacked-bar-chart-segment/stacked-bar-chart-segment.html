@@ -1,0 +1,8 @@
+<button 
+    type="button"
+    class="bizy-stacked-bar-chart-segment"
+    [class.bizy-stacked-bar-chart-segment--disabled]="disabled"
+    [class.bizy-stacked-bar-chart-segment--empty]="!(value$ | async)"
+    (click)="_onSelect($event)"
+    (keyup.enter)="_onSelect($event)">
+</button>

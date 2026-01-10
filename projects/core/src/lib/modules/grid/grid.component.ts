@@ -125,10 +125,6 @@ export class BizyGridComponent implements AfterContentInit {
     this.#ref.detectChanges();
   }
 
-  trackById(index: number, item: any): any {
-    return item?.id ?? index;
-  }
-
   scrollTo(index: number, behavior: 'auto' | 'instant' | 'smooth' = 'smooth') {
     this.virtualScroll.scrollToIndex(index, behavior);
   }
