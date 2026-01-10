@@ -36,7 +36,7 @@
     --bizy-audio-player-height: 2.6rem;
     --bizy-audio-player-seek-before-width: 0;
     --bizy-audio-player-seek-before-background-color: var(--bizy-info-color);
-    --bizy-audio-player-seek-slider-thumb-border: 0.1rem solid var(--bizy-info-color);;
+    --bizy-audio-player-seek-slider-thumb-border: 0.1rem solid var(--bizy-info-color);
     --bizy-audio-player-seek-slider-thumb-background-color: #fff;
     --bizy-audio-player-seek-slider-thumb-active-background-color: var(--bizy-light-info-color);
     --bizy-audio-player-buffered-width: 0;
@@ -229,7 +229,7 @@
 
     --bizy-menu-bar-option-background-color: #fff;
     --bizy-menu-bar-option-border: 0.1rem solid var(--bizy-dark-info-color);
-    --bizy-menu-bar-option-color: var(--bizy-dark-info-color);;
+    --bizy-menu-bar-option-color: var(--bizy-dark-info-color);
     --bizy-menu-bar-option-min-width: 8rem;
     --bizy-menu-bar-option-selected-background-color: var(--bizy-light-info-color);
 

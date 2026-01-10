@@ -32,7 +32,7 @@ export class BizyFilterSectionRangeOptionComponent {
   #form = this.#fb.group({
       minValue: [null],
       maxValue: [null]
-    });;
+    });
 
   @Input() set min(min: number | null) {
     if (typeof min === 'undefined' || min === null) {
