@@ -9,10 +9,10 @@ import {
   EventEmitter,
   inject
 } from '@angular/core';
-import { IBizyPieChartData } from './pie-chart.types';
+import { IBizyDonutChartData } from './donut-chart.types';
 import { DOCUMENT } from '@angular/common';
 import { BehaviorSubject, Subject, Subscription, auditTime, filter, skip, take, throttleTime } from 'rxjs';
-import { BizyPieChartPopupComponent } from './pie-chart-popup.component';
+import { BizyDonutChartPopupComponent } from './donut-chart-popup.component';
 import { BizyPopupService } from '../popup';
 
 const EMPTY_CHART = [0];
@@ -21,19 +21,19 @@ const DEFAULT_DOWNLOAD = {
   show: true,
   label: 'Descargar',
   name: 'Bizy'
-};
+}
 
 const DEFAULT_EXPAND = {
   show: true,
   label: 'Expandir'
-};
+}
 
 const DEFAULT_TOOLTIP = {
   show: true
-};
+}
 
 const DEFAULT_LEGEND = {
-  show: false,
+  show: true,
   orient: 'vertical' as 'vertical' | 'horizontal',
   position: {
     x: 'auto' as 'left' | 'right' | 'center',
@@ -42,13 +42,13 @@ const DEFAULT_LEGEND = {
 };
 
 const DEFAULT_LABEL = {
-  show: true,
+  show: false,
   overflow: 'break' as 'break' | 'truncate',
   line: true
-};
+}
 
 @Component({
-  selector: 'bizy-pie-chart',
+  selector: 'bizy-donut-chart',
   template: '',
   styles: [`
     :host {
@@ -58,7 +58,7 @@ const DEFAULT_LABEL = {
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BizyPieChartComponent {
+export class BizyDonutChartComponent {
   readonly #elementRef = inject(ElementRef);
   readonly #document = inject(DOCUMENT);
   readonly #ref = inject(ChangeDetectorRef);
@@ -68,11 +68,11 @@ export class BizyPieChartComponent {
   @Input() resizeRef: HTMLElement | null = null;
   @Input() centerLabel: string | null = null;
   @Input() tooltip: {show?: boolean, formatter?: (item: any ) => string} = DEFAULT_TOOLTIP
-  @Input() legend: {show?: boolean, orient?: 'vertical' | 'horizontal', position?: {x: 'left' | 'right' | 'center', y: 'top' | 'bottom' | 'center'}} | null = null;
+  @Input() legend: {show?: boolean, orient?: 'vertical' | 'horizontal', position?: {x: 'left' | 'right' | 'center', y: 'top' | 'bottom' | 'center'}} = DEFAULT_LEGEND;
   @Input() download: {show?: boolean, label?: string, name?: string} = DEFAULT_DOWNLOAD;
   @Input() expand: { show?: boolean, label?: string} = DEFAULT_EXPAND;
   @Input() label: { show?: boolean, overflow?: 'break' | 'truncate', line?: boolean, formatter?: (item: any ) => string} = DEFAULT_LABEL;
-  @Output() onSelect = new EventEmitter<IBizyPieChartData>();
+  @Output() onSelect = new EventEmitter<string>();
   @Output() onDownload = new EventEmitter<void>();
 
   #echarts: echarts.ECharts | null = null
@@ -83,7 +83,7 @@ export class BizyPieChartComponent {
   #chartContainer: HTMLDivElement | null = null;
   #afterViewInit = new BehaviorSubject<boolean>(false);
   #resize$ = new Subject<void>();
-  #data:  Array<{name: string, value: number, itemStyle: {color?: string}, metadata: any}> | typeof EMPTY_CHART = EMPTY_CHART;
+  #data:  Array<{name: string, value: number, itemStyle: {color?: string}}> | typeof EMPTY_CHART = EMPTY_CHART;
 
   ngAfterViewInit() {
     this.#afterViewInit.next(true);
@@ -91,7 +91,7 @@ export class BizyPieChartComponent {
 
   getNativeElement = () => this.#elementRef?.nativeElement;
 
-  @Input() set data(data: Array<IBizyPieChartData> | null) {
+  @Input() set data(data: Array<IBizyDonutChartData> | null) {
     if (!data) {
       return;
     }
@@ -105,7 +105,7 @@ export class BizyPieChartComponent {
     }
   }
 
-  async #setChartData(data: Array<IBizyPieChartData> | typeof EMPTY_CHART) {
+  async #setChartData(data: Array<IBizyDonutChartData> | typeof EMPTY_CHART) {
     this.#afterViewInitSubscription.add(this.#afterViewInit.pipe(filter(value => value === true), take(1)).subscribe(() => {
       /**
        * setTimeout fix angular render problem
@@ -119,7 +119,7 @@ export class BizyPieChartComponent {
   
         if (data && data.length > 0 && data[0] !== 0) {
           this.#data = [];
-          (<Array<IBizyPieChartData>>data).forEach(_d => {
+          (<Array<IBizyDonutChartData>>data).forEach(_d => {
             if (!_d.value) {
               _d.value = 0;
             }
@@ -130,39 +130,46 @@ export class BizyPieChartComponent {
   
             const itemStyle = _d.color ? {color: _d.color} : {};
             
-            (<Array<{name: string, value: number, itemStyle: {color?: string}, metadata: any}>>this.#data).push({
+            (<Array<{name: string, value: number, itemStyle: {color?: string}}>>this.#data).push({
                 name: _d.name,
                 value: _d.value,
-                itemStyle,
-                metadata: _d.metadata
+                itemStyle
               })
           });
         } else {
           this.#data = EMPTY_CHART;
         }
-
+  
+        const itemStyle = {
+          borderRadius: 10,
+          borderColor: '#fff',
+          borderWidth: 2
+        }
+  
         const label = {
           show: this.label?.show ?? DEFAULT_LABEL.show,
           overflow: this.label?.overflow ?? DEFAULT_LABEL.overflow,
+          position: 'center',
           formatter: this.label?.formatter
         };
 
         const labelLine = {
-          show: this.label?.line ?? true
+          show: this.label?.line ?? DEFAULT_LABEL.line
         }
   
         const series = [{
           type: 'pie',
-          radius: '50%',
+          radius: ['50%', '70%'],
           center: ['50%', '50%'],
           data: this.#data,
+          itemStyle,
           label,
           labelLine
         }];
   
-        const textColor = getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-pie-chart-tooltip-color');
-        const textBackgroundColor = getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-pie-chart-tooltip-background-color');
-        const borderColor = getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-pie-chart-tooltip-border-color');
+        const textColor = getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-donut-chart-tooltip-color');
+        const textBackgroundColor = getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-donut-chart-tooltip-background-color');
+        const borderColor = getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-donut-chart-tooltip-border-color');
   
         const toolbox = {
           show: true,
@@ -194,7 +201,7 @@ export class BizyPieChartComponent {
               title: this.expand.label ?? DEFAULT_EXPAND.label,
               onclick: () => {
                 this.#popup.open({
-                  component: BizyPieChartPopupComponent,
+                  component: BizyDonutChartPopupComponent,
                   data: {
                     download: {
                       show: this.download?.show ?? DEFAULT_DOWNLOAD.show, 
@@ -234,7 +241,7 @@ export class BizyPieChartComponent {
   
         let graphic: any;
         if (this.centerLabel) {
-          let centerLabelColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-pie-chart-center-label-color');
+          let centerLabelColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-donut-chart-center-label-color');
           let { width, height } = this.#chartContainer.getBoundingClientRect();
           let base = Math.min(width, height);
           let fontSize = base / 6;
@@ -264,13 +271,8 @@ export class BizyPieChartComponent {
           this.#echarts = echarts.init(this.#chartContainer);
           Promise.resolve().then(() => {
             this.#echarts.setOption(option);
-            this.#echarts.on('click', (params: any) => {
-              this.onSelect.emit({
-                name: params.data.name,
-                value: params.data.value,
-                color: params.data.itemStyle.color,
-                metadata: params.data.metadata || {}
-              });
+            this.#echarts.on('click', params => {
+              this.onSelect.emit(params.name)
             });
       
             this.#resizeSubscription.unsubscribe();
@@ -289,13 +291,8 @@ export class BizyPieChartComponent {
               this.#echarts = echarts.init(this.#chartContainer);
               Promise.resolve().then(() => {
                 this.#echarts.setOption({...option, series: option.series.map(_serie => { return {..._serie, data: this.#data}})});
-                this.#echarts.on('click', (params: any) => {
-                  this.onSelect.emit({
-                    name: params.data.name,
-                    value: params.data.value,
-                    color: params.data.itemStyle.color,
-                    metadata: params.data.metadata || {}
-                  });
+                this.#echarts.on('click', params => {
+                  this.onSelect.emit(params.name)
                 });
               });
             }));
@@ -313,8 +310,8 @@ export class BizyPieChartComponent {
     let elementWidth = this.#elementRef.nativeElement.offsetWidth;
     let elementHeight = this.#elementRef.nativeElement.offsetHeight;
 
-    let minWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-pie-chart-width');
-    let minHeight = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-pie-chart-height');
+    let minWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-donut-chart-width');
+    let minHeight = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-donut-chart-height');
 
     const width = minWidth ? minWidth : elementWidth ? `${elementWidth * 0.99}px` : DEFAULT_CHART_SIZE;
     const height = minHeight ? minHeight : elementHeight ? `${elementHeight}px` : DEFAULT_CHART_SIZE;

@@ -9,6 +9,7 @@ export * from './card';
 export * from './checkbox';
 export * from './content';
 export * from './date-picker';
+export * from './donut-chart';
 export * from './file-uploader';
 export * from './filter';
 export * from './form';

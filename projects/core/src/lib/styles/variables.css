@@ -125,6 +125,11 @@
     --bizy-copy-to-clipboard-success-color: #5fbc5a;
     --bizy-copy-to-clipboard-danger-color: #e76565;
 
+    --bizy-donut-chart-center-label-color: #000;
+    --bizy-donut-chart-tooltip-color: #000;
+    --bizy-donut-chart-tooltip-background-color: #fff;
+    --bizy-donut-chart-tooltip-border-color: #fff;
+
     --bizy-filter-padding: 0;
     --bizy-filter-color: var(--bizy-default-color);
     --bizy-filter-background-color: #fff;

@@ -3,7 +3,7 @@ import { DOCUMENT } from '@angular/common';
 import { BizyPopupService } from '../popup';
 
 @Component({
-  selector: 'bizy-pie-chart-popup',
+  selector: 'bizy-donut-chart-popup',
   template: '',
   styles: [`
     :host {
@@ -13,7 +13,7 @@ import { BizyPopupService } from '../popup';
     }
   `]
 })
-export class BizyPieChartPopupComponent implements OnInit {
+export class BizyDonutChartPopupComponent implements OnInit {
   readonly #popup = inject(BizyPopupService);
   readonly #renderer = inject(Renderer2);
   readonly #elementRef = inject(ElementRef);
