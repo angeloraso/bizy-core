@@ -8,5 +8,4 @@ export { BizyOnlyNumbersDirective } from "./only-numbers.directive";
 export { BizyOnlyPhoneDigitsDirective } from "./only-phone-digits.directive";
 export { BizyTextEllipsisDirective } from './text-ellipsis.directive';
 export { BizyTooltipDirective } from './tooltip.directive';
-export { BizyTrackByIdDirective } from "./track-by-id.directive";
 export { BizyAutoFocusDirective } from './auto-focus.directive';

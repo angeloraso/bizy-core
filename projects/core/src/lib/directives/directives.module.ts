@@ -7,7 +7,6 @@ import { BizyOnlyNumbersDirective } from './only-numbers.directive';
 import { BizyOnlyPhoneDigitsDirective } from './only-phone-digits.directive';
 import { BizyTextEllipsisDirective } from './text-ellipsis.directive';
 import { BizyTooltipDirective } from './tooltip.directive';
-import { BizyTrackByIdDirective } from './track-by-id.directive';
 import { BizyAutoFocusDirective } from './auto-focus.directive';
 import { BizyReloadDirective } from './reload.directive';
 
@@ -20,7 +19,6 @@ const DIRECTIVES: Array<any> = [
   BizyOnlyPhoneDigitsDirective,
   BizyTextEllipsisDirective,
   BizyTooltipDirective,
-  BizyTrackByIdDirective,
   BizyAutoFocusDirective,
   BizyReloadDirective
 ]
