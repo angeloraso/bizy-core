@@ -1,15 +1,19 @@
 import { NgModule } from '@angular/core';
 import { BizyBarLineChartComponent } from './bar-line-chart.component';
 import { BizyBarLineChartPopupComponent } from './bar-line-chart-popup.component';
+import { BizyBarChartComponent } from './bar-chart/bar-chart.component';
+import { BizyLineChartComponent } from './line-chart/line-chart.component';
 
-const COMPONENTS: Array<any> = [
+
+const COMPONENTS = [
   BizyBarLineChartComponent,
-  BizyBarLineChartPopupComponent
-]
+  BizyBarLineChartPopupComponent,
+  BizyBarChartComponent,
+  BizyLineChartComponent
+];
 
 @NgModule({
   imports: COMPONENTS,
-  exports: COMPONENTS
+  exports: COMPONENTS,
 })
-
 export class BizyBarLineChartModule {}

@@ -1,22 +1,35 @@
-export interface IBizyBarLineChartData {
-  values?: Array<number>;
-  type?: 'bar' | 'line';
-  label?: string;
-  discrete?: boolean;
-  color?: string;
-  stack?: string;
-  barMinHeight?: number;
-  xAxi?: {
-    name: string
-  };
-  yAxi?: {
-    name?: string,
-    show?: boolean,
-    max?: number,
-    min?: number,
-    width?: number,
-    interval?: number,
-    position?: 'left' | 'right',
-    onValueFormatter?: (item: any ) => string
-  }
+export enum BIZY_BAR_LINE_CHART_AXIS_POSITION {
+  TOP = 'top',
+  RIGHT = 'right',
+  BOTTOM = 'bottom',
+  LEFT = 'left',
 }
+
+export interface IBizyBarLineChartAxis {
+  show?: boolean;
+  name?: string;
+  max?: number;
+  min?: number;
+  offset?: number;
+  interval?: number;
+  independent?: boolean;
+  position?: BIZY_BAR_LINE_CHART_AXIS_POSITION,
+  formatter?: (item: any ) => string
+}
+
+export interface IBizyBarLineChartValue {
+  x: string | number;
+  y: string | number;
+}
+
+export interface IBizyBarLineChartTooltip {
+  show?: boolean;
+  formatter?: (item: any ) => string;
+}
+
+export interface IBizyBarLineChartDownload {
+  show?: boolean;
+  label?: string;
+  fileName?: string;
+}
+
