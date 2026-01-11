@@ -134,6 +134,7 @@
     --bizy-filter-color: var(--bizy-default-color);
     --bizy-filter-background-color: #fff;
     --bizy-filter-badge-color: var(--bizy-danger-color);
+    --bizy-filter-max-width: 90dvw;
     --bizy-filter-section-clear-color: var(--bizy-danger-color);
     --bizy-filter-section-min-width: 8rem;
 
@@ -239,10 +240,10 @@
     --bizy-menu-bar-option-min-width: 8rem;
     --bizy-menu-bar-option-selected-background-color: var(--bizy-light-info-color);
 
+    --bizy-pie-chart-center-label-color: #000;
     --bizy-pie-chart-tooltip-color: #000;
     --bizy-pie-chart-tooltip-background-color: #fff;
     --bizy-pie-chart-tooltip-border-color: #fff;
-    --bizy-pie-chart-center-label-color: #000;
 
     --bizy-popup-background-color: #fff;
     --bizy-popup-min-width: 20rem;
