@@ -57,6 +57,10 @@ export class BizyFilterSectionSearchOptionComponent {
 
   getNativeElement = () => this.#elementRef?.nativeElement;
 
+  onClean() {
+    this._onChange('');
+  }
+
   isActivated = () => {
     return this.#activated.value;
   }

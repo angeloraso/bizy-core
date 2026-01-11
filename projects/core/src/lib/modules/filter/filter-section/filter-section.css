@@ -16,10 +16,6 @@
     display: none !important;
 }
 
-:host:has(.bizy-filter-section-search-option) .bizy-filter-section__header__clear-button {
-    display: none !important;
-}
-
 :host:has(.bizy-filter-section-checkbox-option) .bizy-filter-section__options {
     overflow-y: auto !important;
 }

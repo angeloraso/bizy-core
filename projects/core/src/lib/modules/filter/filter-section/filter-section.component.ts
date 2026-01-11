@@ -88,11 +88,15 @@ export class BizyFilterSectionComponent {
   }
 
   onClean = () => {
-    if (!this.rangeOption) {
+    if (this.checkboxOptions && this.checkboxOptions.length > 0) {
       return;
     }
 
-    this.rangeOption.onClean();
+    if (this.rangeOption) {
+      this.rangeOption.onClean();
+    } else if (this.searchOption) {
+      this.searchOption.onClean();
+    }
   }
 
   isActivated = () => {
