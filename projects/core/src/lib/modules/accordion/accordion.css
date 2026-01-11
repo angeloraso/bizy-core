@@ -60,6 +60,6 @@
 }
 
 .bizy-accordion__options--opened {
-    max-height: 100vh;
+    max-height: 100dvh;
     transition: transform 0.2s ease;
 }

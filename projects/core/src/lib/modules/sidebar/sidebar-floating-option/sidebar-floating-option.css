@@ -48,7 +48,7 @@
 .bizy-sidebar-floating-option__options {
     background-color: var(--bizy-sidebar-floating-option-background-color);
     min-width: calc(100% + 2rem);
-    max-width: calc(100vw - 2rem);
+    max-width: calc(100dvw - 2rem);
     border-radius: .3rem;
     max-height: 30rem;
     overflow-x: hidden;

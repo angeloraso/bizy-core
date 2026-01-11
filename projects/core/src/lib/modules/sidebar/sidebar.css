@@ -6,7 +6,7 @@
     height: 100%;
     min-width: fit-content;
     height: 100%;
-    max-height: 100vh;
+    max-height: 10dvh;
     background-color: var(--bizy-sidebar-background-color);
     position: relative;
     transition: width 0.2s ease;

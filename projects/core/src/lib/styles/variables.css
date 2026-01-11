@@ -228,8 +228,8 @@
     --bizy-menu-background-color: #fff;
     --bizy-menu-arrow-height: 0.9rem;
     --bizy-menu-min-width: fit-content;
-    --bizy-menu-max-width: 90vw;
-    --bizy-menu-max-height: 90vh;
+    --bizy-menu-max-width: 90dvw;
+    --bizy-menu-max-height: 90dvh;
     --bizy-menu-scroll-bar-color: var(--bizy-default-color);
     --bizy-menu-scroll-bar-hover-color: #999;
 
@@ -247,7 +247,7 @@
     --bizy-popup-background-color: #fff;
     --bizy-popup-min-width: 20rem;
     --bizy-popup-width: fit-content;
-    --bizy-popup-max-width: 90vw;
+    --bizy-popup-max-width: 90dvw;
     --bizy-popup-padding: 0.5rem;
     --bizy-popup-border-radius: 0.3rem;
     --bizy-popup-drag-button-color: var(--bizy-default-color);

@@ -1,7 +1,7 @@
 :host {
     font-size: 1rem;
     height: var(--bizy-popup-full-screen-height);
-    width: 100vw;
+    width: 100dvw;
     display: inline-block;
     position: absolute;
     bottom: 0;
