@@ -64,6 +64,8 @@
     --bizy-audio-recorder-stop-button-hover-color: #fff;
     --bizy-audio-recorder-stop-button-background-color: #fff;
 
+    --bizy-bar-line-chart-y-axis-color: var(--bizy-dark-default-color);
+    --bizy-bar-line-chart-x-axis-color: var(--bizy-dark-default-color);
     --bizy-bar-line-chart-tooltip-color: #000;
     --bizy-bar-line-chart-tooltip-background-color: #fff;
     --bizy-bar-line-chart-tooltip-border-color: #fff;
