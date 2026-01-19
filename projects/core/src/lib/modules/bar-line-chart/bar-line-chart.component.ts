@@ -147,8 +147,10 @@ export class BizyBarLineChartComponent implements AfterContentInit {
   render = () => {
     this.#deleteChartContainer();
 
-    this.#gridLeft = 0;
+    this.#gridTop = 0;
     this.#gridRight = 0;
+    this.#gridBottom = 0;
+    this.#gridLeft = 0;
     this.#chartStacks = [];
     this.#chartNames = [];
 
