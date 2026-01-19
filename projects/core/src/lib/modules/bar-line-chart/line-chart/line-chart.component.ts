@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { IBizyBarLineChartAxis, IBizyBarLineChartValue } from '../bar-line-chart.types';
 import { DOCUMENT } from '@angular/common';
+import { Observable, Subject } from 'rxjs';
 
 const DEFAULT_AXIS: IBizyBarLineChartAxis = {
   show: false
@@ -26,6 +27,16 @@ export class BizyLineChartComponent {
   @Input() name: string | null = null;
   @Input() yAxis: IBizyBarLineChartAxis = DEFAULT_AXIS;
   @Input() xAxis: IBizyBarLineChartAxis = DEFAULT_AXIS;
+
+  readonly #changes = new Subject<void>();
+  
+  get changes$(): Observable<void> {
+    return this.#changes.asObservable();
+  }
+
+  ngOnChanges() {
+    this.#changes.next();
+  }
 
   #getClosestCssVariable = (element, cssVariable) => {
     while (element) {

@@ -4,9 +4,11 @@ import {
   ElementRef,
   inject,
   Input,
+  OnChanges,
 } from '@angular/core';
 import { IBizyBarLineChartAxis, IBizyBarLineChartValue } from '../bar-line-chart.types';
 import { DOCUMENT } from '@angular/common';
+import { Observable, Subject } from 'rxjs';
 
 const DEFAULT_AXIS: IBizyBarLineChartAxis = {
   show: false
@@ -17,7 +19,7 @@ const DEFAULT_AXIS: IBizyBarLineChartAxis = {
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BizyBarChartComponent {
+export class BizyBarChartComponent implements OnChanges {
   readonly #elementRef = inject(ElementRef);
   readonly #document = inject(DOCUMENT);
 
@@ -27,6 +29,15 @@ export class BizyBarChartComponent {
   @Input() yAxis: IBizyBarLineChartAxis = DEFAULT_AXIS;
   @Input() xAxis: IBizyBarLineChartAxis = DEFAULT_AXIS;
 
+  readonly #changes = new Subject<void>();
+
+  get changes$(): Observable<void> {
+    return this.#changes.asObservable();
+  }
+
+  ngOnChanges() {
+    this.#changes.next();
+  }
 
   #getClosestCssVariable = (element, cssVariable) => {
     while (element) {

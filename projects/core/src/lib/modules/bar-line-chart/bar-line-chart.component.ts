@@ -72,12 +72,17 @@ export class BizyBarLineChartComponent implements AfterContentInit {
   @ContentChildren(BizyLineChartComponent) lineCharts: QueryList<BizyLineChartComponent> | null = null;
   
 
-  #echarts: echarts.ECharts | null = null
+  #echarts: any = null;
+  #echartsContainer: echarts.ECharts | null = null
 
   #resizeObserver: ResizeObserver | null = null;
   #resizeSubscription = new Subscription();
   #chartContainer: HTMLDivElement | null = null;
   #resize$ = new Subject<void>();
+  #barChartsSubscription = new Subscription();
+  #barChartChangesSubscription = new Subscription();
+  #lineChartsSubscription = new Subscription();
+  #lineChartChangesSubscription = new Subscription();
 
   #gridTop: number = 0;
   #gridRight: number = 0;
@@ -87,9 +92,44 @@ export class BizyBarLineChartComponent implements AfterContentInit {
   #chartNames: Array<string> = [];
 
   ngAfterContentInit() {
-    if ((!this.barCharts || this.barCharts.length === 0) && (!this.lineCharts || this.lineCharts.length === 0)) {
-      return;
-    }
+    import('echarts').then(echarts => {
+      this.#echarts = echarts;
+      this.render();
+
+      this.#resizeObserver = new ResizeObserver(() => this.#resize$.next());
+      const resizeRef = this.resizeRef ? this.resizeRef : this.#renderer.parentNode(this.#elementRef.nativeElement) ? this.#renderer.parentNode(this.#elementRef.nativeElement) : this.#elementRef.nativeElement;
+      this.#resizeObserver.observe(resizeRef);
+      this.#resizeSubscription = new Subscription();
+      this.#resizeSubscription.add(this.#resize$.pipe(skip(1), auditTime(300), throttleTime(500)).subscribe(() => {
+        this.render();
+      }));
+
+      this.#barChartsSubscription.add(this.barCharts.changes.subscribe(_barCharts => {
+        this.#barChartChangesSubscription.unsubscribe();
+        this.#barChartChangesSubscription = new Subscription();
+        _barCharts.forEach(_barChart => {
+          this.#barChartChangesSubscription.add(_barChart.changes$.subscribe(() => {
+            this.render();
+          }))
+        });
+      }));
+
+      this.#lineChartsSubscription.add(this.lineCharts.changes.subscribe(_lineCharts => {
+        this.#lineChartChangesSubscription.unsubscribe();
+        this.#lineChartChangesSubscription = new Subscription();
+        _lineCharts.forEach(_lineChart => {
+          this.#lineChartChangesSubscription.add(_lineChart.changes$.subscribe(() => {
+            this.render();
+          }))
+        });
+      }));
+    });
+  }
+
+  getNativeElement = () => this.#elementRef?.nativeElement;
+
+  render = () => {
+    this.#deleteChartContainer();
 
     this.#gridLeft = 0;
     this.#gridRight = 0;
@@ -483,7 +523,7 @@ export class BizyBarLineChartComponent implements AfterContentInit {
                   left: this.#gridLeft,
                   right: this.#gridRight
                 },
-                option: this.#echarts.getOption()
+                option: this.#echartsContainer.getOption()
               }
             });
             this.onDownload.emit();
@@ -511,40 +551,12 @@ export class BizyBarLineChartComponent implements AfterContentInit {
       series
     };
 
-    import('echarts').then(echarts => {
-      this.#echarts = echarts.init(this.#chartContainer);
-      Promise.resolve().then(() => {
-        this.#echarts.setOption(option);
-        this.#echarts.on('click', params => {
-            this.onSelect.emit(params.name)
-        });
-
-        this.#resizeSubscription.unsubscribe();
-        this.#resizeObserver = new ResizeObserver(() => this.#resize$.next());
-        const resizeRef = this.resizeRef ? this.resizeRef : this.#renderer.parentNode(this.#elementRef.nativeElement) ? this.#renderer.parentNode(this.#elementRef.nativeElement) : this.#elementRef.nativeElement;
-        this.#resizeObserver.observe(resizeRef);
-        this.#resizeSubscription = new Subscription();
-        this.#resizeSubscription.add(this.#resize$.pipe(skip(1), auditTime(300), throttleTime(500)).subscribe(() => {
-          this.#deleteChartContainer();
-          this.#createChartContainer();
-
-          if (!this.#chartContainer) {
-            return;
-          }
-
-          this.#echarts = echarts.init(this.#chartContainer);
-          Promise.resolve().then(() => {
-            this.#echarts.setOption(option);
-            this.#echarts.on('click', params => {
-              this.onSelect.emit(params.name)
-            });
-          });
-        }));
-      });
+    this.#echartsContainer = this.#echarts.init(this.#chartContainer);
+    this.#echartsContainer.setOption(option);
+    this.#echartsContainer.on('click', params => {
+        this.onSelect.emit(params.name)
     });
   }
-
-  getNativeElement = () => this.#elementRef?.nativeElement;
 
   #createChartContainer = () => {
     if (this.#chartContainer || !this.#elementRef || !this.#elementRef.nativeElement) {
@@ -572,7 +584,7 @@ export class BizyBarLineChartComponent implements AfterContentInit {
       return;
     }
 
-    this.#echarts.clear();
+    this.#echartsContainer.clear();
     this.#renderer.removeChild(this.#elementRef.nativeElement, this.#chartContainer);
     this.#chartContainer = null;
     this.#ref.detectChanges();
@@ -598,8 +610,8 @@ export class BizyBarLineChartComponent implements AfterContentInit {
       this.#resizeObserver.disconnect();
     }
 
-    if (this.#echarts) {
-      this.#echarts.clear();
+    if (this.#echartsContainer) {
+      this.#echartsContainer.clear();
     }
   }
 }
