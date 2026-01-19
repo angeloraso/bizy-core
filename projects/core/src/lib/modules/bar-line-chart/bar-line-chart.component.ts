@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 import { BIZY_BAR_LINE_CHART_AXIS_POSITION, IBizyBarLineChartDownload, IBizyBarLineChartTooltip } from './bar-line-chart.types';
 import { CommonModule, DOCUMENT } from '@angular/common';
-import { auditTime, skip, Subject, Subscription, throttleTime } from 'rxjs';
+import { debounceTime, Subject, Subscription, throttleTime } from 'rxjs';
 import { BizyBarLineChartPopupComponent } from './bar-line-chart-popup.component';
 import { BizyBarChartComponent } from './bar-chart/bar-chart.component';
 import { BizyLineChartComponent } from './line-chart/line-chart.component';
@@ -83,6 +83,8 @@ export class BizyBarLineChartComponent implements AfterContentInit {
   #barChartChangesSubscription = new Subscription();
   #lineChartsSubscription = new Subscription();
   #lineChartChangesSubscription = new Subscription();
+  #renderSubscription = new Subscription();
+  #render = new Subject<void>();
 
   #gridTop: number = 0;
   #gridRight: number = 0;
@@ -94,36 +96,35 @@ export class BizyBarLineChartComponent implements AfterContentInit {
   ngAfterContentInit() {
     import('echarts').then(echarts => {
       this.#echarts = echarts;
-      this.render();
-
-      this.lineCharts.forEach(_lineChart => {
-        this.#lineChartChangesSubscription.add(_lineChart.changes$.subscribe(() => {
-          this.render();
-        }))
-      });
-
-      this.barCharts.forEach(_barChart => {
-        this.#barChartChangesSubscription.add(_barChart.changes$.subscribe(() => {
-          this.render();
-        }))
-      });
 
       this.#resizeObserver = new ResizeObserver(() => this.#resize$.next());
       const resizeRef = this.resizeRef ? this.resizeRef : this.#renderer.parentNode(this.#elementRef.nativeElement) ? this.#renderer.parentNode(this.#elementRef.nativeElement) : this.#elementRef.nativeElement;
       this.#resizeObserver.observe(resizeRef);
       this.#resizeSubscription = new Subscription();
-      this.#resizeSubscription.add(this.#resize$.pipe(skip(1), auditTime(300), throttleTime(500)).subscribe(() => {
-        this.render();
+      this.#resizeSubscription.add(this.#resize$.subscribe(() => {
+        this.#render.next();
       }));
+
+      this.lineCharts.forEach(_lineChart => {
+        this.#lineChartChangesSubscription.add(_lineChart.changes$.subscribe(() => {
+          this.#render.next();
+        }))
+      });
+
+      this.barCharts.forEach(_barChart => {
+        this.#barChartChangesSubscription.add(_barChart.changes$.subscribe(() => {
+          this.#render.next();
+        }))
+      });
 
       this.#barChartsSubscription.add(this.barCharts.changes.subscribe(_barCharts => {
         this.#barChartChangesSubscription.unsubscribe();
         this.#barChartChangesSubscription = new Subscription();
-        this.render();
+        this.#render.next();
 
         _barCharts.forEach(_barChart => {
           this.#barChartChangesSubscription.add(_barChart.changes$.subscribe(() => {
-            this.render();
+            this.#render.next();
           }))
         });
       }));
@@ -131,14 +132,22 @@ export class BizyBarLineChartComponent implements AfterContentInit {
       this.#lineChartsSubscription.add(this.lineCharts.changes.subscribe(_lineCharts => {
         this.#lineChartChangesSubscription.unsubscribe();
         this.#lineChartChangesSubscription = new Subscription();
-        this.render();
+        this.#render.next();
 
         _lineCharts.forEach(_lineChart => {
           this.#lineChartChangesSubscription.add(_lineChart.changes$.subscribe(() => {
-            this.render();
+            this.#render.next();
           }))
         });
       }));
+
+
+      this.#renderSubscription.add(this.#render.asObservable().pipe(debounceTime(150), throttleTime(300)).subscribe(() => {
+          this.render();
+        })
+      );
+
+      this.#render.next();
     });
   }
 
@@ -626,6 +635,7 @@ export class BizyBarLineChartComponent implements AfterContentInit {
     this.#barChartChangesSubscription.unsubscribe();
     this.#lineChartsSubscription.unsubscribe();
     this.#lineChartChangesSubscription.unsubscribe();
+    this.#renderSubscription.unsubscribe();
 
     if (this.#resizeObserver) {
       this.#resizeObserver.disconnect();
