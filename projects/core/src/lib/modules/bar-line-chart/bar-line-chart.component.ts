@@ -96,6 +96,18 @@ export class BizyBarLineChartComponent implements AfterContentInit {
       this.#echarts = echarts;
       this.render();
 
+      this.lineCharts.forEach(_lineChart => {
+        this.#lineChartChangesSubscription.add(_lineChart.changes$.subscribe(() => {
+          this.render();
+        }))
+      });
+
+      this.barCharts.forEach(_barChart => {
+        this.#barChartChangesSubscription.add(_barChart.changes$.subscribe(() => {
+          this.render();
+        }))
+      });
+
       this.#resizeObserver = new ResizeObserver(() => this.#resize$.next());
       const resizeRef = this.resizeRef ? this.resizeRef : this.#renderer.parentNode(this.#elementRef.nativeElement) ? this.#renderer.parentNode(this.#elementRef.nativeElement) : this.#elementRef.nativeElement;
       this.#resizeObserver.observe(resizeRef);
@@ -107,6 +119,8 @@ export class BizyBarLineChartComponent implements AfterContentInit {
       this.#barChartsSubscription.add(this.barCharts.changes.subscribe(_barCharts => {
         this.#barChartChangesSubscription.unsubscribe();
         this.#barChartChangesSubscription = new Subscription();
+        this.render();
+
         _barCharts.forEach(_barChart => {
           this.#barChartChangesSubscription.add(_barChart.changes$.subscribe(() => {
             this.render();
@@ -117,6 +131,8 @@ export class BizyBarLineChartComponent implements AfterContentInit {
       this.#lineChartsSubscription.add(this.lineCharts.changes.subscribe(_lineCharts => {
         this.#lineChartChangesSubscription.unsubscribe();
         this.#lineChartChangesSubscription = new Subscription();
+        this.render();
+
         _lineCharts.forEach(_lineChart => {
           this.#lineChartChangesSubscription.add(_lineChart.changes$.subscribe(() => {
             this.render();
@@ -149,7 +165,6 @@ export class BizyBarLineChartComponent implements AfterContentInit {
 
     const defaultYAxisColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-line-chart-y-axis-color');
     const defaultXAxisColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-line-chart-x-axis-color');
-
 
     this.lineCharts.forEach((_line, _i) => {
       const lineXAxis = _line.xAxis;
@@ -605,6 +620,10 @@ export class BizyBarLineChartComponent implements AfterContentInit {
 
   ngOnDestroy() {
     this.#resizeSubscription.unsubscribe();
+    this.#barChartsSubscription.unsubscribe();
+    this.#barChartChangesSubscription.unsubscribe();
+    this.#lineChartsSubscription.unsubscribe();
+    this.#lineChartChangesSubscription.unsubscribe();
 
     if (this.#resizeObserver) {
       this.#resizeObserver.disconnect();
