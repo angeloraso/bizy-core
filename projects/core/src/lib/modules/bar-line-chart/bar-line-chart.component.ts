@@ -92,6 +92,7 @@ export class BizyBarLineChartComponent implements AfterContentInit {
   #gridLeft: number = 0;
   #chartStacks: Array<string> = [];
   #chartNames: Array<string> = [];
+  #chartGroups: Map<string, number> = new Map();
 
   ngAfterContentInit() {
     import('echarts').then(echarts => {
@@ -178,6 +179,8 @@ export class BizyBarLineChartComponent implements AfterContentInit {
     const defaultXAxisColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-line-chart-x-axis-color');
 
     this.lineCharts.forEach((_line, _i) => {
+      let axisIndex = _i;
+
       const lineXAxis = _line.xAxis;
       const lineYAxis = _line.yAxis;
 
@@ -195,6 +198,15 @@ export class BizyBarLineChartComponent implements AfterContentInit {
         const thereIsOtherVisibleYAxis = (position === BIZY_BAR_LINE_CHART_AXIS_POSITION.LEFT && this.#gridLeft > 0 || position === BIZY_BAR_LINE_CHART_AXIS_POSITION.RIGHT && this.#gridRight > 0) ;
         const offset = show && thereIsOtherVisibleYAxis && typeof lineYAxis.offset !== 'undefined' ? lineYAxis.offset : show && thereIsOtherVisibleYAxis ? Y_AXIS_OFFSET : 0;
         const color = _line.getYAxisColor() ? _line.getYAxisColor() : yAxisType === BIZY_BAR_LINE_CHART_AXIS_TYPE.DEPENDENT && _line.getColor() ? _line.getColor() : defaultYAxisColor;
+        
+        if (lineYAxis.group && yAxisType === BIZY_BAR_LINE_CHART_AXIS_TYPE.DEPENDENT) {
+          const _axisIndex = this.#chartGroups.get(lineYAxis.group);
+          if (_axisIndex) {
+              axisIndex = _axisIndex;
+          } else {
+            this.#chartGroups.set(lineYAxis.group, this.#getRandomFourDigitsNumber());
+          }
+        }
 
         yAxis.push({
           type: yAxisType,
@@ -247,6 +259,15 @@ export class BizyBarLineChartComponent implements AfterContentInit {
         const offset = show && thereIsOtherVisibleXAxis && typeof lineXAxis.offset !== 'undefined' ? lineXAxis.offset : show && thereIsOtherVisibleXAxis ? X_AXIS_OFFSET : 0;
         const color = _line.getXAxisColor() ? _line.getXAxisColor() : xAxisType === BIZY_BAR_LINE_CHART_AXIS_TYPE.DEPENDENT && _line.getColor() ? _line.getColor() : defaultXAxisColor;
 
+        if (lineXAxis.group && xAxisType === BIZY_BAR_LINE_CHART_AXIS_TYPE.DEPENDENT) {
+          const _axisIndex = this.#chartGroups.get(lineXAxis.group);
+          if (_axisIndex) {
+              axisIndex = _axisIndex;
+          } else {
+            this.#chartGroups.set(lineXAxis.group, this.#getRandomFourDigitsNumber());
+          }
+        }
+
         xAxis.push({
           type: xAxisType,
           name: lineXAxis?.name,
@@ -286,15 +307,16 @@ export class BizyBarLineChartComponent implements AfterContentInit {
         }
       }
 
-      let axisIndex = _i;
-      const _name = this.#chartNames.find(_name => _name === _line.name);
-      if (_name) {
-        const index = series.findIndex(_s => _s.name === _name);
-        if (index !== -1) {
-          axisIndex = index;
+      if (axisIndex !== _i) {
+        const _name = this.#chartNames.find(_name => _name === _line.name);
+        if (_name) {
+          const index = series.findIndex(_s => _s.name === _name);
+          if (index !== -1) {
+            axisIndex = index;
+          }
+        } else {
+          this.#chartNames.push(_line.name);
         }
-      } else {
-        this.#chartNames.push(_line.name);
       }
 
       series.push({
@@ -317,6 +339,8 @@ export class BizyBarLineChartComponent implements AfterContentInit {
     });
 
     this.barCharts.forEach((_bar, _i) => {
+      let axisIndex = _i + this.lineCharts.length;
+
       const barXAxis = _bar.xAxis;
       const barYAxis = _bar.yAxis;
 
@@ -334,6 +358,15 @@ export class BizyBarLineChartComponent implements AfterContentInit {
         const thereIsOtherVisibleYAxis = (position === BIZY_BAR_LINE_CHART_AXIS_POSITION.LEFT && this.#gridLeft > 0 || position === BIZY_BAR_LINE_CHART_AXIS_POSITION.RIGHT && this.#gridRight > 0) ;
         const offset = show && thereIsOtherVisibleYAxis && typeof barYAxis.offset !== 'undefined' ? barYAxis.offset : show && thereIsOtherVisibleYAxis ? Y_AXIS_OFFSET : 0;
         const color = _bar.getYAxisColor() ? _bar.getYAxisColor() : yAxisType === BIZY_BAR_LINE_CHART_AXIS_TYPE.DEPENDENT && _bar.getColor() ? _bar.getColor() : defaultYAxisColor;
+
+        if (barYAxis.group && yAxisType === BIZY_BAR_LINE_CHART_AXIS_TYPE.DEPENDENT) {
+          const _axisIndex = this.#chartGroups.get(barYAxis.group);
+          if (_axisIndex) {
+              axisIndex = _axisIndex;
+          } else {
+            this.#chartGroups.set(barYAxis.group, this.#getRandomFourDigitsNumber());
+          }
+        }
 
         yAxis.push({
           type: yAxisType,
@@ -387,6 +420,15 @@ export class BizyBarLineChartComponent implements AfterContentInit {
         const offset = show && thereIsOtherVisibleXAxis && typeof barXAxis.offset !== 'undefined' ? barXAxis.offset : show && thereIsOtherVisibleXAxis ? X_AXIS_OFFSET : 0;
         const color = _bar.getXAxisColor() ? _bar.getXAxisColor() : xAxisType === BIZY_BAR_LINE_CHART_AXIS_TYPE.DEPENDENT && _bar.getColor() ? _bar.getColor() : defaultXAxisColor;
 
+        if (barXAxis.group && xAxisType === BIZY_BAR_LINE_CHART_AXIS_TYPE.DEPENDENT) {
+          const _axisIndex = this.#chartGroups.get(barXAxis.group);
+          if (_axisIndex) {
+              axisIndex = _axisIndex;
+          } else {
+            this.#chartGroups.set(barXAxis.group, this.#getRandomFourDigitsNumber());
+          }
+        }
+
         xAxis.push({
           type: xAxisType,
           name: barXAxis?.name,
@@ -427,26 +469,27 @@ export class BizyBarLineChartComponent implements AfterContentInit {
         }
       }
 
-      let axisIndex = _i + this.lineCharts.length;
-      if (_bar.stack) {
-        const _stack = this.#chartStacks.find(_stack => _stack === _bar.stack);
-        if (_stack) {
-          const index = series.findIndex(_s => _s.stack === _stack);
-          if (index !== -1) {
-            axisIndex = yAxisType === BIZY_BAR_LINE_CHART_AXIS_TYPE.DEPENDENT ? series[index].yAxisIndex : series[index].xAxisIndex;
+      if (axisIndex !== _i + this.lineCharts.length) {
+        if (_bar.stack) {
+          const _stack = this.#chartStacks.find(_stack => _stack === _bar.stack);
+          if (_stack) {
+            const index = series.findIndex(_s => _s.stack === _stack);
+            if (index !== -1) {
+              axisIndex = yAxisType === BIZY_BAR_LINE_CHART_AXIS_TYPE.DEPENDENT ? series[index].yAxisIndex : series[index].xAxisIndex;
+            }
+          } else {
+            this.#chartStacks.push(_bar.stack);
           }
         } else {
-          this.#chartStacks.push(_bar.stack);
-        }
-      } else {
-        const _name = this.#chartNames.find(_name => _name === _bar.name);
-        if (_name) {
-          const index = series.findIndex(_s => _s.name === _name);
-          if (index !== -1) {
-            axisIndex = index;
+          const _name = this.#chartNames.find(_name => _name === _bar.name);
+          if (_name) {
+            const index = series.findIndex(_s => _s.name === _name);
+            if (index !== -1) {
+              axisIndex = index;
+            }
+          } else {
+            this.#chartNames.push(_bar.name);
           }
-        } else {
-          this.#chartNames.push(_bar.name);
         }
       }
 
@@ -628,6 +671,8 @@ export class BizyBarLineChartComponent implements AfterContentInit {
     const rootValue = getComputedStyle(document.documentElement).getPropertyValue(cssVariable).trim();
     return rootValue || null;
   }
+
+  #getRandomFourDigitsNumber = () => Math.floor(1000 + Math.random() * 9000);
 
   ngOnDestroy() {
     this.#resizeSubscription.unsubscribe();

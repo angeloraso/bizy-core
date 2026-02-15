@@ -10,6 +10,7 @@ export interface IBizyBarLineChartAxis {
   name?: string;
   max?: number;
   min?: number;
+  group?: string;
   offset?: number;
   interval?: number;
   independent?: boolean;
