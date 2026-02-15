@@ -672,8 +672,6 @@ export class BizyBarLineChartComponent implements AfterContentInit {
     return rootValue || null;
   }
 
-  #getRandomFourDigitsNumber = () => Math.floor(1000 + Math.random() * 9000);
-
   ngOnDestroy() {
     this.#resizeSubscription.unsubscribe();
     this.#barChartsSubscription.unsubscribe();
