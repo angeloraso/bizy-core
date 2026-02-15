@@ -204,7 +204,9 @@ export class BizyBarLineChartComponent implements AfterContentInit {
           if (_axisIndex) {
               axisIndex = _axisIndex;
           } else {
-            this.#chartGroups.set(lineYAxis.group, this.#getRandomFourDigitsNumber());
+            const index = this.#getRandomFourDigitsNumber();
+            this.#chartGroups.set(lineYAxis.group, index);
+            axisIndex = index;
           }
         }
 
@@ -264,7 +266,9 @@ export class BizyBarLineChartComponent implements AfterContentInit {
           if (_axisIndex) {
               axisIndex = _axisIndex;
           } else {
-            this.#chartGroups.set(lineXAxis.group, this.#getRandomFourDigitsNumber());
+            const index = this.#getRandomFourDigitsNumber();
+            this.#chartGroups.set(lineXAxis.group, index);
+            axisIndex = index;
           }
         }
 
@@ -364,7 +368,9 @@ export class BizyBarLineChartComponent implements AfterContentInit {
           if (_axisIndex) {
               axisIndex = _axisIndex;
           } else {
-            this.#chartGroups.set(barYAxis.group, this.#getRandomFourDigitsNumber());
+            const index = this.#getRandomFourDigitsNumber();
+            this.#chartGroups.set(barYAxis.group, index);
+            axisIndex = index;
           }
         }
 
@@ -425,7 +431,9 @@ export class BizyBarLineChartComponent implements AfterContentInit {
           if (_axisIndex) {
               axisIndex = _axisIndex;
           } else {
-            this.#chartGroups.set(barXAxis.group, this.#getRandomFourDigitsNumber());
+            const index = this.#getRandomFourDigitsNumber();
+            this.#chartGroups.set(barXAxis.group, index);
+            axisIndex = index;
           }
         }
 
