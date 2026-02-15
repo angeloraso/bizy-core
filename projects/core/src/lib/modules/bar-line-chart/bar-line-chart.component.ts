@@ -201,7 +201,7 @@ export class BizyBarLineChartComponent implements AfterContentInit {
         
         if (lineYAxis.group && yAxisType === BIZY_BAR_LINE_CHART_AXIS_TYPE.DEPENDENT) {
           const _axisIndex = this.#chartGroups.get(lineYAxis.group);
-          if (_axisIndex) {
+          if (typeof _axisIndex !== 'undefined') {
               axisIndex = _axisIndex;
           } else {
             this.#chartGroups.set(lineYAxis.group, axisIndex);
@@ -261,7 +261,7 @@ export class BizyBarLineChartComponent implements AfterContentInit {
 
         if (lineXAxis.group && xAxisType === BIZY_BAR_LINE_CHART_AXIS_TYPE.DEPENDENT) {
           const _axisIndex = this.#chartGroups.get(lineXAxis.group);
-          if (_axisIndex) {
+          if (typeof _axisIndex !== 'undefined') {
               axisIndex = _axisIndex;
           } else {
             this.#chartGroups.set(lineXAxis.group, axisIndex);
@@ -361,7 +361,7 @@ export class BizyBarLineChartComponent implements AfterContentInit {
 
         if (barYAxis.group && yAxisType === BIZY_BAR_LINE_CHART_AXIS_TYPE.DEPENDENT) {
           const _axisIndex = this.#chartGroups.get(barYAxis.group);
-          if (_axisIndex) {
+          if (typeof _axisIndex !== 'undefined') {
               axisIndex = _axisIndex;
           } else {
             this.#chartGroups.set(barYAxis.group, axisIndex);
@@ -422,7 +422,7 @@ export class BizyBarLineChartComponent implements AfterContentInit {
 
         if (barXAxis.group && xAxisType === BIZY_BAR_LINE_CHART_AXIS_TYPE.DEPENDENT) {
           const _axisIndex = this.#chartGroups.get(barXAxis.group);
-          if (_axisIndex) {
+          if (typeof _axisIndex !== 'undefined') {
               axisIndex = _axisIndex;
           } else {
             this.#chartGroups.set(barXAxis.group, axisIndex);
