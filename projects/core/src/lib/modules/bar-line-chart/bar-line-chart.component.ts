@@ -204,9 +204,7 @@ export class BizyBarLineChartComponent implements AfterContentInit {
           if (_axisIndex) {
               axisIndex = _axisIndex;
           } else {
-            const index = this.#getRandomFourDigitsNumber();
-            this.#chartGroups.set(lineYAxis.group, index);
-            axisIndex = index;
+            this.#chartGroups.set(lineYAxis.group, axisIndex);
           }
         }
 
@@ -266,9 +264,7 @@ export class BizyBarLineChartComponent implements AfterContentInit {
           if (_axisIndex) {
               axisIndex = _axisIndex;
           } else {
-            const index = this.#getRandomFourDigitsNumber();
-            this.#chartGroups.set(lineXAxis.group, index);
-            axisIndex = index;
+            this.#chartGroups.set(lineXAxis.group, axisIndex);
           }
         }
 
@@ -368,9 +364,7 @@ export class BizyBarLineChartComponent implements AfterContentInit {
           if (_axisIndex) {
               axisIndex = _axisIndex;
           } else {
-            const index = this.#getRandomFourDigitsNumber();
-            this.#chartGroups.set(barYAxis.group, index);
-            axisIndex = index;
+            this.#chartGroups.set(barYAxis.group, axisIndex);
           }
         }
 
@@ -431,9 +425,7 @@ export class BizyBarLineChartComponent implements AfterContentInit {
           if (_axisIndex) {
               axisIndex = _axisIndex;
           } else {
-            const index = this.#getRandomFourDigitsNumber();
-            this.#chartGroups.set(barXAxis.group, index);
-            axisIndex = index;
+            this.#chartGroups.set(barXAxis.group, axisIndex);
           }
         }
 
@@ -477,7 +469,7 @@ export class BizyBarLineChartComponent implements AfterContentInit {
         }
       }
 
-      if (axisIndex !== _i + this.lineCharts.length) {
+      if (axisIndex !== (_i + this.lineCharts.length)) {
         if (_bar.stack) {
           const _stack = this.#chartStacks.find(_stack => _stack === _bar.stack);
           if (_stack) {
