@@ -163,6 +163,7 @@ export class BizyBarLineChartComponent implements AfterContentInit {
     this.#gridLeft = 0;
     this.#chartStacks = [];
     this.#chartNames = [];
+    this.#chartGroups.clear();
 
     this.#createChartContainer()
 
