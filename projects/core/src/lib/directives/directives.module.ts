@@ -9,6 +9,7 @@ import { BizyTextEllipsisDirective } from './text-ellipsis.directive';
 import { BizyTooltipDirective } from './tooltip.directive';
 import { BizyAutoFocusDirective } from './auto-focus.directive';
 import { BizyReloadDirective } from './reload.directive';
+import { BizyMouseOverDirective } from './mouse-over.directive';
 
 const DIRECTIVES: Array<any> = [
   BizyCopyToClipboardDirective,
@@ -20,7 +21,8 @@ const DIRECTIVES: Array<any> = [
   BizyTextEllipsisDirective,
   BizyTooltipDirective,
   BizyAutoFocusDirective,
-  BizyReloadDirective
+  BizyReloadDirective,
+  BizyMouseOverDirective
 ]
 
 @NgModule({

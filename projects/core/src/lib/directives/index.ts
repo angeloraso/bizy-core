@@ -1,3 +1,4 @@
+export { BizyMouseOverDirective } from './mouse-over.directive';
 export { BizyReloadDirective } from './reload.directive';
 export { BizyDirectivesModule } from './directives.module';
 export { BizyCopyToClipboardDirective } from './copy-to-clipboard.directive';
