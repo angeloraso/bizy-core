@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, ElementRef, inject, OnInit, Renderer2 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
 import { BizyPopupService } from '../popup';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'bizy-pie-chart-popup',
@@ -25,7 +25,7 @@ export class BizyPieChartPopupComponent implements OnInit {
 
   ngOnInit() {
     const data = this.#popup.getData<{
-      download: {show: boolean, label: string, name: string}
+      download: {show: boolean, label: string, fileName: string}
       option: any
     }>();
 
@@ -79,7 +79,7 @@ export class BizyPieChartPopupComponent implements OnInit {
                       html2canvas(this.#chartContainer).then(canvas => {
                           var link = this.#renderer.createElement('a');
                           link.href = canvas.toDataURL('image/png');
-                          link.download = `${data.download.name}.png`;
+                          link.download = `${data.download.fileName}.png`;
                           this.#renderer.appendChild(this.#document.body, link);
                           link.click();
                           this.#renderer.removeChild(this.#document.body, link);
