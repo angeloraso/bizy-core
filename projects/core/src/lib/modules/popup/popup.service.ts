@@ -27,6 +27,7 @@ export class BizyPopupService {
     fullScreen?: boolean,
     disableClose?: boolean,
     disableBackdropClose?: boolean,
+    hasBackdrop?: boolean,
     id?: string,
     disableCloseButton?: boolean,
     disableDragButton?: boolean,
@@ -37,6 +38,8 @@ export class BizyPopupService {
     if (!data) {
       return;
     }
+
+    data.hasBackdrop = data.hasBackdrop ?? true;
 
     this.#data = data.data;
 
@@ -50,10 +53,10 @@ export class BizyPopupService {
       }
 
       position = {
-        top: data.placement === POPUP_PLACEMENT.TOP ? `${rect.top - data.element.offsetHeight + Number(position.top)}px ` : `${rect.top + Number(position.top)}px`,
-        left: data.placement === POPUP_PLACEMENT.LEFT ? `${rect.left - data.element.offsetWidth + Number(position.left)}px` : `${rect.left + Number(position.left)}px`,
-        bottom: data.placement === POPUP_PLACEMENT.BOTTOM ? `${rect.bottom + data.element.offsetHeight + Number(position.bottom)}px` : `${rect.bottom + Number(position.bottom)}px`,
-        right: data.placement === POPUP_PLACEMENT.RIGHT ? `${rect.right + data.element.offsetWidth + Number(position.right)}px` : `${rect.right + Number(position.right)}px`,
+        top: data.placement === POPUP_PLACEMENT.TOP ? `${rect.top - data.element.offsetHeight + Number(position ? position.top : 0)}px ` : `${rect.top + Number(position ? position.top : 0)}px`,
+        left: data.placement === POPUP_PLACEMENT.LEFT ? `${rect.left - data.element.offsetWidth + Number(position ? position.left : 0)}px` : `${rect.left + Number(position ? position.left : 0)}px`,
+        bottom: data.placement === POPUP_PLACEMENT.BOTTOM ? `${rect.bottom + data.element.offsetHeight + Number(position ? position.bottom : 0)}px` : `${rect.bottom + Number(position ? position.bottom : 0)}px`,
+        right: data.placement === POPUP_PLACEMENT.RIGHT ? `${rect.right + data.element.offsetWidth + Number(position ? position.right : 0)}px` : `${rect.right + Number(position ? position.right : 0)}px`,
       }
     } else {
       placement = data.placement ?? null;
@@ -75,6 +78,10 @@ export class BizyPopupService {
         disableClose: typeof data.disableBackdropClose !== 'undefined' && data.disableBackdropClose !== null ? data.disableBackdropClose : typeof data.disableClose !== 'undefined' && data.disableClose !== null ? data.disableClose : true,
         panelClass: Array.isArray(data.customClass) ? data.customClass : this.#validator.isString(data.customClass) ? [data.customClass] : []
       }));
+
+      if (!data.hasBackdrop && dialogRef.overlayRef && dialogRef.overlayRef.backdropElement) {
+        dialogRef.overlayRef.backdropElement.style.background = 'transparent';
+      }
 
       BizyPopupService.dialogs.add(dialogRef);
 
