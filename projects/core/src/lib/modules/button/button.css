@@ -39,8 +39,8 @@
     width: 100%;
     height: 100%;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: var(--bizy-button-justify-content);
+    align-items: var(--bizy-button-align-items);
     column-gap: 0.3rem;
 }
 

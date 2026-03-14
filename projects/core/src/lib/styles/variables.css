@@ -84,6 +84,9 @@
     --bizy-button-border-radius: 0.3rem;
     --bizy-button-color: #fff;
     --bizy-button-padding: 0.5rem;
+    --bizy-button-justify-content: center;
+    --bizy-button-align-items: center;
+
 
     --bizy-card-background-color: #fff;
     --bizy-card-cursor: default;
