@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, ChangeDetectorRef, Output, EventEmitter, ElementRef, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, ChangeDetectorRef, Output, EventEmitter, ElementRef, inject, ContentChild } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { BizySelectSelectedOptionComponent } from '../select-selected-option/select-selected-option.component';
 
 @Component({
   selector: 'bizy-select-option',
@@ -12,6 +13,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class BizySelectOptionComponent {
   readonly #elementRef = inject(ElementRef);
   readonly #ref = inject(ChangeDetectorRef);
+  @ContentChild(BizySelectSelectedOptionComponent) private selectedOption: BizySelectSelectedOptionComponent;
 
   @Input() id: string = `bizy-select-option-${Math.random()}`;
   @Input() disabled: boolean = false;
@@ -52,7 +54,17 @@ export class BizySelectOptionComponent {
   getNativeElement = () => this.#elementRef?.nativeElement;
 
   getValue = (): string => {
-    const value = this.#elementRef?.nativeElement?.firstChild?.children[0]?.innerText;
-    return value ?? '';
+    let value = '';
+
+    if (this.selectedOption) {
+      value = this.selectedOption.getValue();
+    }
+
+    if (!value) {
+      value = this.#elementRef?.nativeElement?.firstChild?.children[0]?.innerText;
+    }
+
+    return value || '';
+
   }
 }

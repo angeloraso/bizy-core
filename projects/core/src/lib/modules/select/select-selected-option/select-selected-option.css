@@ -1,0 +1,6 @@
+:host {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
