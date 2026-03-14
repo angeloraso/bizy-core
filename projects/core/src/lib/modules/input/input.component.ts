@@ -28,6 +28,7 @@ export class BizyInputComponent implements OnDestroy {
   @Input() placeholder: string = '';
   @Input() debounceTime: number = 250;
   @Input() rows: number = 4;
+  @Input() maxLength: number | null = null;
   @Input() disabled: boolean = false;
   @Input() readonly: boolean = false;
   @Output() valueChange = new EventEmitter<string | number>();
