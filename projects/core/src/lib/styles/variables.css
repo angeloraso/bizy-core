@@ -208,6 +208,7 @@
     --bizy-input-option-selected-color: #fff;
     --bizy-input-option-selected-background-color: var(--bizy-info-color);
     --bizy-input-font-size: 1rem;
+    --bizy-input-placeholder-color: #999;
 
     --bizy-list-height: fit-content;
     --bizy-list-width: 100%;

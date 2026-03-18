@@ -4,7 +4,7 @@
   (click)="_onClick($event)"
   (keyup)="_onClick($event)"
   class="bizy-input {{customClass}}"
-  (focus)="bizyInput.nativeElement.focus()"
+  (focus)="setFocus(true)"
   cdkOverlayOrigin
   #bizyInputTrigger="cdkOverlayOrigin"
   [ngClass]="{'bizy-input--disabled': disabled, 'bizy-input--negative': type === 'currency' && _currencyValue < 0}">
@@ -31,8 +31,6 @@
         [bizyCurrencyFormat]="type === 'currency'"
         [bizyCurrencyOptions]="currencyOptions"
         [bizyOnlyPhoneDigits]="type === 'tel'"
-        (blur)="_onBlur($event)"
-        (focus)="_onFocus($event)"
         (keyup.enter)="_onEnter($event)"
         (keyup.backspace)="_onBackspace($event)"
         [ngModel]="_value"
@@ -48,8 +46,6 @@
         [readonly]="readonly"
         [maxlength]="maxLength"
         class="bizy-input__content__input"
-        (blur)="_onBlur($event)"
-        (focus)="_onFocus($event)"
         (keyup.enter)="_onEnter($event)"
         (keyup.backspace)="_onBackspace($event)"
         [ngModel]="_value"
