@@ -283,6 +283,7 @@
     --bizy-progress-bar-progress-color: var(--bizy-accent-color); 
 
     --bizy-radio-color: var(--bizy-accent-color);
+    --bizy-radio-background-color: transparent;
 
     --bizy-section-height: fit-content;
     --bizy-section-width: 100%;

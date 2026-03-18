@@ -33,7 +33,7 @@
     display: flex;
     flex-shrink: 0;
     content: "";
-    background-color: #fff;
+    background-color: var(--bizy-radio-background-color);
     min-width: 1rem;
     min-height: 1rem;
     border-radius: 50%;
