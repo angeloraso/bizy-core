@@ -18,20 +18,22 @@
         let-even="even"
         let-odd="odd"
         cdkVirtualFor
-        [cdkVirtualForOf]="itemRows">
+        [cdkVirtualForOf]="itemRows"
+        [cdkVirtualForTrackBy]="trackByRow">
         <bizy-grid-row [rowHeight]="rowHeight" [itemsPerRow]="itemsPerRow">
           @for (it of item; track it.id ?? i; let i = $index) {
             <ng-template
-                            *ngTemplateOutlet="itemTemplate;
-                            context: { 
-                                $implicit: it,
-                                index: index * itemsPerRow + i,
-                                rowIndex: index,
-                                rowFirst: first,
-                                rowLast: last,
-                                rowEven: even,
-                                rowOdd: odd
-                            }"></ng-template>
+                *ngTemplateOutlet="itemTemplate;
+                context: { 
+                    $implicit: it,
+                    index: index * itemsPerRow + i,
+                    rowIndex: index,
+                    rowFirst: first,
+                    rowLast: last,
+                    rowEven: even,
+                    rowOdd: odd
+                }">
+            </ng-template>
           }
         </bizy-grid-row>
       </ng-template>

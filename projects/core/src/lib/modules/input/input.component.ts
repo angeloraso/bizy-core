@@ -1,6 +1,5 @@
-import { filter, take } from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnDestroy, Output, ViewChild, ContentChildren, QueryList, inject } from '@angular/core';
-import { BehaviorSubject, Subject, Subscription, debounceTime } from 'rxjs';
+import { Subject, Subscription, debounceTime, fromEvent } from 'rxjs';
 import { BizyInputOptionComponent } from './input-option/input-option.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -22,11 +21,11 @@ export class BizyInputComponent implements OnDestroy {
   @ViewChild('bizyInputWrapper') bizyInputWrapper: ElementRef;
   @Input() id: string = `bizy-input-${Math.random()}`;
   @Input() name: string = `bizy-input-${Math.random()}`;
-  @Input() type: 'text' | 'number' | 'email' | 'password' | 'tel' | 'textarea' | 'currency' = 'text';
   @Input() customClass: string = '';
   @Input() placeholder: string = '';
   @Input() debounceTime: number = 250;
   @Input() rows: number = 4;
+  @Input() type: 'text' | 'number' | 'email' | 'password' | 'tel' | 'textarea' | 'currency' = 'text';
   @Input() maxLength: number | null = null;
   @Input() autofocus: boolean = false;
   @Input() disabled: boolean = false;
@@ -36,19 +35,37 @@ export class BizyInputComponent implements OnDestroy {
   @Output() onEnter = new EventEmitter<KeyboardEvent>();
   @Output() onBackspace = new EventEmitter<KeyboardEvent>();
   @Output() onSelect = new EventEmitter<PointerEvent>();
-  @Output() onBlur = new EventEmitter<PointerEvent>();
-  @Output() onFocus = new EventEmitter<PointerEvent>();
-
+  @Output() onBlur = new EventEmitter<FocusEvent>();
+  @Output() onFocus = new EventEmitter<FocusEvent>();
   @Output() onPaste = new EventEmitter<ClipboardEvent>();
 
-  @ViewChild('bizyInput') set bizyInput(element: ElementRef) {
-    if (element) {
-      this.#input = element;
+  @ViewChild('bizyInput') set bizyInput(inputElement: ElementRef) {
+    if (inputElement) {
+      this.#input = inputElement;
+      
+      this.#subscription.unsubscribe();
+      this.#subscription = new Subscription();
+
       setTimeout(() => {
+        if (this.type === 'currency'&& (<any>this.#input.nativeElement).setValue) {
+          this.#input.nativeElement.setValue(this._currencyValue);
+        }
+
+        this.#subscription.add(this.onChange$.pipe(debounceTime(this.debounceTime)).subscribe(value => {
+          this.valueChange.emit(value);
+          this.onChange.emit(value);
+        }))
+
+        this.#subscription.add(fromEvent(this.#input.nativeElement, 'focus').subscribe(this.#focus));
+
+        this.#subscription.add(fromEvent(this.#input.nativeElement, 'blur').subscribe(this.#blur));
+
+        this.#subscription.add(fromEvent(this.#input.nativeElement, 'paste').subscribe(this.#paste));
+
         this.setFocus(this.autofocus);
       }, 0);
     }
-  };
+  }
 
   @Input() set value(value: string | number | null) {
     if (typeof value === 'undefined') {
@@ -76,18 +93,16 @@ export class BizyInputComponent implements OnDestroy {
   opened: boolean = false;
   _value: string | number | null = null;
   _currencyValue: number | null = null;
-  
+
   currencyOptions = 'commaDecimalCharDotSeparator';
-  
   #input: ElementRef | null = null;
   #subscription = new Subscription();
   #optionSubscription = new Subscription();
   onChange$ = new Subject<string | number>();
-  #afterViewInitSubscription = new Subscription();
-  #afterViewInit = new BehaviorSubject<boolean>(false);
 
-
-  getWidth = (): number => this.bizyInputWrapper && this.bizyInputWrapper.nativeElement && this.bizyInputWrapper.nativeElement.offsetWidth ? this.bizyInputWrapper.nativeElement.offsetWidth : 0;
+  getWidth = (): number => {
+    return this.bizyInputWrapper && this.bizyInputWrapper.nativeElement && this.bizyInputWrapper.nativeElement.offsetWidth ? this.bizyInputWrapper.nativeElement.offsetWidth : 0;
+  }
 
   _onchange = (value: string) => {
     if (this.disabled || this.readonly) {
@@ -122,34 +137,18 @@ export class BizyInputComponent implements OnDestroy {
     }, this.debounceTime)
   }
 
-  setTouched(touched: boolean) {
+  setTouched = (touched: boolean) => {
     this.touched = touched;
     this.#ref.detectChanges();
   }
 
-  ngAfterViewInit() {
-    if (this.type === 'currency'&& (<any>this.#input.nativeElement).setValue) {
-      this.#input.nativeElement.setValue(this._currencyValue);
-    }
-    this.#subscription.add(this.onChange$.pipe(debounceTime(this.debounceTime)).subscribe(value => {
-      this.valueChange.emit(value);
-      this.onChange.emit(value);
-    }))
-
-    this.#input.nativeElement.addEventListener('focus', this.#focus);
-    this.#input.nativeElement.addEventListener('blur', this.#blur);
-    this.#input.nativeElement.addEventListener('paste', this.#paste);
-
-    this.#afterViewInit.next(true);
-  }
-
-  #focus = (event: PointerEvent) => {
+  #focus = (event: FocusEvent) => {
     this.focused = true;
     this.onFocus.emit(event);
     this.#ref.detectChanges();
   }
 
-  #blur = (event: PointerEvent) => {
+  #blur = (event: FocusEvent) => {
     if (this.type === 'currency') {
       this.#input.nativeElement.setValue(this._currencyValue);
     }
@@ -191,21 +190,19 @@ export class BizyInputComponent implements OnDestroy {
   getNativeElement = () => this.#elementRef?.nativeElement;
 
   setFocus = (focus: boolean) => {
-    this.#afterViewInitSubscription.add(this.#afterViewInit.pipe(filter(value => value === true), take(1)).subscribe(() => {
-      if (!this.#input || !this.#input.nativeElement) {
-        return;
-      }
+    if (!this.#input || !this.#input.nativeElement) {
+      return;
+    }
 
-      if (focus) {
-        this.#input.nativeElement.focus();
-        this.focused = true;
-      } else {
-        this.#input.nativeElement.blur();
-        this.focused = false;
-      }
+    if (focus) {
+      this.#input.nativeElement.focus();
+      this.focused = true;
+    } else {
+      this.#input.nativeElement.blur();
+      this.focused = false;
+    }
 
-      this.#ref.detectChanges();
-    }));
+    this.#ref.detectChanges();
   }
 
   close = (event?: PointerEvent & {target: {id: string}}, button?: HTMLButtonElement) => {
@@ -220,11 +217,5 @@ export class BizyInputComponent implements OnDestroy {
   ngOnDestroy() {
     this.#subscription.unsubscribe();
     this.#optionSubscription.unsubscribe();
-    this.#afterViewInitSubscription.unsubscribe();
-    if (this.#input && this.#input.nativeElement) {
-      this.#input.nativeElement.removeEventListener('focus', this.#focus);
-      this.#input.nativeElement.removeEventListener('blur', this.#blur);
-      this.#input.nativeElement.removeEventListener('paste', this.#paste);
-    }
   }
 }

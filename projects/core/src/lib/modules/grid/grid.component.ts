@@ -17,7 +17,7 @@ export class BizyGridComponent implements AfterContentInit {
   readonly #ref = inject(ChangeDetectorRef);
   readonly #document = inject(DOCUMENT);
   readonly #renderer = inject(Renderer2);
-  
+
   @ViewChild('cdkVirtualScroll') private virtualScroll: CdkVirtualScrollViewport;
   @ViewChild('gridScrollingContent') content: TemplateRef<object>;
   @ContentChild(BizyGridForDirective) gridDirective: BizyGridForDirective;
@@ -35,40 +35,34 @@ export class BizyGridComponent implements AfterContentInit {
   itemTemplate: TemplateRef<unknown>;
   itemsPerRow: number = 1;
 
-  ngAfterContentInit() {
-    if (this.gridDirective) {
-      this.#initView();
-    } else {
-      this.#rowScrollingMutationObserver = new MutationObserver(() => {
-        if (!this.gridDirective) {
-          return;
-        }
-  
-        this.#initView();
-  
-        this.#rowScrollingMutationObserver.disconnect();
-  
-        this.#ref.detectChanges();
-      });
-  
-      this.#rowScrollingMutationObserver.observe(this.#document.body, { childList: true, subtree: true });
-    }
-  }
+  getNativeElement = () => this.#elementRef?.nativeElement;
 
-  #initView = () => {
-    this.#subscription.add(this.gridDirective.items$.subscribe(items => {
-      if (this.items.length === 0 && items.length === 0) {
+  ngAfterContentInit() {
+    this.#rowScrollingMutationObserver = new MutationObserver(() => {
+      if (!this.gridDirective) {
         return;
       }
 
-      this.items = items;
-      this.#updateView();
-    }));
+      this.#subscription.add(this.gridDirective.items$.subscribe(items => {
+        if (this.items.length === 0 && items.length === 0) {
+          return;
+        }
 
-    if (!this.#view) {
-      this.#view = this.gridDirective.viewContainerRef;
-      this.#view.createEmbeddedView(this.content);
-    }
+        this.items = items;
+        this.#updateView();
+
+        if (!this.#view) {
+          this.#view = this.gridDirective.viewContainerRef;
+          this.#view.createEmbeddedView(this.content);
+        }
+      }));
+
+      this.#rowScrollingMutationObserver.disconnect();
+
+      this.#ref.detectChanges();
+    });
+
+    this.#rowScrollingMutationObserver.observe(this.#document.body, { childList: true, subtree: true });
 
     this.#resizeObserver = new ResizeObserver(() => this.notifier$.next());
     const resizeRef = this.resizeRef ? this.resizeRef : this.#renderer.parentNode(this.#elementRef.nativeElement) ? this.#renderer.parentNode(this.#elementRef.nativeElement) : this.#elementRef.nativeElement;
@@ -108,21 +102,34 @@ export class BizyGridComponent implements AfterContentInit {
 
     columnWidth += gap;
 
+    let newItemsPerRow = 0;
+
     const count = Math.trunc(rowWidth / (columnWidth));
     if (Math.round((gap * (count - 1)) + (columnWidth * count)) <= (rowWidth)) {
-      this.itemsPerRow = count <= 0 ? 1 : count;
+      newItemsPerRow = count <= 0 ? 1 : count;
     } else {
-      this.itemsPerRow = (count - 1) <= 0 ? 1 : count - 1;
+      newItemsPerRow = (count - 1) <= 0 ? 1 : count - 1;
     }
 
-    const itemRows: Array<Array<unknown>> = [];
-    for (let i = 0; i < this.items.length; i += this.itemsPerRow) {
-      const row: Array<unknown> = this.items.slice(i, i + this.itemsPerRow);
-      itemRows.push(row);
+    if (newItemsPerRow !== this.itemsPerRow || this.items.length !== (this.itemRows.length * this.itemsPerRow)) {
+      this.itemsPerRow = newItemsPerRow;
+      const itemRows: Array<Array<unknown>> = [];
+      for (let i = 0; i < this.items.length; i += this.itemsPerRow) {
+        const row: Array<unknown> = this.items.slice(i, i + this.itemsPerRow);
+        itemRows.push(row);
+      }
+
+      this.itemRows = itemRows;
+      this.#ref.detectChanges();
+    }
+  }
+
+  trackByRow(index: number, row: any[]): any {
+    if (row && row.length > 0) {
+      return row[0].id; 
     }
 
-    this.itemRows = itemRows;
-    this.#ref.detectChanges();
+    return index;
   }
 
   scrollTo(index: number, behavior: 'auto' | 'instant' | 'smooth' = 'smooth') {
@@ -140,6 +147,4 @@ export class BizyGridComponent implements AfterContentInit {
       this.#resizeObserver.disconnect();
     }
   }
-
-  getNativeElement = () => this.#elementRef?.nativeElement;
 }
