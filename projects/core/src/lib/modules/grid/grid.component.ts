@@ -68,13 +68,14 @@ export class BizyGridComponent implements AfterContentInit {
     const resizeRef = this.resizeRef ? this.resizeRef : this.#renderer.parentNode(this.#elementRef.nativeElement) ? this.#renderer.parentNode(this.#elementRef.nativeElement) : this.#elementRef.nativeElement;
     this.#resizeObserver.observe(resizeRef);
     this.#subscription.add(this.notifier$.pipe(debounceTime(50)).subscribe(() => {
-      this.#updateView();
+      this.#updateView(true);
     }));
   }
 
-  #updateView = () => {
+  #updateView = (resize: boolean = false) => {
     this.itemTemplate = this.gridDirective.templateRef;
     const rowWidth = this.#elementRef.nativeElement.offsetWidth || this.#elementRef.nativeElement.firstChild.offsetWidth;
+    const gridHeight = this.#elementRef.nativeElement.offsetHeight || this.#elementRef.nativeElement.firstChild.offsetHeight;
     let columnWidth = 100;
     const fontSize = Number(getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('font-size').split('px')[0]);
 
@@ -83,6 +84,8 @@ export class BizyGridComponent implements AfterContentInit {
       this.rowHeight = fontSize * Number(rowHeightParameter.split('rem')[0]);
     } else if (rowHeightParameter && rowHeightParameter.includes('px')) {
       this.rowHeight = Number(rowHeightParameter.split('px')[0]);
+    } else if (rowHeightParameter && rowHeightParameter.includes('%')) {
+      this.rowHeight = (Number(rowHeightParameter.split('%')[0]) / 100) * gridHeight;
     }
 
     let gap = 10;
@@ -91,6 +94,8 @@ export class BizyGridComponent implements AfterContentInit {
       gap = fontSize * Number(gapParameter.split('rem')[0]);
     } else if (gapParameter && gapParameter.includes('px')) {
       gap = Number(gapParameter.split('px')[0]);
+    } else if (gapParameter && gapParameter.includes('%')) {
+      gap = (Number(gapParameter.split('%')[0]) / 100) * gridHeight;
     }
 
     const columnWidthParameter = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-grid-column-width');
@@ -98,6 +103,8 @@ export class BizyGridComponent implements AfterContentInit {
       columnWidth = fontSize * Number(columnWidthParameter.split('rem')[0]);
     } else if (columnWidthParameter && columnWidthParameter.includes('px')) {
       columnWidth = Number(columnWidthParameter.split('px')[0]);
+    } else if (columnWidthParameter && columnWidthParameter.includes('%')) {
+      columnWidth = (Number(columnWidthParameter.split('%')[0]) / 100) * rowWidth;
     }
 
     columnWidth += gap;
@@ -111,17 +118,19 @@ export class BizyGridComponent implements AfterContentInit {
       newItemsPerRow = (count - 1) <= 0 ? 1 : count - 1;
     }
 
-    if (newItemsPerRow !== this.itemsPerRow || this.items.length !== (this.itemRows.length * this.itemsPerRow)) {
-      this.itemsPerRow = newItemsPerRow;
-      const itemRows: Array<Array<unknown>> = [];
-      for (let i = 0; i < this.items.length; i += this.itemsPerRow) {
-        const row: Array<unknown> = this.items.slice(i, i + this.itemsPerRow);
-        itemRows.push(row);
-      }
-
-      this.itemRows = itemRows;
-      this.#ref.detectChanges();
+    if (resize && newItemsPerRow === this.itemsPerRow) {
+      return;
     }
+
+    this.itemsPerRow = newItemsPerRow;
+    const itemRows: Array<Array<unknown>> = [];
+    for (let i = 0; i < this.items.length; i += this.itemsPerRow) {
+      const row: Array<unknown> = this.items.slice(i, i + this.itemsPerRow);
+      itemRows.push(row);
+    }
+
+    this.itemRows = itemRows;
+    this.#ref.detectChanges();
   }
 
   trackByRow(index: number, row: any[]): any {
