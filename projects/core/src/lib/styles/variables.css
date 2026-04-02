@@ -423,16 +423,16 @@
     --bizy-tabs-arrow-button-background-color: #fff;
 
     --bizy-tag-background-color: var(--bizy-light-default-color);
-    --bizy-tag-color: var(--bizy-dark-default-color);
+    --bizy-tag-color: #d4d4d4;
     --bizy-tag-default-background-color: var(--bizy-light-default-color);
-    --bizy-tag-default-color: var(--bizy-dark-default-color);
-    --bizy-tag-success-background-color: var(--bizy-light-success-color);
+    --bizy-tag-default-color: #d4d4d4;
+    --bizy-tag-success-background-color: #c7e0c8;
     --bizy-tag-success-color: var(--bizy-dark-success-color);
-    --bizy-tag-info-background-color: var(--bizy-light-info-color);
+    --bizy-tag-info-background-color: #c9d9e0;
     --bizy-tag-info-color: var(--bizy-dark-info-color);
-    --bizy-tag-warning-background-color: var(--bizy-light-warning-color);
+    --bizy-tag-warning-background-color: #fbd9b5;
     --bizy-tag-warning-color: var(--bizy-dark-warning-color);
-    --bizy-tag-danger-background-color: var(--bizy-light-danger-color);
+    --bizy-tag-danger-background-color: #f3c5c5;
     --bizy-tag-danger-color: var(--bizy-dark-danger-color);
     --bizy-tag-cursor: pointer;
     --bizy-tag-height: auto;
