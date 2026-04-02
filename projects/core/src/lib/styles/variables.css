@@ -86,6 +86,7 @@
     --bizy-button-padding: 0.5rem;
     --bizy-button-justify-content: center;
     --bizy-button-align-items: center;
+    --bizy-button-flex-direction: row;
 
 
     --bizy-card-background-color: #fff;
