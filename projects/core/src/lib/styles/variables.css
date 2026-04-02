@@ -126,7 +126,7 @@
     --bizy-checkbox-color: var(--bizy-accent-color);
 
     --bizy-content-padding: 0.5rem;
-    --bizy-content-row-gap: 0.7rem;
+    --bizy-content-gap: 0.7rem;
     --bizy-content-width: auto;
     --bizy-content-height: auto;
     --bizy-content-flex-direction: column;

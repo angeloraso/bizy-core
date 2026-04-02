@@ -6,5 +6,5 @@
   overflow: auto;
   display: flex;
   flex-direction: var(--bizy-content-flex-direction);
-  row-gap: var(--bizy-content-row-gap);
+  gap: var(--bizy-content-gap);
 }
