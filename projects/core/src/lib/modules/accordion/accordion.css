@@ -14,7 +14,7 @@
     align-items: center;
     justify-content: space-between;
     column-gap: 0.5rem;
-    padding: 0.5rem;
+    padding: var(--bizy-accordion-padding);
     width: 100%;
     cursor: pointer;
     position: relative;

@@ -1,6 +1,7 @@
 :host {
     font-size: 1rem;
     direction: ltr;
+    --bizy-accordion-padding: var(--bizy-sidebar-option-padding);
 }
 
 :host:not(:has(.bizy-sidebar-option--disabled)) ::ng-deep .bizy-sidebar-option:hover {

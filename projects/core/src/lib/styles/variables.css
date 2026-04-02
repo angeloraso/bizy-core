@@ -25,6 +25,7 @@
 
     --bizy-accordion-background-color: transparent;
     --bizy-accordion-border: none;
+    --bizy-accordion-padding: 0.5rem;
     --bizy-accordion-border-bottom: none;
     --bizy-accordion-arrow-color: var(--bizy-default-color);
     --bizy-accordion-padding-left: 0.5rem;
@@ -349,6 +350,7 @@
     --bizy-sidebar-width: 8rem;
     --bizy-sidebar-padding: 0 0 0 0.5rem;
     --bizy-sidebar-section-min-height: 3rem;
+    --bizy-sidebar-option-padding: 1rem;
     --bizy-sidebar-option-selected-color: var(--bizy-info-color);
     --bizy-sidebar-option-hover-color: var(--bizy-dark-info-color);
     --bizy-sidebar-floating-option-title-color: #000;
