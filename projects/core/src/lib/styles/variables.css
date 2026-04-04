@@ -109,7 +109,10 @@
     --bizy-card-header-column-gap: 0.5rem;
     --bizy-card-content-align-items: center;
     --bizy-card-content-background-color: transparent;
+    --bizy-card-content-gap: 0.5rem;
     --bizy-card-content-column-gap: 0.5rem;
+    --bizy-card-content-row-gap: 0.5rem;
+    --bizy-card-content-flex-wrap: wrap;
     --bizy-card-footer-align-items: center;
     --bizy-card-footer-background-color: transparent;
     --bizy-card-footer-column-gap: 0.5rem;

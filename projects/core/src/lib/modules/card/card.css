@@ -54,7 +54,9 @@
 .bizy-card__content:not(:empty) {
     display: flex;
     align-items: var(--bizy-card-content-align-items);
-    column-gap: var(--bizy-card-content-column-gap);
+    column-gap: var(--bizy-card-content-column-gap, var(--bizy-card-content-gap, 0));
+    row-gap: var(--bizy-card-content-row-gap, var(--bizy-card-content-gap, 0));
+    flex-wrap: var(--bizy-card-content-flex-wrap);
     height: 100%;
     width: 100%;
     background-color: var(--bizy-card-content-background-color);
