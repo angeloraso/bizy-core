@@ -11,7 +11,7 @@ import {
   selector: '[bizyLongPress]',
 })
 export class BizyLongPressDirective implements OnDestroy {
-  @Input() threshold = 500;
+  @Input() bizyLongPressDelay = 750;
   @Output() bizyLongPress = new EventEmitter<MouseEvent |TouchEvent>();
 
   #pressTimeout: any = null;
@@ -22,7 +22,7 @@ export class BizyLongPressDirective implements OnDestroy {
     this.clearTimeout(); // Clear any existing timeout
     this.#pressTimeout = setTimeout(() => {
       this.bizyLongPress.emit(event);
-    }, this.threshold);
+    }, this.bizyLongPressDelay);
   }
 
   @HostListener('mouseup')
