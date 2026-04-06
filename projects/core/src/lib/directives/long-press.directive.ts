@@ -36,7 +36,7 @@ export class BizyLongPressDirective implements AfterViewInit, OnDestroy {
     this.#subscription = merge(mousedown, mouseup, touchstart, touchEnd)
       .pipe(
         switchMap(state => (state ? timer(this.bizyLongPressThreshold) : of(null))),
-        filter(value => Boolean(value))
+        filter(value => value !== null)
       )
       .subscribe(() => this.bizyLongPress.emit());
   }
