@@ -446,7 +446,7 @@
     --bizy-tag-info-color: var(--bizy-dark-info-color);
     --bizy-tag-warning-background-color: #fbd9b5;
     --bizy-tag-warning-color: var(--bizy-dark-warning-color);
-    --bizy-tag-danger-background-color: #f3c5c5;
+    --bizy-tag-danger-background-color: #eda9a9;
     --bizy-tag-danger-color: var(--bizy-dark-danger-color);
     --bizy-tag-cursor: pointer;
     --bizy-tag-height: auto;
