@@ -24,7 +24,7 @@
     justify-content: space-between;
     row-gap: var(--bizy-card-row-gap);
     background-color: var(--bizy-card-background-color);
-    transition: transform 250ms ease-in-out;
+    transition: transform 250ms ease-in-out, box-shadow 0.2s ease;
     box-shadow: var(--bizy-card-box-shadow);
 }
 
