@@ -48,6 +48,10 @@
 
 
 .bizy-menu__options {
+    border-top-left-radius: var(--bizy-menu-border-top-left-radius, var(--bizy-menu-border-radius, 0.5rem));
+    border-top-right-radius: var(--bizy-menu-border-top-right-radius, var(--bizy-menu-border-radius, 0.5rem));
+    border-bottom-right-radius: var(--bizy-menu-border-bottom-right-radius, var(--bizy-menu-border-radius, 0.5rem));
+    border-bottom-left-radius: var(--bizy-menu-border-bottom-left-radius, var(--bizy-menu-border-radius, 0.5rem));
     background-color: var(--bizy-menu-background-color);
     min-width: var(--bizy-menu-min-width);
     max-width: var(--bizy-menu-max-width);
