@@ -261,10 +261,13 @@
     --bizy-pie-chart-tooltip-border-color: #fff;
 
     --bizy-popup-background-color: #fff;
-    --bizy-popup-min-width: 20rem;
+    --bizy-popup-min-width: 10rem;
     --bizy-popup-width: fit-content;
     --bizy-popup-max-width: 90dvw;
-    --bizy-popup-padding: 0.5rem;
+    --bizy-popup-min-height: 10rem;
+    --bizy-popup-height: fit-content;
+    --bizy-popup-max-height: 90dvh;
+    --bizy-popup-padding: 0;
     --bizy-popup-border-radius: 0.3rem;
     --bizy-popup-drag-button-color: var(--bizy-default-color);
     --bizy-popup-drag-button-border: 0.1rem solid #ccc;
@@ -274,10 +277,14 @@
     --bizy-popup-close-button-color: var(--bizy-default-color);
     --bizy-popup-close-button-hover-color: var(--bizy-danger-color);
 
-    --bizy-popup-full-screen-height: auto;
+    --bizy-popup-full-screen-min-width: 100dvw;
+    --bizy-popup-full-screen-width: auto;
+    --bizy-popup-full-screen-max-width: 100dvw;
+    --bizy-popup-full-screen-min-height: 20rem;
+    --bizy-popup-full-screen-height: fit-content;
+    --bizy-popup-full-screen-max-height: 90dvh;
     --bizy-popup-full-screen-background-color: #fff;
-    --bizy-popup-full-screen-padding: 0.5rem;
-    --bizy-popup-full-screen-border-radius: 1rem;
+    --bizy-popup-full-screen-padding: 2.2rem 0 0 0;
     --bizy-popup-full-screen-close-button-border: transparent;
     --bizy-popup-full-screen-close-button-background-color: transparent;
     --bizy-popup-full-screen-close-button-color: var(--bizy-default-color);

@@ -1,12 +1,11 @@
 :host {
     font-size: 1rem;
     height: var(--bizy-popup-full-screen-height);
-    width: 100dvw;
-    display: inline-block;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    min-height: var(--bizy-popup-full-screen-min-height);
+    max-height: var(--bizy-popup-full-screen-max-height);
+    width: var(--bizy-popup-full-screen-width);
+    max-width: var(--bizy-popup-full-screen-max-width);
+    display: flex;
 }
 
 .bizy-full-screen-popup-wrapper--disabled {
@@ -15,13 +14,14 @@
 }
 
 .bizy-full-screen-popup-wrapper {
+    flex: 1;
     position: relative;
     padding: var(--bizy-popup-full-screen-padding);
     background-color: var(--bizy-popup-full-screen-background-color);
-    height: 100%;
-    width: 100%;
-    border-top-left-radius: var(--bizy-popup-full-screen-border-radius);
-    border-top-right-radius: var(--bizy-popup-full-screen-border-radius);
+    border-top-left-radius: var(--bizy-popup-full-screen-border-top-left-radius, var(--bizy-popup-full-screen-border-radius, 1rem));
+    border-top-right-radius: var(--bizy-popup-full-screen-border-top-right-radius, var(--bizy-popup-full-screen-border-radius, 1rem));
+    border-bottom-right-radius: var(--bizy-popup-full-screen-border-bottom-right-radius, var(--bizy-popup-full-screen-border-radius, 0));
+    border-bottom-left-radius: var(--bizy-popup-full-screen-border-bottom-left-radius, var(--bizy-popup-full-screen-border-radius, 0));
 }
 
 .bizy-full-screen-popup-wrapper__close-button {

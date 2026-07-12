@@ -1,20 +1,22 @@
 :host {
     font-size: 1rem;
     position: fixed !important;
-    min-height: 150px;
-    min-width: 150px;
-    width: fit-content;
-    height: fit-content;
+    display: flex;
+    height: var(--bizy-popup-height);
+    min-height: var(--bizy-popup-min-height);
+    max-height: var(--bizy-popup-max-height);
+    width: var(--bizy-popup-width);
+    min-width: var(--bizy-popup-min-width);
+    max-width: var(--bizy-popup-max-width);
+    max-height: 95dvh;
     z-index: 10;
 }
 
 .bizy-popup-wrapper {
+    flex: 1;
     position: relative;
     padding: var(--bizy-popup-padding);
     background-color: var(--bizy-popup-background-color);
-    min-width: var(--bizy-popup-min-width);
-    width: var(--bizy-popup-width);
-    max-width: var(--bizy-popup-max-width);
     border-radius: var(--bizy-popup-border-radius);
 }
 

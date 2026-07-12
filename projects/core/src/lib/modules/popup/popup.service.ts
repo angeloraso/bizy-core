@@ -71,6 +71,7 @@ export class BizyPopupService {
           disableClose: data.disableCloseButton ?? false,
           disableDrag: data.disableDragButton ?? false,
           position,
+          element: data.element,
           placement
         },
         autoFocus: true,
@@ -101,9 +102,9 @@ export class BizyPopupService {
 
     let dialogRef: DialogRef<unknown, any> | null = null;
     if (data.id) {
-      dialogRef = Array.from(BizyPopupService.dialogs).find(_dialogRef => _dialogRef.id === data.id);
+      dialogRef = Array.from(BizyPopupService.dialogs).find(_dialogRef => _dialogRef.id === data.id) || null;
     } else {
-      dialogRef = Array.from(BizyPopupService.dialogs).pop();
+      dialogRef = Array.from(BizyPopupService.dialogs).pop() || null;
     }
 
     if (dialogRef && dialogRef.componentInstance instanceof BizyPopupWrapperComponent) {
@@ -118,9 +119,9 @@ export class BizyPopupService {
   async close(data?: {id?: string, response?: unknown}) {
     let dialogRef: DialogRef<unknown, any> | null = null;
     if (data && data.id) {
-      dialogRef = Array.from(BizyPopupService.dialogs).find(_dialogRef => _dialogRef.id === data.id);
+      dialogRef = Array.from(BizyPopupService.dialogs).find(_dialogRef => _dialogRef.id === data.id) || null;
     } else {
-      dialogRef = Array.from(BizyPopupService.dialogs).pop();
+      dialogRef = Array.from(BizyPopupService.dialogs).pop() || null;
     }
 
     if (dialogRef) {
@@ -131,6 +132,7 @@ export class BizyPopupService {
       dialogRef.close(data ? data.response : null);
       BizyPopupService.dialogs.delete(dialogRef);
     }
+    this.#data = null;
   }
 
   closeAll() {
@@ -138,6 +140,7 @@ export class BizyPopupService {
       _dialogRef.close();
     });
     BizyPopupService.dialogs.clear();
+    this.#data = null;
   }
 
   openedPopups(): number {
