@@ -38,6 +38,9 @@ export class BizyCopyToClipboardDirective {
   ) {
     this.#svgElement = this.renderer.createElement('div');
     this.renderer.setStyle(this.elementRef.nativeElement, 'position', 'relative');
+    this.renderer.setStyle(this.elementRef.nativeElement, 'paddingRight', '1.6rem');
+    this.renderer.setStyle(this.elementRef.nativeElement, 'cursor', 'pointer');
+    this.renderer.setStyle(this.elementRef.nativeElement, 'overflow', 'hidden');
     this.renderer.setStyle(this.#svgElement, 'position', 'absolute');
     this.renderer.setStyle(this.#svgElement, 'right', '0');
     this.renderer.setStyle(this.#svgElement, 'opacity', '0');
