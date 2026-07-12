@@ -1,6 +1,6 @@
 export { BizyServicesModule } from './services.module';
 export { BizyAnimationService, BIZY_ANIMATION } from './animation.service';
-export { BizyDeviceService } from "./device/device.service";
+export { BizyDeviceService, IWindowSize, BIZY_DEVICE_OS } from "./device/device.service";
 export { BizyCacheService } from './cache.service';
 export { BizyCopyToClipboardService } from "./copy-to-clipboard.service";
 export { BizyExportToCSVService } from './export-to-csv.service';
