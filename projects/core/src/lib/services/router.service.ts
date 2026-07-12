@@ -3,11 +3,10 @@ import { ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd, NavigationStart,
 import { fromEvent, merge, Observable } from 'rxjs';
 import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({providedIn: 'root'})
 export class BizyRouterService {
   static backPath = '';
+  static data: Record<string, unknown> = {};
 
   transitionsEnd$: Observable<ActivatedRouteSnapshot>;
 
@@ -37,21 +36,13 @@ export class BizyRouterService {
     this.routeChange$ = merge(this.transitionsEnd$, this.popStateEvent$).pipe(map(() => void 0));
   }
 
-  getURL() {
-    return window.location.pathname;
-  }
+  getURL = () => window.location.pathname;
 
-  getBackPath() {
-    return BizyRouterService.backPath;
-  }
+  getBackPath = () => BizyRouterService.backPath;
 
-  getId(activatedRoute: ActivatedRoute, param: string): string | null {
-    return activatedRoute.snapshot.paramMap.get(param);
-  }
+  getId = (activatedRoute: ActivatedRoute, param: string): string | null => activatedRoute.snapshot.paramMap.get(param);
 
-  getQueryParam(activatedRoute: ActivatedRoute, param: string): string | null {
-    return activatedRoute.snapshot.queryParamMap.get(param);
-  }
+  getQueryParam = (activatedRoute: ActivatedRoute, param: string): string | null => activatedRoute.snapshot.queryParamMap.get(param);
 
   getAllQueryParam(): Record<string, string> {
     const params = new URL(window.location.href).searchParams as any;
@@ -64,6 +55,8 @@ export class BizyRouterService {
     return queryParams;
   }
 
+  getData = () => BizyRouterService.data;
+
   goTo(data: { path: string; params?: Record<string, string>, replace?: boolean, skip?: boolean }) {
     if (data.replace) {
       BizyRouterService.backPath = '';
@@ -71,8 +64,18 @@ export class BizyRouterService {
       BizyRouterService.backPath = this.getURL();
     }
 
+    if (this.router.routerState && this.router.routerState.snapshot && this.router.routerState.snapshot.root) {
+      const root = this.router.routerState.snapshot.root;
+      let route = root;
+      while (route.firstChild) {
+        route = route.firstChild;
+      }
+
+      BizyRouterService.data = route && route.data ? route.data : {};
+    }
+
     if (data.path[0] === '/') {
-      this.router.navigateByUrl(`${data.path}${this._serialize(data.params)}`, { replaceUrl: data.replace ?? false, skipLocationChange: data.skip ?? false });
+      this.router.navigateByUrl(`${data.path}${this.#serialize(data.params)}`, { replaceUrl: data.replace ?? false, skipLocationChange: data.skip ?? false });
       return;
     }
 
@@ -80,7 +83,7 @@ export class BizyRouterService {
     const index = path.indexOf('?');
     const url = index !== -1 ? path.substring(0, index) : path;
 
-    this.router.navigateByUrl(`${url}/${data.path}${this._serialize(data.params)}`, { replaceUrl: data.replace ?? false, skipLocationChange: data.skip ?? false  });
+    this.router.navigateByUrl(`${url}/${data.path}${this.#serialize(data.params)}`, { replaceUrl: data.replace ?? false, skipLocationChange: data.skip ?? false  });
   }
 
   goBack(data?: {path: string}) {
@@ -108,7 +111,7 @@ export class BizyRouterService {
     }
   }
 
-  private _serialize(params?: Record<string, string>): string {
+  #serialize(params?: Record<string, string>): string {
     if (!params) {
       return '';
     }
