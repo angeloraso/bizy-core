@@ -1,7 +1,8 @@
 import { Subject, Subscription } from 'rxjs';
-import { UppyFile } from '@uppy/core';
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, inject, Input, OnDestroy, Output } from '@angular/core';
 import { BizyFileUploaderService } from './file-uploader.service';
+import { BIZY_FILE_UPLOADER_MODE, BizyFileUploaderAttachment, BizyFileUploaderFile, BizyFileUploaderInputFile, BizyFileUploaderLoadFile } from './file-uploader.types';
+
 @Component({
   selector: 'bizy-file-uploader',
   template: '<div [id]="TEMPLATE_ID"></div>',
@@ -20,28 +21,43 @@ export class BizyFileUploaderComponent implements AfterViewInit, OnDestroy {
   @Input() maxTotalFileSize: number | null = 31458000; // 30MB
   @Input() maxNumberOfFiles: number | null = null;
   @Input() minNumberOfFiles: number | null = null;
-  @Input() allowedFileTypes = ['.wav'];
+  @Input() allowedFileTypes: Array<string> | string | null = null;
   @Input() hideUploadButton: boolean = true;
   @Input() hidePauseResumeButton: boolean = true;
   @Input() hideCancelButton: boolean = false;
   @Input() disableLocalFiles: boolean = false;
-  @Input() load: Subject<{id: string; file: File}>;
-  @Input() upload: Subject<{endpoint: string, headers?: Record<string,string>}>;
+  @Input() mode: BIZY_FILE_UPLOADER_MODE = BIZY_FILE_UPLOADER_MODE.UPLOAD;
+  @Input() load: Subject<BizyFileUploaderLoadFile> | null = null;
+  @Input() upload: Subject<{endpoint: string, headers?: Record<string,string>}> | null = null;
+
+  @Input() set files(value: Array<BizyFileUploaderInputFile> | null | undefined) {
+    this.#inputFiles = value ?? [];
+    this.#syncInputFiles();
+  }
+
+  get files(): Array<BizyFileUploaderInputFile> {
+    return this.#inputFiles;
+  }
 
   @Input() set disabled(value: boolean) {
     this.#fileUploader.disable(Boolean(value));
   };
 
   @Output() completed = new EventEmitter<{successful: Array<{fileId: string, meta: unknown}>, failed: Array<{fileId: string, meta: unknown}>}>();
-  @Output() loadedFiles = new EventEmitter<Array<UppyFile>>();
+  @Output() loadedFiles = new EventEmitter<Array<BizyFileUploaderFile>>();
+  @Output() attachedFiles = new EventEmitter<Array<BizyFileUploaderAttachment>>();
   
 
   #subscription = new Subscription();
-  #files: Set<UppyFile> = new Set();
+  #files: Set<BizyFileUploaderFile> = new Set();
+  #inputFiles: Array<BizyFileUploaderInputFile> = [];
+  #inputFileIds = new Map<string, string>();
+  #isFileUploaderReady = false;
 
   readonly TEMPLATE_ID = 'bizy-file-uploader-template';
 
   ngAfterViewInit(): void {
+    const allowedFileTypes = this.#getAllowedFileTypes();
     this.#fileUploader.createFileUploader({
       maxFileSize: this.maxFileSize,
       minFileSize: this.minFileSize,
@@ -50,13 +66,14 @@ export class BizyFileUploaderComponent implements AfterViewInit, OnDestroy {
       minNumberOfFiles: this.minNumberOfFiles,
       dragDropAreaWidth: this.dragDropAreaWidth,
       dragDropAreaHeight: this.dragDropAreaHeight,
-      allowedFileTypes: this.allowedFileTypes,
+      allowedFileTypes,
       language: this.language,
       templateId: this.TEMPLATE_ID,
       hideCancelButton: this.hideCancelButton,
       hideUploadButton: this.hideUploadButton,
       hidePauseResumeButton: this.hidePauseResumeButton,
       disableLocalFiles: this.disableLocalFiles,
+      enableUpload: this.mode === BIZY_FILE_UPLOADER_MODE.UPLOAD,
       headers: this.headers,
     });
 
@@ -99,13 +116,102 @@ export class BizyFileUploaderComponent implements AfterViewInit, OnDestroy {
 
     this.#subscription.add(this.#fileUploader.fileLoaded$.subscribe(file => {
       this.#files.add(file);
-      this.loadedFiles.emit(Array.from(this.#files));
+      this.#emitFiles();
     }));
 
     this.#subscription.add(this.#fileUploader.fileRemoved$.subscribe(file => {
       this.#files.delete(file);
-      this.loadedFiles.emit(Array.from(this.#files));
+      this.#removeTrackedInputFile(file.id);
+      this.#emitFiles();
     }));
+
+    this.#isFileUploaderReady = true;
+    this.#syncInputFiles();
+  }
+
+  #getAllowedFileTypes = (): Array<string> | null => {
+    if (typeof this.allowedFileTypes === 'string') {
+      return [this.allowedFileTypes];
+    }
+
+    if (Array.isArray(this.allowedFileTypes) && this.allowedFileTypes.length > 0) {
+      return this.allowedFileTypes;
+    }
+
+    return null;
+  }
+
+  #syncInputFiles = (): void => {
+    if (!this.#isFileUploaderReady) {
+      return;
+    }
+
+    const nextInputKeys = new Set(this.#inputFiles.map(this.#getInputFileKey));
+    Array.from(this.#inputFileIds.entries()).forEach(([key, fileId]) => {
+      if (!nextInputKeys.has(key)) {
+        this.#fileUploader.remove(fileId);
+        this.#inputFileIds.delete(key);
+      }
+    });
+
+    this.#inputFiles.forEach(inputFile => {
+      const key = this.#getInputFileKey(inputFile);
+      if (this.#inputFileIds.has(key) || (this.maxNumberOfFiles && this.#files.size >= this.maxNumberOfFiles)) {
+        return;
+      }
+
+      try {
+        const fileId = this.#fileUploader.load(inputFile);
+        if (fileId) {
+          this.#inputFileIds.set(key, fileId);
+        }
+      } catch {
+        return;
+      }
+    });
+  }
+
+  #getInputFileKey = (inputFile: BizyFileUploaderInputFile): string => {
+    if (this.#isLoadFile(inputFile)) {
+      return `id:${inputFile.id}`;
+    }
+
+    return `file:${inputFile.name}:${inputFile.size}:${inputFile.type}:${inputFile.lastModified}`;
+  }
+
+  #isLoadFile = (inputFile: BizyFileUploaderInputFile): inputFile is BizyFileUploaderLoadFile => {
+    return typeof inputFile === 'object' && inputFile !== null && 'file' in inputFile;
+  }
+
+  #removeTrackedInputFile = (fileId: string): void => {
+    Array.from(this.#inputFileIds.entries()).forEach(([key, trackedFileId]) => {
+      if (trackedFileId === fileId) {
+        this.#inputFileIds.delete(key);
+      }
+    });
+  }
+
+  #emitFiles = (): void => {
+    const files = Array.from(this.#files);
+    this.loadedFiles.emit(files);
+    this.attachedFiles.emit(this.#mapAttachedFiles(files));
+  }
+
+  #mapAttachedFiles = (files: Array<BizyFileUploaderFile>): Array<BizyFileUploaderAttachment> => {
+    return files.flatMap(file => {
+      if (file.isRemote === true || !file.data) {
+        return [];
+      }
+
+      return [{
+        id: file.id,
+        file: file.data,
+        meta: file.meta,
+        name: file.name,
+        size: file.size,
+        type: file.type
+      }];
+    });
   }
 
   getNativeElement = () => this.#elementRef?.nativeElement;

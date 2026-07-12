@@ -33,6 +33,7 @@ export class BizyInputComponent implements OnDestroy {
   @Output() valueChange = new EventEmitter<string | number>();
   @Output() onChange = new EventEmitter<string | number>();
   @Output() onEnter = new EventEmitter<KeyboardEvent>();
+  @Output() onKey = new EventEmitter<string>();
   @Output() onBackspace = new EventEmitter<KeyboardEvent>();
   @Output() onSelect = new EventEmitter<PointerEvent>();
   @Output() onBlur = new EventEmitter<FocusEvent>();
@@ -129,6 +130,14 @@ export class BizyInputComponent implements OnDestroy {
     }
 
     this.onEnter.emit(event);
+  }
+
+  _onKeyDown = (event: KeyboardEvent) => {
+    if (this.disabled || this.readonly || !this.focused) {
+      return;
+    }
+
+    this.onKey.emit(event.key);
   }
 
   _onBackspace = (event: KeyboardEvent) => {

@@ -1,11 +1,11 @@
-import Uppy, { ErrorResponse, SuccessResponse, UppyFile } from '@uppy/core';
+import Uppy from '@uppy/core';
 import { Observable, Subject } from 'rxjs';
 import { Injectable, Renderer2, inject, DOCUMENT } from '@angular/core';
 import es_ES from '@uppy/locales/lib/es_ES';
 import en_US from '@uppy/locales/lib/en_US';
 import Dashboard from '@uppy/dashboard';
 import XHRUpload from '@uppy/xhr-upload';
-
+import { BizyFileUploaderErrorResponse, BizyFileUploaderFile, BizyFileUploaderInputFile, BizyFileUploaderLoadFile, BizyFileUploaderMeta, BizyFileUploaderResponseBody, BizyFileUploaderSuccessResponse } from './file-uploader.types';
 
 const ES = { 
   ...es_ES,
@@ -13,8 +13,7 @@ const ES = {
     ...es_ES.strings,
     noDuplicates: 'Archivo duplicado: \'%{fileName}\'',
     browseFiles: 'buscar archivo',
-    dropPasteFiles: 'Soltar archivo aquí, pegar o %{browse}'
-
+    dropPasteFiles: 'Soltar archivo aquí, pegar o %{browseFiles}'
   }
 };
 
@@ -24,32 +23,29 @@ const EN = {
     ...en_US.strings,
     noDuplicates: 'Duplicated file: \'%{fileName}\'',
     browseFiles: 'browse file',
-    dropPasteFiles: 'Drop a file here or %{browse}'
+    dropPasteFiles: 'Drop a file here or %{browseFiles}'
   }
 };
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class BizyFileUploaderService {
   #renderer = inject(Renderer2);
   #document = inject(DOCUMENT);
-  #fileLoaded = new Subject<UppyFile>();
-  #fileRemoved = new Subject<UppyFile>();
+  #fileLoaded = new Subject<BizyFileUploaderFile>();
+  #fileRemoved = new Subject<BizyFileUploaderFile>();
   #upload = new Subject<void>();
-  #uploadSuccess = new Subject<{file: UppyFile, response: SuccessResponse}>();
-  #error = new Subject<{ file?: UppyFile; error: Error, response?: ErrorResponse }>();
+  #uploadSuccess = new Subject<{file: BizyFileUploaderFile, response: BizyFileUploaderSuccessResponse}>();
+  #error = new Subject<{ file?: BizyFileUploaderFile; error: Error, response?: BizyFileUploaderErrorResponse }>();
   #cancelAll = new Subject<void>();
-  #complete = new Subject<{ successful: Array<UppyFile>; failed: Array<UppyFile> }>();
+  #complete = new Subject<{ successful: Array<BizyFileUploaderFile>; failed: Array<BizyFileUploaderFile> }>();
   #disableLocalFiles: boolean = false;
+  #uppy: Uppy<BizyFileUploaderMeta, BizyFileUploaderResponseBody> | null = null;
 
-  #uppy: Uppy | null = null;
-
-  get fileLoaded$(): Observable<UppyFile> {
+  get fileLoaded$(): Observable<BizyFileUploaderFile> {
     return this.#fileLoaded.asObservable();
   }
 
-  get fileRemoved$(): Observable<UppyFile> {
+  get fileRemoved$(): Observable<BizyFileUploaderFile> {
     return this.#fileRemoved.asObservable();
   }
 
@@ -57,11 +53,11 @@ export class BizyFileUploaderService {
     return this.#upload.asObservable();
   }
 
-  get uploadSuccess$(): Observable<{file: UppyFile, response: SuccessResponse}> {
+  get uploadSuccess$(): Observable<{file: BizyFileUploaderFile, response: BizyFileUploaderSuccessResponse}> {
     return this.#uploadSuccess.asObservable();
   }
 
-  get error$(): Observable<{ file?: UppyFile; error: Error }> {
+  get error$(): Observable<{ file?: BizyFileUploaderFile; error: Error; response?: BizyFileUploaderErrorResponse }> {
     return this.#error.asObservable();
   }
 
@@ -69,7 +65,7 @@ export class BizyFileUploaderService {
     return this.#cancelAll.asObservable();
   }
 
-  get complete$(): Observable<{ successful: Array<UppyFile>; failed: Array<UppyFile> }> {
+  get complete$(): Observable<{ successful: Array<BizyFileUploaderFile>; failed: Array<BizyFileUploaderFile> }> {
     return this.#complete.asObservable();
   }
 
@@ -81,18 +77,19 @@ export class BizyFileUploaderService {
       minNumberOfFiles: number | null;
       dragDropAreaWidth: string;
       dragDropAreaHeight: string;
-      allowedFileTypes: Array<string>;
+      allowedFileTypes: Array<string> | null;
       language: 'es' | 'en';
       templateId: string;
       hideCancelButton: boolean,
       hideUploadButton: boolean,
       hidePauseResumeButton: boolean,
       disableLocalFiles: boolean,
+      enableUpload: boolean,
       headers: Record<string, string>;
   }): void {
     const locale = data.language === 'es' ? ES : EN;
     this.#disableLocalFiles = data.disableLocalFiles;
-    this.#uppy = new Uppy({
+    this.#uppy = new Uppy<BizyFileUploaderMeta, BizyFileUploaderResponseBody>({
       locale,
       infoTimeout: 2500,
       restrictions: {
@@ -103,7 +100,9 @@ export class BizyFileUploaderService {
         minNumberOfFiles: data.minNumberOfFiles,
         allowedFileTypes: data.allowedFileTypes
       }
-    })
+    });
+
+    this.#uppy
       .use(Dashboard, {
         inline: true,
         singleFileFullScreen: false,
@@ -111,20 +110,25 @@ export class BizyFileUploaderService {
         width: data.dragDropAreaWidth,
         height: data.dragDropAreaHeight,
         hideCancelButton: data.hideCancelButton,
-        hideUploadButton: data.hideUploadButton,
+        hideUploadButton: !data.enableUpload || data.hideUploadButton,
         hidePauseResumeButton: data.hidePauseResumeButton,
         disableLocalFiles: data.disableLocalFiles
-      })
-      .use(XHRUpload, {
+      });
+
+    if (data.enableUpload) {
+      this.#uppy.use(XHRUpload, {
         endpoint: '',
         headers: data.headers,
-        getResponseData: (responseText, response) => {
+        getResponseData: xhr => {
           return {
-            fileId: responseText,
-            response
+            fileId: xhr.responseText,
+            response: xhr
           };
         }
-      })
+      });
+    }
+
+    this.#uppy
       .on('file-added', file => {
         this.#removeUnnecessaryOptions(this.#disableLocalFiles);
         this.#fileLoaded.next(file);
@@ -155,30 +159,42 @@ export class BizyFileUploaderService {
       })
       .on('complete', result => {
         this.#removeUnnecessaryOptions(this.#disableLocalFiles);
-        this.#complete.next(result);
+        this.#complete.next({
+          successful: result.successful ?? [],
+          failed: result.failed ?? []
+        });
       });
       
       this.#removeUnnecessaryOptions(this.#disableLocalFiles);
   }
 
-  load = (data: { id: string; file: File }): void => {
+  load = (data: BizyFileUploaderInputFile): string | null => {
     if (!this.#uppy) {
-      return;
+      return null;
     }
 
-    this.#uppy.addFile({
-      name: data.file.name, // File name
-      type: data.file.type, // File type
-      data: data.file, // File blob
+    const loadFile = this.#normalizeLoadFile(data);
+    return this.#uppy.addFile({
+      name: loadFile.file.name, // File name
+      type: loadFile.file.type, // File type
+      data: loadFile.file, // File blob
       meta: {
         // Optional, store the directory path of a file so Uppy can tell identical files in different directories apart.
-        relativePath: data.file.webkitRelativePath,
-        referenceId: data.id
+        relativePath: loadFile.file.webkitRelativePath,
+        referenceId: loadFile.id
       },
       source: 'Local', // Optional, determines the source of the file, for example, Instagram.
       isRemote: false // Optional, set to true if actual file is not in the browser, but on some remote server, for example,
       // when using companion in combination with Instagram.
     });
+  }
+
+  remove = (fileId: string): void => {
+    if (!this.#uppy) {
+      return;
+    }
+
+    this.#uppy.removeFile(fileId);
   }
 
   disable(value: boolean) {
@@ -187,7 +203,9 @@ export class BizyFileUploaderService {
     }
 
     const dashboard = this.#uppy.getPlugin('Dashboard');
-    dashboard.setOptions({ disabled: value });
+    if (dashboard) {
+      dashboard.setOptions({ disabled: value });
+    }
   }
 
   upload = (data: {endpoint: string, headers?: Record<string,string>}) => {
@@ -195,7 +213,12 @@ export class BizyFileUploaderService {
       return;
     }
 
-    this.#uppy.getPlugin('XHRUpload')!.setOptions({
+    const xhrUpload = this.#uppy.getPlugin('XHRUpload');
+    if (!xhrUpload) {
+      return;
+    }
+
+    xhrUpload.setOptions({
       endpoint: data.endpoint,
       headers: data.headers ?? {}
     });
@@ -208,6 +231,18 @@ export class BizyFileUploaderService {
     }
 
     this.#uppy.cancelAll();
+  }
+
+  #normalizeLoadFile = (data: BizyFileUploaderInputFile): Partial<BizyFileUploaderLoadFile> & {file: File} => {
+    if (this.#isLoadFile(data)) {
+      return data;
+    }
+
+    return { file: data };
+  }
+
+  #isLoadFile = (data: BizyFileUploaderInputFile): data is BizyFileUploaderLoadFile => {
+    return typeof data === 'object' && data !== null && 'file' in data;
   }
 
   #removeUnnecessaryOptions = (remove: boolean) => {
