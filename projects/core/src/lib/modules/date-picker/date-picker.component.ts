@@ -4,7 +4,7 @@ import monthSelectPlugin from 'flatpickr/dist/plugins/monthSelect/index.js';
 import { Spanish } from "flatpickr/dist/l10n/es.js"
 import { BizyInputComponent } from '../input/input.component';
 import { CommonModule, DatePipe } from '@angular/common';
-
+import type { Instance } from 'flatpickr/dist/types/instance';
 
 @Component({
   selector: 'bizy-date-picker',
@@ -19,7 +19,7 @@ export class BizyDatePickerComponent {
   readonly #datePipe = inject(DatePipe);
   readonly #ref = inject(ChangeDetectorRef);
 
-  @ViewChild('bizyDatePicker') private bizyDatePicker: BizyInputComponent;
+  @ViewChild('bizyDatePicker') private bizyDatePicker: BizyInputComponent | null = null;
   @Input() id: string = `bizy-date-picker-${Math.random()}`;
   @Input() disabled: boolean = false;
   @Input() customClass: string = '';
@@ -55,7 +55,7 @@ export class BizyDatePickerComponent {
     this.mode = 'single';
     this.dates = [date];
     this.time = date;
-    this.value = this.#datePipe.transform(date, this.datePipeFormat, undefined, 'es-AR');
+    this.value = this.#datePipe.transform(date, this.datePipeFormat, undefined, 'es-AR')!;
     if (!this.enableTime || !this.started) {
       this.#start();
     }
@@ -127,6 +127,8 @@ export class BizyDatePickerComponent {
         }));
       }
 
+      const overlayHost = this.#getOverlayHost();
+
       flatpickr(this.bizyDatePicker.bizyInputWrapper.nativeElement, {
         locale: Spanish,
         mode: this.mode,
@@ -138,6 +140,11 @@ export class BizyDatePickerComponent {
         maxDate: this.maxDate,
         noCalendar: this.noCalendar,
         disableMobile: true,
+        ...(overlayHost ? {
+          appendTo: overlayHost,
+          position: (instance: Instance, positionElement?: HTMLElement) =>
+            this.#positionCalendar(instance, positionElement)
+        } : {}),
         time_24hr: true,
         defaultDate: this.mode === 'single' ? new Date(this.dates[0]) : this.dates.map(_date => new Date(_date)),
         defaultHour: this.#getHour(this.time),
@@ -180,6 +187,37 @@ export class BizyDatePickerComponent {
   }
   
   getNativeElement = () => this.#elementRef?.nativeElement;
+
+  #getOverlayHost(): HTMLElement | undefined {
+    const overlayHost = this.#elementRef.nativeElement.closest('.cdk-overlay-popover');
+    return overlayHost instanceof HTMLElement ? overlayHost : undefined;
+  }
+
+  #positionCalendar(instance: Instance, customPositionElement?: HTMLElement) {
+    const calendar = instance.calendarContainer;
+    const positionElement = customPositionElement ?? instance._positionElement;
+
+    if (!calendar || !positionElement) {
+      return;
+    }
+
+    const inputBounds = positionElement.getBoundingClientRect();
+    const calendarHeight = Array.from(calendar.children)
+      .reduce((height, child) => height + (child as HTMLElement).offsetHeight, 0);
+    const calendarWidth = calendar.offsetWidth;
+    const showOnTop = window.innerHeight - inputBounds.bottom < calendarHeight && inputBounds.top > calendarHeight;
+    const top = showOnTop ? inputBounds.top - calendarHeight - 2 : inputBounds.bottom + 2;
+    const left = Math.max(0, Math.min(inputBounds.left, window.innerWidth - calendarWidth));
+
+    calendar.classList.toggle('arrowTop', !showOnTop);
+    calendar.classList.toggle('arrowBottom', showOnTop);
+    calendar.style.position = 'fixed';
+    calendar.style.top = `${top}px`;
+    calendar.style.left = `${left}px`;
+    calendar.style.right = 'auto';
+    calendar.style.zIndex = '1001';
+    calendar.style.pointerEvents = 'auto';
+  }
 
   #getHour(time: number): number {
     const date = new Date(time);
