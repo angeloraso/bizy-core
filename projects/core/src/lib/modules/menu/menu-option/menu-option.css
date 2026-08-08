@@ -9,13 +9,14 @@
 .bizy-menu-option {
     font-size: 1rem;
     width: 100%;
+    height: var(--bizy-menu-option-height, 2rem);
     border: none;
     background-color: var(--bizy-menu-option-background-color);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    column-gap: 0.5rem;
-    padding: 0.5rem;
+    column-gap:  var(--bizy-menu-option-column-gap, 0.5rem);
+    padding:  var(--bizy-menu-option-padding, 0.5rem);
     color: var(--bizy-menu-option-color);
     cursor: pointer;
 }

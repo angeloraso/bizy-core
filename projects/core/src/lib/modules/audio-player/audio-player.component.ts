@@ -5,7 +5,7 @@ import {
   ChangeDetectionStrategy,
   Renderer2
 } from '@angular/core';
-import { AnimationItem } from 'lottie-web';
+import type { AnimationItem } from 'lottie-web';
 import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
 import playAnimation from '../../assets/animations/play.json';
 import muteAnimation from '../../assets/animations/mute.json';

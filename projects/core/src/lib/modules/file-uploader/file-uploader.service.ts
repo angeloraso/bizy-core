@@ -1,31 +1,7 @@
-import Uppy from '@uppy/core';
+import type Uppy from '@uppy/core';
 import { Observable, Subject } from 'rxjs';
 import { Injectable, Renderer2, inject, DOCUMENT } from '@angular/core';
-import es_ES from '@uppy/locales/lib/es_ES';
-import en_US from '@uppy/locales/lib/en_US';
-import Dashboard from '@uppy/dashboard';
-import XHRUpload from '@uppy/xhr-upload';
 import { BizyFileUploaderErrorResponse, BizyFileUploaderFile, BizyFileUploaderInputFile, BizyFileUploaderLoadFile, BizyFileUploaderMeta, BizyFileUploaderResponseBody, BizyFileUploaderSuccessResponse } from './file-uploader.types';
-
-const ES = { 
-  ...es_ES,
-  strings: {
-    ...es_ES.strings,
-    noDuplicates: 'Archivo duplicado: \'%{fileName}\'',
-    browseFiles: 'buscar archivo',
-    dropPasteFiles: 'Soltar archivo aquí, pegar o %{browseFiles}'
-  }
-};
-
-const EN = { 
-  ...en_US,
-  strings: {
-    ...en_US.strings,
-    noDuplicates: 'Duplicated file: \'%{fileName}\'',
-    browseFiles: 'browse file',
-    dropPasteFiles: 'Drop a file here or %{browseFiles}'
-  }
-};
 
 @Injectable()
 export class BizyFileUploaderService {
@@ -69,7 +45,7 @@ export class BizyFileUploaderService {
     return this.#complete.asObservable();
   }
 
-  createFileUploader(data: {
+  async createFileUploader(data: {
       maxFileSize: number | null;
       minFileSize: number | null;
       maxTotalFileSize: number | null;
@@ -86,10 +62,43 @@ export class BizyFileUploaderService {
       disableLocalFiles: boolean,
       enableUpload: boolean,
       headers: Record<string, string>;
-  }): void {
+  }): Promise<void> {
+    const [
+      { default: UppyConstructor },
+      { default: es_ES },
+      { default: en_US },
+      { default: Dashboard },
+      { default: XHRUpload }
+    ] = await Promise.all([
+      import('@uppy/core'),
+      import('@uppy/locales/lib/es_ES'),
+      import('@uppy/locales/lib/en_US'),
+      import('@uppy/dashboard'),
+      import('@uppy/xhr-upload')
+    ]);
+
+    const ES = {
+      ...es_ES,
+      strings: {
+        ...es_ES.strings,
+        noDuplicates: 'Archivo duplicado: \'%{fileName}\'',
+        browseFiles: 'buscar archivo',
+        dropPasteFiles: 'Soltar archivo aquí, pegar o %{browseFiles}'
+      }
+    };
+    const EN = {
+      ...en_US,
+      strings: {
+        ...en_US.strings,
+        noDuplicates: 'Duplicated file: \'%{fileName}\'',
+        browseFiles: 'browse file',
+        dropPasteFiles: 'Drop a file here or %{browseFiles}'
+      }
+    };
+
     const locale = data.language === 'es' ? ES : EN;
     this.#disableLocalFiles = data.disableLocalFiles;
-    this.#uppy = new Uppy<BizyFileUploaderMeta, BizyFileUploaderResponseBody>({
+    this.#uppy = new UppyConstructor<BizyFileUploaderMeta, BizyFileUploaderResponseBody>({
       locale,
       infoTimeout: 2500,
       restrictions: {
@@ -231,6 +240,11 @@ export class BizyFileUploaderService {
     }
 
     this.#uppy.cancelAll();
+  }
+
+  destroy = (): void => {
+    this.#uppy?.destroy();
+    this.#uppy = null;
   }
 
   #normalizeLoadFile = (data: BizyFileUploaderInputFile): Partial<BizyFileUploaderLoadFile> & {file: File} => {

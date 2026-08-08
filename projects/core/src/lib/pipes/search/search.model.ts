@@ -1,5 +1,4 @@
-import { FuseGetFunction } from "fuse.js";
-
+import type { FuseGetFunction } from 'fuse.js';
 export interface IFuseResult {
   item: any;
   refIndex: number;

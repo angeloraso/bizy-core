@@ -53,12 +53,13 @@ export class BizyFileUploaderComponent implements AfterViewInit, OnDestroy {
   #inputFiles: Array<BizyFileUploaderInputFile> = [];
   #inputFileIds = new Map<string, string>();
   #isFileUploaderReady = false;
+  #destroyed = false;
 
   readonly TEMPLATE_ID = 'bizy-file-uploader-template';
 
-  ngAfterViewInit(): void {
+  async ngAfterViewInit(): Promise<void> {
     const allowedFileTypes = this.#getAllowedFileTypes();
-    this.#fileUploader.createFileUploader({
+    await this.#fileUploader.createFileUploader({
       maxFileSize: this.maxFileSize,
       minFileSize: this.minFileSize,
       maxTotalFileSize: this.maxTotalFileSize,
@@ -76,6 +77,11 @@ export class BizyFileUploaderComponent implements AfterViewInit, OnDestroy {
       enableUpload: this.mode === BIZY_FILE_UPLOADER_MODE.UPLOAD,
       headers: this.headers,
     });
+
+    if (this.#destroyed) {
+      this.#fileUploader.destroy();
+      return;
+    }
 
     if (this.upload) {
       this.#subscription.add(this.upload.subscribe(data => {
@@ -217,7 +223,8 @@ export class BizyFileUploaderComponent implements AfterViewInit, OnDestroy {
   getNativeElement = () => this.#elementRef?.nativeElement;
 
   ngOnDestroy() {
-    this.#fileUploader.cleanAllFiles();
+    this.#destroyed = true;
+    this.#fileUploader.destroy();
     this.#subscription.unsubscribe();
   }
 }

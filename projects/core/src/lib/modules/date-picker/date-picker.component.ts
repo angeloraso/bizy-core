@@ -1,11 +1,8 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, inject, Input, Output, ViewChild } from '@angular/core';
-import flatpickr from "flatpickr";
-import monthSelectPlugin from 'flatpickr/dist/plugins/monthSelect/index.js';
-import { Spanish } from "flatpickr/dist/l10n/es.js"
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, inject, Input, OnDestroy, Output, ViewChild } from '@angular/core';
 import { BizyInputComponent } from '../input/input.component';
 import { CommonModule, DatePipe } from '@angular/common';
 import type { Instance } from 'flatpickr/dist/types/instance';
-
+import type { Plugin } from 'flatpickr/dist/types/options';
 @Component({
   selector: 'bizy-date-picker',
   templateUrl: './date-picker.html',
@@ -14,7 +11,7 @@ import type { Instance } from 'flatpickr/dist/types/instance';
   providers: [DatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BizyDatePickerComponent {
+export class BizyDatePickerComponent implements OnDestroy {
   readonly #elementRef = inject(ElementRef);
   readonly #datePipe = inject(DatePipe);
   readonly #ref = inject(ChangeDetectorRef);
@@ -42,6 +39,10 @@ export class BizyDatePickerComponent {
   mode: 'single' | 'range' = 'single';
   dates: Array<number> = [Date.now()];
   time: number = Date.now();
+  #instance: Instance | null = null;
+  #starting: Promise<void> | null = null;
+  #destroyed = false;
+
 
   get touched(): boolean {
     return this.bizyDatePicker ? this.bizyDatePicker.touched : false;
@@ -57,7 +58,7 @@ export class BizyDatePickerComponent {
     this.time = date;
     this.value = this.#datePipe.transform(date, this.datePipeFormat, undefined, 'es-AR')!;
     if (!this.enableTime || !this.started) {
-      this.#start();
+      void this.#start();
     }
   }
 
@@ -70,7 +71,7 @@ export class BizyDatePickerComponent {
     this.dates = [range.from, range.to];
     this.time = range.from;
     this.value = `${this.#datePipe.transform(range.from, this.datePipeFormat, undefined, 'es-AR')} - ${this.#datePipe.transform(range.to, this.datePipeFormat, undefined, 'es-AR')}`; 
-    this.#start()
+    void this.#start();
   }
 
   value: string = '';
@@ -114,69 +115,98 @@ export class BizyDatePickerComponent {
   }
 
   ngAfterViewInit() {
-    this.#start()
+    void this.#start()
   }
 
-  #start() {
-    if (this.bizyDatePicker && this.bizyDatePicker.bizyInputWrapper && this.bizyDatePicker.bizyInputWrapper.nativeElement) {
-      const plugins = [];
+  ngOnDestroy(): void {
+    this.#destroyed = true;
+    this.#instance?.destroy();
+    this.#instance = null;
+  }
 
-      if (this.dateFormat === 'Y-M') {
-        plugins.push(monthSelectPlugin({
-          shorthand: true
-        }));
-      }
-
-      const overlayHost = this.#getOverlayHost();
-
-      flatpickr(this.bizyDatePicker.bizyInputWrapper.nativeElement, {
-        locale: Spanish,
-        mode: this.mode,
-        dateFormat: this.dateFormat,
-        enableTime: this.enableTime,
-        enableSeconds: this.enableSeconds,
-        plugins,
-        minDate: this.minDate,
-        maxDate: this.maxDate,
-        noCalendar: this.noCalendar,
-        disableMobile: true,
-        ...(overlayHost ? {
-          appendTo: overlayHost,
-          position: (instance: Instance, positionElement?: HTMLElement) =>
-            this.#positionCalendar(instance, positionElement)
-        } : {}),
-        time_24hr: true,
-        defaultDate: this.mode === 'single' ? new Date(this.dates[0]) : this.dates.map(_date => new Date(_date)),
-        defaultHour: this.#getHour(this.time),
-        defaultMinute: this.#getMinute(this.time),
-        onChange: (selectedDates: Array<Date>) => {
-          if (this.mode === 'single' && selectedDates[0]) {
-            const date = new Date(selectedDates[0]);
-            this.dateChange.emit(date.getTime());
-            this.onChange.emit(date.getTime());
-          } else if (selectedDates[0] && selectedDates[1]) {
-            const from = new Date(selectedDates[0]);
-            const to = new Date(selectedDates[1]);
-            to.setHours(23, 59, 59, 999);
-            const range = {from: from.getTime(), to: to.getTime()};
-            this.rangeChange.emit(range);
-            this.onChange.emit(range);
-          }
-        },
-        onOpen: () => {
-          this.opened = true;
-          this.openedChange.emit(this.opened);
-          this.onOpen.emit(this.opened);
-        },
-        onClose: () => {
-          this.opened = false;
-          this.openedChange.emit(this.opened);
-          this.onOpen.emit(this.opened);
-        }
-      });
-
-      this.started = true;
+  async #start(): Promise<void> {
+    if (this.started || this.#starting) {
+      return this.#starting ?? Promise.resolve();
     }
+
+    if (this.bizyDatePicker && this.bizyDatePicker.bizyInputWrapper && this.bizyDatePicker.bizyInputWrapper.nativeElement) {
+      this.#starting = this.#initialize();
+      try {
+        await this.#starting;
+      } finally {
+        this.#starting = null;
+      }
+    }
+  }
+
+  async #initialize(): Promise<void> {
+    const [{ default: flatpickr }, { default: monthSelectPlugin }, { Spanish }] = await Promise.all([
+      import('flatpickr'),
+      import('flatpickr/dist/plugins/monthSelect/index.js'),
+      import('flatpickr/dist/l10n/es.js')
+    ]);
+
+    if (this.#destroyed) {
+      return;
+    }
+
+    const plugins: Array<Plugin> = [];
+
+    if (this.dateFormat === 'Y-M') {
+      plugins.push(monthSelectPlugin({
+        shorthand: true
+      }));
+    }
+
+    const overlayHost = this.#getOverlayHost();
+
+    this.#instance = flatpickr(this.bizyDatePicker!.bizyInputWrapper.nativeElement, {
+      locale: Spanish,
+      mode: this.mode,
+      dateFormat: this.dateFormat,
+      enableTime: this.enableTime,
+      enableSeconds: this.enableSeconds,
+      plugins,
+      minDate: this.minDate,
+      maxDate: this.maxDate,
+      noCalendar: this.noCalendar,
+      disableMobile: true,
+      ...(overlayHost ? {
+        appendTo: overlayHost,
+        position: (instance: Instance, positionElement?: HTMLElement) =>
+          this.#positionCalendar(instance, positionElement)
+      } : {}),
+      time_24hr: true,
+      defaultDate: this.mode === 'single' ? new Date(this.dates[0]) : this.dates.map(_date => new Date(_date)),
+      defaultHour: this.#getHour(this.time),
+      defaultMinute: this.#getMinute(this.time),
+      onChange: (selectedDates: Array<Date>) => {
+        if (this.mode === 'single' && selectedDates[0]) {
+          const date = new Date(selectedDates[0]);
+          this.dateChange.emit(date.getTime());
+          this.onChange.emit(date.getTime());
+        } else if (selectedDates[0] && selectedDates[1]) {
+          const from = new Date(selectedDates[0]);
+          const to = new Date(selectedDates[1]);
+          to.setHours(23, 59, 59, 999);
+          const range = {from: from.getTime(), to: to.getTime()};
+          this.rangeChange.emit(range);
+          this.onChange.emit(range);
+        }
+      },
+      onOpen: () => {
+        this.opened = true;
+        this.openedChange.emit(this.opened);
+        this.onOpen.emit(this.opened);
+      },
+      onClose: () => {
+        this.opened = false;
+        this.openedChange.emit(this.opened);
+        this.onOpen.emit(this.opened);
+      }
+    });
+
+    this.started = true;
   }
 
   setTouched(touched: boolean) {

@@ -31,6 +31,9 @@ export class BizyRouterService {
       map(() => this.router.routerState.snapshot.root)
     );
 
+    this.#updateData(this.router.routerState.snapshot.root);
+    this.transitionsEnd$.subscribe(snapshot => this.#updateData(snapshot));
+
     this.popStateEvent$ = fromEvent<PopStateEvent>(window, 'popstate');
 
     this.routeChange$ = merge(this.transitionsEnd$, this.popStateEvent$).pipe(map(() => void 0));
@@ -62,16 +65,6 @@ export class BizyRouterService {
       BizyRouterService.backPath = '';
     } else {
       BizyRouterService.backPath = this.getURL();
-    }
-
-    if (this.router.routerState && this.router.routerState.snapshot && this.router.routerState.snapshot.root) {
-      const root = this.router.routerState.snapshot.root;
-      let route = root;
-      while (route.firstChild) {
-        route = route.firstChild;
-      }
-
-      BizyRouterService.data = route && route.data ? route.data : {};
     }
 
     if (data.path[0] === '/') {
@@ -109,6 +102,15 @@ export class BizyRouterService {
         });
       }, 1);
     }
+  }
+
+  #updateData(root: ActivatedRouteSnapshot): void {
+    let route = root;
+    while (route.firstChild) {
+      route = route.firstChild;
+    }
+
+    BizyRouterService.data = route.data ?? {};
   }
 
   #serialize(params?: Record<string, string>): string {

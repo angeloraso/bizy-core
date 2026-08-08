@@ -8,7 +8,6 @@
     width: var(--bizy-popup-width);
     min-width: var(--bizy-popup-min-width);
     max-width: var(--bizy-popup-max-width);
-    max-height: 95dvh;
     z-index: 10;
 }
 
