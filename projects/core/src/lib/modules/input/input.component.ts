@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnDestroy, Output, ViewChild, ContentChildren, QueryList, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnDestroy, Output, ViewChild, ContentChildren, QueryList, inject, OnChanges, SimpleChanges } from '@angular/core';
 import { Subject, Subscription, debounceTime, fromEvent } from 'rxjs';
 import { BizyInputOptionComponent } from './input-option/input-option.component';
 import { CommonModule } from '@angular/common';
@@ -13,7 +13,7 @@ import { BizyCurrencyFormatDirective } from '../../directives/currency-format.di
   imports: [CommonModule, FormsModule, OverlayModule, BizyCurrencyFormatDirective],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BizyInputComponent implements OnDestroy {
+export class BizyInputComponent implements OnChanges, OnDestroy {
   readonly #elementRef = inject(ElementRef);
   readonly #ref = inject(ChangeDetectorRef);
 
@@ -63,8 +63,14 @@ export class BizyInputComponent implements OnDestroy {
 
         this.#subscription.add(fromEvent(this.#input.nativeElement, 'paste').subscribe(this.#paste));
 
-        this.setFocus(this.autofocus);
+        this.#applyAutofocus();
       }, 0);
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['autofocus']) {
+      this.#applyAutofocus();
     }
   }
 
@@ -212,6 +218,14 @@ export class BizyInputComponent implements OnDestroy {
     }
 
     this.#ref.detectChanges();
+  }
+
+  #applyAutofocus = () => {
+    if (this.disabled || this.readonly) {
+      return;
+    }
+
+    this.setFocus(this.autofocus);
   }
 
   close = (event?: PointerEvent & {target: {id: string}}, button?: HTMLButtonElement) => {
