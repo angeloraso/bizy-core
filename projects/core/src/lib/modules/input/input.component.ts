@@ -87,6 +87,9 @@ export class BizyInputComponent implements OnChanges, OnDestroy {
         if (_value !== this._currencyValue) {
           this.#input.nativeElement.setValue(this._currencyValue);
         }
+      } else {
+        // Keep the initial value available until the async currency directive is ready.
+        this._value = this._currencyValue;
       }
 
       return;
