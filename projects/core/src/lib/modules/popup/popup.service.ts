@@ -7,7 +7,7 @@ import { BizyFullScreenPopupWrapperComponent } from "./full-screen-popup-wrapper
 import { BIZY_ANIMATION, BizyAnimationService, BizyValidatorService } from "../../services";
 import { POPUP_PLACEMENT } from "./popup.types";
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class BizyPopupService {
   readonly #animation = inject(BizyAnimationService);
   readonly #validator = inject(BizyValidatorService);
