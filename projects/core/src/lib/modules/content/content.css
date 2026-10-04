@@ -1,10 +1,12 @@
 :host {
   flex: 1;
-  padding: var(--bizy-content-padding);
-  width: var(--bizy-content-width);
-  height: var(--bizy-content-height);
-  overflow: auto;
-  display: flex;
-  flex-direction: var(--bizy-content-flex-direction);
-  gap: var(--bizy-content-gap);
+  padding: var(--bizy-content-padding, 0.5rem);
+  width: var(--bizy-content-width, auto);
+  height: var(--bizy-content-height, auto);
+  overflow: var(--bizy-content-overflow, auto);
+  display: var(--bizy-content-display, flex);
+  flex-direction: var(--bizy-content-flex-direction, column);
+  justify-content: var(--bizy-content-justify-content, flex-start);
+  align-items: var(--bizy-content-align-items, flex-start);
+  gap: var(--bizy-content-gap, 0.7rem);
 }
