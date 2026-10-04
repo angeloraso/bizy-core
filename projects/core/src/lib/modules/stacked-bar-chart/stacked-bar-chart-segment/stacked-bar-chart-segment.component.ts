@@ -1,4 +1,5 @@
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { getClosestCssVariable } from '../../../utils/css';
+import { CommonModule } from '@angular/common';
 import { AfterViewChecked, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, inject, Input, Output } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -14,7 +15,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
   }
 })
 export class BizyStackedBarChartSegmentComponent implements AfterViewChecked {
-  readonly #document = inject(DOCUMENT);
   readonly #elementRef = inject(ElementRef);
   @Input() id: string = `bizy-stacked-bar-chart-segment-${Math.random()}`;
   @Input() disabled: boolean = false;
@@ -43,7 +43,7 @@ export class BizyStackedBarChartSegmentComponent implements AfterViewChecked {
   }
 
   ngAfterViewChecked() {
-    this.#color.next(this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-stacked-bar-chart-color')!);
+    this.#color.next(getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-stacked-bar-chart-color')!);
   }
 
   getNativeElement = () => this.#elementRef?.nativeElement;
@@ -62,17 +62,4 @@ export class BizyStackedBarChartSegmentComponent implements AfterViewChecked {
 
   _getValue = () => this.#value.value;
 
-  #getClosestCssVariable = (element: HTMLElement, cssVariable: string): string | null => {
-    while (element) {
-      const value = getComputedStyle(element).getPropertyValue(cssVariable).trim();
-      if (value) {
-        return value;
-      }
-
-      element = element.parentElement as HTMLElement;
-    }
-
-    const rootValue = getComputedStyle(this.#document.documentElement).getPropertyValue(cssVariable).trim();
-    return rootValue || null;
-  }
 }

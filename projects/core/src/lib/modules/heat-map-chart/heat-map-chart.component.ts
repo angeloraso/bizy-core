@@ -1,3 +1,4 @@
+import { getClosestCssVariable } from '../../utils/css';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -119,12 +120,12 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
       }];
 
 
-      const xAreaBackgroundColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-area-background-color');
-      const xAreaBorderColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-area-border-color');
-      const xAreaBorderWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-area-border-width');
-      const yAreaBackgroundColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-area-background-color');
-      const yAreaBorderColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-area-border-color');
-      const yAreaBorderWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-area-border-width');
+      const xAreaBackgroundColor = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-area-background-color');
+      const xAreaBorderColor = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-area-border-color');
+      const xAreaBorderWidth = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-area-border-width');
+      const yAreaBackgroundColor = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-area-background-color');
+      const yAreaBorderColor = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-area-border-color');
+      const yAreaBorderWidth = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-area-border-width');
 
       const xAreas: Array<[number, number]>  = []
       const yAreas: Array<[number, number]> = []
@@ -199,14 +200,14 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
         })
       }
 
-      const xLineWidth = Number(this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-line-width'));
-      const xLineColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-line-color');
-      const xLineStyle = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-line-style');
-      const xLineLabelColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-line-label-color');
-      const yLineWidth = Number(this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-line-width'));
-      const yLineColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-line-color');
-      const yLineStyle = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-line-style');
-      const yLineLabelColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-line-label-color');
+      const xLineWidth = Number(getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-line-width'));
+      const xLineColor = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-line-color');
+      const xLineStyle = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-line-style');
+      const xLineLabelColor = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-line-label-color');
+      const yLineWidth = Number(getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-line-width'));
+      const yLineColor = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-line-color');
+      const yLineStyle = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-line-style');
+      const yLineLabelColor = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-line-label-color');
 
       const xLines: Array<[number]>  = []
       const yLines: Array<[number]>  = []
@@ -382,7 +383,7 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
         }
       ];
 
-      const outOfRangeColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-out-of-range-color');
+      const outOfRangeColor = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-out-of-range-color');
 
       let text: [string | null, string | null] | null = null;
       let pieces: Array<IBizyHeatMapChartRange> = [];
@@ -412,9 +413,9 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
         }
       };
 
-      const textColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-tooltip-color');
-      const textBackgroundColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-tooltip-background-color');
-      const borderColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-tooltip-border-color');
+      const textColor = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-tooltip-color');
+      const textBackgroundColor = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-tooltip-background-color');
+      const borderColor = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-tooltip-border-color');
 
       const toolbox = {
         show: true,
@@ -510,8 +511,8 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
     let elementWidth = this.#elementRef.nativeElement.offsetWidth;
     let elementHeight = this.#elementRef.nativeElement.offsetHeight;
 
-    let minWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-width');
-    let minHeight = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-height');
+    let minWidth = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-width');
+    let minHeight = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-height');
 
     const width = minWidth ? minWidth : elementWidth ? `${elementWidth}px` : DEFAULT_CHART_SIZE;
     const height = minHeight ? minHeight : elementHeight ? `${elementHeight}px` : DEFAULT_CHART_SIZE;
@@ -532,19 +533,6 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
     this.#renderer.removeChild(this.#elementRef.nativeElement, this.#chartContainer);
     this.#chartContainer = null;
     this.#ref.detectChanges();
-  }
-
-  #getClosestCssVariable = (element: HTMLElement, cssVariable: string): string | null => {
-    while (element) {
-      const value = getComputedStyle(element).getPropertyValue(cssVariable).trim();
-      if (value) {
-        return value;
-      }
-      element = element.parentElement as HTMLElement;
-    }
-
-    const rootValue = getComputedStyle(this.#document.documentElement).getPropertyValue(cssVariable).trim();
-    return rootValue;
   }
 
   ngOnDestroy() {

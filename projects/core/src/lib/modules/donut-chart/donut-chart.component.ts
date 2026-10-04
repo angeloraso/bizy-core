@@ -1,3 +1,4 @@
+import { getClosestCssVariable } from '../../utils/css';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -165,9 +166,9 @@ export class BizyDonutChartComponent {
       labelLine
     }];
 
-    const textColor = getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-donut-chart-tooltip-color');
-    const textBackgroundColor = getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-donut-chart-tooltip-background-color');
-    const borderColor = getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-donut-chart-tooltip-border-color');
+    const textColor = getClosestCssVariable(this.#document.documentElement, '--bizy-donut-chart-tooltip-color') ?? '';
+    const textBackgroundColor = getClosestCssVariable(this.#document.documentElement, '--bizy-donut-chart-tooltip-background-color') ?? '';
+    const borderColor = getClosestCssVariable(this.#document.documentElement, '--bizy-donut-chart-tooltip-border-color') ?? '';
 
     const toolbox = {
       show: true,
@@ -239,7 +240,7 @@ export class BizyDonutChartComponent {
 
     let graphic: any;
     if (this.centerLabel) {
-      let centerLabelColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-donut-chart-center-label-color');
+      let centerLabelColor = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-donut-chart-center-label-color');
       let { width, height } = this.#chartContainer.getBoundingClientRect();
       let base = Math.min(width, height);
       let fontSize = base / 6;
@@ -283,8 +284,8 @@ export class BizyDonutChartComponent {
     let elementWidth = this.#elementRef.nativeElement.offsetWidth;
     let elementHeight = this.#elementRef.nativeElement.offsetHeight;
 
-    let minWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-donut-chart-width');
-    let minHeight = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-donut-chart-height');
+    let minWidth = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-donut-chart-width');
+    let minHeight = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-donut-chart-height');
 
     const width = minWidth ? minWidth : elementWidth ? `${elementWidth}px` : `${this.#donutChartService.getChartSize()}px`;
     const height = minHeight ? minHeight : elementHeight ? `${elementHeight}px` : `${this.#donutChartService.getChartSize()}px`;
@@ -305,19 +306,6 @@ export class BizyDonutChartComponent {
     this.#renderer.removeChild(this.#elementRef.nativeElement, this.#chartContainer);
     this.#chartContainer = null;
     this.#ref.detectChanges();
-  }
-
-  #getClosestCssVariable = (element: HTMLElement, cssVariable: string): string | null => {
-    while (element) {
-      const value = getComputedStyle(element).getPropertyValue(cssVariable).trim();
-      if (value) {
-        return value;
-      }
-      element = element.parentElement as HTMLElement;
-    }
-
-    const rootValue = getComputedStyle(document.documentElement).getPropertyValue(cssVariable).trim();
-    return rootValue || null;
   }
 
   ngOnDestroy() {

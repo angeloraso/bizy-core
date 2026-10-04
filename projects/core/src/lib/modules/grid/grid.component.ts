@@ -1,3 +1,4 @@
+import { getClosestCssVariable } from '../../utils/css';
 import { Component, Input, ChangeDetectionStrategy, ContentChild, ChangeDetectorRef, ViewChild, AfterViewInit, ElementRef, Renderer2, TemplateRef, ViewContainerRef, OnDestroy, inject, EventEmitter, Output, NgZone } from '@angular/core';
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { Subject, Subscription, auditTime, debounceTime, fromEvent } from 'rxjs';
@@ -84,9 +85,9 @@ export class BizyGridComponent implements AfterViewInit, OnDestroy {
     const firstChild = this.#elementRef.nativeElement.firstElementChild as HTMLElement | null;
     const rowWidth = this.#elementRef.nativeElement.offsetWidth || firstChild?.offsetWidth || 0;
     let columnWidth = 100;
-    const fontSize = Number(getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('font-size').split('px')[0]);
+    const fontSize = Number((getClosestCssVariable(this.#elementRef.nativeElement, 'font-size') ?? '').split('px')[0]);
 
-    const rowHeightParameter = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-grid-row-height');
+    const rowHeightParameter = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-grid-row-height') ?? '';
     if (rowHeightParameter && rowHeightParameter.includes('rem')) {
       this.rowHeight = fontSize * Number(rowHeightParameter.split('rem')[0]);
     } else if (rowHeightParameter && rowHeightParameter.includes('px')) {
@@ -94,14 +95,14 @@ export class BizyGridComponent implements AfterViewInit, OnDestroy {
     }
 
     let gap = 10;
-    const gapParameter = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-grid-gap');
+    const gapParameter = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-grid-gap') ?? '';
     if (gapParameter && gapParameter.includes('rem')) {
       gap = fontSize * Number(gapParameter.split('rem')[0]);
     } else if (gapParameter && gapParameter.includes('px')) {
       gap = Number(gapParameter.split('px')[0]);
     }
 
-    const columnWidthParameter = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-grid-column-width');
+    const columnWidthParameter = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-grid-column-width') ?? '';
     if (columnWidthParameter && columnWidthParameter.includes('rem')) {
       columnWidth = fontSize * Number(columnWidthParameter.split('rem')[0]);
     } else if (columnWidthParameter && columnWidthParameter.includes('px')) {

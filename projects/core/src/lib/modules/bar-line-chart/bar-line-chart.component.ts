@@ -1,3 +1,4 @@
+import { getClosestCssVariable } from '../../utils/css';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -176,8 +177,8 @@ export class BizyBarLineChartComponent implements AfterContentInit {
     const yAxis: Array<any> = [];
     const legends = new Set<string>();
 
-    const defaultYAxisColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-line-chart-y-axis-color');
-    const defaultXAxisColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-line-chart-x-axis-color');
+    const defaultYAxisColor = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-line-chart-y-axis-color');
+    const defaultXAxisColor = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-line-chart-x-axis-color');
 
     this.lineCharts.forEach((_line, _i) => {
       let axisIndex = _i;
@@ -569,9 +570,9 @@ export class BizyBarLineChartComponent implements AfterContentInit {
       data: Array.from(legends)
     };
 
-    const textColor = getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-bar-line-chart-tooltip-color');
-    const textBackgroundColor = getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-bar-line-chart-tooltip-background-color');
-    const borderColor = getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-bar-line-chart-tooltip-border-color');
+    const textColor = getClosestCssVariable(this.#document.documentElement, '--bizy-bar-line-chart-tooltip-color') ?? '';
+    const textBackgroundColor = getClosestCssVariable(this.#document.documentElement, '--bizy-bar-line-chart-tooltip-background-color') ?? '';
+    const borderColor = getClosestCssVariable(this.#document.documentElement, '--bizy-bar-line-chart-tooltip-border-color') ?? '';
 
     const toolbox = {
       show: true,
@@ -636,8 +637,8 @@ export class BizyBarLineChartComponent implements AfterContentInit {
     let elementWidth = this.#elementRef.nativeElement.offsetWidth;
     let elementHeight = this.#elementRef.nativeElement.offsetHeight;
 
-    let minWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-line-chart-width');
-    let minHeight = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-line-chart-height');
+    let minWidth = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-line-chart-width');
+    let minHeight = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-line-chart-height');
     
     const width = minWidth ? minWidth : elementWidth ? `${elementWidth}px` : DEFAULT_CHART_SIZE;
     const height = minHeight ? minHeight : elementHeight ? `${elementHeight}px` : DEFAULT_CHART_SIZE;
@@ -658,19 +659,6 @@ export class BizyBarLineChartComponent implements AfterContentInit {
     this.#renderer.removeChild(this.#elementRef.nativeElement, this.#chartContainer);
     this.#chartContainer = null;
     this.#ref.detectChanges();
-  }
-
-  #getClosestCssVariable = (element: HTMLElement, cssVariable: string): string | null => {
-    while (element) {
-      const value = getComputedStyle(element).getPropertyValue(cssVariable).trim();
-      if (value) {
-        return value;
-      }
-      element = element.parentElement as HTMLElement;
-    }
-
-    const rootValue = getComputedStyle(document.documentElement).getPropertyValue(cssVariable).trim();
-    return rootValue || null;
   }
 
   ngOnDestroy() {

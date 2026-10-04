@@ -5,6 +5,7 @@ import {
   Input,
   inject,
 } from '@angular/core';
+import { getClosestCssVariable } from '../../../utils/css';
 
 @Directive({
   selector: '[bizyTableColumnFixed]',
@@ -18,11 +19,11 @@ export class BizyTableColumnFixedDirective {
   #originalPosition: string = '';
   
   ngAfterViewInit() {
-    const computedStyle = window.getComputedStyle(this.#elementRef.nativeElement);
-    this.#originalBoxShadow = computedStyle.boxShadow;
-    this.#originalZIndex = computedStyle.zIndex;
-    this.#originalBackgroundColor = computedStyle.backgroundColor;
-    this.#originalPosition = computedStyle.position;
+    const element = this.#elementRef.nativeElement;
+    this.#originalBoxShadow = getClosestCssVariable(element, 'box-shadow') ?? '';
+    this.#originalZIndex = getClosestCssVariable(element, 'z-index') ?? '';
+    this.#originalBackgroundColor = getClosestCssVariable(element, 'background-color') ?? '';
+    this.#originalPosition = getClosestCssVariable(element, 'position') ?? '';
   }
 
 
@@ -57,4 +58,3 @@ export class BizyTableColumnFixedDirective {
     this.#renderer.setStyle(this.#elementRef.nativeElement, 'paddingLeft', '5px');
   }
 }
-

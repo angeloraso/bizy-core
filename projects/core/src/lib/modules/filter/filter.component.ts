@@ -1,3 +1,4 @@
+import { getClosestCssVariable } from '../../utils/css';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, EventEmitter, Input, Output, QueryList, DOCUMENT, ElementRef, inject, ViewChild } from '@angular/core';
 import { BizyFilterSectionComponent } from './filter-section/filter-section.component';
 import { CommonModule } from '@angular/common';
@@ -82,22 +83,22 @@ export class BizyFilterComponent {
     this.#ref.detectChanges();
     const panel = this.overlay.overlayRef?.overlayElement;
     if (panel) {
-      const maxWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-filter-max-width')!;
+      const maxWidth = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-filter-max-width')!;
       panel.style.setProperty('--bizy-filter-max-width', maxWidth);
 
-      const sectionMinWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-filter-section-min-width')!;
+      const sectionMinWidth = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-filter-section-min-width')!;
       panel.style.setProperty('--bizy-filter-section-min-width', sectionMinWidth);
 
-      const inputMinWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-input-min-width')!;
+      const inputMinWidth = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-input-min-width')!;
       panel.style.setProperty('--bizy-input-min-width', inputMinWidth);
 
-      const inputWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-input-width')!;
+      const inputWidth = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-input-width')!;
       panel.style.setProperty('--bizy-input-width', inputWidth);
 
-      const inputMaxWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-input-max-width')!;
+      const inputMaxWidth = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-input-max-width')!;
       panel.style.setProperty('--bizy-input-max-width', inputMaxWidth);
 
-      const inputBackgroundColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-input-background-color')!;
+      const inputBackgroundColor = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-input-background-color')!;
       panel.style.setProperty('--bizy-input-background-color', inputBackgroundColor);
 
       this.#ref.detectChanges();
@@ -114,20 +115,6 @@ export class BizyFilterComponent {
   }
 
   getNativeElement = () => this.#elementRef?.nativeElement;
-
-  #getClosestCssVariable = (element: HTMLElement, cssVariable: string): string | null => {
-    while (element) {
-      const value = getComputedStyle(element).getPropertyValue(cssVariable).trim();
-      if (value) {
-        return value;
-      }
-
-      element = element.parentElement as HTMLElement;
-    }
-
-    const rootValue = getComputedStyle(this.#document.documentElement).getPropertyValue(cssVariable).trim();
-    return rootValue || null;
-  }
 
 
   ngOnDestroy() {

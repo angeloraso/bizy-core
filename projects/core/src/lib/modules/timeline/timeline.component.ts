@@ -3,6 +3,7 @@ import { CommonModule, DOCUMENT } from '@angular/common';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, contentChild, ElementRef, inject, Input, viewChild } from '@angular/core';
 import { BizyTimelineForDirective } from './timeline.directive';
+import { getClosestCssVariable } from '../../utils/css';
 
 @Component({
   selector: 'bizy-timeline',
@@ -35,11 +36,10 @@ export class BizyTimelineComponent implements AfterViewInit {
       return;
     }
 
-    const style = view.getComputedStyle(this.#elementRef.nativeElement);
-    const rootFontSize = Number.parseFloat(view.getComputedStyle(this.#document.documentElement).fontSize) || 16;
-    const hostFontSize = Number.parseFloat(style.fontSize) || rootFontSize;
-    const eventHeight = this.#toPixels(style.getPropertyValue('--bizy-timeline-event-height').trim() || '4rem', rootFontSize, hostFontSize, 64);
-    const rowGap = this.#toPixels(style.getPropertyValue('--bizy-timeline-row-gap').trim() || '0.5rem', rootFontSize, hostFontSize, 8);
+    const rootFontSize = Number.parseFloat(getClosestCssVariable(this.#document.documentElement, 'font-size') ?? '') || 16;
+    const hostFontSize = Number.parseFloat(getClosestCssVariable(this.#elementRef.nativeElement, 'font-size') ?? '') || rootFontSize;
+    const eventHeight = this.#toPixels(getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-timeline-event-height') || '4rem', rootFontSize, hostFontSize, 64);
+    const rowGap = this.#toPixels(getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-timeline-row-gap') || '0.5rem', rootFontSize, hostFontSize, 8);
     this.itemSize = eventHeight + rowGap;
     this.#changeDetector.detectChanges();
     this.viewport()?.checkViewportSize();

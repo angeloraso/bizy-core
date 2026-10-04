@@ -1,3 +1,4 @@
+import { getClosestCssVariable } from '../../utils/css';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -101,12 +102,12 @@ export class BizyGaugeChartComponent {
       const { width, height } = this.#chartContainer.getBoundingClientRect();
       const base = Math.min(width, height);
 
-      const backgroundColor = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-background-color');
-      const progressColor = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-progress-color');
-      const valueColor = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-value-color');
-      const textColor = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-text-color');
-      const anchorColor = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-anchor-color');
-      const pointerColor = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-pointer-color');
+      const backgroundColor = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-gauge-chart-background-color') ?? '';
+      const progressColor = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-gauge-chart-progress-color') ?? '';
+      const valueColor = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-gauge-chart-value-color') ?? '';
+      const textColor = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-gauge-chart-text-color') ?? '';
+      const anchorColor = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-gauge-chart-anchor-color') ?? '';
+      const pointerColor = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-gauge-chart-pointer-color') ?? '';
 
       const series = [{
         type: 'gauge',
@@ -174,9 +175,9 @@ export class BizyGaugeChartComponent {
         data: this.#data ? [this.#data] : []
       }];
 
-      const tooltipTextColor = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-tooltip-color');
-      const tooltipTextBackgroundColor = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-tooltip-background-color');
-      const tooltipBorderColor = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-tooltip-border-color');
+      const tooltipTextColor = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-gauge-chart-tooltip-color') ?? '';
+      const tooltipTextBackgroundColor = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-gauge-chart-tooltip-background-color') ?? '';
+      const tooltipBorderColor = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-gauge-chart-tooltip-border-color') ?? '';
 
       const toolbox = {
         show: true,
@@ -282,8 +283,8 @@ export class BizyGaugeChartComponent {
     let elementWidth = this.#elementRef.nativeElement.offsetWidth;
     let elementHeight = this.#elementRef.nativeElement.offsetHeight;
 
-    let minWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-gauge-chart-width');
-    let minHeight = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-gauge-chart-height');
+    let minWidth = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-gauge-chart-width');
+    let minHeight = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-gauge-chart-height');
 
     const width = minWidth ? minWidth : elementWidth ? `${elementWidth * 0.99}px` : DEFAULT_CHART_SIZE;
     const height = minHeight ? minHeight : elementHeight ? `${elementHeight}px` : DEFAULT_CHART_SIZE;
@@ -304,19 +305,6 @@ export class BizyGaugeChartComponent {
     this.#renderer.removeChild(this.#elementRef.nativeElement, this.#chartContainer);
     this.#chartContainer = null;
     this.#ref.detectChanges();
-  }
-
-  #getClosestCssVariable = (element: HTMLElement, cssVariable: string): string | null => {
-    while (element) {
-      const value = getComputedStyle(element).getPropertyValue(cssVariable).trim();
-      if (value) {
-        return value;
-      }
-      element = element.parentElement as HTMLElement;
-    }
-
-    const rootValue = getComputedStyle(document.documentElement).getPropertyValue(cssVariable).trim();
-    return rootValue || null;
   }
 
   ngOnDestroy() {

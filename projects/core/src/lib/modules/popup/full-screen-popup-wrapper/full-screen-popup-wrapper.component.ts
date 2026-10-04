@@ -1,3 +1,4 @@
+import { getClosestCssVariable } from '../../../utils/css';
 import { DIALOG_DATA, DialogModule, DialogRef } from '@angular/cdk/dialog';
 import { ComponentType } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
@@ -40,7 +41,7 @@ export class BizyFullScreenPopupWrapperComponent<T> {
   disableClose: boolean = false;
   disableDrag: boolean = false;
   position: {main?: string, right?: string, bottom?: string, left?: string, transform?: string} = {main: 'absolute', bottom: '0', left: '0', right: '0'};
-  minWidth: string = getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-popup-full-screen-min-width').trim();
+  minWidth: string = getClosestCssVariable(this.#document.documentElement, '--bizy-popup-full-screen-min-width') ?? '';
 
   ngOnInit() {
     if (this.#data) {

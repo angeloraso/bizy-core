@@ -1,4 +1,4 @@
-import { DOCUMENT } from '@angular/common';
+import { getClosestCssVariable } from '../../utils/css';
 import {
   Component,
   OnDestroy,
@@ -22,7 +22,6 @@ import {
 export class BizyAudioRecorderComponent implements AfterViewInit, OnDestroy {
   readonly #ref = inject(ChangeDetectorRef);
   readonly #elementRef = inject(ElementRef);
-  readonly #document = inject(DOCUMENT);
 
   @ViewChild('waveformCanvas') waveformCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild('bizyRecordButton') recordButton!: ElementRef<HTMLButtonElement>;
@@ -86,7 +85,7 @@ export class BizyAudioRecorderComponent implements AfterViewInit, OnDestroy {
       this.#startTime = Date.now();
       this.strokeDashoffset = 0;
 
-      this.strokeColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-audio-recorder-record-button-progress-color')!;
+      this.strokeColor = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-audio-recorder-record-button-progress-color')!;
 
       let mimeType = 'audio/webm';
 
@@ -193,7 +192,7 @@ export class BizyAudioRecorderComponent implements AfterViewInit, OnDestroy {
 
     ctx.lineWidth = 2;
 
-    ctx.strokeStyle = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-audio-recorder-record-button-recording-color')!;
+    ctx.strokeStyle = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-audio-recorder-record-button-recording-color')!;
     ctx.beginPath();
 
     const sliceWidth = canvas.width / this.#dataArray.length;
@@ -261,20 +260,6 @@ export class BizyAudioRecorderComponent implements AfterViewInit, OnDestroy {
     this.#analyser = null;
     this.#dataArray = null;
     this.#ref.detectChanges();
-  }
-
-  #getClosestCssVariable = (element: HTMLElement, cssVariable: string): string | null => {
-    while (element) {
-      const value = getComputedStyle(element).getPropertyValue(cssVariable).trim();
-      if (value) {
-        return value;
-      }
-
-      element = element.parentElement as HTMLElement;
-    }
-
-    const rootValue = getComputedStyle(this.#document.documentElement).getPropertyValue(cssVariable).trim();
-    return rootValue || null;
   }
 
   ngOnDestroy() {

@@ -1,3 +1,4 @@
+import { getClosestCssVariable } from '../../../utils/css';
 import { debounceTime, fromEvent, Observable, skip, Subscription } from 'rxjs';
 import {
   Component,
@@ -50,8 +51,8 @@ export class BizyTableScrollingComponent implements OnDestroy {
     }
     
     let itemSize = 30;
-    const rowHeight = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-table-row-height');
-    const fontSize =  getComputedStyle(this.#document.documentElement).getPropertyValue('font-size');
+    const rowHeight = getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-table-row-height');
+    const fontSize =  (getClosestCssVariable(this.#document.documentElement, 'font-size') ?? '');
     const gap = Number(fontSize.split('px')[0]) * 0.1;
     if (rowHeight && rowHeight.includes('rem')) {
       itemSize = Number(fontSize.split('px')[0]) * Number(rowHeight.split('rem')[0]);
@@ -78,19 +79,6 @@ export class BizyTableScrollingComponent implements OnDestroy {
   }
 
   getNativeElement = () => this.#elementRef?.nativeElement;
-
-  #getClosestCssVariable = (element: HTMLElement, cssVariable: string): string | null => {
-    while (element) {
-      const value = getComputedStyle(element).getPropertyValue(cssVariable).trim();
-      if (value) {
-        return value;
-      }
-      element = element.parentElement as HTMLElement;
-    }
-
-    const rootValue = getComputedStyle(this.#document.documentElement).getPropertyValue(cssVariable).trim();
-    return rootValue || null;
-  }
 
 
   ngOnDestroy() {

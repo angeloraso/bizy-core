@@ -1,3 +1,4 @@
+import { getClosestCssVariable } from '../utils/css';
 import { Inject, Injectable, Renderer2, RendererFactory2 } from '@angular/core';
 
 export enum BIZY_ANIMATION {
@@ -34,7 +35,7 @@ export class BizyAnimationService {
       }
   
       const root = this.#renderer.selectRootElement(':root', true);
-      const animationTimeout = getComputedStyle(root).getPropertyValue('--bizy-animation-timeout').trim();
+      const animationTimeout = getClosestCssVariable(root, '--bizy-animation-timeout') ?? '';
   
       this.#renderer.addClass(element, 'animated');
       this.#renderer.addClass(element, animation);

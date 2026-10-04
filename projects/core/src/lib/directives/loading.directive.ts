@@ -1,3 +1,4 @@
+import { getClosestCssVariable } from '../utils/css';
 import {
   Directive,
   Input,
@@ -38,7 +39,7 @@ export class BizyLoadingDirective {
       this.renderer.setStyle(loadingWrapper, 'height', height ? `${this.elementRef.nativeElement.offsetHeight}px` : '1rem');
       this.renderer.setStyle(loadingWrapper, 'display', 'grid');
       this.renderer.setStyle(loadingWrapper, 'placeItems', 'center');
-      const backgroundColor = window.getComputedStyle(this.elementRef.nativeElement, null).getPropertyValue('background-color');
+      const backgroundColor = getClosestCssVariable(this.elementRef.nativeElement, 'background-color') ?? '';
       this.renderer.setStyle(loadingWrapper, 'backgroundColor', backgroundColor);
       this.renderer.setStyle(loadingWrapper, 'pointer-events', 'none');
       

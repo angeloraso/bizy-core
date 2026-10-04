@@ -1,3 +1,4 @@
+import { getClosestCssVariable } from '../../utils/css';
 import { Component, Input, ChangeDetectionStrategy, ContentChildren, QueryList, ContentChild, ChangeDetectorRef, ViewChild, AfterContentInit, ElementRef, Renderer2, DOCUMENT, inject } from '@angular/core';
 import { BizyTableHeaderComponent } from './table-header/table-header.component';
 import { BizyTableFooterComponent } from './table-footer/table-footer.component';
@@ -73,7 +74,7 @@ export class BizyTableComponent implements AfterContentInit {
       }
 
       if (this.#elementRef.nativeElement.offsetHeight) {
-        const fontSize =  getComputedStyle(this.#document.documentElement).getPropertyValue('font-size');
+        const fontSize =  (getClosestCssVariable(this.#document.documentElement, 'font-size') ?? '');
         const gap = Number(fontSize.split('px')[0]) * 0.3;
         let headersHeight = 0;
         this.headers.forEach(_header => {
@@ -148,7 +149,7 @@ export class BizyTableComponent implements AfterContentInit {
     this.#resizeObserver.observe(resizeRef);
     this.#subscription.add(this.notifier$.pipe(skip(1), debounceTime(200)).subscribe(() => {
       if (this.viewport && this.#elementRef.nativeElement.offsetHeight) {
-        const fontSize =  getComputedStyle(this.#document.documentElement).getPropertyValue('font-size');
+        const fontSize =  (getClosestCssVariable(this.#document.documentElement, 'font-size') ?? '');
         const gap = Number(fontSize.split('px')[0]) * 0.3;
         let headersHeight = 0;
         this.headers.forEach(_header => {

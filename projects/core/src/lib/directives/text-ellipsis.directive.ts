@@ -7,6 +7,7 @@ import {
   Input
 } from '@angular/core';
 import { debounceTime, skip, Subject, Subscription } from 'rxjs';
+import { getClosestCssVariable } from '../utils/css';
 
 @Directive({
   selector: '[bizyTextEllipsis]',
@@ -35,7 +36,7 @@ export class BizyTextEllipsisDirective implements AfterViewInit {
   #applyClamp() {
     const parent = this.#elementRef.nativeElement.parentElement;
     const element = this.#elementRef.nativeElement;
-    const lineHeight = parseFloat(getComputedStyle(element).lineHeight);
+    const lineHeight = parseFloat(getClosestCssVariable(element, 'line-height') ?? '');
     const parentHeight = parent.offsetHeight;
 
     if (lineHeight && parentHeight) {

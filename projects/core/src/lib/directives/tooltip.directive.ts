@@ -1,5 +1,6 @@
 
 import { Directive, Input, ElementRef, HostListener, Renderer2, Inject, OnDestroy, inject, DOCUMENT } from '@angular/core';
+import { getClosestCssVariable } from '../utils/css';
 
 @Directive({
   selector: '[bizyTooltip]'
@@ -28,7 +29,7 @@ export class BizyTooltipDirective implements OnDestroy {
 
     this.#lineClamp = lineClamp;
 
-    const computedStyle = window.getComputedStyle(this.#elementRef.nativeElement);
+    const lineHeight = getClosestCssVariable(this.#elementRef.nativeElement, 'line-height') ?? '';
     this.#renderer.setStyle(this.#elementRef.nativeElement, 'width', '100%');
     this.#renderer.setStyle(this.#elementRef.nativeElement, 'min-width', '0');
     this.#renderer.setStyle(this.#elementRef.nativeElement, 'overflow', 'hidden');
@@ -41,7 +42,7 @@ export class BizyTooltipDirective implements OnDestroy {
       this.#renderer.setStyle(this.#elementRef.nativeElement, 'line-clamp', this.#lineClamp);
       this.#renderer.setStyle(this.#elementRef.nativeElement, '-webkit-line-clamp', this.#lineClamp);
       this.#renderer.setStyle(this.#elementRef.nativeElement, '-webkit-box-orient', 'vertical');
-      this.#renderer.setStyle(this.#elementRef.nativeElement, 'max-height', `calc(${this.#lineClamp} * ${computedStyle.lineHeight})`);
+      this.#renderer.setStyle(this.#elementRef.nativeElement, 'max-height', `calc(${this.#lineClamp} * ${lineHeight})`);
     }
 
   }
