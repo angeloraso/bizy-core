@@ -1,1 +1,13 @@
-<ng-content select="bizy-timeline-event"></ng-content>
+@if (timelineFor(); as directive) {
+  <cdk-virtual-scroll-viewport
+    [itemSize]="itemSize"
+    [minBufferPx]="itemSize * 5"
+    [maxBufferPx]="itemSize * 10">
+    <ng-content select="[bizyTimelineFor]"></ng-content>
+    <ng-container *cdkVirtualFor="let item of directive.items(); let index = index; let count = count; let first = first; let last = last; let even = even; let odd = odd; trackBy: directive.trackBy">
+      <ng-container *ngTemplateOutlet="directive.templateRef; context: { $implicit: item, index: index, count: count, first: first, last: last, even: even, odd: odd }"></ng-container>
+    </ng-container>
+  </cdk-virtual-scroll-viewport>
+} @else {
+  <ng-content select="bizy-timeline-event"></ng-content>
+}

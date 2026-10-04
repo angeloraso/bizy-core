@@ -8,6 +8,26 @@
   width: 100%;
 }
 
+:host:has(cdk-virtual-scroll-viewport) {
+  height: var(--bizy-timeline-height);
+  min-height: var(--bizy-timeline-min-height);
+  max-height: var(--bizy-timeline-max-height);
+}
+
+cdk-virtual-scroll-viewport {
+  width: 100%;
+  height: 100%;
+}
+
+:host:has(cdk-virtual-scroll-viewport) ::ng-deep bizy-timeline-event {
+  box-sizing: border-box;
+  height: var(--bizy-timeline-event-height);
+  min-height: var(--bizy-timeline-event-height);
+  max-height: var(--bizy-timeline-event-height);
+  margin-bottom: var(--bizy-timeline-row-gap);
+  overflow: hidden;
+}
+
 :host:not(:has(.bizy-timeline-event--start:not(:empty))) ::ng-deep bizy-timeline-event {
   grid-template-columns: fit-content(100%) 1fr !important;
 }
