@@ -52,7 +52,7 @@ export class BizyCopyToClipboardDirective {
 
   @HostListener('mouseenter') onMouseEnter() {
     this.#svgElement.innerHTML = this.#COPY_ICON;
-    this.renderer.setStyle(this.#svgElement, 'fill', 'var(--bizy-copy-to-clipboard-default-color, #2484c6)');
+    this.renderer.setStyle(this.#svgElement, 'fill', 'var(--bizy-copy-to-clipboard-default-color)');
     const elementHeight = this.elementRef.nativeElement.offsetHeight - 4;
     this.renderer.setStyle(this.#svgElement, 'height', `${elementHeight}px`);
     const svg = this.#svgElement.querySelector('svg');
@@ -75,11 +75,11 @@ export class BizyCopyToClipboardDirective {
 
     event.stopPropagation();
     this.copyToClipboard.copy(this.elementRef.nativeElement.innerText.trim()).then(() => {
-        this.renderer.setStyle(this.#svgElement, 'fill', 'var(--bizy-copy-to-clipboard-success-color, #5fbc5a)');
+        this.renderer.setStyle(this.#svgElement, 'fill', 'var(--bizy-copy-to-clipboard-success-color)');
         this.#svgElement.innerHTML = this.#CHECK_ICON;
         this.onCopy.emit();
     }).catch(() => {
-        this.renderer.setStyle(this.#svgElement, 'fill', 'var(--bizy-copy-to-clipboard-danger-color, #e76565)');
+        this.renderer.setStyle(this.#svgElement, 'fill', 'var(--bizy-copy-to-clipboard-danger-color)');
         this.#svgElement.innerHTML = this.#ERROR_ICON;
     }).finally(() => {
         const elementHeight = this.elementRef.nativeElement.offsetHeight - 1;

@@ -43,7 +43,7 @@ export class BizyStackedBarChartSegmentComponent implements AfterViewChecked {
   }
 
   ngAfterViewChecked() {
-    this.#color.next((this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-stacked-bar-chart-color') || this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-accent-color'))!);
+    this.#color.next(this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-stacked-bar-chart-color')!);
   }
 
   getNativeElement = () => this.#elementRef?.nativeElement;

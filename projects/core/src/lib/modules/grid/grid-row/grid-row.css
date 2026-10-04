@@ -1,7 +1,6 @@
 :host {
-    --bizy-grid-row-background-color: transparent;
     font-size: 1rem;
     display: grid;
-    column-gap: var(--bizy-grid-gap, 0.6rem);
-    margin-bottom: var(--bizy-grid-gap, 0.6rem);
+    column-gap: var(--bizy-grid-gap);
+    margin-bottom: var(--bizy-grid-gap);
 }

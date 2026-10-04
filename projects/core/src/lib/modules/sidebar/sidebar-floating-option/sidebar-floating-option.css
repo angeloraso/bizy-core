@@ -4,13 +4,13 @@
 }
 
 .bizy-sidebar-floating-option {
-    background-color: var(--bizy-sidebar-floating-option-background-color, #fff);
-    color: var(--bizy-sidebar-floating-option-color, #000);
+    background-color: var(--bizy-sidebar-floating-option-background-color);
+    color: var(--bizy-sidebar-floating-option-color);
     border: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    column-gap: var(--bizy-sidebar-option-padding, 1rem);
+    column-gap: var(--bizy-sidebar-option-padding);
     padding: 1rem;
     width: 100%;
     cursor: pointer;
@@ -18,11 +18,11 @@
 }
 
 .bizy-sidebar-floating-option:hover {
-    background-color: var(--bizy-sidebar-option-hover-color, var(--bizy-dark-info-color))
+    background-color: var(--bizy-sidebar-option-hover-color) 
 }
 
 .bizy-sidebar-floating-option--selected {
-    background-color: var(--bizy-sidebar-option-selected-color, var(--bizy-info-color)) !important;
+    background-color: var(--bizy-sidebar-option-selected-color) !important;
 }
 
 .bizy-sidebar-floating-option--no-selectable {
@@ -46,7 +46,7 @@
 
 
 .bizy-sidebar-floating-option__options {
-    background-color: var(--bizy-sidebar-floating-option-background-color, #fff);
+    background-color: var(--bizy-sidebar-floating-option-background-color);
     min-width: calc(100% + 2rem);
     max-width: calc(100dvw - 2rem);
     border-radius: .3rem;

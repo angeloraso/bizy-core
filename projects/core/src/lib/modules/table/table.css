@@ -1,9 +1,9 @@
 :host {
     display: inline-block !important;
-    min-height: var(--bizy-table-min-height, 5rem);
-    max-height: var(--bizy-table-max-height, 100%);
-    height: var(--bizy-table-height, 100%);
-    width: var(--bizy-table-width, 100%);
+    min-height: var(--bizy-table-min-height);
+    max-height: var(--bizy-table-max-height);
+    height: var(--bizy-table-height);
+    width: var(--bizy-table-width);
     flex: 1;
     overflow-x: auto;
     overflow-y: hidden;
@@ -17,7 +17,7 @@
     flex-direction: column;
     row-gap: 0.3rem;
     overflow-x: clip;
-    background-color: var(--bizy-table-background-color, #f3f3f3);
+    background-color: var(--bizy-table-background-color);
 }
 
 .bizy-table__rows {

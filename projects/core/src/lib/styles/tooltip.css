@@ -2,14 +2,14 @@
   max-width: 15rem;
   position: absolute;
   text-align: center;
-  color: var(--bizy-tooltip-color, #355b7f);
+  color: var(--bizy-tooltip-color);
   padding: 0.5rem;
-  background: var(--bizy-tooltip-background-color, #d0e8fc);
+  background: var(--bizy-tooltip-background-color);
   border-radius: 0.5rem;
   z-index: 99999999;
   opacity: 0;
   word-wrap: break-word;
-  border: 0.1rem solid var(--bizy-tooltip-border-color, #355b7f);
+  border: 0.1rem solid var(--bizy-tooltip-border-color);
 }
 
 .bizy-tooltip::after {
@@ -23,7 +23,7 @@
   left: 50%;
   margin-left: -5px;
   border-width: 5px;
-  border-color: var(--bizy-tooltip-border-color, #355b7f) transparent transparent transparent;
+  border-color: var(--bizy-tooltip-border-color) transparent transparent transparent;
 }
 
 .bizy-tooltip-bottom::after {
@@ -31,7 +31,7 @@
   left: 50%;
   margin-left: -5px;
   border-width: 5px;
-  border-color: transparent transparent var(--bizy-tooltip-border-color, #355b7f) transparent;
+  border-color: transparent transparent var(--bizy-tooltip-border-color) transparent;
 }
 
 .bizy-tooltip-left::after {
@@ -39,7 +39,7 @@
   left: 100%;
   margin-top: -5px;
   border-width: 5px;
-  border-color: transparent transparent transparent var(--bizy-tooltip-border-color, #355b7f);
+  border-color: transparent transparent transparent var(--bizy-tooltip-border-color);
 }
 
 .bizy-tooltip-right::after {
@@ -47,7 +47,7 @@
   right: 100%;
   margin-top: -5px;
   border-width: 5px;
-  border-color: transparent var(--bizy-tooltip-border-color, #355b7f) transparent transparent;
+  border-color: transparent var(--bizy-tooltip-border-color) transparent transparent;
 }
 
 .bizy-tooltip--show {

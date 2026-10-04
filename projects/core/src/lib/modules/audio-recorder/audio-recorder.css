@@ -16,49 +16,49 @@
   position: relative;
   z-index: 1;
   
-  height: var(--bizy-audio-recorder-record-button-height, 8rem);
-  width: var(--bizy-audio-recorder-record-button-width, 8rem);
+  height: var(--bizy-audio-recorder-record-button-height);
+  width: var(--bizy-audio-recorder-record-button-width);
 }
 
 .bizy-audio-recorder__record-button--idle {
   transition: transform 0.2s ease-in;
-  background-color: var(--bizy-audio-recorder-record-button-idle-background-color, transparent);
-  border: 0.2rem solid var(--bizy-audio-recorder-record-button-idle-color, var(--bizy-info-color));
+  background-color: var(--bizy-audio-recorder-record-button-idle-background-color);
+  border: 0.2rem solid var(--bizy-audio-recorder-record-button-idle-color);
 }
 
 .bizy-audio-recorder__record-button--idle:hover {
   transform: scale(1.05);
-  background-color: var(--bizy-audio-recorder-record-button-idle-hover-color, var(--bizy-light-info-color));
+  background-color: var(--bizy-audio-recorder-record-button-idle-hover-color);
 }
 
 .bizy-audio-recorder__record-button--recording {
-  border: 0.1rem solid var(--bizy-audio-recorder-record-button-recording-color, var(--bizy-info-color));
-  background-color: var(--bizy-audio-recorder-record-button-recording-background-color, transparent);
+  border: 0.1rem solid var(--bizy-audio-recorder-record-button-recording-color);
+  background-color: var(--bizy-audio-recorder-record-button-recording-background-color);
 }
 
 .bizy-audio-recorder__record-button--recording:hover {
-  background-color: var(--bizy-audio-recorder-record-button-recording-hover-color, transparent);
+  background-color: var(--bizy-audio-recorder-record-button-recording-hover-color);
 }
 
 .bizy-audio-recorder__record-button__icon {
-  height: calc(var(--bizy-audio-recorder-record-button-height, 8rem) - var(--bizy-audio-recorder-record-button-padding, 2rem));
-  width: calc(var(--bizy-audio-recorder-record-button-width, 8rem) - var(--bizy-audio-recorder-record-button-padding, 2rem));
-  fill: var(--bizy-audio-recorder-record-button-idle-color, var(--bizy-info-color))
+  height: calc(var(--bizy-audio-recorder-record-button-height) - var(--bizy-audio-recorder-record-button-padding));
+  width: calc(var(--bizy-audio-recorder-record-button-width) - var(--bizy-audio-recorder-record-button-padding));
+  fill: var(--bizy-audio-recorder-record-button-idle-color)
 }
 
 .bizy-audio-recorder__record-button__waveform {
-  height: calc(var(--bizy-audio-recorder-record-button-height, 8rem) + 0.1rem);
-  width: calc(var(--bizy-audio-recorder-record-button-width, 8rem) + 0.1rem);
+  height: calc(var(--bizy-audio-recorder-record-button-height) + 0.1rem);
+  width: calc(var(--bizy-audio-recorder-record-button-width) + 0.1rem);
 }
 
 .bizy-audio-recorder__stop-button {
-  width: var(--bizy-audio-recorder-stop-button-width, 2rem);
-  height: var(--bizy-audio-recorder-stop-button-height, 2rem);
+  width: var(--bizy-audio-recorder-stop-button-width);
+  height: var(--bizy-audio-recorder-stop-button-height);
   padding: 0.3rem;
   display: grid;
   place-items: center;
-  border: 0.2rem solid var(--bizy-audio-recorder-stop-button-color, var(--bizy-danger-color));
-  background-color: var(--bizy-audio-recorder-stop-button-background-color, #fff);
+  border: 0.2rem solid var(--bizy-audio-recorder-stop-button-color);
+  background-color: var(--bizy-audio-recorder-stop-button-background-color);
   border-radius: 50%;
   transition: transform 0.2s ease-in;
   cursor: pointer;
@@ -69,13 +69,13 @@
 
 .bizy-audio-recorder__stop-button:hover {
   transform: scale(1.05);
-  background-color: var(--bizy-audio-recorder-stop-button-hover-color, #fff);
+  background-color: var(--bizy-audio-recorder-stop-button-hover-color);
 }
 
 .bizy-audio-recorder__stop-button__icon {
-  width: calc(var(--bizy-audio-recorder-stop-button-width, 2rem) - 75%);
-  height: calc(var(--bizy-audio-recorder-stop-button-height, 2rem) - 75%);
-  fill: var(--bizy-audio-recorder-stop-button-color, var(--bizy-danger-color));
+  width: calc(var(--bizy-audio-recorder-stop-button-width) - 75%);
+  height: calc(var(--bizy-audio-recorder-stop-button-height) - 75%);
+  fill: var(--bizy-audio-recorder-stop-button-color);
 }
 
 .bizy-audio-recorder__progress-ring {

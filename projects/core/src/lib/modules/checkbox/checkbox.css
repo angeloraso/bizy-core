@@ -12,7 +12,7 @@
 }
 
 .bizy-checkbox:hover .bizy-checkbox__input:not(:checked) {
-    background-color: var(--bizy-checkbox-hover-color, var(--bizy-accent-hover-color));
+    background-color: var(--bizy-checkbox-hover-color);
 }
 
 .bizy-checkbox--disabled {
@@ -32,8 +32,8 @@
     height: 1rem;
     min-width: 1rem;
     min-height: 1rem;
-    color: var(--bizy-checkbox-border-color, #ccc);
-    border: 0.1rem solid var(--bizy-checkbox-border-color, #ccc);
+    color: var(--bizy-checkbox-border-color);
+    border: 0.1rem solid var(--bizy-checkbox-border-color);
     border-radius: 0.3rem;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -60,8 +60,8 @@
 
 .bizy-checkbox__input:checked {
     color: #fff;
-    border-color: var(--bizy-checkbox-color, var(--bizy-accent-color));
-    background-color: var(--bizy-checkbox-color, var(--bizy-accent-color));
+    border-color: var(--bizy-checkbox-color);
+    background-color: var(--bizy-checkbox-color);
 }
 
 .bizy-checkbox__input:checked::before {

@@ -40,7 +40,7 @@ export class BizyFullScreenPopupWrapperComponent<T> {
   disableClose: boolean = false;
   disableDrag: boolean = false;
   position: {main?: string, right?: string, bottom?: string, left?: string, transform?: string} = {main: 'absolute', bottom: '0', left: '0', right: '0'};
-  minWidth: string = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-popup-full-screen-min-width').trim() || '100dvw';
+  minWidth: string = getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-popup-full-screen-min-width').trim();
 
   ngOnInit() {
     if (this.#data) {

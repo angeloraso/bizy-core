@@ -1,9 +1,8 @@
 :host {
-  --bizy-timeline-bullet-border-color: var(--bizy-info-color);
   font-size: 1rem;
   display: grid;
   grid-template-columns: 1fr fit-content(100%) 1fr;
-  column-gap: var(--bizy-timeline-event-column-gap, 1rem);
+  column-gap: var(--bizy-timeline-event-column-gap);
   min-height: fit-content;
   width: 100%;
 }
@@ -21,19 +20,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: var(--bizy-timeline-bullet-section-min-width, 2rem);
+  min-width: var(--bizy-timeline-bullet-section-min-width);
 }
 
 .bizy-timeline-event-bullet {
-  min-width: var(--bizy-timeline-bullet-min-width, 2rem);
-  min-height: var(--bizy-timeline-bullet-min-height, 2rem);
+  min-width: var(--bizy-timeline-bullet-min-width);
+  min-height: var(--bizy-timeline-bullet-min-height);
   display: grid;
   place-items: center;
   border-radius: 50%;
-  border: var(--bizy-timeline-bullet-border, 0.2rem solid var(--bizy-timeline-color, var(--bizy-info-color)));
-  background-color: var(--bizy-timeline-bullet-background-color, transparent);
+  border: var(--bizy-timeline-bullet-border);
+  background-color: var(--bizy-timeline-bullet-background-color);
   cursor: pointer;
-  padding: var(--bizy-timeline-bullet-padding, 0.1rem);
+  padding: var(--bizy-timeline-bullet-padding);
 }
 
 .bizy-timeline-event--disabled {
@@ -45,10 +44,10 @@
 
 .bizy-timeline-event-line {
   height: 100%;
-  min-height: var(--bizy-timeline-line-min-height, 1rem);
-  width: var(--bizy-timeline-line-width, 0.2rem);
-  background-color: var(--bizy-timeline-line-background-color, var(--bizy-timeline-color, var(--bizy-info-color)));
+  min-height: var(--bizy-timeline-line-min-height);
+  width: var(--bizy-timeline-line-width);
+  background-color: var(--bizy-timeline-line-background-color);
   display: inline-block;
   border-radius: 0.3rem;
-  margin-top: var(--bizy-timeline-row-gap, 0.5rem);
+  margin-top: var(--bizy-timeline-row-gap);
 }

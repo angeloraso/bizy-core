@@ -1,7 +1,7 @@
 :host {
     font-size: 1rem;
     width: 100%;
-    background-color: var(--bizy-table-row-background-color, #fff);
+    background-color: var(--bizy-table-row-background-color);
     display: flex;
     min-width: fit-content;
     margin-bottom: 0.1rem;
@@ -13,7 +13,7 @@
 
 ::ng-deep .bizy-table-row__accordion {
     padding: 0 !important;
-    --bizy-accordion-background-color: var(--bizy-table-row-background-color, #fff);
+    --bizy-accordion-background-color: var(--bizy-table-row-background-color);
     --bizy-accordion-padding-left: 0;
 }
 
@@ -29,7 +29,7 @@
     padding: 0 0.3rem;
     height: fit-content;
     border: none;
-    min-height: var(--bizy-table-row-height, 2rem);
+    min-height: var(--bizy-table-row-height);
     background-color: inherit;
     border-bottom: inherit;
 }
@@ -41,7 +41,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: var(--bizy-table-row-hover-background-color, var(--bizy-hover-color));
+    background-color: var(--bizy-table-row-hover-background-color);
     opacity: 0;
     pointer-events: none;
     z-index: 1;
@@ -54,16 +54,16 @@
 }
 
 ::ng-deep .bizy-table-row--selected {
-    background-color: var(--bizy-table-row-selected-background-color, var(--bizy-info-color)) !important;
+    background-color: var(--bizy-table-row-selected-background-color) !important;
 }
 
 :host(:has(bizy-table-row-expand-content)) ::ng-deep .bizy-table-row--opened {
-    background-color: var(--bizy-table-row-opened-background-color, #c9d9e0) !important;
+    background-color: var(--bizy-table-row-opened-background-color) !important;
 }
 
 ::ng-deep .bizy-table-row--selected * {
     font-weight: bold !important;
-    color: var(--bizy-table-row-selected-color, #fff) !important
+    color: var(--bizy-table-row-selected-color) !important
 }
 
 .bizy-table-row__checkbox {
@@ -73,7 +73,7 @@
     display: grid;
     place-items: center;
     position: relative;
-    min-height: var(--bizy-table-row-height, 2rem);
+    min-height: var(--bizy-table-row-height);
     height: 100%;
 }
 

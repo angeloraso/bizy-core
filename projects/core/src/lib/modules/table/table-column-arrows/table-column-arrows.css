@@ -1,5 +1,4 @@
 :host {
-    --bizy-table-column-arrow-color: var(--bizy-default-color);
     font-size: 1rem;
 }
 
@@ -11,9 +10,10 @@
     display: none;
     font-size: 1rem;
     height: 1rem;
-    fill: var(--bizy-table-column-arrows-color, var(--bizy-info-color));
+    fill: var(--bizy-table-column-arrows-color);
 }
 
 .bizy-table-column-arrows--visible {
     display: inline-block;
 }
+

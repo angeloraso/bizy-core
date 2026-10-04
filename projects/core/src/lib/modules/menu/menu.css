@@ -15,8 +15,8 @@
     align-items: center;
     justify-content: space-between;
     column-gap: 0.5rem;
-    padding: var(--bizy-menu-padding, 0);
-    color: var(--bizy-menu-color, #fff);
+    padding: var(--bizy-menu-padding);
+    color: var(--bizy-menu-color);
     cursor: pointer;
 }
 
@@ -27,11 +27,11 @@
 }
 
 .bizy-menu__arrow {
-    height: var(--bizy-menu-arrow-height, 0.9rem);
+    height: var(--bizy-menu-arrow-height);
     pointer-events: none;
     display: block;
     transition: transform 0.2s ease;
-    fill: var(--bizy-menu-color, #fff);
+    fill: var(--bizy-menu-color);
 }
 
 .bizy-menu__arrow--opened {
@@ -52,10 +52,10 @@
     border-top-right-radius: var(--bizy-menu-border-top-right-radius, var(--bizy-menu-border-radius, 0.5rem));
     border-bottom-right-radius: var(--bizy-menu-border-bottom-right-radius, var(--bizy-menu-border-radius, 0.5rem));
     border-bottom-left-radius: var(--bizy-menu-border-bottom-left-radius, var(--bizy-menu-border-radius, 0.5rem));
-    background-color: var(--bizy-menu-background-color, #fff);
-    min-width: var(--bizy-menu-min-width, fit-content);
-    max-width: var(--bizy-menu-max-width, 90dvw);
-    max-height: var(--bizy-menu-max-height, 90dvh);
+    background-color: var(--bizy-menu-background-color);
+    min-width: var(--bizy-menu-min-width);
+    max-width: var(--bizy-menu-max-width);
+    max-height: var(--bizy-menu-max-height);
     overflow-y: auto;
     overflow-x: hidden;
     width: 100%;
@@ -72,11 +72,11 @@
 
 .bizy-menu__options::-webkit-scrollbar-thumb {
     border-radius: 1rem;
-    background-color: var(--bizy-menu-scroll-bar-color, var(--bizy-default-color));
+    background-color: var(--bizy-menu-scroll-bar-color);
 }
 
 .bizy-menu__options::-webkit-scrollbar-thumb:hover {
-    background-color: var(--bizy-menu-scroll-bar-hover-color, #999);
+    background-color: var(--bizy-menu-scroll-bar-hover-color);
 }
 
 .bizy-menu__options::-webkit-scrollbar-button {
@@ -96,6 +96,6 @@
 ::ng-deep .bizy-menu__options__header {
     --bizy-input-width: auto;
     --bizy-input-background-color: #fff;
-    --bizy-input-min-width: var(--bizy-select-min-width, 14rem);
+    --bizy-input-min-width: var(--bizy-select-min-width);
     --bizy-input-max-width: auto;
 }

@@ -20,7 +20,7 @@
 }
 
 .bizy-radio__input:checked+.bizy-radio__radio:before {
-    box-shadow: inset 0 0 0 0.3rem var(--bizy-radio-color, var(--bizy-accent-color));
+    box-shadow: inset 0 0 0 0.3rem var(--bizy-radio-color);
 }
 
 .bizy-radio__radio {
@@ -33,12 +33,12 @@
     display: flex;
     flex-shrink: 0;
     content: "";
-    background-color: var(--bizy-radio-background-color, transparent);
+    background-color: var(--bizy-radio-background-color);
     min-width: 1rem;
     min-height: 1rem;
     border-radius: 50%;
     transition: 0.25s ease;
-    box-shadow: inset 0 0 0 0.1rem var(--bizy-radio-color, var(--bizy-accent-color));
+    box-shadow: inset 0 0 0 0.1rem var(--bizy-radio-color);
 }
 
 .bizy-radio__input--disabled {

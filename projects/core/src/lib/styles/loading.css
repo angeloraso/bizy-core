@@ -3,7 +3,7 @@
     display: inline-block;
     position: relative;
     border: 3px solid;
-    border-color: var(--bizy-loading-spinner-color-3rd-line, #2484c6) var(--bizy-loading-spinner-color-3rd-line, #2484c6) transparent transparent;
+    border-color: var(--bizy-loading-spinner-color-3rd-line) var(--bizy-loading-spinner-color-3rd-line) transparent transparent;
     box-sizing: border-box;
     animation: rotation 1s linear infinite;
 }
@@ -28,13 +28,13 @@
 }
 
 .bizy-loading--spinner::after {
-    border-color: transparent transparent var(--bizy-loading-spinner-color-2nd-line, #2484c6) var(--bizy-loading-spinner-color-2nd-line, #2484c6);
+    border-color: transparent transparent var(--bizy-loading-spinner-color-2nd-line) var(--bizy-loading-spinner-color-2nd-line);
 }
 
 .bizy-loading--spinner::before {
     width: calc(100% * 0.67);
     height: calc(100% * 0.67);
-    border-color: var(--bizy-loading-spinner-color-1st-line, #2484c6) var(--bizy-loading-spinner-color-1st-line, #2484c6) transparent transparent;
+    border-color: var(--bizy-loading-spinner-color-1st-line) var(--bizy-loading-spinner-color-1st-line) transparent transparent;
     animation: rotation 1.5s linear infinite;
 }
 
@@ -72,7 +72,7 @@
     top: 0;
     left: 0;
     position: absolute;
-    background-image: linear-gradient(100deg, transparent, var(--bizy-loading-bright-color, #fffa) 50%, transparent 80%), linear-gradient(var(--bizy-loading-bar-color, #e5e5e5) 100%, transparent 0);
+    background-image: linear-gradient(100deg, transparent, var(--bizy-loading-bright-color) 50%, transparent 80%), linear-gradient(var(--bizy-loading-bar-color) 100%, transparent 0);
     background-repeat: no-repeat;
     background-size: 45% 100%, 100% 100%;
     box-sizing: border-box;

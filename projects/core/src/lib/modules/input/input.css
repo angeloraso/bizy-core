@@ -1,24 +1,24 @@
 :host {
-    width: var(--bizy-input-width, 100%);
-    min-width: var(--bizy-input-min-width, 14rem);
-    max-width: var(--bizy-input-max-width, 40rem);
+    width: var(--bizy-input-width);
+    min-width: var(--bizy-input-min-width);
+    max-width: var(--bizy-input-max-width);
     display: flex;
     flex-direction: column;
     row-gap: 0.3rem;
 }
 
 :host:has(> .bizy-input__errors:not(:empty)) .bizy-input__bottom-line {
-    background-color: var(--bizy-input-invalid-color, var(--bizy-danger-color)) !important;
+    background-color: var(--bizy-input-invalid-color) !important;
     visibility: visible !important;
 }
 
 :host:has(> .bizy-input__errors:not(:empty)) .bizy-input__content__input {
-    color: var(--bizy-input-invalid-color, var(--bizy-danger-color)) !important;
+    color: var(--bizy-input-invalid-color) !important;
 }
 
 .bizy-input {
     width: 100%;
-    background-color: var(--bizy-input-background-color, #fff);
+    background-color: var(--bizy-input-background-color);
     border: none;
     border-top-left-radius: var(--bizy-input-border-top-left-radius, var(--bizy-input-border-radius, 0.3rem));
     border-top-right-radius: var(--bizy-input-border-top-right-radius, var(--bizy-input-border-radius, 0.3rem));
@@ -27,14 +27,14 @@
     display: flex;
     padding: 0.3rem 0.3rem 0;
     flex-direction: column;
-    cursor: var(--bizy-input-cursor, default);
+    cursor: var(--bizy-input-cursor);
 }
 
 .bizy-input--negative,
 .bizy-input--negative .bizy-input__header,
 .bizy-input--negative .bizy-input__content,
 .bizy-input--negative .bizy-input__content__input {
-    background-color: var(--bizy-input-negative-background-color, var(--bizy-light-danger-color));
+    background-color: var(--bizy-input-negative-background-color);
 }
 
 .bizy-input--disabled {
@@ -44,7 +44,7 @@
 }
 
 .bizy-input__header {
-    background-color: var(--bizy-input-background-color, #fff);
+    background-color: var(--bizy-input-background-color);
     width: 100%;
     display: flex;
     align-items: center;
@@ -57,7 +57,7 @@
 }
 
 .bizy-input__content {
-    background-color: var(--bizy-input-background-color, #fff);
+    background-color: var(--bizy-input-background-color);
     width: 100%;
     display: flex;
     align-items: center;
@@ -91,15 +91,15 @@
 
 .bizy-input__content__input {
     width: 100%;
-    background-color: var(--bizy-input-background-color, #fff);
-    color: var(--bizy-input-color, var(--bizy-default-color));
+    background-color: var(--bizy-input-background-color);
+    color: var(--bizy-input-color);
     flex: 1;
     border: none;
     padding-block: 0;
     padding-inline: 0;
     padding: 0 0 0.2rem;
-    font-size: var(--bizy-input-font-size, 1rem);
-    resize: var(--bizy-input-resize, none);
+    font-size: var(--bizy-input-font-size);
+    resize: var(--bizy-input-resize);
 }
 
 .bizy-input__content__input:focus {
@@ -108,7 +108,7 @@
 }
 
 .bizy-input__content__input::placeholder {
-    color: var(--bizy-input-placeholder-color, #999);
+    color: var(--bizy-input-placeholder-color);
 }
 
 .bizy-input__content input[type=number]::-webkit-inner-spin-button, 
@@ -138,7 +138,7 @@
     height: 0.1rem;
     visibility: hidden;
     pointer-events: none;
-    background-color: var(--bizy-input-focus-color, var(--bizy-info-color));
+    background-color: var(--bizy-input-focus-color);
 }
 
 .bizy-input__bottom-line--visible {
@@ -149,13 +149,13 @@
 }
 
 .bizy-input__options {
-    background-color: var(--bizy-input-background-color, #fff);
+    background-color: var(--bizy-input-background-color);
     display: flex;
     min-width: fit-content;
     width: 100%;
     flex-direction: column;
     box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
-    max-height: var(--bizy-input-options-height, 20rem);
+    max-height: var(--bizy-input-options-height);
     overflow-y: auto;
     overflow-x: hidden;
     position: relative;
@@ -166,6 +166,6 @@
 }
 
 ::ng-deep .bizy-input__errors * {
-    color: var(--bizy-input-invalid-color, var(--bizy-danger-color)) !important;
+    color: var(--bizy-input-invalid-color) !important;
 }
 

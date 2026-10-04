@@ -1,9 +1,9 @@
 :host {
     display: inline-block !important;
-    min-height: var(--bizy-grid-min-height, 5rem);
-    max-height: var(--bizy-grid-max-height, 100%);
-    height: var(--bizy-grid-height, 100%);
-    width: var(--bizy-grid-width, 100%);
+    min-height: var(--bizy-grid-min-height);
+    max-height: var(--bizy-grid-max-height);
+    height: var(--bizy-grid-height);
+    width: var(--bizy-grid-width);
     flex: 1;
     overflow-x: auto;
     overflow-y: hidden;
@@ -24,7 +24,7 @@
     flex-direction: column;
     row-gap: 0.3rem;
     overflow-x: clip;
-    background-color: var(--bizy-grid-background-color, transparent);
+    background-color: var(--bizy-grid-background-color);
 }
 
 .bizy-grid__rows {
@@ -55,11 +55,11 @@
 
 ::ng-deep .cdk-virtual-scrollable::-webkit-scrollbar-thumb {
     border-radius: 1rem;
-    background-color: var(--bizy-grid-scroll-bar-color, var(--bizy-default-color));
+    background-color: var(--bizy-grid-scroll-bar-color);
 }
 
 ::ng-deep .cdk-virtual-scrollable::-webkit-scrollbar-thumb:hover {
-    background-color: var(--bizy-grid-scroll-bar-hover-color, #999);
+    background-color: var(--bizy-grid-scroll-bar-hover-color);
 }
 
 ::ng-deep .cdk-virtual-scrollable::-webkit-scrollbar-button {

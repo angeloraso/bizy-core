@@ -8,7 +8,7 @@
     transition: width 0.3s ease;
     border: none;
     cursor: pointer;
-    background-color: var(--bizy-stacked-bar-chart-color, var(--bizy-accent-color));
+    background-color: var(--bizy-stacked-bar-chart-color);
 }
 
 .bizy-stacked-bar-chart-segment--disabled {
@@ -18,5 +18,5 @@
 }
 
 .bizy-stacked-bar-chart-segment--empty {
-    background-color: var(--bizy-stacked-bar-chart-background-color, var(--bizy-default-color)) !important;
+    background-color: var(--bizy-stacked-bar-chart-background-color) !important;
 }

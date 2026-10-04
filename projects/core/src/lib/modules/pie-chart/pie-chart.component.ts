@@ -158,9 +158,9 @@ export class BizyPieChartComponent {
       labelLine
     }];
 
-    const textColor = (getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-pie-chart-tooltip-color').trim() || '#000');
-    const textBackgroundColor = (getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-pie-chart-tooltip-background-color').trim() || '#fff');
-    const borderColor = (getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-pie-chart-tooltip-border-color').trim() || '#fff');
+    const textColor = getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-pie-chart-tooltip-color');
+    const textBackgroundColor = getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-pie-chart-tooltip-background-color');
+    const borderColor = getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-pie-chart-tooltip-border-color');
 
     const toolbox = {
       show: true,
@@ -232,7 +232,7 @@ export class BizyPieChartComponent {
 
     let graphic: any;
     if (this.centerLabel) {
-      let centerLabelColor = (this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-pie-chart-center-label-color') || '#000');
+      let centerLabelColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-pie-chart-center-label-color');
       let { width, height } = this.#chartContainer.getBoundingClientRect();
       let base = Math.min(width, height);
       let fontSize = base / 6;

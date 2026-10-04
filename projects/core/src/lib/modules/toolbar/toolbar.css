@@ -3,15 +3,15 @@
 }
 
 .bizy-toolbar {
-    min-height: var(--bizy-toolbar-min-height, 3.2rem);
-    height: var(--bizy-toolbar-height, fit-content);
+    min-height: var(--bizy-toolbar-min-height);
+    height: var(--bizy-toolbar-height);
     width: 100%;
-    background-color: var(--bizy-toolbar-background-color, #f3f3f3);
+    background-color: var(--bizy-toolbar-background-color);
     display: flex;
     align-items: center;
     justify-content: space-between;
     column-gap: var(--bizy-toolbar-column-gap);
-    padding: var(--bizy-toolbar-padding, 0 0.5rem 0 2rem);
+    padding: var(--bizy-toolbar-padding);
 }
 
 .bizy-toolbar__start {

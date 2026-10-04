@@ -1,36 +1,36 @@
 :host {
     font-size: 1rem;
-    height: var(--bizy-card-height, 100%);
-    min-height: var(--bizy-card-min-height, auto);
-    max-height: var(--bizy-card-max-height, auto);
-    width: var(--bizy-card-width, 100%);
-    min-width: var(--bizy-card-min-width, auto);
-    max-width: var(--bizy-card-max-width, auto);
+    height: var(--bizy-card-height);
+    min-height: var(--bizy-card-min-height);
+    max-height: var(--bizy-card-max-height);
+    width: var(--bizy-card-width);
+    min-width: var(--bizy-card-min-width);
+    max-width: var(--bizy-card-max-width);
 }
 
 .bizy-card {
     height: 100%;
     width: 100%;
-    cursor: var(--bizy-card-cursor, default);
+    cursor: var(--bizy-card-cursor);
     border-top: var(--bizy-card-border-top, var(--bizy-card-border, none));
     border-right: var(--bizy-card-border-right, var(--bizy-card-border, none));
     border-bottom: var(--bizy-card-border-bottom, var(--bizy-card-border, none));
     border-left: var(--bizy-card-border-left, var(--bizy-card-border, none));
-    border-radius: var(--bizy-card-border-radius, 0.3rem);
+    border-radius: var(--bizy-card-border-radius);
     overflow: hidden;
-    padding: var(--bizy-card-padding, 0.5rem);
+    padding: var(--bizy-card-padding);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    row-gap: var(--bizy-card-row-gap, 0.3rem);
-    background-color: var(--bizy-card-background-color, #fff);
+    row-gap: var(--bizy-card-row-gap);
+    background-color: var(--bizy-card-background-color);
     transition: transform 250ms ease-in-out, box-shadow 0.2s ease;
-    box-shadow: var(--bizy-card-box-shadow, 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08));
+    box-shadow: var(--bizy-card-box-shadow);
 }
 
 .bizy-card:hover {
     transform: translateY(-1px);
-    box-shadow: var(--bizy-card-hover-box-shadow, 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08));
+    box-shadow: var(--bizy-card-hover-box-shadow);
 }
 
 .bizy-card:has(> .bizy-card__content:empty) > .bizy-card__content {
@@ -53,13 +53,13 @@
 
 .bizy-card__content:not(:empty) {
     display: flex;
-    align-items: var(--bizy-card-content-align-items, center);
+    align-items: var(--bizy-card-content-align-items);
     column-gap: var(--bizy-card-content-column-gap, var(--bizy-card-content-gap, 0));
     row-gap: var(--bizy-card-content-row-gap, var(--bizy-card-content-gap, 0));
-    flex-wrap: var(--bizy-card-content-flex-wrap, nowrap);
+    flex-wrap: var(--bizy-card-content-flex-wrap);
     height: 100%;
     width: 100%;
-    background-color: var(--bizy-card-content-background-color, transparent);
+    background-color: var(--bizy-card-content-background-color);
 }
 
 .bizy-card__header:has(> .bizy-card__header__start:empty):has(> .bizy-card__header__end:empty) {
@@ -71,9 +71,9 @@
     height: fit-content;
     display: grid;
     grid-template-columns: auto auto;
-    align-items: var(--bizy-card-header-align-items, center);
-    column-gap: var(--bizy-card-header-column-gap, 0.5rem);
-    background-color: var(--bizy-card-header-background-color, transparent);
+    align-items: var(--bizy-card-header-align-items);
+    column-gap: var(--bizy-card-header-column-gap);
+    background-color: var(--bizy-card-header-background-color);
 }
 
 .bizy-card__header__start {
@@ -88,7 +88,7 @@
     width: 100%;
     display: flex;
     align-items: center;
-    column-gap: var(--bizy-card-slot-column-gap, 0.5rem);
+    column-gap: var(--bizy-card-slot-column-gap);
     height: 100%;
     overflow: hidden;
 }
@@ -102,9 +102,9 @@
     height: fit-content;
     display: grid;
     grid-template-columns: auto auto;
-    align-items: var(--bizy-card-footer-align-items, center);
-    column-gap: var(--bizy-card-footer-column-gap, 0.5rem);
-    background-color: var(--bizy-card-footer-background-color, transparent);
+    align-items: var(--bizy-card-footer-align-items);
+    column-gap: var(--bizy-card-footer-column-gap);
+    background-color: var(--bizy-card-footer-background-color);
 }
 
 .bizy-card__footer__start {

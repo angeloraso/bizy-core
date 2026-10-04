@@ -7,7 +7,7 @@
     min-width: fit-content;
     height: 100%;
     max-height: 100dvh;
-    background-color: var(--bizy-sidebar-background-color, #fff);
+    background-color: var(--bizy-sidebar-background-color);
     position: relative;
     transition: width 0.2s ease;
     display: grid;
@@ -21,13 +21,13 @@
 
 .bizy-sidebar__tab {
     cursor: pointer;
-    height: var(--bizy-sidebar-tab-height, 2.6rem);
+    height: var(--bizy-sidebar-tab-height);
     min-height: 2.6rem;
-    width: var(--bizy-sidebar-tab-width, 1.2rem);
+    width: var(--bizy-sidebar-tab-width);
     position: absolute;
     left: 100%;
-    top: var(--bizy-sidebar-tab-top, 0.25rem);
-    background-color: var(--bizy-sidebar-tab-background-color, #fff);
+    top: var(--bizy-sidebar-tab-top);
+    background-color: var(--bizy-sidebar-tab-background-color);
     z-index: 999;
     border-top-right-radius: 0.7rem;
     border-bottom-right-radius: 0.7rem;
@@ -43,7 +43,7 @@
 }
 
 .bizy-sidebar__tab__svg__path {
-    fill: var(--bizy-sidebar-tab-color, var(--bizy-default-color));
+    fill: var(--bizy-sidebar-tab-color);
 }
 
 .bizy-sidebar__top {
@@ -66,17 +66,17 @@
 
 .bizy-sidebar__content {
     display: flex;
-    min-height: var(--bizy-sidebar-section-min-height, 3rem);
-    width: var(--bizy-sidebar-width, 8rem);
+    min-height: var(--bizy-sidebar-section-min-height);
+    width: var(--bizy-sidebar-width);
     flex-direction: column;
     direction: rtl;
-    padding: var(--bizy-sidebar-padding, 0 0 0 0.5rem);
+    padding: var(--bizy-sidebar-padding);
     overflow-x: hidden;
     transition: width 0.2s ease;
 }
 
 .bizy-sidebar__content--shrinked {
-    width: var(--bizy-sidebar-shrinked-width, 3rem);
+    width: var(--bizy-sidebar-shrinked-width);
     padding-left: 0 !important;
 }
 
@@ -87,11 +87,11 @@
 
 .bizy-sidebar__content::-webkit-scrollbar-thumb {
     border-radius: 1rem;
-    background-color: var(--bizy-sidebar-scroll-bar-color, var(--bizy-default-color));
+    background-color: var(--bizy-sidebar-scroll-bar-color);
 }
 
 .bizy-sidebar__content::-webkit-scrollbar-thumb:hover {
-    background-color: var(--bizy-sidebar-scroll-bar-hover-color, #999);
+    background-color: var(--bizy-sidebar-scroll-bar-hover-color);
 }
 
 .bizy-sidebar__content::-webkit-scrollbar-button {

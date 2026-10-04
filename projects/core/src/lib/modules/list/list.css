@@ -1,12 +1,12 @@
 :host {
     font-size: 1rem;
-    height: var(--bizy-list-height, fit-content);
+    height: var(--bizy-list-height);
     overflow: auto;
-    width: var(--bizy-list-width, 100%);
+    width: var(--bizy-list-width);
     display: flex;
-    flex-direction: var(--bizy-list-flex-direction, column);
-    column-gap: var(--bizy-list-column-gap, 0.5rem);
-    row-gap: var(--bizy-list-row-gap, 0.5rem);
-    justify-content: var(--bizy-list-justify-content, flex-start);
-    align-items: var(--bizy-list-align-items, flex-start);
+    flex-direction: var(--bizy-list-flex-direction);
+    column-gap: var(--bizy-list-column-gap);
+    row-gap: var(--bizy-list-row-gap);
+    justify-content: var(--bizy-list-justify-content);
+    align-items: var(--bizy-list-align-items);
 }

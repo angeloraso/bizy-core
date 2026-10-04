@@ -6,26 +6,26 @@
     font-size: 1rem;
     width: 100%;
     border: none;
-    background-color: var(--bizy-input-background-color, #fff);
+    background-color: var(--bizy-input-background-color);
     display: flex;
     align-items: center;
     justify-content: space-between;
     column-gap: 0.5rem;
     padding: 0.5rem;
-    color: var(--bizy-input-color, var(--bizy-default-color));
+    color: var(--bizy-input-color);
     cursor: pointer;
 }
 
 .bizy-input-option:hover {
-    background-color: var(--bizy-input-option-hover-background-color, var(--bizy-hover-color));
+    background-color: var(--bizy-input-option-hover-background-color);
 }
 
 .bizy-input-option--selected {
-    background-color: var(--bizy-input-option-selected-background-color, var(--bizy-info-color)) !important;
+    background-color: var(--bizy-input-option-selected-background-color) !important;
 }
 
 .bizy-input-option--selected ::ng-deep .bizy-input-option__content * {
-    color: var(--bizy-input-option-selected-color, #fff);
+    color: var(--bizy-input-option-selected-color);
 }
 
 .bizy-input-option--disabled {

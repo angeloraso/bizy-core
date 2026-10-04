@@ -1,10 +1,10 @@
 :host {
     font-size: 1rem;
-    height: var(--bizy-popup-full-screen-height, fit-content);
-    min-height: var(--bizy-popup-full-screen-min-height, 20rem);
-    max-height: var(--bizy-popup-full-screen-max-height, 90dvh);
-    width: var(--bizy-popup-full-screen-width, auto);
-    max-width: var(--bizy-popup-full-screen-max-width, 100dvw);
+    height: var(--bizy-popup-full-screen-height);
+    min-height: var(--bizy-popup-full-screen-min-height);
+    max-height: var(--bizy-popup-full-screen-max-height);
+    width: var(--bizy-popup-full-screen-width);
+    max-width: var(--bizy-popup-full-screen-max-width);
     display: flex;
 }
 
@@ -16,8 +16,8 @@
 .bizy-full-screen-popup-wrapper {
     flex: 1;
     position: relative;
-    padding: var(--bizy-popup-full-screen-padding, 2.2rem 0 0 0);
-    background-color: var(--bizy-popup-full-screen-background-color, #fff);
+    padding: var(--bizy-popup-full-screen-padding);
+    background-color: var(--bizy-popup-full-screen-background-color);
     border-top-left-radius: var(--bizy-popup-full-screen-border-top-left-radius, var(--bizy-popup-full-screen-border-radius, 1rem));
     border-top-right-radius: var(--bizy-popup-full-screen-border-top-right-radius, var(--bizy-popup-full-screen-border-radius, 1rem));
     border-bottom-right-radius: var(--bizy-popup-full-screen-border-bottom-right-radius, var(--bizy-popup-full-screen-border-radius, 0));
@@ -28,12 +28,12 @@
     position: absolute;
     right: 1rem;
     top: 1rem;
-    border: var(--bizy-popup-full-screen-close-button-border, transparent);
+    border: var(--bizy-popup-full-screen-close-button-border);
     border-radius: 50%;
     padding: 0.25rem 0.35rem;
     place-items: center;
     display: grid;
-    background-color: var(--bizy-popup-full-screen-close-button-background-color, transparent);
+    background-color: var(--bizy-popup-full-screen-close-button-background-color);
     cursor: pointer;
     transition: transform .2s;
     z-index: 1;
@@ -44,7 +44,7 @@
 }
 
 .bizy-full-screen-popup-wrapper__close-button:hover .bizy-full-screen-popup-wrapper__close-button__icon {
-    fill: var(--bizy-popup-full-screen-close-button-hover-color, var(--bizy-danger-color));
+    fill: var(--bizy-popup-full-screen-close-button-hover-color);
 }
 
 .bizy-full-screen-popup-wrapper__close-button__icon {
@@ -53,6 +53,6 @@
 }
 
 .bizy-full-screen-popup-wrapper__close-button__icon {
-    fill: var(--bizy-popup-full-screen-close-button-color, var(--bizy-default-color));
+    fill: var(--bizy-popup-full-screen-close-button-color);
 }
 

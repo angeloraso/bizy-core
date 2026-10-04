@@ -1,15 +1,15 @@
 :host {
     display: inline-block;
     width: 100%;
-    height: var(--bizy-progress-bar-height, 0.2rem);
-    background-color: var(--bizy-progress-bar-background-color, var(--bizy-light-default-color));
-    border-radius: var(--bizy-progress-bar-border-radius, 1rem);
+    height: var(--bizy-progress-bar-height);
+    background-color: var(--bizy-progress-bar-background-color);
+    border-radius: var(--bizy-progress-bar-border-radius);
     overflow: hidden;
 }
 
 .bizy-progress-bar {
     height: 100%;
     width: 0%;
-    background-color: var(--bizy-progress-bar-progress-color, var(--bizy-accent-color));
+    background-color: var(--bizy-progress-bar-progress-color);
     transition: width 0.5s ease-in-out;
 }

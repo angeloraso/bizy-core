@@ -8,18 +8,18 @@
 }
 
 .bizy-accordion {
-    background-color: var(--bizy-accordion-background-color, transparent);
+    background-color: var(--bizy-accordion-background-color);
     border: none;
     display: flex;
     align-items: center;
     justify-content: space-between;
     column-gap: 0.5rem;
-    padding: var(--bizy-accordion-padding, 0.5rem);
+    padding: var(--bizy-accordion-padding);
     width: 100%;
     cursor: pointer;
     position: relative;
     border-top-left-radius: 0.3rem;
-    border-bottom: var(--bizy-accordion-border-bottom, none);
+    border-bottom: var(--bizy-accordion-border-bottom);
 }
 
 .bizy-accordion--disabled {
@@ -35,11 +35,11 @@
 }
 
 .bizy-accordion__arrow {
-    height: var(--bizy-accordion-arrow-height, 0.9rem);
+    height: var(--bizy-accordion-arrow-height);
     pointer-events: none;
     display: block;
     transition: transform 0.1s ease;
-    fill: var(--bizy-accordion-arrow-color, var(--bizy-default-color));
+    fill: var(--bizy-accordion-arrow-color);
     position: absolute;
     right: 0.5rem;
 }
@@ -54,9 +54,9 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    padding-left: var(--bizy-accordion-padding-left, 0.5rem);
+    padding-left: var(--bizy-accordion-padding-left);
     transition: max-height 0.1s ease;
-    border-left: var(--bizy-accordion-border, none);
+    border-left: var(--bizy-accordion-border);
 }
 
 .bizy-accordion__options--opened {

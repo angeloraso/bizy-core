@@ -1,7 +1,7 @@
 :host {
     font-size: 1rem;
     flex: 1;
-    min-width: var(--bizy-filter-section-min-width, 8rem);
+    min-width: var(--bizy-filter-section-min-width);
 }
 
 :host:has(.bizy-filter-section-range-option) .bizy-filter-section__header__checkbox {
@@ -60,7 +60,7 @@
 }
 
 .bizy-filter-section__header__clear-icon {
-    fill: var(--bizy-filter-section-clear-color, var(--bizy-danger-color));
+    fill: var(--bizy-filter-section-clear-color);
     pointer-events: none;
     height: 1rem;
 }

@@ -82,22 +82,22 @@ export class BizyFilterComponent {
     this.#ref.detectChanges();
     const panel = this.overlay.overlayRef?.overlayElement;
     if (panel) {
-      const maxWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-filter-max-width') || '90dvw';
+      const maxWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-filter-max-width')!;
       panel.style.setProperty('--bizy-filter-max-width', maxWidth);
 
-      const sectionMinWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-filter-section-min-width') || '8rem';
+      const sectionMinWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-filter-section-min-width')!;
       panel.style.setProperty('--bizy-filter-section-min-width', sectionMinWidth);
 
-      const inputMinWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-input-min-width') || '14rem';
+      const inputMinWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-input-min-width')!;
       panel.style.setProperty('--bizy-input-min-width', inputMinWidth);
 
-      const inputWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-input-width') || '100%';
+      const inputWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-input-width')!;
       panel.style.setProperty('--bizy-input-width', inputWidth);
 
-      const inputMaxWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-input-max-width') || '40rem';
+      const inputMaxWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-input-max-width')!;
       panel.style.setProperty('--bizy-input-max-width', inputMaxWidth);
 
-      const inputBackgroundColor = (this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-input-background-color') || '#fff');
+      const inputBackgroundColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-input-background-color')!;
       panel.style.setProperty('--bizy-input-background-color', inputBackgroundColor);
 
       this.#ref.detectChanges();

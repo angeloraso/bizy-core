@@ -1,14 +1,13 @@
 :host {
-    --bizy-section-margin-bottom: center;
     font-size: 1rem;
     display: flex;
-    height: var(--bizy-section-height, fit-content);
-    width: var(--bizy-section-width, 100%);
-    background-color: var(--bizy-section-background-color, transparent);
-    flex-direction: var(--bizy-section-flex-direction, row);
-    column-gap: var(--bizy-section-column-gap, 1rem);
-    row-gap: var(--bizy-section-row-gap, 1rem);
-    justify-content: var(--bizy-section-justify-content, space-between);
-    align-items: var(--bizy-section-align-items, center);
-    flex-wrap: var(--bizy-section-flex-wrap, wrap);
+    height: var(--bizy-section-height);
+    width: var(--bizy-section-width);
+    background-color: var(--bizy-section-background-color);
+    flex-direction: var(--bizy-section-flex-direction);
+    column-gap: var(--bizy-section-column-gap);
+    row-gap: var(--bizy-section-row-gap);
+    justify-content: var(--bizy-section-justify-content);
+    align-items: var(--bizy-section-align-items);
+    flex-wrap: var(--bizy-section-flex-wrap);
 }

@@ -23,6 +23,489 @@
     --bizy-accent-hover-color: #16aa8844;
     --bizy-hover-color: #2484c644;
 
+    --bizy-accordion-background-color: transparent;
+    --bizy-accordion-border: none;
+    --bizy-accordion-padding: 0.5rem;
+    --bizy-accordion-border-bottom: none;
+    --bizy-accordion-arrow-color: var(--bizy-default-color);
+    --bizy-accordion-padding-left: 0.5rem;
+    --bizy-accordion-arrow-height: 0.9rem;
+
+    --bizy-animation-timeout: 500ms;
+
+    --bizy-audio-player-width: 100%;
+    --bizy-audio-player-height: 2.6rem;
+    --bizy-audio-player-seek-before-width: 0;
+    --bizy-audio-player-seek-before-background-color: var(--bizy-info-color);
+    --bizy-audio-player-seek-slider-thumb-border: 0.1rem solid var(--bizy-info-color);
+    --bizy-audio-player-seek-slider-thumb-background-color: #fff;
+    --bizy-audio-player-seek-slider-thumb-active-background-color: var(--bizy-light-info-color);
+    --bizy-audio-player-buffered-width: 0;
+    --bizy-audio-player-volume-before-width: 100%;
+    --bizy-audio-player-play-button-color: var(--bizy-info-color);
+    --bizy-audio-player-mute-button-color: var(--bizy-info-color);
+    --bizy-audio-player-playback-rate-button-color: var(--bizy-info-color);
+    --bizy-audio-player-playback-rate-button-hover-color: var(--bizy-light-info-color);
+    --bizy-audio-player-download-button-color: var(--bizy-info-color);
+    --bizy-audio-player-download-button-hover-color: var(--bizy-light-info-color);
+
+    --bizy-audio-recorder-record-button-height: 8rem;
+    --bizy-audio-recorder-record-button-width: 8rem;
+    --bizy-audio-recorder-record-button-padding: 2rem;
+    --bizy-audio-recorder-record-button-idle-color: var(--bizy-info-color);
+    --bizy-audio-recorder-record-button-idle-hover-color: var(--bizy-light-info-color);
+    --bizy-audio-recorder-record-button-idle-background-color: transparent;
+    --bizy-audio-recorder-record-button-recording-color: var(--bizy-info-color);
+    --bizy-audio-recorder-record-button-recording-hover-color: transparent;
+    --bizy-audio-recorder-record-button-recording-background-color: transparent;
+    --bizy-audio-recorder-record-button-progress-color: var(--bizy-success-color);
+    --bizy-audio-recorder-stop-button-height: 2rem;
+    --bizy-audio-recorder-stop-button-width: 2rem;
+    --bizy-audio-recorder-stop-button-color: var(--bizy-danger-color);
+    --bizy-audio-recorder-stop-button-hover-color: #fff;
+    --bizy-audio-recorder-stop-button-background-color: #fff;
+
+    --bizy-bar-line-chart-y-axis-color: var(--bizy-dark-default-color);
+    --bizy-bar-line-chart-x-axis-color: var(--bizy-dark-default-color);
+    --bizy-bar-line-chart-tooltip-color: #000;
+    --bizy-bar-line-chart-tooltip-background-color: #fff;
+    --bizy-bar-line-chart-tooltip-border-color: #fff;
+
+    --bizy-breadcrumb-link-color: var(--bizy-info-color);
+    --bizy-breadcrumb-path-color: var(--bizy-default-color);
+    
+    --bizy-button-height: fit-content;
+    --bizy-button-min-height: auto;
+    --bizy-button-max-height: 100%;
+    --bizy-button-width: fit-content;
+    --bizy-button-min-width: auto;
+    --bizy-button-max-width: 100%;
+    --bizy-button-background-color: var(--bizy-default-color);
+    --bizy-button-border: none;
+    --bizy-button-border-radius: 0.3rem;
+    --bizy-button-color: #fff;
+    --bizy-button-padding: 0.5rem;
+    --bizy-button-justify-content: center;
+    --bizy-button-align-items: center;
+    --bizy-button-flex-direction: row;
+
+
+    --bizy-card-background-color: #fff;
+    --bizy-card-cursor: default;
+    --bizy-card-height: 100%;
+    --bizy-card-height: 100%;
+    --bizy-card-min-height: auto;
+    --bizy-card-max-height: auto;
+    --bizy-card-width: 100%;
+    --bizy-card-min-width: auto;
+    --bizy-card-max-width: auto;
+    --bizy-card-border-radius: 0.3rem;
+    --bizy-card-padding: 0.5rem;
+    --bizy-card-box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    --bizy-card-slot-column-gap: 0.5rem;
+    --bizy-card-hover-box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+    --bizy-card-header-align-items: center;
+    --bizy-card-header-background-color: transparent;
+    --bizy-card-header-column-gap: 0.5rem;
+    --bizy-card-content-align-items: center;
+    --bizy-card-content-background-color: transparent;
+    --bizy-card-content-gap: 0.5rem;
+    --bizy-card-content-column-gap: 0.5rem;
+    --bizy-card-content-row-gap: 0.5rem;
+    --bizy-card-content-flex-wrap: nowrap;
+    --bizy-card-footer-align-items: center;
+    --bizy-card-footer-background-color: transparent;
+    --bizy-card-footer-column-gap: 0.5rem;
+    --bizy-card-row-gap: 0.3rem;
+
+    --bizy-calendar-event-color: var(--bizy-dark-default-color);
+    --bizy-calendar-event-delete-action-color: var(--bizy-danger-color);
+    --bizy-calendar-event-delete-action-hover-color: var(--bizy-dark-danger-color);
+    --bizy-calendar-event-delete-action-line-color: var(--bizy-light-default-color);
+    --bizy-calendar-event-delete-action-width: 1rem;
+    --bizy-calendar-event-delete-action-height: 1rem;
+
+    --bizy-checkbox-border-color: #ccc;
+    --bizy-checkbox-hover-color: var(--bizy-accent-hover-color);
+    --bizy-checkbox-color: var(--bizy-accent-color);
+
+    --bizy-copy-to-clipboard-default-color: #2484c6;
+    --bizy-copy-to-clipboard-success-color: #5fbc5a;
+    --bizy-copy-to-clipboard-danger-color: #e76565;
+
+    --bizy-donut-chart-center-label-color: #000;
+    --bizy-donut-chart-tooltip-color: #000;
+    --bizy-donut-chart-tooltip-background-color: #fff;
+    --bizy-donut-chart-tooltip-border-color: #fff;
+
+    --bizy-filter-padding: 0;
+    --bizy-filter-color: var(--bizy-default-color);
+    --bizy-filter-background-color: #fff;
+    --bizy-filter-badge-color: var(--bizy-danger-color);
+    --bizy-filter-max-width: 90dvw;
+    --bizy-filter-section-clear-color: var(--bizy-danger-color);
+    --bizy-filter-section-min-width: 8rem;
+
     --bizy-font-family: Roboto, "Helvetica Neue", sans-serif;
     --bizy-font-size: clamp(12px, 1vmax, 16px);
+
+    --bizy-form-max-width: 40rem;
+    --bizy-form-row-gap: 1rem;
+
+    --bizy-gauge-chart-tooltip-color: #000;
+    --bizy-gauge-chart-tooltip-background-color: #fff;
+    --bizy-gauge-chart-tooltip-border-color: #fff;
+    --bizy-gauge-chart-background-color: var(--bizy-light-default-color);
+    --bizy-gauge-chart-progress-color: var(--bizy-accent-color);
+    --bizy-gauge-chart-value-color: var(--bizy-gauge-chart-progress-color);
+    --bizy-gauge-chart-text-color: var(--bizy-default-color);
+    --bizy-gauge-chart-anchor-color: var(--bizy-dark-default-color);
+    --bizy-gauge-chart-pointer-color: var(--bizy-dark-default-color);
+
+    --bizy-grid-height: 100%;
+    --bizy-grid-min-height: 5rem;
+    --bizy-grid-max-height: 100%;
+    --bizy-grid-scroll-bar-color: var(--bizy-default-color);
+    --bizy-grid-scroll-bar-hover-color: #999;
+    --bizy-grid-width: 100%;
+    --bizy-grid-background-color: transparent;
+    --bizy-grid-row-background-color: transparent;
+    --bizy-grid-row-height: 3rem;
+    --bizy-grid-column-width: 18rem;
+    --bizy-grid-gap: 0.6rem;
+
+    --bizy-heat-map-chart-out-of-range-color: #f3f3f3;
+    --bizy-heat-map-chart-tooltip-color: var(--bizy-dark-default-color);
+    --bizy-heat-map-chart-tooltip-background-color: #fff;
+    --bizy-heat-map-chart-tooltip-border-color: #fff;
+    --bizy-heat-map-chart-x-highlight-area-background-color: #c5dcf34d;
+    --bizy-heat-map-chart-x-highlight-area-border-color: var(--bizy-info-color);
+    --bizy-heat-map-chart-x-highlight-area-border-width: 0.5;
+    --bizy-heat-map-chart-y-highlight-area-background-color: #f3c5c54d;
+    --bizy-heat-map-chart-y-highlight-area-border-color: var(--bizy-danger-color);
+    --bizy-heat-map-chart-y-highlight-area-border-width: 0.5;
+    --bizy-heat-map-chart-x-highlight-line-color: var(--bizy-danger-color);
+    --bizy-heat-map-chart-x-highlight-line-label-color: var(--bizy-default-color);
+    --bizy-heat-map-chart-x-highlight-line-width: 1;
+    --bizy-heat-map-chart-x-highlight-line-style: solid;
+    --bizy-heat-map-chart-y-highlight-line-color: var(--bizy-danger-color);
+    --bizy-heat-map-chart-y-highlight-line-label-color: var(--bizy-default-color);
+    --bizy-heat-map-chart-y-highlight-line-width: 1;
+    --bizy-heat-map-chart-y-highlight-line-style: solid;
+
+    --bizy-input-background-color: #fff;
+    --bizy-input-focus-color: var(--bizy-info-color);
+    --bizy-input-invalid-color: var(--bizy-danger-color);
+    --bizy-input-negative-background-color: var(--bizy-light-danger-color);
+    --bizy-input-color: var(--bizy-default-color);
+    --bizy-input-cursor: default;
+    --bizy-input-width: 100%;
+    --bizy-input-min-width: 14rem;
+    --bizy-input-max-width: 40rem;
+    --bizy-input-options-height: 20rem;
+    --bizy-input-option-hover-background-color: var(--bizy-hover-color);
+    --bizy-input-option-selected-color: #fff;
+    --bizy-input-option-selected-background-color: var(--bizy-info-color);
+    --bizy-input-font-size: 1rem;
+    --bizy-input-placeholder-color: #999;
+    --bizy-input-resize: none;
+
+    --bizy-list-height: fit-content;
+    --bizy-list-width: 100%;
+    --bizy-list-flex-direction: column;
+    --bizy-list-column-gap: 0.5rem;
+    --bizy-list-row-gap: 0.5rem;
+    --bizy-list-justify-content: flex-start;
+    --bizy-list-align-items: flex-start;
+
+    --bizy-loading-bright-color: #fffa;
+    --bizy-loading-bar-color: #e5e5e5;
+    --bizy-loading-spinner-color-1st-line: #2484c6;
+    --bizy-loading-spinner-color-2nd-line: #2484c6;
+    --bizy-loading-spinner-color-3rd-line: #2484c6;
+
+    --bizy-menu-option-background-color: transparent;
+    --bizy-menu-option-hover-background-color: var(--bizy-light-info-color);
+    --bizy-menu-option-selected-background-color: var(--bizy-info-color);
+    --bizy-menu-option-color: #000;
+    --bizy-menu-option-selected-color: #fff;
+
+    --bizy-menu-title-background-color: transparent;
+    --bizy-menu-title-color: #000;
+    --bizy-menu-title-text-decoration: none;
+
+    --bizy-menu-padding: 0;
+    --bizy-menu-color: #fff;
+    --bizy-menu-background-color: #fff;
+    --bizy-menu-arrow-height: 0.9rem;
+    --bizy-menu-min-width: fit-content;
+    --bizy-menu-max-width: 90dvw;
+    --bizy-menu-max-height: 90dvh;
+    --bizy-menu-scroll-bar-color: var(--bizy-default-color);
+    --bizy-menu-scroll-bar-hover-color: #999;
+
+    --bizy-menu-bar-option-background-color: #fff;
+    --bizy-menu-bar-option-border: 0.1rem solid var(--bizy-dark-info-color);
+    --bizy-menu-bar-option-color: var(--bizy-dark-info-color);
+    --bizy-menu-bar-option-min-width: 8rem;
+    --bizy-menu-bar-option-selected-background-color: var(--bizy-light-info-color);
+
+    --bizy-pie-chart-center-label-color: #000;
+    --bizy-pie-chart-tooltip-color: #000;
+    --bizy-pie-chart-tooltip-background-color: #fff;
+    --bizy-pie-chart-tooltip-border-color: #fff;
+
+    --bizy-popup-background-color: #fff;
+    --bizy-popup-min-width: 10rem;
+    --bizy-popup-width: fit-content;
+    --bizy-popup-max-width: 90dvw;
+    --bizy-popup-min-height: 10rem;
+    --bizy-popup-height: fit-content;
+    --bizy-popup-max-height: 90dvh;
+    --bizy-popup-padding: 0;
+    --bizy-popup-border-radius: 0.3rem;
+    --bizy-popup-drag-button-color: var(--bizy-default-color);
+    --bizy-popup-drag-button-border: 0.1rem solid #ccc;
+    --bizy-popup-drag-button-background-color: #fff;
+    --bizy-popup-close-button-border: 0.1rem solid #ccc;
+    --bizy-popup-close-button-background-color: #fff;
+    --bizy-popup-close-button-color: var(--bizy-default-color);
+    --bizy-popup-close-button-hover-color: var(--bizy-danger-color);
+
+    --bizy-popup-full-screen-min-width: 100dvw;
+    --bizy-popup-full-screen-width: auto;
+    --bizy-popup-full-screen-max-width: 100dvw;
+    --bizy-popup-full-screen-min-height: 20rem;
+    --bizy-popup-full-screen-height: fit-content;
+    --bizy-popup-full-screen-max-height: 90dvh;
+    --bizy-popup-full-screen-background-color: #fff;
+    --bizy-popup-full-screen-padding: 2.2rem 0 0 0;
+    --bizy-popup-full-screen-close-button-border: transparent;
+    --bizy-popup-full-screen-close-button-background-color: transparent;
+    --bizy-popup-full-screen-close-button-color: var(--bizy-default-color);
+    --bizy-popup-full-screen-close-button-hover-color: var(--bizy-danger-color);
+
+    --bizy-progress-bar-height: 0.2rem;
+    --bizy-progress-bar-background-color: var(--bizy-light-default-color);
+    --bizy-progress-bar-border-radius: 1rem;
+    --bizy-progress-bar-progress-color: var(--bizy-accent-color); 
+
+    --bizy-radio-color: var(--bizy-accent-color);
+    --bizy-radio-background-color: transparent;
+
+    --bizy-section-height: fit-content;
+    --bizy-section-width: 100%;
+    --bizy-section-background-color: transparent;
+    --bizy-section-flex-direction: row;
+    --bizy-section-column-gap: 1rem;
+    --bizy-section-row-gap: 1rem;
+    --bizy-section-justify-content: space-between;
+    --bizy-section-align-items: center;
+    --bizy-section-margin-bottom: center;
+    --bizy-section-flex-wrap: wrap;
+
+    --bizy-section-start-height: fit-content;
+    --bizy-section-start-width: 100%;
+    --bizy-section-start-flex: 1;
+    --bizy-section-start-background-color: transparent;
+    --bizy-section-start-justify-content: flex-start;
+    --bizy-section-start-align-items: center;
+    --bizy-section-start-column-gap: 1rem;
+    --bizy-section-start-row-gap: 1rem;
+
+    --bizy-section-center-flex: 1;
+    --bizy-section-center-height: fit-content;
+    --bizy-section-center-width: 100%;
+    --bizy-section-center-background-color: transparent;
+    --bizy-section-center-justify-content: center;
+    --bizy-section-center-align-items: center;
+    --bizy-section-center-column-gap: 1rem;
+    --bizy-section-center-row-gap: 1rem;
+
+    --bizy-section-end-flex: 1;
+    --bizy-section-end-height: fit-content;
+    --bizy-section-end-width: 100%;
+    --bizy-section-end-background-color: transparent;
+    --bizy-section-end-justify-content: flex-end;
+    --bizy-section-end-align-items: center;
+    --bizy-section-end-column-gap: 1rem;
+    --bizy-section-end-row-gap: 1rem;
+
+    --bizy-select-height: 20rem;
+    --bizy-select-width: 100%;
+    --bizy-select-min-width: 14rem;
+    --bizy-select-max-width: 40rem;
+    --bizy-select-background-color: #fff;
+    --bizy-select-color: #000;
+    --bizy-select-option-color: #000;
+    --bizy-select-option-hover-background-color: var(--bizy-hover-color);
+    --bizy-select-option-selected-color: #fff;
+    --bizy-select-option-selected-background-color: var(--bizy-info-color);
+    --bizy-select-arrow-height: 0.9rem;
+    --bizy-select-scroll-bar-color: var(--bizy-default-color);
+    --bizy-select-scroll-bar-hover-color: #999;
+
+    --bizy-sidebar-background-color: #fff;
+    --bizy-sidebar-shrinked-width: 3rem;
+    --bizy-sidebar-tab-height: 2.6rem;
+    --bizy-sidebar-tab-width: 1.2rem;
+    --bizy-sidebar-tab-top: 0.25rem;
+    --bizy-sidebar-tab-background-color: #fff;
+    --bizy-sidebar-tab-color: var(--bizy-default-color);
+    --bizy-sidebar-width: 8rem;
+    --bizy-sidebar-padding: 0 0 0 0.5rem;
+    --bizy-sidebar-section-min-height: 3rem;
+    --bizy-sidebar-option-padding: 1rem;
+    --bizy-sidebar-option-selected-color: var(--bizy-info-color);
+    --bizy-sidebar-option-hover-color: var(--bizy-dark-info-color);
+    --bizy-sidebar-floating-option-title-color: #000;
+    --bizy-sidebar-floating-option-title-background-color: var(--bizy-sidebar-floating-option-background-color);
+    --bizy-sidebar-floating-option-title-underline-color: var(--bizy-info-color);
+    --bizy-sidebar-floating-option-color: #000;
+    --bizy-sidebar-floating-option-background-color: #fff;
+    --bizy-sidebar-scroll-bar-color: var(--bizy-default-color);
+    --bizy-sidebar-scroll-bar-hover-color: #999;
+
+    --bizy-skeleton-height: 1rem;
+    --bizy-skeleton-width: 100%;
+
+    --bizy-slider-color: var(--bizy-default-color);
+    --bizy-slider-background-color: #fff;
+    --bizy-slider-range-color: var(--bizy-accent-color);
+    --bizy-slider-accent-color: var(--bizy-info-color);
+
+    --bizy-stacked-bar-chart-width: 100%;
+    --bizy-stacked-bar-chart-height: 0.5rem;
+    --bizy-stacked-bar-chart-border-radius: 0.3rem;
+    --bizy-stacked-bar-chart-color: var(--bizy-accent-color);
+    --bizy-stacked-bar-chart-background-color: var(--bizy-default-color);
+
+    --bizy-table-height: 100%;
+    --bizy-table-min-height: 5rem;
+    --bizy-table-max-height: 100%;
+    --bizy-table-scroll-bar-color: var(--bizy-default-color);
+    --bizy-table-scroll-bar-hover-color: #999;
+    --bizy-table-width: 100%;
+    --bizy-table-background-color: #f3f3f3;
+    --bizy-table-footer-height: 2.4rem;
+    --bizy-table-footer-background-color: #fff;
+    --bizy-table-header-height: 2.4rem;
+    --bizy-table-row-hover-background-color: var(--bizy-hover-color);
+    --bizy-table-row-background-color: #fff;
+    --bizy-table-row-height: 2rem;
+    --bizy-table-row-selected-background-color: var(--bizy-info-color); 
+    --bizy-table-row-selected-color: #fff;
+    --bizy-table-header-background-color: #c9d9e0;
+    --bizy-table-row-expand-content-background-color: #c9d9e0;
+    --bizy-table-row-opened-background-color: #c9d9e0;
+    --bizy-table-column-border-top: none;
+    --bizy-table-column-border-right: none;
+    --bizy-table-column-border-bottom: none;
+    --bizy-table-column-border-left: none;
+    --bizy-table-column-background-color: inherit;
+    --bizy-table-column-cursor: default;
+    --bizy-table-column-min-width: 2rem;
+    --bizy-table-column-justify-content: flex-start;
+    --bizy-table-column-arrows-color: var(--bizy-info-color);
+    --bizy-table-column-arrow-color: var(--bizy-default-color);
+
+    --bizy-tabs-column-gap: 0;
+    --bizy-tabs-background-color: transparent;
+    --bizy-tabs-scroll-bar-color: var(--bizy-default-color);
+    --bizy-tabs-scroll-bar-hover-color: #999;
+    --bizy-tab-border-top:  0.1rem solid #ddd;
+    --bizy-tab-border-right:  0.1rem solid #ddd;
+    --bizy-tab-border-left:  0.1rem solid #ddd;
+    --bizy-tab-border-bottom:  0.1rem solid #ddd;
+    --bizy-tab-border-radius: 0;
+    --bizy-tab-padding: 0.5rem 1rem;
+    --bizy-tab-row-gap: 0;
+    --bizy-tab-flex: none;
+    --bizy-tab-background-color: #f3f3f3;
+    --bizy-tab-color: var(--bizy-default-color);
+    --bizy-tab-selected-color: var(--bizy-accent-color);
+    --bizy-tab-selected-background-color: #fff;
+    --bizy-tab-selected-bar-height: 0.2rem;
+    --bizy-tab-selected-bar-color: var(--bizy-accent-color);
+    --bizy-tabs-arrow-button-color: var(--bizy-default-color);
+    --bizy-tabs-arrow-button-background-color: #fff;
+
+    --bizy-tag-background-color: #d4d4d4;
+    --bizy-tag-color: var(--bizy-dark-default-color);
+    --bizy-tag-default-background-color: #d4d4d4;
+    --bizy-tag-default-color: var(--bizy-dark-default-color);
+    --bizy-tag-success-background-color: #c7e0c8;
+    --bizy-tag-success-color: var(--bizy-dark-success-color);
+    --bizy-tag-info-background-color: #c9d9e0;
+    --bizy-tag-info-color: var(--bizy-dark-info-color);
+    --bizy-tag-warning-background-color: #fbd9b5;
+    --bizy-tag-warning-color: var(--bizy-dark-warning-color);
+    --bizy-tag-danger-background-color: #eda9a9;
+    --bizy-tag-danger-color: var(--bizy-dark-danger-color);
+    --bizy-tag-cursor: pointer;
+    --bizy-tag-height: auto;
+    --bizy-tag-min-height: auto;
+    --bizy-tag-max-height: auto;
+    --bizy-tag-width: fit-content;
+    --bizy-tag-min-width: auto;
+    --bizy-tag-max-width: auto;
+    --bizy-tag-border-radius: 0.3rem;
+    --bizy-tag-padding: 0.1rem 0.3rem;
+
+    --bizy-timeline-color: var(--bizy-info-color);
+    --bizy-timeline-row-gap: 0.5rem;
+    --bizy-timeline-line-background-color: var(--bizy-timeline-color);
+    --bizy-timeline-line-width: 0.2rem;
+    --bizy-timeline-line-min-height: 1rem;
+    --bizy-timeline-event-column-gap: 1rem;
+    --bizy-timeline-bullet-border: 0.2rem solid var(--bizy-timeline-color);
+    --bizy-timeline-bullet-border-color: var(--bizy-info-color);
+    --bizy-timeline-bullet-min-height: 2rem;
+    --bizy-timeline-bullet-min-width: 2rem;
+    --bizy-timeline-bullet-background-color: transparent;
+    --bizy-timeline-bullet-padding: 0.1rem;
+    --bizy-timeline-bullet-section-min-width: 2rem;
+
+    --bizy-toast-debug-background-color: #fff;
+    --bizy-toast-debug-color: var(--bizy-default-color);
+    --bizy-toast-info-background-color: #fff;
+    --bizy-toast-info-color: var(--bizy-info-color);
+    --bizy-toast-success-background-color: #fff;
+    --bizy-toast-success-color: var(--bizy-success-color);
+    --bizy-toast-warning-background-color: #fff;
+    --bizy-toast-warning-color: var(--bizy-warning-color);
+    --bizy-toast-danger-background-color: #fff;
+    --bizy-toast-danger-color: var(--bizy-danger-color);
+    --bizy-toast-close-button-color: var(--bizy-default-color);
+    --bizy-toast-close-button-hover-color: var(--bizy-dark-default-color);
+    --bizy-toast-progress-bar-height: 0.2rem;
+    --bizy-toast-border-top-width: 0.1rem;
+    --bizy-toast-border-right-width: 0.1rem;
+    --bizy-toast-border-bottom-width: 0.1rem;
+    --bizy-toast-border-left-width: 0.1rem;
+    --bizy-toast-border-top-style: solid;
+    --bizy-toast-border-right-style: solid;
+    --bizy-toast-border-bottom-style: solid;
+    --bizy-toast-border-left-style: solid;
+    --bizy-toast-border-top-left-radius: 0.5rem;
+    --bizy-toast-border-top-right-radius: 0;
+    --bizy-toast-border-bottom-left-radius: 0;
+    --bizy-toast-border-bottom-right-radius: 0;
+    --bizy-toast-duration: 3000ms;
+    --bizy-toast-scroll-bar-color: var(--bizy-default-color);
+    --bizy-toast-scroll-bar-hover-color: #999;
+
+    --bizy-toggle-color: var(--bizy-danger-color);
+    --bizy-toggle-background-color: #f2d5d7;
+    --bizy-toggle-selected-color: var(--bizy-success-color);
+    --bizy-toggle-selected-background-color: #abd8b0;
+
+    --bizy-toolbar-height: fit-content;
+    --bizy-toolbar-min-height: 3.2rem;
+    --bizy-toolbar-background-color: #f3f3f3;
+    --bizy-toolbar-padding: 0 0.5rem 0 2rem;
+
+    --bizy-tooltip-color: #355b7f;
+    --bizy-tooltip-background-color: #d0e8fc;
+    --bizy-tooltip-border-color: #355b7f;
 }

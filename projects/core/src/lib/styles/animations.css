@@ -211,6 +211,6 @@
 }
 
 .animated {
-    animation-duration: var(--bizy-animation-timeout, 500ms);
+    animation-duration: var(--bizy-animation-timeout);
     animation-fill-mode: both;
 }
