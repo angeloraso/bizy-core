@@ -1,3 +1,4 @@
+export { BizyCapitalizePipe } from "./capitalize.pipe";
 export { BizyUniquePipe } from "./unique.pipe";
 export { BizyRoundPipe } from "./round.pipe";
 export { BizyExtractNumbersPipe } from "./extractNumbers.pipe";

@@ -11,6 +11,7 @@ import { BizyFormatSecondsPipe } from './format-seconds.pipe';
 import { BizyExtractNumbersPipe } from './extractNumbers.pipe';
 import { BizyRoundPipe } from './round.pipe';
 import { BizyUniquePipe } from './unique.pipe';
+import { BizyCapitalizePipe } from './capitalize.pipe';
 
 const PIPES: Array<any> = [
   BizyRepeatPipe,
@@ -24,7 +25,8 @@ const PIPES: Array<any> = [
   BizyFormatSecondsPipe,
   BizyExtractNumbersPipe,
   BizyRoundPipe,
-  BizyUniquePipe
+  BizyUniquePipe,
+  BizyCapitalizePipe
 ]
 
 @NgModule({
