@@ -13,7 +13,7 @@ import {
   Renderer2
 } from '@angular/core';
 import { BIZY_BAR_LINE_CHART_AXIS_POSITION, IBizyBarLineChartDownload, IBizyBarLineChartTooltip } from './bar-line-chart.types';
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { debounceTime, Subject, Subscription, throttleTime } from 'rxjs';
 import { BizyBarLineChartPopupComponent } from './bar-line-chart-popup.component';
 import { BizyBarChartComponent } from './bar-chart/bar-chart.component';
@@ -57,7 +57,6 @@ const DEFAULT_TOOLTIP = {
 })
 export class BizyBarLineChartComponent implements AfterContentInit {
   readonly #elementRef = inject(ElementRef);
-  readonly #document = inject(DOCUMENT);
   readonly #ref = inject(ChangeDetectorRef);
   readonly #renderer = inject(Renderer2);
   readonly #popup = inject(BizyPopupService);
@@ -176,10 +175,10 @@ export class BizyBarLineChartComponent implements AfterContentInit {
     const yAxis: Array<any> = [];
     const legends = new Set<string>();
 
-    const defaultYAxisColor = (this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-line-chart-y-axis-color') || getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-dark-default-color').trim());
-    const defaultXAxisColor = (this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-line-chart-x-axis-color') || getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-dark-default-color').trim());
+    const defaultYAxisColor = (this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-line-chart-y-axis-color') || this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-dark-default-color'));
+    const defaultXAxisColor = (this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-line-chart-x-axis-color') || this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-dark-default-color'));
 
-    this.lineCharts.forEach((_line, _i) => {
+    this.lineCharts!.forEach((_line, _i) => {
       let axisIndex = _i;
 
       const lineXAxis = _line.xAxis;
@@ -569,9 +568,9 @@ export class BizyBarLineChartComponent implements AfterContentInit {
       data: Array.from(legends)
     };
 
-    const textColor = (getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-bar-line-chart-tooltip-color').trim() || '#000');
-    const textBackgroundColor = (getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-bar-line-chart-tooltip-background-color').trim() || '#fff');
-    const borderColor = (getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-bar-line-chart-tooltip-border-color').trim() || '#fff');
+    const textColor = (getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-bar-line-chart-tooltip-color').trim() || '#000');
+    const textBackgroundColor = (getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-bar-line-chart-tooltip-background-color').trim() || '#fff');
+    const borderColor = (getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-bar-line-chart-tooltip-border-color').trim() || '#fff');
 
     const toolbox = {
       show: true,

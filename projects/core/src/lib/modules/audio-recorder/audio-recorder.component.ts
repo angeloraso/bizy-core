@@ -86,7 +86,7 @@ export class BizyAudioRecorderComponent implements AfterViewInit, OnDestroy {
       this.#startTime = Date.now();
       this.strokeDashoffset = 0;
 
-      this.strokeColor = (this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-audio-recorder-record-button-progress-color') || getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-success-color').trim());
+      this.strokeColor = (this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-audio-recorder-record-button-progress-color') || this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-success-color')!);
 
       let mimeType = 'audio/webm';
 
@@ -193,7 +193,7 @@ export class BizyAudioRecorderComponent implements AfterViewInit, OnDestroy {
 
     ctx.lineWidth = 2;
 
-    ctx.strokeStyle = (this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-audio-recorder-record-button-recording-color') || getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-info-color').trim());
+    ctx.strokeStyle = (this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-audio-recorder-record-button-recording-color') || this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-info-color'));
     ctx.beginPath();
 
     const sliceWidth = canvas.width / this.#dataArray.length;

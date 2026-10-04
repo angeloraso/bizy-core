@@ -103,7 +103,7 @@ export class BizyGaugeChartComponent {
 
       const backgroundColor = (getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-background-color').trim() || getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-light-default-color').trim());
       const progressColor = (getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-progress-color').trim() || getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-accent-color').trim());
-      const valueColor = (getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-value-color').trim() || progressColor);
+      const valueColor = (getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-value-color').trim() || (getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-progress-color').trim() || getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-accent-color').trim()));
       const textColor = (getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-text-color').trim() || getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-default-color').trim());
       const anchorColor = (getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-anchor-color').trim() || getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-dark-default-color').trim());
       const pointerColor = (getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-pointer-color').trim() || getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-dark-default-color').trim());

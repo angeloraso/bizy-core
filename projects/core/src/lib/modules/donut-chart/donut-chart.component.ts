@@ -165,9 +165,9 @@ export class BizyDonutChartComponent {
       labelLine
     }];
 
-    const textColor = (getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-donut-chart-tooltip-color').trim() || '#000');
-    const textBackgroundColor = (getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-donut-chart-tooltip-background-color').trim() || '#fff');
-    const borderColor = (getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-donut-chart-tooltip-border-color').trim() || '#fff');
+    const textColor = (getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-donut-chart-tooltip-color').trim() || '#000');
+    const textBackgroundColor = (getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-donut-chart-tooltip-background-color').trim() || '#fff');
+    const borderColor = (getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-donut-chart-tooltip-border-color').trim() || '#fff');
 
     const toolbox = {
       show: true,

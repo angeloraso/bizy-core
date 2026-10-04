@@ -725,7 +725,7 @@ export class BizyAudioPlayerComponent {
   }
 
   #setPlayButtonColor = () => {
-    const playButtonColor = (this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-audio-player-play-button-color') || getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-info-color').trim());
+    const playButtonColor = (this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-audio-player-play-button-color') || this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-info-color')!);
     const svg = this.playButtonRef.nativeElement;
     if (svg) {
       svg.querySelectorAll('path').forEach((path: SVGPathElement) => {
@@ -736,7 +736,7 @@ export class BizyAudioPlayerComponent {
   }
 
   #setMuteButtonColor = () => {
-    const playButtonColor = (this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-audio-player-mute-button-color') || getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-info-color').trim());
+    const playButtonColor = (this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-audio-player-mute-button-color') || this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-info-color')!);
     const svg = this.muteButtonRef.nativeElement;
     if (svg) {
       svg.querySelectorAll('path').forEach((path: SVGPathElement) => {

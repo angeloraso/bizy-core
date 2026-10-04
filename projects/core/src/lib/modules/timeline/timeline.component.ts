@@ -38,8 +38,8 @@ export class BizyTimelineComponent implements AfterViewInit {
     const style = view.getComputedStyle(this.#elementRef.nativeElement);
     const rootFontSize = Number.parseFloat(view.getComputedStyle(this.#document.documentElement).fontSize) || 16;
     const hostFontSize = Number.parseFloat(style.fontSize) || rootFontSize;
-    const eventHeight = this.#toPixels(style.getPropertyValue('--bizy-timeline-event-height'), rootFontSize, hostFontSize, 64);
-    const rowGap = this.#toPixels(style.getPropertyValue('--bizy-timeline-row-gap'), rootFontSize, hostFontSize, 8);
+    const eventHeight = this.#toPixels(style.getPropertyValue('--bizy-timeline-event-height').trim() || '4rem', rootFontSize, hostFontSize, 64);
+    const rowGap = this.#toPixels(style.getPropertyValue('--bizy-timeline-row-gap').trim() || '0.5rem', rootFontSize, hostFontSize, 8);
     this.itemSize = eventHeight + rowGap;
     this.#changeDetector.detectChanges();
     this.viewport()?.checkViewportSize();
