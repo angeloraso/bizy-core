@@ -70,7 +70,15 @@ export class BizyInputComponent implements OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['autofocus']) {
-      this.#applyAutofocus();
+      if (
+        changes['autofocus'] ||
+        (this.autofocus && (
+          (changes['disabled'] && !this.disabled) ||
+          (changes['readonly'] && !this.readonly)
+        ))
+      ) {
+          this.#applyAutofocus();
+        }
     }
   }
 

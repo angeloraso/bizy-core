@@ -9,11 +9,19 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inpu
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyGridRowComponent {
-  readonly #elementRef = inject(ElementRef);
+  readonly #elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
   readonly #ref = inject(ChangeDetectorRef);
   readonly #renderer = inject(Renderer2);
+  #rowHeight: number = 100;
 
-  @Input() rowHeight: number = 100; // Px
+  @Input() set rowHeight(rowHeight: number) {
+    this.#rowHeight = rowHeight;
+    this.#renderer.setStyle(this.#elementRef.nativeElement, 'gridTemplateRows', `${rowHeight}px`);
+  }
+
+  get rowHeight(): number {
+    return this.#rowHeight;
+  }
 
   @Input() set itemsPerRow(itemsPerRow: number) {
     if (!this.#elementRef.nativeElement) {
@@ -24,8 +32,7 @@ export class BizyGridRowComponent {
       itemsPerRow = 1;
     }
 
-    this.#renderer.setStyle(this.#elementRef.nativeElement, 'gridTemplateRows', `${this.rowHeight}px`);
-    this.#renderer.setStyle(this.#elementRef.nativeElement, 'gridTemplateColumns', `repeat(${itemsPerRow}, minmax(0, 1fr)`);
+    this.#renderer.setStyle(this.#elementRef.nativeElement, 'gridTemplateColumns', `repeat(${itemsPerRow}, minmax(0, 1fr))`);
     this.#ref.detectChanges();
   }
 

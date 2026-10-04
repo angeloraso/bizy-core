@@ -122,6 +122,7 @@ export class BizyGridComponent implements AfterViewInit, OnDestroy {
     }
 
     if (resize && newItemsPerRow === this.itemsPerRow) {
+      this.#ref.detectChanges();
       this.#scheduleViewportCheck();
       return;
     }
