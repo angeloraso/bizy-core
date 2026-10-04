@@ -1,9 +1,9 @@
 
 :host {
     font-size: 1rem;
-    width: var(--bizy-select-width);
-    min-width: var(--bizy-select-min-width);
-    max-width: var(--bizy-select-max-width);
+    width: var(--bizy-select-width, 100%);
+    min-width: var(--bizy-select-min-width, 14rem);
+    max-width: var(--bizy-select-max-width, 40rem);
     display: flex;
     flex-direction: column;
     row-gap: 0.3rem;
@@ -12,18 +12,18 @@
 }
 
 :host:has(> .bizy-select__errors:not(:empty)) ::ng-deep .bizy-input__bottom-line {
-    background-color: var(--bizy-input-invalid-color) !important;
+    background-color: var(--bizy-input-invalid-color, var(--bizy-danger-color)) !important;
     visibility: visible !important;
 }
 
 :host:has(> .bizy-select__errors:not(:empty)) ::ng-deep .bizy-input__content__input {
-    color: var(--bizy-input-invalid-color) !important;
+    color: var(--bizy-input-invalid-color, var(--bizy-danger-color)) !important;
 }
 
 .bizy-select {
     --bizy-input-cursor: pointer;
-    --bizy-input-background-color: var(--bizy-select-background-color);
-    --bizy-input-color: var(--bizy-select-color);
+    --bizy-input-background-color: var(--bizy-select-background-color, #fff);
+    --bizy-input-color: var(--bizy-select-color, #000);
 }
 
 .bizy-select--readonly {
@@ -31,11 +31,11 @@
 }
 
 .bizy-select__arrow {
-    height: var(--bizy-select-arrow-height);
+    height: var(--bizy-select-arrow-height, 0.9rem);
     pointer-events: none;
     display: block;
     transition: transform 0.2s ease;
-    fill: var(--bizy-select-color);
+    fill: var(--bizy-select-color, #000);
 }
 
 .bizy-select__arrow--opened {
@@ -43,13 +43,13 @@
 }
 
 .bizy-select__options {
-    background-color: var(--bizy-select-background-color);
+    background-color: var(--bizy-select-background-color, #fff);
     display: flex;
     min-width: fit-content;
     width: 100%;
     flex-direction: column;
     box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
-    max-height: var(--bizy-select-height);
+    max-height: var(--bizy-select-height, 20rem);
     overflow-y: auto;
     overflow-x: hidden;
     position: relative;
@@ -62,11 +62,11 @@
 
 .bizy-select__options::-webkit-scrollbar-thumb {
     border-radius: 1rem;
-    background-color: var(--bizy-select-scroll-bar-color);
+    background-color: var(--bizy-select-scroll-bar-color, var(--bizy-default-color));
 }
 
 .bizy-select__options::-webkit-scrollbar-thumb:hover {
-    background-color: var(--bizy-select-scroll-bar-hover-color);
+    background-color: var(--bizy-select-scroll-bar-hover-color, #999);
 }
 
 .bizy-select__options::-webkit-scrollbar-button {
@@ -82,7 +82,7 @@
 ::ng-deep .bizy-select__options__search {
     --bizy-input-width: auto;
     --bizy-input-background-color: #fff;
-    --bizy-input-min-width: var(--bizy-select-min-width);
+    --bizy-input-min-width: var(--bizy-select-min-width, 14rem);
     --bizy-input-max-width: auto;
 
     margin-bottom: 0.3rem;
@@ -93,5 +93,5 @@
 }
 
 ::ng-deep .bizy-select__errors * {
-    color: var(--bizy-input-invalid-color) !important;
+    color: var(--bizy-input-invalid-color, var(--bizy-danger-color)) !important;
 }

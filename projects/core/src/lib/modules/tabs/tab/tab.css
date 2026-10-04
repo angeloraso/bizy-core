@@ -1,7 +1,7 @@
 :host {
     font-size: 1rem;
     height: 100%;
-    flex: var(--bizy-tab-flex);
+    flex: var(--bizy-tab-flex, none);
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -13,33 +13,33 @@
     min-width: fit-content;
     display: flex;
     flex-direction: column;
-    row-gap: var(--bizy-tab-row-gap);
+    row-gap: var(--bizy-tab-row-gap, 0);
     align-items: center;
     text-wrap: nowrap;
-    border-top: var(--bizy-tab-border-top);
-    border-right: var(--bizy-tab-border-right);
-    border-bottom: var(--bizy-tab-border-bottom);
-    border-left: var(--bizy-tab-border-left);
-    border-radius: var(--bizy-tab-border-radius);
-    padding: var(--bizy-tab-padding);
-    background-color: var(--bizy-tab-background-color);
-    color: var(--bizy-tab-color);
+    border-top: var(--bizy-tab-border-top, 0.1rem solid #ddd);
+    border-right: var(--bizy-tab-border-right, 0.1rem solid #ddd);
+    border-bottom: var(--bizy-tab-border-bottom, 0.1rem solid #ddd);
+    border-left: var(--bizy-tab-border-left, 0.1rem solid #ddd);
+    border-radius: var(--bizy-tab-border-radius, 0);
+    padding: var(--bizy-tab-padding, 0.5rem 1rem);
+    background-color: var(--bizy-tab-background-color, #f3f3f3);
+    color: var(--bizy-tab-color, var(--bizy-default-color));
     cursor: pointer;
 }
 
 ::ng-deep .bizy-tab * {
-    color: var(--bizy-tab-color);
-    background-color: var(--bizy-tab-background-color);
+    color: var(--bizy-tab-color, var(--bizy-default-color));
+    background-color: var(--bizy-tab-background-color, #f3f3f3);
 }
 
 .bizy-tab--selected {
-    color: var(--bizy-tab-selected-color);
-    background-color: var(--bizy-tab-selected-background-color);
+    color: var(--bizy-tab-selected-color, var(--bizy-accent-color));
+    background-color: var(--bizy-tab-selected-background-color, #fff);
 }
 
 ::ng-deep .bizy-tab--selected * {
-    color: var(--bizy-tab-selected-color);
-    background-color: var(--bizy-tab-selected-background-color);
+    color: var(--bizy-tab-selected-color, var(--bizy-accent-color));
+    background-color: var(--bizy-tab-selected-background-color, #fff);
 }
 
 .bizy-tab--disabled {
@@ -62,10 +62,10 @@
 
 .bizy-tab__selected-line {
     width: 100%;
-    height: var(--bizy-tab-selected-bar-height);
+    height: var(--bizy-tab-selected-bar-height, 0.2rem);
     visibility: hidden;
     pointer-events: none;
-    background-color: var(--bizy-tab-selected-bar-color);
+    background-color: var(--bizy-tab-selected-bar-color, var(--bizy-accent-color));
 }
 
 .bizy-tab__selected-line--visible {

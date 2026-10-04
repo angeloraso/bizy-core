@@ -9,10 +9,10 @@
     padding: 0 0.3rem;
     display: flex;
     align-items: center;
-    height: var(--bizy-table-footer-height);
+    height: var(--bizy-table-footer-height, 2.4rem);
     width: fit-content;
-    min-width: var(--bizy-table-width);
-    background-color: var(--bizy-table-footer-background-color);
+    min-width: var(--bizy-table-width, 100%);
+    background-color: var(--bizy-table-footer-background-color, #fff);
 }
 
 .bizy-table-footer__checkbox-wrapper {

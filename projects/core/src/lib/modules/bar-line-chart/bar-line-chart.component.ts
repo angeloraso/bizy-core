@@ -176,8 +176,8 @@ export class BizyBarLineChartComponent implements AfterContentInit {
     const yAxis: Array<any> = [];
     const legends = new Set<string>();
 
-    const defaultYAxisColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-line-chart-y-axis-color');
-    const defaultXAxisColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-line-chart-x-axis-color');
+    const defaultYAxisColor = (this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-line-chart-y-axis-color') || getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-dark-default-color').trim());
+    const defaultXAxisColor = (this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-line-chart-x-axis-color') || getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-dark-default-color').trim());
 
     this.lineCharts.forEach((_line, _i) => {
       let axisIndex = _i;
@@ -569,9 +569,9 @@ export class BizyBarLineChartComponent implements AfterContentInit {
       data: Array.from(legends)
     };
 
-    const textColor = getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-bar-line-chart-tooltip-color');
-    const textBackgroundColor = getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-bar-line-chart-tooltip-background-color');
-    const borderColor = getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-bar-line-chart-tooltip-border-color');
+    const textColor = (getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-bar-line-chart-tooltip-color').trim() || '#000');
+    const textBackgroundColor = (getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-bar-line-chart-tooltip-background-color').trim() || '#fff');
+    const borderColor = (getComputedStyle(this.#document.documentElement).getPropertyValue('--bizy-bar-line-chart-tooltip-border-color').trim() || '#fff');
 
     const toolbox = {
       show: true,

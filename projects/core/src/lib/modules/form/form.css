@@ -1,13 +1,13 @@
 :host {
     font-size: 1rem;
-    max-width: var(--bizy-form-max-width);
+    max-width: var(--bizy-form-max-width, 40rem);
 }
 
 .bizy-form {
     max-width: inherit;
     display: flex;
     flex-direction: column;
-    row-gap: var(--bizy-form-row-gap);
+    row-gap: var(--bizy-form-row-gap, 1rem);
     --bizy-input-max-width: 100%;
     --bizy-select-max-width: 100%;
 }

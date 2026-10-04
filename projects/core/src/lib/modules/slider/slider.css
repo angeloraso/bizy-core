@@ -12,9 +12,9 @@
     pointer-events: all;
     width: 1.6rem;
     height: 1.6rem;
-    background-color: var(--bizy-slider-background-color);
+    background-color: var(--bizy-slider-background-color, #fff);
     border-radius: 50%;
-    box-shadow: 0 0 0 1px var(--bizy-slider-color);
+    box-shadow: 0 0 0 1px var(--bizy-slider-color, var(--bizy-default-color));
     cursor: pointer;
 }
 
@@ -23,9 +23,9 @@
     pointer-events: all;
     width: 1.6rem;
     height: 1.6rem;
-    background-color: var(--bizy-slider-background-color);
+    background-color: var(--bizy-slider-background-color, #fff);
     border-radius: 50%;
-    box-shadow: 0 0 0 1px var(--bizy-slider-color);
+    box-shadow: 0 0 0 1px var(--bizy-slider-color, var(--bizy-default-color));
     cursor: pointer;
 }
 
@@ -34,8 +34,8 @@
 }
 
 .bizy-slider input[type=range]::-webkit-slider-thumb:active {
-    box-shadow: inset 0 0 3px var(--bizy-slider-accent-color), 0 0 9px var(--bizy-slider-accent-color);
-    -webkit-box-shadow: inset 0 0 3px var(--bizy-slider-accent-color), 0 0 9px var(--bizy-slider-accent-color);
+    box-shadow: inset 0 0 3px var(--bizy-slider-accent-color, var(--bizy-info-color)), 0 0 9px var(--bizy-slider-accent-color, var(--bizy-info-color));
+    -webkit-box-shadow: inset 0 0 3px var(--bizy-slider-accent-color, var(--bizy-info-color)), 0 0 9px var(--bizy-slider-accent-color, var(--bizy-info-color));
 }
 
 .bizy-slider input[type="range"] {
@@ -44,7 +44,7 @@
     height: 0.2rem;
     width: calc(100% - 0.2rem);
     position: absolute;
-    background-color: var(--bizy-slider-color);
+    background-color: var(--bizy-slider-color, var(--bizy-default-color));
     pointer-events: none;
 }
 

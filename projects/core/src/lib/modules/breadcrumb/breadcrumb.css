@@ -26,7 +26,7 @@
   cursor: pointer;
   border: none;
   background-color: transparent;
-  color: var(--bizy-breadcrumb-link-color);
+  color: var(--bizy-breadcrumb-link-color, var(--bizy-info-color));
 }
 
 .bizy-breadcrumb__link:hover {
@@ -35,11 +35,11 @@
 
 .bizy-breadcrumb__link--skip {
   cursor: default;
-  color: var(--bizy-breadcrumb-path-color);
+  color: var(--bizy-breadcrumb-path-color, var(--bizy-default-color));
 }
 
 .bizy-breadcrumb__link--skip:hover {
-  color: var(--bizy-breadcrumb-path-color);
+  color: var(--bizy-breadcrumb-path-color, var(--bizy-default-color));
 }
 
 .bizy-breadcrumb__go-back {
@@ -52,7 +52,7 @@
 }
 
 .bizy-breadcrumb__go-back__icon {
-  color: var(--bizy-breadcrumb-link-color);
+  color: var(--bizy-breadcrumb-link-color, var(--bizy-info-color));
   height: 1rem;
   position: relative;
   bottom: 0.3rem;

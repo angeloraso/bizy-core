@@ -101,12 +101,12 @@ export class BizyGaugeChartComponent {
       const { width, height } = this.#chartContainer.getBoundingClientRect();
       const base = Math.min(width, height);
 
-      const backgroundColor = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-background-color');
-      const progressColor = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-progress-color');
-      const valueColor = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-value-color');
-      const textColor = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-text-color');
-      const anchorColor = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-anchor-color');
-      const pointerColor = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-pointer-color');
+      const backgroundColor = (getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-background-color').trim() || getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-light-default-color').trim());
+      const progressColor = (getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-progress-color').trim() || getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-accent-color').trim());
+      const valueColor = (getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-value-color').trim() || progressColor);
+      const textColor = (getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-text-color').trim() || getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-default-color').trim());
+      const anchorColor = (getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-anchor-color').trim() || getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-dark-default-color').trim());
+      const pointerColor = (getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-pointer-color').trim() || getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-dark-default-color').trim());
 
       const series = [{
         type: 'gauge',
@@ -174,9 +174,9 @@ export class BizyGaugeChartComponent {
         data: this.#data ? [this.#data] : []
       }];
 
-      const tooltipTextColor = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-tooltip-color');
-      const tooltipTextBackgroundColor = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-tooltip-background-color');
-      const tooltipBorderColor = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-tooltip-border-color');
+      const tooltipTextColor = (getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-tooltip-color').trim() || '#000');
+      const tooltipTextBackgroundColor = (getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-tooltip-background-color').trim() || '#fff');
+      const tooltipBorderColor = (getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-gauge-chart-tooltip-border-color').trim() || '#fff');
 
       const toolbox = {
         show: true,

@@ -34,7 +34,7 @@ export class BizyAnimationService {
       }
   
       const root = this.#renderer.selectRootElement(':root', true);
-      const animationTimeout = getComputedStyle(root).getPropertyValue('--bizy-animation-timeout').trim();
+      const animationTimeout = getComputedStyle(root).getPropertyValue('--bizy-animation-timeout').trim() || '500ms';
   
       this.#renderer.addClass(element, 'animated');
       this.#renderer.addClass(element, animation);

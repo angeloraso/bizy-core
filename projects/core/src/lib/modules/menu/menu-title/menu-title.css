@@ -1,10 +1,10 @@
 :host {
     font-size: 1rem;
-    background-color: var(--bizy-menu-title-background-color);
-    color: var(--bizy-menu-title-color);
+    background-color: var(--bizy-menu-title-background-color, transparent);
+    color: var(--bizy-menu-title-color, #000);
     padding: 0.5rem;
     cursor: default;
-    text-decoration: var(--bizy-menu-title-text-decoration);
+    text-decoration: var(--bizy-menu-title-text-decoration, none);
     text-underline-offset: 0.3rem;
     display: flex;
     align-items: center;

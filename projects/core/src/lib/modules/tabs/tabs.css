@@ -19,8 +19,8 @@
     overflow-y: hidden;
     overflow-x: auto;
     scroll-behavior: smooth;
-    column-gap: var(--bizy-tabs-column-gap);
-    background-color: var(--bizy-tabs-background-color); 
+    column-gap: var(--bizy-tabs-column-gap, 0);
+    background-color: var(--bizy-tabs-background-color, transparent);
 }
 
 .bizy-tabs__wrapper::-webkit-scrollbar {
@@ -30,11 +30,11 @@
 
 .bizy-tabs__wrapper::-webkit-scrollbar-thumb {
     border-radius: 1rem;
-    background-color: var(--bizy-tabs-scroll-bar-color);
+    background-color: var(--bizy-tabs-scroll-bar-color, var(--bizy-default-color));
 }
 
 .bizy-tabs__wrapper::-webkit-scrollbar-thumb:hover {
-    background-color: var(--bizy-tabs-scroll-bar-hover-color);
+    background-color: var(--bizy-tabs-scroll-bar-hover-color, #999);
 }
 
 .bizy-tabs__wrapper::-webkit-scrollbar-button {
@@ -44,7 +44,7 @@
 .bizy-tabs__scroll-button {
     width: 2rem;
     border: none;
-    background-color: var(--bizy-tabs-arrow-button-background-color);
+    background-color: var(--bizy-tabs-arrow-button-background-color, #fff);
     display: flex;
     align-items: center;    
     padding: 0.3rem;
@@ -64,5 +64,5 @@
 
 .bizy-tabs__scroll-button__arrow {
     height: 1rem;
-    fill: var(--bizy-tabs-arrow-button-color);
+    fill: var(--bizy-tabs-arrow-button-color, var(--bizy-default-color));
 }

@@ -2,7 +2,7 @@
     font-size: 1rem;
     flex: 1;
     background-color: inherit;
-    min-height: var(--bizy-table-row-height);
+    min-height: var(--bizy-table-row-height, 2rem);
     display: flex;
     -webkit-user-select: text;
     -moz-user-select: text;
@@ -16,17 +16,17 @@
 
 .bizy-table-column {
     font-size: 1rem;
-    min-width: var(--bizy-table-column-min-width);
+    min-width: var(--bizy-table-column-min-width, 2rem);
     width: 100%;
-    cursor: var(--bizy-table-column-cursor);
-    border-top: var(--bizy-table-column-border-top);
-    border-right: var(--bizy-table-column-border-right);
-    border-bottom: var(--bizy-table-column-border-bottom);
-    border-left: var(--bizy-table-column-border-left);
-    background-color: var(--bizy-table-column-background-color);
+    cursor: var(--bizy-table-column-cursor, default);
+    border-top: var(--bizy-table-column-border-top, none);
+    border-right: var(--bizy-table-column-border-right, none);
+    border-bottom: var(--bizy-table-column-border-bottom, none);
+    border-left: var(--bizy-table-column-border-left, none);
+    background-color: var(--bizy-table-column-background-color, inherit);
     display: flex;
     align-items: center;
-    justify-content: var(--bizy-table-column-justify-content);
+    justify-content: var(--bizy-table-column-justify-content, flex-start);
     column-gap: 0.3rem;
     padding-right: 0.3rem;
 }

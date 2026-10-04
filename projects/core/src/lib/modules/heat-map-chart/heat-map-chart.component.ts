@@ -119,12 +119,12 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
       }];
 
 
-      const xAreaBackgroundColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-area-background-color');
-      const xAreaBorderColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-area-border-color');
-      const xAreaBorderWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-area-border-width');
-      const yAreaBackgroundColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-area-background-color');
-      const yAreaBorderColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-area-border-color');
-      const yAreaBorderWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-area-border-width');
+      const xAreaBackgroundColor = (this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-area-background-color') || '#c5dcf34d');
+      const xAreaBorderColor = (this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-area-border-color') || getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-info-color').trim());
+      const xAreaBorderWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-area-border-width') || '0.5';
+      const yAreaBackgroundColor = (this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-area-background-color') || '#f3c5c54d');
+      const yAreaBorderColor = (this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-area-border-color') || getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-danger-color').trim());
+      const yAreaBorderWidth = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-area-border-width') || '0.5';
 
       const xAreas: Array<[number, number]>  = []
       const yAreas: Array<[number, number]> = []
@@ -199,14 +199,14 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
         })
       }
 
-      const xLineWidth = Number(this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-line-width'));
-      const xLineColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-line-color');
-      const xLineStyle = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-line-style');
-      const xLineLabelColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-line-label-color');
-      const yLineWidth = Number(this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-line-width'));
-      const yLineColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-line-color');
-      const yLineStyle = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-line-style');
-      const yLineLabelColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-line-label-color');
+      const xLineWidth = Number(this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-line-width') || '1');
+      const xLineColor = (this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-line-color') || getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-danger-color').trim());
+      const xLineStyle = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-line-style') || 'solid';
+      const xLineLabelColor = (this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-x-highlight-line-label-color') || getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-default-color').trim());
+      const yLineWidth = Number(this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-line-width') || '1');
+      const yLineColor = (this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-line-color') || getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-danger-color').trim());
+      const yLineStyle = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-line-style') || 'solid';
+      const yLineLabelColor = (this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-y-highlight-line-label-color') || getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-default-color').trim());
 
       const xLines: Array<[number]>  = []
       const yLines: Array<[number]>  = []
@@ -382,7 +382,7 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
         }
       ];
 
-      const outOfRangeColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-out-of-range-color');
+      const outOfRangeColor = (this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-out-of-range-color') || '#f3f3f3');
 
       let text: [string | null, string | null] | null = null;
       let pieces: Array<IBizyHeatMapChartRange> = [];
@@ -412,9 +412,9 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
         }
       };
 
-      const textColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-tooltip-color');
-      const textBackgroundColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-tooltip-background-color');
-      const borderColor = this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-tooltip-border-color');
+      const textColor = (this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-tooltip-color') || getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-dark-default-color').trim());
+      const textBackgroundColor = (this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-tooltip-background-color') || '#fff');
+      const borderColor = (this.#getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-heat-map-chart-tooltip-border-color') || '#fff');
 
       const toolbox = {
         show: true,

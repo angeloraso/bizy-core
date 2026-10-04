@@ -1,9 +1,9 @@
 
 :host {
     font-size: 1rem;
-    width: var(--bizy-input-width);
-    min-width: var(--bizy-input-min-width);
-    max-width: var(--bizy-input-max-width);
+    width: var(--bizy-input-width, 100%);
+    min-width: var(--bizy-input-min-width, 14rem);
+    max-width: var(--bizy-input-max-width, 40rem);
     display: flex;
 }
 
@@ -16,7 +16,7 @@
     pointer-events: none;
     display: block;
     transition: transform 0.2s ease;
-    fill: var(--bizy-input-color);
+    fill: var(--bizy-input-color, var(--bizy-default-color));
 }
 
 .bizy-date-picker__arrow--opened {

@@ -11,27 +11,27 @@
     width: 100%;
     height: var(--bizy-menu-option-height, 2rem);
     border: none;
-    background-color: var(--bizy-menu-option-background-color);
+    background-color: var(--bizy-menu-option-background-color, transparent);
     display: flex;
     align-items: center;
     justify-content: space-between;
     column-gap:  var(--bizy-menu-option-column-gap, 0.5rem);
     padding:  var(--bizy-menu-option-padding, 0.5rem);
-    color: var(--bizy-menu-option-color);
+    color: var(--bizy-menu-option-color, #000);
     cursor: pointer;
 }
 
 .bizy-menu-option:hover {
-    background-color: var(--bizy-menu-option-hover-background-color);
+    background-color: var(--bizy-menu-option-hover-background-color, var(--bizy-light-info-color));
 }
 
 .bizy-menu-option--selected {
-    color: var(--bizy-menu-option-selected-color) !important;
-    background-color: var(--bizy-menu-option-selected-background-color) !important;
+    color: var(--bizy-menu-option-selected-color, #fff) !important;
+    background-color: var(--bizy-menu-option-selected-background-color, var(--bizy-info-color)) !important;
 }
 
 ::ng-deep .bizy-menu-option--selected * {
-    color: var(--bizy-menu-option-selected-color) !important;
+    color: var(--bizy-menu-option-selected-color, #fff) !important;
 }
 
 .bizy-menu-option--disabled {
@@ -50,6 +50,6 @@
 
 
 ::ng-deep .bizy-menu-option__menu * {
-    color: var(--bizy-menu-option-color);
-    fill: var(--bizy-menu-option-color);
+    color: var(--bizy-menu-option-color, #000);
+    fill: var(--bizy-menu-option-color, #000);
 }

@@ -86,7 +86,7 @@ export class BizyGridComponent implements AfterViewInit, OnDestroy {
     let columnWidth = 100;
     const fontSize = Number(getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('font-size').split('px')[0]);
 
-    const rowHeightParameter = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-grid-row-height');
+    const rowHeightParameter = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-grid-row-height').trim() || '3rem';
     if (rowHeightParameter && rowHeightParameter.includes('rem')) {
       this.rowHeight = fontSize * Number(rowHeightParameter.split('rem')[0]);
     } else if (rowHeightParameter && rowHeightParameter.includes('px')) {
@@ -94,14 +94,14 @@ export class BizyGridComponent implements AfterViewInit, OnDestroy {
     }
 
     let gap = 10;
-    const gapParameter = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-grid-gap');
+    const gapParameter = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-grid-gap').trim() || '0.6rem';
     if (gapParameter && gapParameter.includes('rem')) {
       gap = fontSize * Number(gapParameter.split('rem')[0]);
     } else if (gapParameter && gapParameter.includes('px')) {
       gap = Number(gapParameter.split('px')[0]);
     }
 
-    const columnWidthParameter = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-grid-column-width');
+    const columnWidthParameter = getComputedStyle(this.#elementRef.nativeElement).getPropertyValue('--bizy-grid-column-width').trim() || '18rem';
     if (columnWidthParameter && columnWidthParameter.includes('rem')) {
       columnWidth = fontSize * Number(columnWidthParameter.split('rem')[0]);
     } else if (columnWidthParameter && columnWidthParameter.includes('px')) {

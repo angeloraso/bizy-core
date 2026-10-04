@@ -5,20 +5,20 @@
     row-gap: 0.3rem;
     height: fit-content;
 
-    width: var(--bizy-stacked-bar-chart-width);
+    width: var(--bizy-stacked-bar-chart-width, 100%);
 }
 
 .bizy-stacked-bar-chart {
     display: flex;
     width: 100%;
-    height: var(--bizy-stacked-bar-chart-height);
+    height: var(--bizy-stacked-bar-chart-height, 0.5rem);
     border-top: var(--bizy-stacked-bar-chart-border-top, var(--bizy-stacked-bar-chart-border, none));
     border-right: var(--bizy-stacked-bar-chart-border-right, var(--bizy-stacked-bar-chart-border, none));
     border-bottom: var(--bizy-stacked-bar-chart-border-bottom, var(--bizy-stacked-bar-chart-border, none));
     border-left: var(--bizy-stacked-bar-chart-border-left, var(--bizy-stacked-bar-chart-border, none));
-    border-radius: var(--bizy-stacked-bar-chart-border-radius);
+    border-radius: var(--bizy-stacked-bar-chart-border-radius, 0.3rem);
     overflow: hidden;
-    background-color: var(--bizy-stacked-bar-chart-background-color);
+    background-color: var(--bizy-stacked-bar-chart-background-color, var(--bizy-default-color));
 }
 
 .bizy-stacked-bar-chart__legends {
