@@ -73,7 +73,7 @@
 
     --bizy-breadcrumb-link-color: var(--bizy-info-color);
     --bizy-breadcrumb-path-color: var(--bizy-default-color);
-    
+
     --bizy-button-height: fit-content;
     --bizy-button-min-height: auto;
     --bizy-button-max-height: 100%;
@@ -88,7 +88,6 @@
     --bizy-button-justify-content: center;
     --bizy-button-align-items: center;
     --bizy-button-flex-direction: row;
-
 
     --bizy-card-background-color: #fff;
     --bizy-card-cursor: default;
@@ -128,6 +127,12 @@
     --bizy-checkbox-border-color: #ccc;
     --bizy-checkbox-hover-color: var(--bizy-accent-hover-color);
     --bizy-checkbox-color: var(--bizy-accent-color);
+
+    --bizy-content-padding: 0.5rem;
+    --bizy-content-gap: 0.7rem;
+    --bizy-content-width: auto;
+    --bizy-content-height: auto;
+    --bizy-content-flex-direction: column;
 
     --bizy-copy-to-clipboard-default-color: #2484c6;
     --bizy-copy-to-clipboard-success-color: #5fbc5a;
@@ -288,7 +293,7 @@
     --bizy-progress-bar-height: 0.2rem;
     --bizy-progress-bar-background-color: var(--bizy-light-default-color);
     --bizy-progress-bar-border-radius: 1rem;
-    --bizy-progress-bar-progress-color: var(--bizy-accent-color); 
+    --bizy-progress-bar-progress-color: var(--bizy-accent-color);
 
     --bizy-radio-color: var(--bizy-accent-color);
     --bizy-radio-background-color: transparent;
@@ -393,7 +398,7 @@
     --bizy-table-row-hover-background-color: var(--bizy-hover-color);
     --bizy-table-row-background-color: #fff;
     --bizy-table-row-height: 2rem;
-    --bizy-table-row-selected-background-color: var(--bizy-info-color); 
+    --bizy-table-row-selected-background-color: var(--bizy-info-color);
     --bizy-table-row-selected-color: #fff;
     --bizy-table-header-background-color: #c9d9e0;
     --bizy-table-row-expand-content-background-color: #c9d9e0;
@@ -453,6 +458,10 @@
     --bizy-tag-padding: 0.1rem 0.3rem;
 
     --bizy-timeline-color: var(--bizy-info-color);
+    --bizy-timeline-height: 20rem;
+    --bizy-timeline-min-height: 0;
+    --bizy-timeline-max-height: none;
+    --bizy-timeline-event-height: 4rem;
     --bizy-timeline-row-gap: 0.5rem;
     --bizy-timeline-line-background-color: var(--bizy-timeline-color);
     --bizy-timeline-line-width: 0.2rem;
