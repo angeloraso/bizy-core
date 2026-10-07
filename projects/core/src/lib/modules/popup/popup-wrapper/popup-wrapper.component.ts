@@ -1,7 +1,6 @@
 import { DIALOG_DATA, DialogModule, DialogRef } from '@angular/cdk/dialog';
-import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ComponentType } from '@angular/cdk/portal';
-
+import { DragConstrainPosition, DragDropModule } from '@angular/cdk/drag-drop';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, ViewChild, ViewContainerRef, inject } from '@angular/core';
 import { BizyPopupService } from '../popup.service';
 import { POPUP_PLACEMENT } from '../popup.types';
@@ -39,6 +38,16 @@ export class BizyPopupWrapperComponent<T> {
 
   disableClose: boolean = false;
   disableDrag: boolean = false;
+  readonly constrainDragPosition: DragConstrainPosition = (point, _dragRef, dimensions, pickupPositionInElement) => {
+    const margin = 30;
+    const maxX = Math.max(margin, window.innerWidth - dimensions.width - margin);
+    const maxY = Math.max(margin, window.innerHeight - dimensions.height - margin);
+
+    return {
+      x: Math.min(Math.max(point.x - pickupPositionInElement.x, margin), maxX),
+      y: Math.min(Math.max(point.y - pickupPositionInElement.y, margin), maxY),
+    };
+  };
   position: {top: string, right: string, bottom: string, left: string, transform: string} | null = {
     top: '50%',
     right: '50%',
