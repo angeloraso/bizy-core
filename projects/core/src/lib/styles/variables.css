@@ -378,6 +378,14 @@
     --bizy-slider-background-color: #fff;
     --bizy-slider-range-color: var(--bizy-accent-color);
     --bizy-slider-accent-color: var(--bizy-info-color);
+    --bizy-slider-min-width: 10rem;
+    --bizy-slider-width: 100%;
+    --bizy-slider-track-height: 0.2rem;
+    --bizy-slider-thumb-size: 1.6rem;
+    --bizy-slider-thumb-color: var(--bizy-slider-background-color);
+    --bizy-slider-thumb-border: 0.1rem solid var(--bizy-slider-color);
+    --bizy-slider-thumb-border-radius: 50%;
+    --bizy-slider-thumb-hover-color: #f7f7f7;
 
     --bizy-stacked-bar-chart-width: 100%;
     --bizy-stacked-bar-chart-height: 0.5rem;

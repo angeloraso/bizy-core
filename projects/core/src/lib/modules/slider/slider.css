@@ -1,36 +1,46 @@
 :host {
+    display: block;
+    min-width: var(--bizy-slider-min-width, 10rem);
+    width: var(--bizy-slider-width, 100%);
     font-size: 1rem;
 }
 
 .bizy-slider {
     position: relative;
-    min-height: 1rem;
+    width: 100%;
+    min-height: max(var(--bizy-slider-thumb-size, 1.6rem), var(--bizy-slider-track-height, 0.2rem));
 }
 
 .bizy-slider input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
     pointer-events: all;
-    width: 1.6rem;
-    height: 1.6rem;
-    background-color: var(--bizy-slider-background-color);
-    border-radius: 50%;
-    box-shadow: 0 0 0 1px var(--bizy-slider-color);
+    box-sizing: border-box;
+    width: var(--bizy-slider-thumb-size, 1.6rem);
+    height: var(--bizy-slider-thumb-size, 1.6rem);
+    background-color: var(--bizy-slider-thumb-color, var(--bizy-slider-background-color));
+    border: var(--bizy-slider-thumb-border);
+    border-radius: var(--bizy-slider-thumb-border-radius, 50%);
     cursor: pointer;
 }
 
 .bizy-slider input[type=range]::-moz-range-thumb {
-    -webkit-appearance: none;
+    -moz-appearance: none;
     pointer-events: all;
-    width: 1.6rem;
-    height: 1.6rem;
-    background-color: var(--bizy-slider-background-color);
-    border-radius: 50%;
-    box-shadow: 0 0 0 1px var(--bizy-slider-color);
+    box-sizing: border-box;
+    width: var(--bizy-slider-thumb-size, 1.6rem);
+    height: var(--bizy-slider-thumb-size, 1.6rem);
+    background-color: var(--bizy-slider-thumb-color, var(--bizy-slider-background-color));
+    border: var(--bizy-slider-thumb-border);
+    border-radius: var(--bizy-slider-thumb-border-radius, 50%);
     cursor: pointer;
 }
 
 .bizy-slider input[type=range]::-webkit-slider-thumb:hover {
-    background: #f7f7f7;
+    background-color: var(--bizy-slider-thumb-hover-color, #f7f7f7);
+}
+
+.bizy-slider input[type=range]::-moz-range-thumb:hover {
+    background-color: var(--bizy-slider-thumb-hover-color, #f7f7f7);
 }
 
 .bizy-slider input[type=range]::-webkit-slider-thumb:active {
@@ -41,14 +51,23 @@
 .bizy-slider input[type="range"] {
     -webkit-appearance: none;
     appearance: none;
-    height: 0.2rem;
-    width: calc(100% - 0.2rem);
+    height: var(--bizy-slider-track-height, 0.2rem);
+    width: 100%;
     position: absolute;
+    top: 50%;
+    left: 0;
+    margin: 0;
+    transform: translateY(-50%);
     background-color: var(--bizy-slider-color);
     pointer-events: none;
 }
 
+.bizy-slider input[type="range"]:focus-visible {
+    outline: 2px solid var(--bizy-slider-accent-color);
+    outline-offset: 0.25rem;
+}
+
 .bizy-slider__from {
-    height: 0;
-    z-index: 1;
+    z-index: 2;
+    background: transparent !important;
 }
