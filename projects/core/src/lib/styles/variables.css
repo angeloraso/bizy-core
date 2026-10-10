@@ -132,6 +132,8 @@
     --bizy-content-gap: 0.7rem;
     --bizy-content-width: auto;
     --bizy-content-height: auto;
+    --bizy-content-display: flex;
+    --bizy-content-overflow: auto;
     --bizy-content-flex-direction: column;
 
     --bizy-copy-to-clipboard-default-color: #2484c6;
