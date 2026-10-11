@@ -25,8 +25,8 @@
     overflow: hidden;
     padding: var(--bizy-card-padding);
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    flex-direction: var(--bizy-card-flex-direction);
+    justify-content: var(--bizy-card-justify-content);
     row-gap: var(--bizy-card-row-gap);
     background-color: var(--bizy-card-background-color);
     transition: transform 250ms ease-in-out, box-shadow 0.2s ease;
