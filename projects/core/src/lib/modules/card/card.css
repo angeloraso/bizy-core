@@ -1,4 +1,5 @@
 :host {
+    display: block;
     font-size: 1rem;
     height: var(--bizy-card-height);
     min-height: var(--bizy-card-min-height);
@@ -10,6 +11,10 @@
 
 .bizy-card {
     height: 100%;
+    min-height: inherit;
+    max-height: inherit;
+    min-width: inherit;
+    max-width: inherit;
     width: 100%;
     cursor: var(--bizy-card-cursor);
     border-top: var(--bizy-card-border-top, var(--bizy-card-border, none));
