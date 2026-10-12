@@ -49,7 +49,7 @@ export class BizyInputComponent implements OnChanges, OnDestroy {
 
       setTimeout(() => {
         if (this.type === 'currency'&& (<any>this.#input.nativeElement).setValue) {
-          this.#input.nativeElement.setValue(this._currencyValue);
+          this.#input.nativeElement.setValue(this._currencyValue ?? '');
         }
 
         this.#subscription.add(this.onChange$.pipe(debounceTime(this.debounceTime)).subscribe(value => {
@@ -82,24 +82,24 @@ export class BizyInputComponent implements OnChanges, OnDestroy {
     }
   }
 
-  @Input() set value(value: string | number | null) {
-    if (typeof value === 'undefined') {
-      return;
-    }
-
+  @Input() set value(value: string | number | null | undefined) {
     if (this.type === 'currency') {
-      this._currencyValue = Number(value);
+      this._currencyValue = value == null || value === '' ? null : Number(value);
 
       if (this.#input && this.#input.nativeElement && (<any>this.#input.nativeElement).getValue) {
         const _value = (<any>this.#input.nativeElement).getValue();
         if (_value !== this._currencyValue) {
-          this.#input.nativeElement.setValue(this._currencyValue);
+          this.#input.nativeElement.setValue(this._currencyValue ?? '');
         }
       } else {
         // Keep the initial value available until the async currency directive is ready.
-        this._value = this._currencyValue;
+        this._value = this._currencyValue ?? '';
       }
 
+      return;
+    }
+
+    if (typeof value === 'undefined') {
       return;
     }
 
@@ -176,7 +176,7 @@ export class BizyInputComponent implements OnChanges, OnDestroy {
 
   #blur = (event: FocusEvent) => {
     if (this.type === 'currency') {
-      this.#input.nativeElement.setValue(this._currencyValue);
+      this.#input.nativeElement.setValue(this._currencyValue ?? '');
     }
 
     this.focused = false;
