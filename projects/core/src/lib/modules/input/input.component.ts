@@ -17,8 +17,8 @@ export class BizyInputComponent implements OnChanges, OnDestroy {
   readonly #elementRef = inject(ElementRef);
   readonly #ref = inject(ChangeDetectorRef);
 
-  @ContentChildren(BizyInputOptionComponent) options: QueryList<BizyInputOptionComponent>;
-  @ViewChild('bizyInputWrapper') bizyInputWrapper: ElementRef;
+  @ContentChildren(BizyInputOptionComponent) options: QueryList<BizyInputOptionComponent> | null = null;
+  @ViewChild('bizyInputWrapper') bizyInputWrapper: ElementRef | null = null;
   @Input() id: string = `bizy-input-${Math.random()}`;
   @Input() name: string = `bizy-input-${Math.random()}`;
   @Input() customClass: string = '';
@@ -43,13 +43,14 @@ export class BizyInputComponent implements OnChanges, OnDestroy {
   @ViewChild('bizyInput') set bizyInput(inputElement: ElementRef) {
     if (inputElement) {
       this.#input = inputElement;
+      const input = inputElement.nativeElement;
       
       this.#subscription.unsubscribe();
       this.#subscription = new Subscription();
 
       setTimeout(() => {
-        if (this.type === 'currency'&& (<any>this.#input.nativeElement).setValue) {
-          this.#input.nativeElement.setValue(this._currencyValue ?? '');
+        if (this.type === 'currency' && input.setValue) {
+          input.setValue(this._currencyValue ?? '');
         }
 
         this.#subscription.add(this.onChange$.pipe(debounceTime(this.debounceTime)).subscribe(value => {
@@ -57,11 +58,11 @@ export class BizyInputComponent implements OnChanges, OnDestroy {
           this.onChange.emit(value);
         }))
 
-        this.#subscription.add(fromEvent(this.#input.nativeElement, 'focus').subscribe(this.#focus));
+        this.#subscription.add(fromEvent<FocusEvent>(input, 'focus').subscribe(this.#focus));
 
-        this.#subscription.add(fromEvent(this.#input.nativeElement, 'blur').subscribe(this.#blur));
+        this.#subscription.add(fromEvent<FocusEvent>(input, 'blur').subscribe(this.#blur));
 
-        this.#subscription.add(fromEvent(this.#input.nativeElement, 'paste').subscribe(this.#paste));
+        this.#subscription.add(fromEvent<ClipboardEvent>(input, 'paste').subscribe(this.#paste));
 
         this.#applyAutofocus();
       }, 0);
@@ -85,11 +86,12 @@ export class BizyInputComponent implements OnChanges, OnDestroy {
   @Input() set value(value: string | number | null | undefined) {
     if (this.type === 'currency') {
       this._currencyValue = value == null || value === '' ? null : Number(value);
+      const input = this.#input?.nativeElement;
 
-      if (this.#input && this.#input.nativeElement && (<any>this.#input.nativeElement).getValue) {
-        const _value = (<any>this.#input.nativeElement).getValue();
+      if (input?.getValue) {
+        const _value = input.getValue();
         if (_value !== this._currencyValue) {
-          this.#input.nativeElement.setValue(this._currencyValue ?? '');
+          input.setValue(this._currencyValue ?? '');
         }
       } else {
         // Keep the initial value available until the async currency directive is ready.
@@ -127,9 +129,11 @@ export class BizyInputComponent implements OnChanges, OnDestroy {
       return;
     }
 
-    if (this.type === 'currency' && (<any>this.#input.nativeElement).getValue) {
-      this._currencyValue = (<any>this.#input.nativeElement).getValue()
-      this.onChange$.next(this._currencyValue);
+    const input = this.#input?.nativeElement;
+    if (this.type === 'currency' && input?.getValue) {
+      const currencyValue: number = input.getValue();
+      this._currencyValue = currencyValue;
+      this.onChange$.next(currencyValue);
       return;
     }
 
@@ -176,7 +180,7 @@ export class BizyInputComponent implements OnChanges, OnDestroy {
 
   #blur = (event: FocusEvent) => {
     if (this.type === 'currency') {
-      this.#input.nativeElement.setValue(this._currencyValue ?? '');
+      this.#input?.nativeElement?.setValue?.(this._currencyValue ?? '');
     }
 
     this.focused = false;
@@ -216,15 +220,16 @@ export class BizyInputComponent implements OnChanges, OnDestroy {
   getNativeElement = () => this.#elementRef?.nativeElement;
 
   setFocus = (focus: boolean) => {
-    if (!this.#input || !this.#input.nativeElement) {
+    const input = this.#input?.nativeElement;
+    if (!input) {
       return;
     }
 
     if (focus) {
-      this.#input.nativeElement.focus();
+      input.focus();
       this.focused = true;
     } else {
-      this.#input.nativeElement.blur();
+      input.blur();
       this.focused = false;
     }
 
