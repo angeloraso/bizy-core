@@ -6,7 +6,7 @@ import type AutoNumeric from 'autonumeric';
 })
 export class BizyCurrencyFormatDirective implements OnInit, OnDestroy {
   @Input('bizyCurrencyFormat') bizyCurrencyFormat: boolean = false;
-  @Input('bizyCurrencyOptions') options: AutoNumeric.Options = {};
+  @Input('bizyCurrencyOptions') options: AutoNumeric.Options | (AutoNumeric.Options | string)[] = {};
 
   #autoNumericInstance: AutoNumeric | null = null;
   #destroyed = false;

@@ -112,7 +112,7 @@ export class BizyInputComponent implements OnChanges, OnDestroy {
   _value: string | number | null = null;
   _currencyValue: number | null = null;
 
-  currencyOptions = 'commaDecimalCharDotSeparator';
+  currencyOptions = ['commaDecimalCharDotSeparator', { selectOnFocus: false }];
   #input: ElementRef | null = null;
   #subscription = new Subscription();
   #optionSubscription = new Subscription();
