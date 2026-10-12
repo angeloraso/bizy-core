@@ -1,8 +1,12 @@
 :host {
     font-size: 1rem;
+    min-height: var(--bizy-list-min-height);
     height: var(--bizy-list-height);
+    max-height: var(--bizy-list-max-height);
     overflow: auto;
+    min-width: var(--bizy-list-min-width);
     width: var(--bizy-list-width);
+    max-width: var(--bizy-list-max-width);
     display: flex;
     flex-direction: var(--bizy-list-flex-direction);
     column-gap: var(--bizy-list-column-gap);
