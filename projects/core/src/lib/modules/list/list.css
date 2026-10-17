@@ -13,4 +13,5 @@
     row-gap: var(--bizy-list-row-gap);
     justify-content: var(--bizy-list-justify-content);
     align-items: var(--bizy-list-align-items);
+    padding: var(--bizy-list-padding);
 }

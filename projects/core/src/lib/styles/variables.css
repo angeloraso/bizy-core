@@ -226,6 +226,11 @@
     --bizy-list-row-gap: 0.5rem;
     --bizy-list-justify-content: flex-start;
     --bizy-list-align-items: flex-start;
+    --bizy-list-padding: 0;
+    --bizy-list-padding-top: 0;
+    --bizy-list-padding-right: 0;
+    --bizy-list-padding-bottom: 0;
+    --bizy-list-padding-left: 0;
 
     --bizy-loading-bright-color: #fffa;
     --bizy-loading-bar-color: #e5e5e5;
