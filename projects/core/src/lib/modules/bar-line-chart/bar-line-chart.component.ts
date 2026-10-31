@@ -14,7 +14,7 @@ import {
   Renderer2
 } from '@angular/core';
 import { BIZY_BAR_LINE_CHART_AXIS_POSITION, IBizyBarLineChartDownload, IBizyBarLineChartTooltip } from './bar-line-chart.types';
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { debounceTime, Subject, Subscription, throttleTime } from 'rxjs';
 import { BizyBarLineChartPopupComponent } from './bar-line-chart-popup.component';
 import { BizyBarChartComponent } from './bar-chart/bar-chart.component';
@@ -58,7 +58,6 @@ const DEFAULT_TOOLTIP = {
 })
 export class BizyBarLineChartComponent implements AfterContentInit {
   readonly #elementRef = inject(ElementRef);
-  readonly #document = inject(DOCUMENT);
   readonly #ref = inject(ChangeDetectorRef);
   readonly #renderer = inject(Renderer2);
   readonly #popup = inject(BizyPopupService);
@@ -548,11 +547,22 @@ export class BizyBarLineChartComponent implements AfterContentInit {
       legends.add(_bar.name);
     });
 
+    const chartElement = this.#elementRef.nativeElement;
+    const legendColor = getClosestCssVariable(chartElement, '--bizy-bar-line-chart-legend-color') ?? '#54555a';
+    const textColor = getClosestCssVariable(chartElement, '--bizy-bar-line-chart-tooltip-color') ?? '#000';
+    const textBackgroundColor = getClosestCssVariable(chartElement, '--bizy-bar-line-chart-tooltip-background-color') ?? '#fff';
+    const borderColor = getClosestCssVariable(chartElement, '--bizy-bar-line-chart-tooltip-border-color') ?? '#fff';
+
     const tooltip = {
       show: this.tooltip?.show ?? DEFAULT_TOOLTIP.show,
       appendToBody: true,
       confine: true,
       trigger: 'axis',
+      textStyle: {
+        color: textColor
+      },
+      backgroundColor: textBackgroundColor,
+      borderColor,
       axisPointer: {
         show: false
       },
@@ -567,12 +577,11 @@ export class BizyBarLineChartComponent implements AfterContentInit {
     const legend = {
       type: 'scroll',
       bottom: 0,
+      textStyle: {
+        color: legendColor
+      },
       data: Array.from(legends)
     };
-
-    const textColor = getClosestCssVariable(this.#document.documentElement, '--bizy-bar-line-chart-tooltip-color') ?? '';
-    const textBackgroundColor = getClosestCssVariable(this.#document.documentElement, '--bizy-bar-line-chart-tooltip-background-color') ?? '';
-    const borderColor = getClosestCssVariable(this.#document.documentElement, '--bizy-bar-line-chart-tooltip-border-color') ?? '';
 
     const toolbox = {
       show: true,
