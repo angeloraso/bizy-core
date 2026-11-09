@@ -1,8 +1,10 @@
 import {
   booleanAttribute,
   Directive,
+  ElementRef,
   EventEmitter,
   HostListener,
+  inject,
   Input,
   numberAttribute,
   OnChanges,
@@ -19,6 +21,7 @@ export class BizyRefresherDirective implements OnChanges {
   @Input({ transform: booleanAttribute }) refreshing = false;
   @Output() bizyRefresh = new EventEmitter<void>();
 
+  readonly #elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
   #touchId: number | null = null;
   #startY = 0;
 
@@ -37,6 +40,14 @@ export class BizyRefresherDirective implements OnChanges {
     }
 
     const touch = event.touches[0];
+    const bounds = this.#elementRef.nativeElement.getBoundingClientRect();
+    // Only gestures starting within the top 15% (up to 80 CSS pixels) qualify.
+    const startMargin = Math.min(bounds.height * 0.15, 80);
+    const startOffset = touch.clientY - bounds.top;
+    if (bounds.height <= 0 || startOffset < 0 || startOffset > startMargin) {
+      return;
+    }
+
     this.#touchId = touch.identifier;
     this.#startY = touch.clientY;
   }
