@@ -11,7 +11,8 @@ import {
   OnDestroy,
   ChangeDetectorRef,
   DOCUMENT,
-  inject
+  inject,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { BizyTableRowComponent } from '../table-row/table-row.component';
 import { BizyTableScrollingDirective } from './table-scrolling.directive';
@@ -22,6 +23,7 @@ import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrollin
   selector: 'bizy-table-scrolling',
   templateUrl: './table-scrolling.html',
   styleUrls: ['./table-scrolling.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CommonModule, ScrollingModule]
 })
 

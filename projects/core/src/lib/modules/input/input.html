@@ -67,7 +67,7 @@
 
 <ng-template
   cdkConnectedOverlay
-  [cdkConnectedOverlayMinWidth]="bizyInputWrapper?.offsetWidth"
+  [cdkConnectedOverlayMinWidth]="$safeNavigationMigration(bizyInputWrapper?.offsetWidth)"
   [cdkConnectedOverlayOrigin]="bizyInputTrigger"
   (overlayOutsideClick)="close($event, bizyInputWrapper)"
   [cdkConnectedOverlayOpen]="opened">

@@ -1,10 +1,11 @@
-import { ChangeDetectorRef, Component, ElementRef, inject, OnInit, Renderer2 } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, OnInit, Renderer2, ChangeDetectionStrategy } from '@angular/core';
 import { BizyPopupService } from '../popup';
 import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'bizy-pie-chart-popup',
   template: '',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [`
     :host {
       display: inline-block;
