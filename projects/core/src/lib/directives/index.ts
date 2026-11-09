@@ -1,5 +1,6 @@
 export { BizyMouseOverDirective } from './mouse-over.directive';
 export { BizyReloadDirective } from './reload.directive';
+export { BizyRefresherDirective } from './refresher.directive';
 export { BizyDirectivesModule } from './directives.module';
 export { BizyCopyToClipboardDirective } from './copy-to-clipboard.directive';
 export { BizyCurrencyFormatDirective } from './currency-format.directive';

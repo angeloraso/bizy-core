@@ -10,6 +10,7 @@ import { BizyTooltipDirective } from './tooltip.directive';
 import { BizyAutoFocusDirective } from './auto-focus.directive';
 import { BizyReloadDirective } from './reload.directive';
 import { BizyMouseOverDirective } from './mouse-over.directive';
+import { BizyRefresherDirective } from './refresher.directive';
 
 const DIRECTIVES: Array<any> = [
   BizyCopyToClipboardDirective,
@@ -22,7 +23,8 @@ const DIRECTIVES: Array<any> = [
   BizyTooltipDirective,
   BizyAutoFocusDirective,
   BizyReloadDirective,
-  BizyMouseOverDirective
+  BizyMouseOverDirective,
+  BizyRefresherDirective
 ]
 
 @NgModule({
