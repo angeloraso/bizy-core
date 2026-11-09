@@ -1,6 +1,6 @@
 {
   "name": "@bizy/core",
-  "version": "22.0.0",
+  "version": "22.1.0",
   "peerDependencies": {
     "@angular/cdk": "^22.0.0",
     "@angular/common": "^22.2.5",
