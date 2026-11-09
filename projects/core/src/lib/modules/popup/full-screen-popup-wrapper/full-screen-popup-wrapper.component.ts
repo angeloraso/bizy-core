@@ -34,7 +34,7 @@ export class BizyFullScreenPopupWrapperComponent<T> {
   readonly #ref = inject(ChangeDetectorRef);
   readonly #document = inject(DOCUMENT);
 
-  @ViewChild('dynamicComponentContainer', { read: ViewContainerRef }) dynamicComponentContainer: ViewContainerRef;
+  @ViewChild('dynamicComponentContainer', { read: ViewContainerRef }) dynamicComponentContainer!: ViewContainerRef;
 
   disabled: boolean = false;
 

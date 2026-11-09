@@ -1,3 +1,4 @@
+import type { ECharts, GaugeSeriesOption } from 'echarts';
 import { getClosestCssVariable } from '../../utils/css';
 import {
   ChangeDetectionStrategy,
@@ -69,7 +70,7 @@ export class BizyGaugeChartComponent {
   @Output() onSelect = new EventEmitter<string>();
   @Output() onDownload = new EventEmitter<void>();
 
-  #echarts: echarts.ECharts | null = null
+  #echarts: ECharts | null = null
 
   #resizeObserver: ResizeObserver | null = null;
   #afterViewInitSubscription = new Subscription();
@@ -97,6 +98,9 @@ export class BizyGaugeChartComponent {
     }
     
     import('echarts').then(echarts => {
+      if (!this.#chartContainer) {
+        return;
+      }
       this.#echarts = echarts.init(this.#chartContainer);
 
       const { width, height } = this.#chartContainer.getBoundingClientRect();
@@ -167,7 +171,7 @@ export class BizyGaugeChartComponent {
           valueAnimation: true,
           fontSize: Math.round(Math.max(base / 8, 7)),
           color: valueColor,
-          formatter: this.#data.formatter ? this.#data.formatter : '{value}',
+          formatter: this.#data?.formatter ?? '{value}',
           offsetCenter: [0, '70%']
         },
         min: this.limit.min ?? DEFAULT_LIMIT.min,
@@ -189,8 +193,12 @@ export class BizyGaugeChartComponent {
             onclick: () => {
               setTimeout(() => {
                 import('html2canvas').then(module => {
-                const html2canvas = module.default;
-                  html2canvas(this.#chartContainer).then(canvas => {
+                  const html2canvas = module.default;
+                  const chartContainer = this.#chartContainer;
+                  if (!chartContainer) {
+                    return;
+                  }
+                  html2canvas(chartContainer).then(canvas => {
                       var link = this.#renderer.createElement('a');
                       link.href = canvas.toDataURL('image/png');
                       link.download = `${this.download.name ?? DEFAULT_DOWNLOAD.name}.png`;
@@ -216,7 +224,7 @@ export class BizyGaugeChartComponent {
                     label: this.download?.label ?? DEFAULT_DOWNLOAD.label, 
                     name: this.download?.name ?? DEFAULT_DOWNLOAD.name, 
                   },
-                  option: this.#echarts.getOption()
+                  option: this.#echarts?.getOption()
                 }
               })
             }
@@ -246,8 +254,8 @@ export class BizyGaugeChartComponent {
         series,
       };
 
-      this.#echarts.setOption(option);
-      this.#echarts.on('click', params => {
+      this.#echarts?.setOption(option);
+      this.#echarts?.on('click', params => {
         this.onSelect.emit(params.name)
       });
 
@@ -266,8 +274,8 @@ export class BizyGaugeChartComponent {
 
         this.#echarts = echarts.init(this.#chartContainer);
         Promise.resolve().then(() => {
-          this.#echarts.setOption({...option, series: option.series.map(_serie => { return {..._serie, data: this.#data ? [this.#data] : []}})});
-          this.#echarts.on('click', params => {
+          this.#echarts?.setOption({...option, series: option.series.map((_serie: GaugeSeriesOption) => { return {..._serie, data: this.#data ? [this.#data] : []}})});
+          this.#echarts?.on('click', params => {
             this.onSelect.emit(params.name)
           });
         });
@@ -301,7 +309,7 @@ export class BizyGaugeChartComponent {
       return;
     }
 
-    this.#echarts.clear();
+    this.#echarts?.clear();
     this.#renderer.removeChild(this.#elementRef.nativeElement, this.#chartContainer);
     this.#chartContainer = null;
     this.#ref.detectChanges();
@@ -316,7 +324,7 @@ export class BizyGaugeChartComponent {
     }
 
     if (this.#echarts) {
-      this.#echarts.clear();
+      this.#echarts?.clear();
     }
   }
 

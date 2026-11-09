@@ -34,7 +34,7 @@ export class BizyExportToCSVService {
   getCSV(data: {items: Array<any>, model: Record<string, string>}): string {
     let csv = '';
 
-    function escapeCommas(str) {
+    function escapeCommas(str: string) {
       return str.includes(',') ? `"${str}"` : str;
     }
 

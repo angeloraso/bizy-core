@@ -4,7 +4,7 @@ import { Directive, HostListener, Input } from '@angular/core';
   selector: '[bizyOnlyPhoneDigits]'
 })
 export class BizyOnlyPhoneDigitsDirective {
-  @Input('bizyOnlyPhoneDigits') public onlyPhoneNumbers: boolean;
+  @Input('bizyOnlyPhoneDigits') public onlyPhoneNumbers: boolean = true;
 
   regexStr = '^[0-9*#+]*$';
 

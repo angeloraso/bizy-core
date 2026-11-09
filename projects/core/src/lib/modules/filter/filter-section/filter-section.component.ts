@@ -18,9 +18,9 @@ export class BizyFilterSectionComponent {
   readonly #document = inject(DOCUMENT);
   readonly #ref = inject(ChangeDetectorRef);
 
-  @ContentChildren(BizyFilterSectionCheckboxOptionComponent) private checkboxOptions: QueryList<BizyFilterSectionCheckboxOptionComponent>;
-  @ContentChild(BizyFilterSectionRangeOptionComponent) private rangeOption: BizyFilterSectionRangeOptionComponent;
-  @ContentChild(BizyFilterSectionSearchOptionComponent) private searchOption: BizyFilterSectionSearchOptionComponent;
+  @ContentChildren(BizyFilterSectionCheckboxOptionComponent) private checkboxOptions!: QueryList<BizyFilterSectionCheckboxOptionComponent>;
+  @ContentChild(BizyFilterSectionRangeOptionComponent) private rangeOption!: BizyFilterSectionRangeOptionComponent;
+  @ContentChild(BizyFilterSectionSearchOptionComponent) private searchOption!: BizyFilterSectionSearchOptionComponent;
   @Input() id: string = `bizy-filter-section-${Math.random()}`;
   @Input() disabled: boolean = false;
   @Input() customClass: string = '';
@@ -28,7 +28,7 @@ export class BizyFilterSectionComponent {
 
   #subscription = new Subscription();
 
-  #mutationObserver: MutationObserver;
+  #mutationObserver!: MutationObserver;
   #checkboxOptions: Array<BizyFilterSectionCheckboxOptionComponent> = [];
   _activated: boolean = false;
 
@@ -117,7 +117,8 @@ export class BizyFilterSectionComponent {
 
     for (let i = 0; i < arr1.length; i++) {
         for (let key in arr1[i]) {
-            if (arr1[i][key] !== arr2[i][key]) {
+            const property = key as keyof BizyFilterSectionCheckboxOptionComponent;
+            if (arr1[i][property] !== arr2[i][property]) {
                 return false;
             }
         }

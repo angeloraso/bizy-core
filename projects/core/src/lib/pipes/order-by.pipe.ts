@@ -84,19 +84,20 @@ export class BizyOrderByPipe implements PipeTransform {
     }
 
     const getValue = (item: T) => {
-      let value = item;
+      let value: unknown = item;
 
       if (property) {
         const nestedProperty = property.split('.');
   
         for (let i = 0; i < nestedProperty.length; i++) {
           const property = nestedProperty[i];
-          if (!property || typeof value[property] === 'undefined' || value[property] === null) {
+          const nextValue = value == null ? undefined : (Object(value) as Record<string, unknown>)[property];
+          if (!property || nextValue === undefined || nextValue === null) {
             value = null;
             break;
           }
   
-          value = value[property];
+          value = nextValue;
         }
       }
 

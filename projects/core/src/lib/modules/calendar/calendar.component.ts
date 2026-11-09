@@ -82,8 +82,8 @@ export class BizyCalendarComponent {
         end: new Date(_event.end),
         title: _event.description || '',
         color: {
-          primary: _event.color,
-          secondary: _event.backgroundColor
+          primary: _event.color ?? '',
+          secondary: _event.backgroundColor ?? ''
         },
         actions: this.#getCalendarEventActions(_event),
         allDay: false,

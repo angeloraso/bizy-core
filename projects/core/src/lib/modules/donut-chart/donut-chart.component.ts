@@ -1,3 +1,4 @@
+import type { ECharts } from 'echarts';
 import { getClosestCssVariable } from '../../utils/css';
 import {
   ChangeDetectionStrategy,
@@ -37,7 +38,7 @@ export class BizyDonutChartComponent {
   readonly #popup = inject(BizyPopupService);
   readonly #donutChartService = inject(BizyDonutChartService);
 
-  @ContentChildren(BizyDonutChartSectionComponent) sections: QueryList<BizyDonutChartSectionComponent> | null = null;
+  @ContentChildren(BizyDonutChartSectionComponent) sections: QueryList<BizyDonutChartSectionComponent> = new QueryList();
 
   @Input() resizeRef: HTMLElement | null = null;
   @Input() centerLabel: string | null = null;
@@ -49,7 +50,7 @@ export class BizyDonutChartComponent {
   @Output() onDownload = new EventEmitter<void>();
 
   #echarts: any = null;
-  #echartsContainer: echarts.ECharts | null = null
+  #echartsContainer: ECharts | null = null
 
   #resizeObserver: ResizeObserver | null = null;
   #resizeSubscription = new Subscription();
@@ -80,7 +81,7 @@ export class BizyDonutChartComponent {
         }))
       });
 
-      this.#donutChartSectionSubscription.add(this.sections.changes.subscribe(_sections => {
+      this.#donutChartSectionSubscription.add(this.sections.changes.subscribe((_sections: QueryList<BizyDonutChartSectionComponent>) => {
         this.#donutChartSectionChangesSubscription.unsubscribe();
         this.#donutChartSectionChangesSubscription = new Subscription();
         this.#render.next();
@@ -109,7 +110,7 @@ export class BizyDonutChartComponent {
       return;
     }
 
-    let data = [];
+    let data: Array<{name: string; value: number; id?: string | number; metadata?: Record<string, unknown>; itemStyle?: {color?: string}}> = [];
 
     this.sections.forEach(_section => {
       const section = {
@@ -180,8 +181,12 @@ export class BizyDonutChartComponent {
           onclick: () => {
             setTimeout(() => {
               import('html2canvas').then(module => {
-              const html2canvas = module.default;
-                html2canvas(this.#chartContainer).then(canvas => {
+                const html2canvas = module.default;
+                const chartContainer = this.#chartContainer;
+                if (!chartContainer) {
+                  return;
+                }
+                html2canvas(chartContainer).then(canvas => {
                     var link = this.#renderer.createElement('a');
                     link.href = canvas.toDataURL('image/png');
                     link.download = `${this.download.fileName ?? this.#donutChartService.getDownloadConfig().fileName}.png`;
@@ -207,7 +212,7 @@ export class BizyDonutChartComponent {
                   label: this.download?.label ?? this.#donutChartService.getDownloadConfig().label, 
                   name: this.download?.fileName ?? this.#donutChartService.getDownloadConfig().fileName, 
                 },
-                option: this.#echartsContainer.getOption()
+                option: this.#echartsContainer?.getOption()
               }
             })
           }
@@ -266,7 +271,7 @@ export class BizyDonutChartComponent {
       graphic
     };
 
-    this.#echartsContainer = this.#echarts.init(this.#chartContainer);
+    this.#echartsContainer = this.#echarts.init(this.#chartContainer) as ECharts;
     this.#echartsContainer.setOption(option);
     this.#echartsContainer.on('click', (params: any) => {
       const section = this.sections.find(_section => _section.id === params.data.id);
@@ -302,7 +307,7 @@ export class BizyDonutChartComponent {
       return;
     }
 
-    this.#echartsContainer.clear();
+    this.#echartsContainer?.clear();
     this.#renderer.removeChild(this.#elementRef.nativeElement, this.#chartContainer);
     this.#chartContainer = null;
     this.#ref.detectChanges();
@@ -319,7 +324,7 @@ export class BizyDonutChartComponent {
     }
 
     if (this.#echartsContainer) {
-      this.#echartsContainer.clear();
+      this.#echartsContainer?.clear();
     }
   }
 

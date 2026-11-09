@@ -1,3 +1,4 @@
+import type { ECharts } from 'echarts';
 import { ChangeDetectorRef, Component, ElementRef, inject, OnInit, Renderer2, ChangeDetectionStrategy } from '@angular/core';
 import { BizyPopupService } from '../popup';
 import { DOCUMENT } from '@angular/common';
@@ -21,7 +22,7 @@ export class BizyDonutChartPopupComponent implements OnInit {
   readonly #ref = inject(ChangeDetectorRef);
   readonly #document = inject(DOCUMENT);
 
-  #echarts: echarts.ECharts | null = null
+  #echarts: ECharts | null = null
   #chartContainer: HTMLDivElement | null = null;
 
   ngOnInit() {
@@ -44,7 +45,7 @@ export class BizyDonutChartPopupComponent implements OnInit {
     import('echarts').then(echarts => {
       this.#echarts = echarts.init(this.#chartContainer);
       Promise.resolve().then(() => {
-        this.#echarts.setOption({
+        this.#echarts?.setOption({
           ...data.option,
           series: [{
             ...data.option.series[0],
@@ -76,8 +77,12 @@ export class BizyDonutChartPopupComponent implements OnInit {
                 onclick: () => {
                   setTimeout(() => {
                     import('html2canvas').then(module => {
-                    const html2canvas = module.default;
-                      html2canvas(this.#chartContainer).then(canvas => {
+                      const html2canvas = module.default;
+                      const chartContainer = this.#chartContainer;
+                      if (!chartContainer) {
+                        return;
+                      }
+                      html2canvas(chartContainer).then(canvas => {
                           var link = this.#renderer.createElement('a');
                           link.href = canvas.toDataURL('image/png');
                           link.download = `${data.download.fileName}.png`;

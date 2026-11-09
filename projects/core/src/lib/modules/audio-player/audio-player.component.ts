@@ -35,10 +35,10 @@ export class BizyAudioPlayerComponent {
   readonly #ref = inject(ChangeDetectorRef);
   readonly #elementRef = inject(ElementRef);
 
-  @ViewChild('bizyAudioPlayerPlayButtonRef') playButtonRef: ElementRef<HTMLButtonElement>;
-  @ViewChild('bizyAudioPlayerAudioRef') audioRef: ElementRef<HTMLAudioElement>;
-  @ViewChild('bizyAudioPlayerSeekSliderRef') seekSliderRef: ElementRef<HTMLInputElement>;
-  @ViewChild('bizyAudioPlayerMuteButtonRef') muteButtonRef: ElementRef<HTMLButtonElement>;
+  @ViewChild('bizyAudioPlayerPlayButtonRef') playButtonRef!: ElementRef<HTMLButtonElement>;
+  @ViewChild('bizyAudioPlayerAudioRef') audioRef!: ElementRef<HTMLAudioElement>;
+  @ViewChild('bizyAudioPlayerSeekSliderRef') seekSliderRef!: ElementRef<HTMLInputElement>;
+  @ViewChild('bizyAudioPlayerMuteButtonRef') muteButtonRef!: ElementRef<HTMLButtonElement>;
 
   @Output() onPlaybackRate = new EventEmitter<string>();
   @Output() onDownload = new EventEmitter<void>();
@@ -230,15 +230,17 @@ export class BizyAudioPlayerComponent {
         });
 
         navigator.mediaSession.setActionHandler('seekbackward', details => {
-          this.backward(details.seekOffset);
+          this.backward(details.seekOffset ?? 10);
         });
 
         navigator.mediaSession.setActionHandler('seekforward', details => {
-          this.forward(details.seekOffset);
+          this.forward(details.seekOffset ?? 10);
         });
 
         navigator.mediaSession.setActionHandler('seekto', details => {
-          this.seekTo(details.seekTime);
+          if (details.seekTime !== undefined) {
+            this.seekTo(details.seekTime);
+          }
         });
 
         navigator.mediaSession.setActionHandler('stop', () => {
@@ -439,7 +441,7 @@ export class BizyAudioPlayerComponent {
     }
 
     const downloadButton = this.#renderer.createElement('a');
-    this.#renderer.setAttribute(downloadButton, 'download', this._downloadFileName);
+    this.#renderer.setAttribute(downloadButton, 'download', this._downloadFileName ?? '');
     this.#renderer.setProperty(downloadButton, 'href', this._downloadURL ?? this._src);
     this.#renderer.appendChild(this.#document.body, downloadButton);
     downloadButton.click();
@@ -633,8 +635,12 @@ export class BizyAudioPlayerComponent {
         console.debug('bizy audio player - ratechange', event);
       }
 
-      this._playbackRate = this.#audio.playbackRate;
-      this.#playbackRate$.next(String(this.#audio.playbackRate));
+      const audio = this.#audio;
+      if (!audio) {
+        return;
+      }
+      this._playbackRate = audio.playbackRate;
+      this.#playbackRate$.next(String(audio.playbackRate));
     }, {
       signal: this.#rateChangeAbortController.signal
     });

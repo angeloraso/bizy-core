@@ -43,7 +43,7 @@ export class BizyAnimationService {
         this.#renderer.removeClass(element, 'animated');
         this.#renderer.removeClass(element, animation);
         resolve();
-      }, Number(animationTimeout.match(/\d/g).join('')))
+      }, Number(animationTimeout.match(/\d/g)?.join('') ?? 0))
     })
   }
 }

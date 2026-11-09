@@ -7,7 +7,7 @@
   (focus)="setFocus(true)"
   cdkOverlayOrigin
   #bizyInputTrigger="cdkOverlayOrigin"
-  [ngClass]="{'bizy-input--disabled': disabled, 'bizy-input--negative': type === 'currency' && _currencyValue < 0}">
+  [ngClass]="{'bizy-input--disabled': disabled, 'bizy-input--negative': type === 'currency' && (_currencyValue ?? 0) < 0}">
 
   <span class="bizy-input__header">
     <ng-content select="[slot=header]"></ng-content>

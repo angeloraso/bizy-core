@@ -16,9 +16,9 @@ export class BizyTextEllipsisDirective implements AfterViewInit {
   readonly #elementRef = inject(ElementRef);
   readonly #renderer = inject(Renderer2);
 
-  @Input() resizeRef: ElementRef = null;
+  @Input() resizeRef: ElementRef | null = null;
 
-  #resizeObserver: ResizeObserver;
+  #resizeObserver!: ResizeObserver;
   notifier$ = new Subject<void>();
   #subscription = new Subscription();
 

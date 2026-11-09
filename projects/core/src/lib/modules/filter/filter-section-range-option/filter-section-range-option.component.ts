@@ -20,8 +20,8 @@ export class BizyFilterSectionRangeOptionComponent {
   @Input() customClass: string = '';
   @Output() onChange = new EventEmitter<{min: number | null, max: number | null}>();
 
-  _minLimit: number;
-  _maxLimit: number;
+  _minLimit: number | null = null;
+  _maxLimit: number | null = null;
 
   #activated = new BehaviorSubject<boolean>(false);
 
@@ -30,8 +30,8 @@ export class BizyFilterSectionRangeOptionComponent {
   }
 
   #form = this.#fb.group({
-      minValue: [null],
-      maxValue: [null]
+      minValue: this.#fb.control<number | string | null>(null),
+      maxValue: this.#fb.control<number | string | null>(null)
     });
 
   @Input() set min(min: number | null) {
@@ -117,11 +117,11 @@ export class BizyFilterSectionRangeOptionComponent {
     this.#ref.detectChanges();
   }
 
-  get minValue(): AbstractControl<number | string> {
+  get minValue(): AbstractControl<number | string | null> {
     return this.#form.get('minValue')!;
   }
 
-  get maxValue(): AbstractControl<number | string> {
+  get maxValue(): AbstractControl<number | string | null> {
     return this.#form.get('maxValue')!;
   }
 

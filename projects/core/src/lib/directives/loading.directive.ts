@@ -22,7 +22,7 @@ export class BizyLoadingDirective {
   @Input() bizyLoadingType: LOADING_TYPE = LOADING_TYPE.SPINNER;
 
   #loadingElement: any;
-  #originalElement: HTMLElement;
+  #originalElement!: HTMLElement;
 
   constructor(
     @Inject(ElementRef) private elementRef: ElementRef,

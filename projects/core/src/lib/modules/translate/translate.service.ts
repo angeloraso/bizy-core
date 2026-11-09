@@ -39,11 +39,11 @@ export class BizyTranslateService {
   }
 
   setDefault(lang: LANGUAGE): void {
-    this.#translate.setDefaultLang(lang);
+    this.#translate.setFallbackLang(lang);
   }
 
-  getCurrentLang(): LANGUAGE {
-    return this.#translate.currentLang as LANGUAGE;
+  getCurrentLang(): LANGUAGE | null {
+    return this.#translate.getCurrentLang() as LANGUAGE | null;
   }
 
   use(lang: LANGUAGE): void {

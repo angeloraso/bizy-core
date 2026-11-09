@@ -5,9 +5,9 @@ import Fuse from 'fuse.js';
   name: 'bizySearch'
 })
 export class BizySearchPipe implements PipeTransform {
-  searchPipeOptions: IBizySearchPipeOptions;
-  fuse: Fuse<any>;
-  items: Array<unknown>;
+  searchPipeOptions!: IBizySearchPipeOptions;
+  fuse!: Fuse<any>;
+  items: Array<unknown> = [];
 
   readonly perfectMatch = {
     threshold: 0.0
@@ -39,8 +39,14 @@ export class BizySearchPipe implements PipeTransform {
       search = search.map(_search => this.#removeAccentsAndDiacritics(String(_search)))
     }
 
-    const getFn = (item: T, keys: Array<string>) => {
-      const value = keys.reduce((acc, key) => acc && acc[key], item);
+    const getFn = (item: T, path: string | Array<string>) => {
+      const keys = typeof path === 'string' ? path.split('.') : path;
+      const value = keys.reduce<unknown>((acc, key) => {
+        if (acc === null || typeof acc !== 'object') {
+          return undefined;
+        }
+        return (acc as Record<string, unknown>)[key];
+      }, item);
       return typeof value === 'string' ? this.#removeAccentsAndDiacritics(value) : String(value);
     }
 

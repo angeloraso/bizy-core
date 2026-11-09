@@ -68,7 +68,7 @@ export class BizyCopyToClipboardDirective {
     this.#setVisibility(false);
   }
 
-  @HostListener('click', ['$event']) onClick(event) {
+  @HostListener('click', ['$event']) onClick(event: MouseEvent) {
     if (!this.elementRef.nativeElement.innerText){
         return;
     }

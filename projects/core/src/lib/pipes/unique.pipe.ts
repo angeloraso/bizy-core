@@ -11,8 +11,9 @@ export class BizyUniquePipe implements PipeTransform {
       return items;
     }
 
-    function getNestedValue(obj: T, path: string): T {
-      return path.split('.').reduce((acc, key) => acc?.[key], obj);
+    function getNestedValue(obj: T, path: string): unknown {
+      return path.split('.').reduce<unknown>((acc, key) =>
+        acc == null ? undefined : (Object(acc) as Record<string, unknown>)[key], obj);
     }
 
     const _items = new Set<any>();

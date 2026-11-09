@@ -44,7 +44,7 @@ export class BizySearchPipeOptions implements IBizySearchPipeOptions {
   shouldSort?: boolean;
   threshold?: number;
   useExtendedSearch?: boolean;
-  keys: Array<string>;
+  keys: Array<string> = [];
 
   constructor(options: IOptions, keys?: Array<string>) {
     // Si se desea cambiar algun valor por default, este es el lugar indicado

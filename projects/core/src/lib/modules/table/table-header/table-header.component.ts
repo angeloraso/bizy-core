@@ -13,7 +13,7 @@ export class BizyTableHeaderComponent {
   readonly #elementRef = inject(ElementRef);
   readonly #ref = inject(ChangeDetectorRef);
 
-  @ContentChildren(BizyTableColumnComponent) columns: QueryList<BizyTableColumnComponent>;
+  @ContentChildren(BizyTableColumnComponent) columns!: QueryList<BizyTableColumnComponent>;
   @Input() id: string = `bizy-table-header-${Math.random()}`;
   @Input() customClass: string = '';
   @Input() selected: boolean = false;

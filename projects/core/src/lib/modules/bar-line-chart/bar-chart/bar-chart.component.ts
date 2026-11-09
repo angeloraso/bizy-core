@@ -38,14 +38,14 @@ export class BizyBarChartComponent implements OnChanges {
     this.#changes.next();
   }
 
-  getColor = (): string => getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-chart-color');
-  getMinHeight = (): string => getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-chart-min-height');
+  getColor = (): string => getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-chart-color') ?? '';
+  getMinHeight = (): string => getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-chart-min-height') ?? '';
 
-  getYAxisColor = (): string => getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-chart-y-axis-color');
-  getYAxisWidth = (): string => getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-chart-y-axis-width');
+  getYAxisColor = (): string => getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-chart-y-axis-color') ?? '';
+  getYAxisWidth = (): string => getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-chart-y-axis-width') ?? '';
 
-  getXAxisColor = (): string => getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-chart-x-axis-color');
-  getXAxisWidth = (): string => getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-chart-x-axis-width');
+  getXAxisColor = (): string => getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-chart-x-axis-color') ?? '';
+  getXAxisWidth = (): string => getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-bar-chart-x-axis-width') ?? '';
 
   getNativeElement = () => this.#elementRef?.nativeElement;
 }

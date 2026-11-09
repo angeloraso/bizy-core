@@ -31,7 +31,7 @@ export class BizyValidatorService {
 
   isAlphanumeric = (value: string): boolean => validator.isAlphanumeric(value);
 
-  isNumeric = (value: string | number): boolean => validator.isNumeric(value);
+  isNumeric = (value: string | number): boolean => validator.isNumeric(String(value));
 
   isNumber(number: unknown): number is number {
     const regex = /^-?\d+(\.\d+)?$/;
@@ -42,11 +42,11 @@ export class BizyValidatorService {
     return typeof string === 'string' || string instanceof String;
   }
 
-  isInteger = (value: string | number): boolean => validator.isInt(value);
+  isInteger = (value: string | number): boolean => validator.isInt(String(value));
 
-  isBoolean = (value: unknown): boolean => validator.isBoolean(value);
+  isBoolean = (value: unknown): boolean => validator.isBoolean(String(value));
 
-  isCreditCard = (value: string | number ): boolean => validator.isCreditCard(value);
+  isCreditCard = (value: string | number ): boolean => validator.isCreditCard(String(value));
 
   isDataURI = (value: string): boolean => validator.isDataURI(value);
 
@@ -64,7 +64,10 @@ export class BizyValidatorService {
 
   isUppercase = (value: string): boolean => validator.isUppercase(value);
 
-  isMobilePhone = (data: {value: string, locale: string}): boolean => validator.isMobilePhone(data.value, data.locale);
+  isMobilePhone = (data: {value: string, locale: string}): boolean => {
+    const locale = data.locale === 'any' ? 'any' : validator.isMobilePhoneLocales.find(locale => locale === data.locale);
+    return locale !== undefined && validator.isMobilePhone(data.value, locale);
+  };
 
   isCUIT(cuit: string): boolean {
     if (!cuit) {

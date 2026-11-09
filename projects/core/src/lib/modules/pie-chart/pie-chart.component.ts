@@ -1,3 +1,4 @@
+import type { ECharts } from 'echarts';
 import { getClosestCssVariable } from '../../utils/css';
 import {
   ChangeDetectionStrategy,
@@ -38,7 +39,7 @@ export class BizyPieChartComponent {
   readonly #popup = inject(BizyPopupService);
   readonly #pieChartService = inject(BizyPieChartService);
 
-  @ContentChildren(BizyPieChartSectionComponent) sections: QueryList<BizyPieChartSectionComponent> | null = null;
+  @ContentChildren(BizyPieChartSectionComponent) sections: QueryList<BizyPieChartSectionComponent> = new QueryList();
 
   @Input() resizeRef: HTMLElement | null = null;
   @Input() centerLabel: string | null = null;
@@ -50,7 +51,7 @@ export class BizyPieChartComponent {
   @Output() onDownload = new EventEmitter<void>();
 
   #echarts: any = null;
-  #echartsContainer: echarts.ECharts | null = null
+  #echartsContainer: ECharts | null = null
 
   #resizeObserver: ResizeObserver | null = null;
   #resizeSubscription = new Subscription();
@@ -81,7 +82,7 @@ export class BizyPieChartComponent {
         }))
       });
 
-      this.#pieChartSectionSubscription.add(this.sections.changes.subscribe(_sections => {
+      this.#pieChartSectionSubscription.add(this.sections.changes.subscribe((_sections: QueryList<BizyPieChartSectionComponent>) => {
         this.#pieChartSectionChangesSubscription.unsubscribe();
         this.#pieChartSectionChangesSubscription = new Subscription();
         this.#render.next();
@@ -110,7 +111,7 @@ export class BizyPieChartComponent {
       return;
     }
 
-    let data = [];
+    let data: Array<{name: string; value: number; id?: string | number; metadata?: Record<string, unknown>; itemStyle?: {color?: string}}> = [];
 
     this.sections.forEach(_section => {
       const section = {
@@ -173,8 +174,12 @@ export class BizyPieChartComponent {
           onclick: () => {
             setTimeout(() => {
               import('html2canvas').then(module => {
-              const html2canvas = module.default;
-                html2canvas(this.#chartContainer).then(canvas => {
+                const html2canvas = module.default;
+                const chartContainer = this.#chartContainer;
+                if (!chartContainer) {
+                  return;
+                }
+                html2canvas(chartContainer).then(canvas => {
                     var link = this.#renderer.createElement('a');
                     link.href = canvas.toDataURL('image/png');
                     link.download = `${this.download.fileName ?? this.#pieChartService.getDownloadConfig().fileName}.png`;
@@ -200,7 +205,7 @@ export class BizyPieChartComponent {
                   label: this.download?.label ?? this.#pieChartService.getDownloadConfig().label, 
                   fileName: this.download?.fileName ?? this.#pieChartService.getDownloadConfig().fileName, 
                 },
-                option: this.#echartsContainer.getOption()
+                option: this.#echartsContainer?.getOption()
               }
             })
           }
@@ -259,7 +264,7 @@ export class BizyPieChartComponent {
       graphic
     };
 
-    this.#echartsContainer = this.#echarts.init(this.#chartContainer);
+    this.#echartsContainer = this.#echarts.init(this.#chartContainer) as ECharts;
     this.#echartsContainer.setOption(option);
     this.#echartsContainer.on('click', (params: any) => {
       const section = this.sections.find(_section => _section.id === params.data.id);
@@ -295,7 +300,7 @@ export class BizyPieChartComponent {
       return;
     }
 
-    this.#echartsContainer.clear();
+    this.#echartsContainer?.clear();
     this.#renderer.removeChild(this.#elementRef.nativeElement, this.#chartContainer);
     this.#chartContainer = null;
     this.#ref.detectChanges();
@@ -312,7 +317,7 @@ export class BizyPieChartComponent {
     }
 
     if (this.#echartsContainer) {
-      this.#echartsContainer.clear();
+      this.#echartsContainer?.clear();
     }
   }
 

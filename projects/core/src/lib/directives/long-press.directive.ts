@@ -14,7 +14,7 @@ export class BizyLongPressDirective implements AfterViewInit, OnDestroy {
   @Input() bizyLongPressThreshold = 750;
   @Output() bizyLongPress = new EventEmitter<void>();
   
-  #subscription: Subscription;
+  #subscription: Subscription = new Subscription();
 
   ngAfterViewInit() {
     this.#renderer.setStyle(this.#elementRef.nativeElement, 'cursor', 'pointer');

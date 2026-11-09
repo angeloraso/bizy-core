@@ -22,8 +22,8 @@ export class BizySkeletonComponent {
   readonly #elementRef = inject(ElementRef);
   @Input() id: string = `bizy-skeleton-${Math.random()}`;
   @Input() shape: BIZY_SKELETON_SHAPE = BIZY_SKELETON_SHAPE.SQUARE;
-  @Input() height: string;
-  @Input() width: string;
+  @Input() height: string = '';
+  @Input() width: string = '';
   @Input() customClass: string = '';
 
   readonly BIZY_SKELETON_SHAPE = BIZY_SKELETON_SHAPE;

@@ -140,7 +140,7 @@ export class BizyAudioRecorderComponent implements AfterViewInit, OnDestroy {
     } catch (error) {
       this._isRecording = false;
       this.#ref.detectChanges();
-      this.onError.emit(error);
+      this.onError.emit(error instanceof Error ? error : new Error(String(error)));
     }
   }
 

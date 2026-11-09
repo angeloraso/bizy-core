@@ -1,3 +1,4 @@
+import type { ECharts, CustomSeriesRenderItemParams, CustomSeriesRenderItemAPI } from 'echarts';
 import { getClosestCssVariable } from '../../utils/css';
 import {
   AfterViewInit,
@@ -70,7 +71,7 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
   @Output() onDownload = new EventEmitter<void>();
   @Output() onSelect = new EventEmitter<string>();
 
-  #echarts: echarts.ECharts | null = null
+  #echarts: ECharts | null = null
 
   #resizeObserver: ResizeObserver | null = null;
   #afterViewInitSubscription = new Subscription();
@@ -131,9 +132,9 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
       const yAreas: Array<[number, number]> = []
       const highlightAreas: Array<IBizyHeatMapHighlightArea> = (<{data: Array<IBizyHeatMapHighlightArea>}>this.highlightAreas).data ?? (<Array<IBizyHeatMapHighlightArea>>this.highlightAreas);
       highlightAreas.forEach(_area => {
-        if (typeof _area.from.x !== 'undefined' || _area.from.x !== null) {
+        if (_area.from.x != null && _area.to.x != null) {
           xAreas.push([_area.from.x, _area.to.x]);
-        } else {
+        } else if (_area.from.y != null && _area.to.y != null) {
           yAreas.push([_area.from.y, _area.to.y]);
         }
       });
@@ -142,18 +143,19 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
         series.push({
           type: 'custom',
           silent: true,
-          renderItem: function (params, api) {
+          renderItem: function (params: CustomSeriesRenderItemParams, api: CustomSeriesRenderItemAPI) {
+              const coordSys = params.coordSys as CustomSeriesRenderItemParams['coordSys'] & {x: number; y: number; width: number; height: number};
               var xStart = api.coord([api.value(0), 0])[0];
               var xEnd = api.coord([api.value(1), 0])[0];
-              var cellWidth = Math.abs(xEnd - xStart) / (api.value(1) - api.value(0));
+              var cellWidth = Math.abs(xEnd - xStart) / (Number(api.value(1)) - Number(api.value(0)));
 
               return {
                   type: 'rect',
                   shape: {
                       x: xStart - cellWidth / 2,
-                      y: params.coordSys.y,
+                      y: coordSys.y,
                       width: Math.abs(xEnd - xStart) + cellWidth,
-                      height: params.coordSys.height
+                      height: coordSys.height
                   },
                   style: {
                       fill: xAreaBackgroundColor,
@@ -173,17 +175,18 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
         series.push({
             type: 'custom',
             silent: true,
-            renderItem: function (params, api) {
+            renderItem: function (params: CustomSeriesRenderItemParams, api: CustomSeriesRenderItemAPI) {
+              const coordSys = params.coordSys as CustomSeriesRenderItemParams['coordSys'] & {x: number; y: number; width: number; height: number};
                 var yStart = api.coord([0, api.value(0)])[1];
                 var yEnd = api.coord([0, api.value(1)])[1];
-                var cellHeight = Math.abs(yEnd - yStart) / (api.value(1) - api.value(0));
+                var cellHeight = Math.abs(yEnd - yStart) / (Number(api.value(1)) - Number(api.value(0)));
 
                 return {
                     type: 'rect',
                     shape: {
-                        x: params.coordSys.x,
+                        x: coordSys.x,
                         y: yStart - cellHeight / 2,
-                        width: params.coordSys.width,
+                        width: coordSys.width,
                         height: Math.abs(yEnd - yStart) + cellHeight
                     },
                     style: {
@@ -214,9 +217,9 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
       const highlightLineLabel = (<{label: {x: IBizyHeatMapHighlightLineLabel, y: IBizyHeatMapHighlightLineLabel}}>this.highlightLines)?.label ?? null;
       const highlightLines: Array<IBizyHeatMapHighlightLine> = (<{data: Array<IBizyHeatMapHighlightLine>}>this.highlightLines).data ?? (<Array<IBizyHeatMapHighlightLine>>this.highlightLines);
       highlightLines.forEach(_line => {
-        if (typeof _line.x !== 'undefined' || _line.x !== null) {
+        if (_line.x != null) {
           xLines.push([_line.x]);
-        } else {
+        } else if (_line.y != null) {
           yLines.push([_line.y]);
         }
       });
@@ -226,11 +229,12 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
       if (xLines.length > 0) {
         series.push({
           type: 'custom',
-          renderItem: function (params, api) {
+          renderItem: function (params: CustomSeriesRenderItemParams, api: CustomSeriesRenderItemAPI) {
+              const coordSys = params.coordSys as CustomSeriesRenderItemParams['coordSys'] & {x: number; y: number; width: number; height: number};
             const xValue = api.value(0);
         
-            const yStart = params.coordSys.y;
-            const yEnd = params.coordSys.y + params.coordSys.height;
+            const yStart = coordSys.y;
+            const yEnd = coordSys.y + coordSys.height;
 
             const cellWidth = Math.abs(api.coord([1, 0])[0] - api.coord([0, 0])[0]);
         
@@ -288,11 +292,12 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
       if (yLines.length > 0) {
         series.push({
           type: 'custom',
-          renderItem: function (params, api) {
+          renderItem: function (params: CustomSeriesRenderItemParams, api: CustomSeriesRenderItemAPI) {
+              const coordSys = params.coordSys as CustomSeriesRenderItemParams['coordSys'] & {x: number; y: number; width: number; height: number};
             const yValue = api.value(0);
 
-            const xStart = params.coordSys.x;
-            const xEnd = params.coordSys.x + params.coordSys.width;
+            const xStart = coordSys.x;
+            const xEnd = coordSys.x + coordSys.width;
 
             const cellHeight = Math.abs(api.coord([0, 1])[1] - api.coord([0, 0])[1]);
 
@@ -427,8 +432,12 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
             onclick: () => {
               setTimeout(() => {
                 import('html2canvas').then(module => {
-                const html2canvas = module.default;
-                  html2canvas(this.#chartContainer).then(canvas => {
+                  const html2canvas = module.default;
+                  const chartContainer = this.#chartContainer;
+                  if (!chartContainer) {
+                    return;
+                  }
+                  html2canvas(chartContainer).then(canvas => {
                       var link = this.#renderer.createElement('a');
                       link.href = canvas.toDataURL('image/png');
                       link.download = `${this.download.name ?? DEFAULT_DOWNLOAD.name}.png`;
@@ -472,8 +481,8 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
       import('echarts').then(echarts => {
         this.#echarts = echarts.init(this.#chartContainer);
         Promise.resolve().then(() => {
-          this.#echarts.setOption(option);
-          this.#echarts.on('click', params => {
+          this.#echarts?.setOption(option);
+          this.#echarts?.on('click', params => {
               this.onSelect.emit(params.name)
           });
     
@@ -492,8 +501,8 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
     
             this.#echarts = echarts.init(this.#chartContainer);
             Promise.resolve().then(() => {
-              this.#echarts.setOption(option);
-              this.#echarts.on('click', params => {
+              this.#echarts?.setOption(option);
+              this.#echarts?.on('click', params => {
                 this.onSelect.emit(params.name)
               });
             });
@@ -529,7 +538,7 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
       return;
     }
 
-    this.#echarts.clear();
+    this.#echarts?.clear();
     this.#renderer.removeChild(this.#elementRef.nativeElement, this.#chartContainer);
     this.#chartContainer = null;
     this.#ref.detectChanges();
@@ -544,7 +553,7 @@ export class BizyHeatMapChartComponent implements OnDestroy, AfterViewInit {
     }
 
     if (this.#echarts) {
-      this.#echarts.clear();
+      this.#echarts?.clear();
     }
   }
 }

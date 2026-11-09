@@ -9,8 +9,8 @@ export class BizyReducePipe implements PipeTransform {
       return 0;
     }
 
-    let _items = key ? items.filter(_item => _item[key]).map(_d => _d[key]) : items;
-    const reduce = _items.filter(v => Number.isFinite(Number(v))).reduce((acc, value) => acc +  Number(value), 0);
+    const _items = key ? items.map(item => item == null ? undefined : (Object(item) as Record<string, unknown>)[key]).filter(Boolean) : items;
+    const reduce = _items.filter(v => Number.isFinite(Number(v))).reduce<number>((acc, value) => acc + Number(value), 0);
     return Number(reduce.toFixed(fixedTo));
   }
 }

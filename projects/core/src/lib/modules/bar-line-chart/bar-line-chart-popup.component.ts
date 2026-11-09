@@ -1,3 +1,4 @@
+import type { ECharts, LegendComponentOption } from 'echarts';
 import { ChangeDetectorRef, Component, ElementRef, inject, OnInit, Renderer2, ChangeDetectionStrategy } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { BizyPopupService } from '../popup';
@@ -21,7 +22,7 @@ export class BizyBarLineChartPopupComponent implements OnInit {
   readonly #ref = inject(ChangeDetectorRef);
   readonly #document = inject(DOCUMENT);
 
-  #echarts: echarts.ECharts | null = null
+  #echarts: ECharts | null = null
   #chartContainer: HTMLDivElement | null = null;
 
   ngOnInit() {
@@ -45,25 +46,36 @@ export class BizyBarLineChartPopupComponent implements OnInit {
     import('echarts').then(echarts => {
         this.#echarts = echarts.init(this.#chartContainer);
         Promise.resolve().then(() => {
-          this.#echarts.setOption({...data.option, toolbox: {show: false}});
+          this.#echarts?.setOption({...data.option, toolbox: {show: false}});
 
-          const showAllLegends = (chart: echarts.ECharts) => {
+          const showAllLegends = (chart: ECharts) => {
             const option = chart.getOption();
-            option.legend[0].type = 'plain';
+            const legends = option.legend as LegendComponentOption[] | undefined;
+            const legend = legends?.[0];
+            if (!legend) {
+              return;
+            }
+            legend.type = 'plain';
             option.grid = {
               left: data.grid.left,
               right: data.grid.right,
-              bottom: Math.max(Math.abs((Math.max(option.legend[0].data.length, 5) / 5)) * 30, 60)
+              bottom: Math.max(Math.abs((Math.max(legend.data?.length ?? 0, 5) / 5)) * 30, 60)
             };
             chart.setOption(option);
           }
 
-          showAllLegends(this.#echarts);
+          if (this.#echarts) {
+            showAllLegends(this.#echarts);
+          }
 
           setTimeout(() => {
             import('html2canvas').then(module => {
-            const html2canvas = module.default;
-              html2canvas(this.#chartContainer).then(canvas => {
+              const html2canvas = module.default;
+              const chartContainer = this.#chartContainer;
+              if (!chartContainer) {
+                return;
+              }
+              html2canvas(chartContainer).then(canvas => {
                   var link = this.#renderer.createElement('a');
                   link.href = canvas.toDataURL('image/png');
                   link.download = `${data.download.name}.png`;

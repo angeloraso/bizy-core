@@ -15,9 +15,9 @@ export class BizyTabsComponent implements AfterViewInit, AfterContentInit {
   readonly #ref = inject(ChangeDetectorRef);
 
   @ContentChildren(BizyTabComponent) tabs!: QueryList<BizyTabComponent>;
-  @ViewChild('bizyTabs') private bizyTabs: ElementRef; 
-  @ViewChild('bizyTabsWrapper') private bizyTabsWrapper: ElementRef; 
-  @Input() customClass: string
+  @ViewChild('bizyTabs') private bizyTabs!: ElementRef;
+  @ViewChild('bizyTabsWrapper') private bizyTabsWrapper!: ElementRef;
+  @Input() customClass: string = '';
 
   #SCROLL_STEP = 50;
 
@@ -39,9 +39,9 @@ export class BizyTabsComponent implements AfterViewInit, AfterContentInit {
   }
 
   ngAfterContentInit(): void {
-    for (let i = 0; i < this.tabs.length; i++) {
-      if (this.tabs.get(i).selected) {
-        this.#initialScroll = this.tabs.get(i).getNativeElement().offsetLeft;
+    for (const tab of this.tabs) {
+      if (tab.selected) {
+        this.#initialScroll = tab.getNativeElement().offsetLeft;
         break;
       }
     }
@@ -67,6 +67,6 @@ export class BizyTabsComponent implements AfterViewInit, AfterContentInit {
 
   ngOnDestroy() {
     this.#subscription.unsubscribe();
-    this.#resizeObserver.disconnect();
+    this.#resizeObserver?.disconnect();
   }
 }

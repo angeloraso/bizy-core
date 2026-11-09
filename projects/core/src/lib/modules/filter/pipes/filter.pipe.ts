@@ -18,7 +18,7 @@ export class BizyFilterPipe implements PipeTransform {
     }
 
     if (!Array.isArray(states)) {
-      return items.filter(_item => _item[property] === states);
+      return items.filter(_item => _item != null && (Object(_item) as Record<string, unknown>)[property] === states);
     }
 
     if (states.length === 0) {
@@ -36,10 +36,10 @@ export class BizyFilterPipe implements PipeTransform {
       }
 
       const res = items.filter(_item => {
-        let _state: T = _item;
+        let _state: unknown = _item;
         const nestedProperty = property.split('.');
         nestedProperty.forEach(_property => {
-          _state = _state[_property];
+          _state = _state == null ? undefined : (Object(_state) as Record<string, unknown>)[_property];
         });
 
         if (typeof state.id === 'boolean') {

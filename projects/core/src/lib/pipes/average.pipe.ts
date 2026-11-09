@@ -14,7 +14,7 @@ export class BizyAveragePipe implements PipeTransform {
       return Number((reduce / items.length).toFixed(fixedTo));
     }
 
-    const reduce = (<Array<number>>items.map(_d => _d[key])).reduce((acc, value) => acc + value, 0);
+    const reduce = (items.map(item => item == null ? undefined : (Object(item) as Record<string, unknown>)[key]) as Array<number>).reduce((acc, value) => acc + value, 0);
     return Number((reduce / items.length).toFixed(fixedTo));
   }
 }

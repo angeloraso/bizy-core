@@ -12,11 +12,11 @@ import { POPUP_PLACEMENT } from '../popup.types';
   imports: [DialogModule, DragDropModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[style.top]': 'position.top',
-    '[style.right]': 'position.right',
-    '[style.bottom]': 'position.bottom',
-    '[style.left]': 'position.left',
-    '[style.transform]': 'position.transform'
+    '[style.top]': 'position?.top',
+    '[style.right]': 'position?.right',
+    '[style.bottom]': 'position?.bottom',
+    '[style.left]': 'position?.left',
+    '[style.transform]': 'position?.transform'
   }
 })
 export class BizyPopupWrapperComponent<T> {
@@ -32,7 +32,7 @@ export class BizyPopupWrapperComponent<T> {
   readonly #popup = inject(BizyPopupService);
   readonly #ref = inject(ChangeDetectorRef);
 
-  @ViewChild('dynamicComponentContainer', { read: ViewContainerRef }) dynamicComponentContainer: ViewContainerRef;
+  @ViewChild('dynamicComponentContainer', { read: ViewContainerRef }) dynamicComponentContainer!: ViewContainerRef;
 
   disabled: boolean = false;
 

@@ -37,7 +37,7 @@ export class BizyPieChartSectionComponent {
     this.#changes.next();
   }
 
-  getColor = (): string => getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-pie-chart-section-color');
+  getColor = (): string => getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-pie-chart-section-color') ?? '';
 
   getNativeElement = () => this.#elementRef?.nativeElement;
 }

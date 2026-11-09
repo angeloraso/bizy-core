@@ -16,8 +16,8 @@ export class BizyTooltipDirective implements OnDestroy {
   readonly #renderer = inject(Renderer2);
   readonly #document = inject(DOCUMENT);  
 
-  #tooltip: HTMLElement | null;
-  #hiding: boolean;
+  #tooltip: HTMLElement | null = null;
+  #hiding: boolean = false;
   #longPressTimeout: any = null;
   #lineClamp: number = 0;
   #text: string | null = null;

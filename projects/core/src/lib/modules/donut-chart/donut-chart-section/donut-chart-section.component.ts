@@ -37,7 +37,7 @@ export class BizyDonutChartSectionComponent {
     this.#changes.next();
   }
 
-  getColor = (): string => getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-donut-chart-section-color');
+  getColor = (): string => getClosestCssVariable(this.#elementRef.nativeElement, '--bizy-donut-chart-section-color') ?? '';
 
   getNativeElement = () => this.#elementRef?.nativeElement;
 }

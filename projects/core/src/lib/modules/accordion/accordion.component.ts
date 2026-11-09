@@ -12,7 +12,7 @@ export class BizyAccordionComponent {
   readonly #ref = inject(ChangeDetectorRef);
   readonly #elementRef = inject(ElementRef);
   @Input() id: string = `bizy-accordion-${Math.random()}`;
-  @Input() customClass: string;
+  @Input() customClass: string = '';
   @Input() disabled: boolean = false;
   @Input() opened: boolean = false;
   @Output() openedChange = new EventEmitter<boolean>();

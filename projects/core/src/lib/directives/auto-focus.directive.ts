@@ -6,7 +6,7 @@ import { fromEvent } from 'rxjs';
   selector: '[bizyAutoFocus]'
 })
 export class BizyAutoFocusDirective implements AfterViewInit {
-  @Input('bizyAutoFocus') public autoFocus: boolean;
+  @Input('bizyAutoFocus') public autoFocus: boolean = true;
 
   constructor(
     @Inject(ElementRef) private elementRef: ElementRef,

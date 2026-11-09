@@ -14,9 +14,9 @@ import { FormsModule } from '@angular/forms';
 })
 export class BizyFormComponent {
   readonly #elementRef = inject(ElementRef);
-  @ContentChildren(BizyInputComponent, { descendants: true }) inputs: QueryList<BizyInputComponent>;
-  @ContentChildren(BizySelectComponent, { descendants: true }) selects: QueryList<BizySelectComponent>;
-  @ContentChildren(BizyDatePickerComponent, { descendants: true }) datePickers: QueryList<BizyDatePickerComponent>;
+  @ContentChildren(BizyInputComponent, { descendants: true }) inputs!: QueryList<BizyInputComponent>;
+  @ContentChildren(BizySelectComponent, { descendants: true }) selects!: QueryList<BizySelectComponent>;
+  @ContentChildren(BizyDatePickerComponent, { descendants: true }) datePickers!: QueryList<BizyDatePickerComponent>;
   @Input() id: string = `bizy-form-${Math.random()}`;
   @Input() customClass: string = '';
 

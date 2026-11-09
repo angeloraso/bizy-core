@@ -23,7 +23,7 @@ export class BizyStackedBarChartComponent {
   readonly #elementRef = inject(ElementRef);
   @Input() id: string = `bizy-stacked-bar-chart-${Math.random()}`;
 
-  @ContentChildren(BizyStackedBarChartSegmentComponent) segments: QueryList<BizyStackedBarChartSegmentComponent> | null = null;
+  @ContentChildren(BizyStackedBarChartSegmentComponent) segments: QueryList<BizyStackedBarChartSegmentComponent> = new QueryList();
 
   _total: number = 0;
   _forcedTotal: number = 0;
@@ -42,7 +42,7 @@ export class BizyStackedBarChartComponent {
     }
 
     this.#segmentSubscription = new Subscription();
-    this.#segmentSubscription.add(this.segments.changes.subscribe(_segments => {
+    this.#segmentSubscription.add(this.segments.changes.subscribe((_segments: QueryList<BizyStackedBarChartSegmentComponent>) => {
 
       this.#segmentValueSubscription.unsubscribe();
       this.#segmentValueSubscription = new Subscription();
@@ -92,14 +92,14 @@ export class BizyStackedBarChartComponent {
 
     if (!_total) {
       _total = 0;
-      for (let i = 0; i < this.segments.length; i++) {
-        _total += this.segments.get(i)._getValue() || 0;
+      for (const segment of this.segments) {
+        _total += segment._getValue() || 0;
       }
     }
 
     if (_total) {
-      for (let i = 0; i < this.segments.length; i++) {
-        this.segments.get(i)._setWidth(`${(this.segments.get(i)._getValue() / _total) * 100}%`);
+      for (const segment of this.segments) {
+        segment._setWidth(`${(segment._getValue() / _total) * 100}%`);
       }
     }
   }

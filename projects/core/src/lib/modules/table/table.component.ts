@@ -25,17 +25,17 @@ export class BizyTableComponent implements AfterContentInit {
   readonly #ref = inject(ChangeDetectorRef);
   readonly #renderer = inject(Renderer2);
 
-  @ViewChild(BizyTableScrollingComponent) viewport: BizyTableScrollingComponent;
-  @ContentChild(BizyTableScrollingDirective) virtualFor: BizyTableScrollingDirective;
-  @ContentChildren(BizyTableRowComponent) rows: QueryList<BizyTableRowComponent>;
-  @ContentChildren(BizyTableHeaderComponent) headers: QueryList<BizyTableHeaderComponent>;
-  @ContentChildren(BizyTableFooterComponent) footers: QueryList<BizyTableFooterComponent>;
-  @Input() resizeRef: ElementRef = null;
+  @ViewChild(BizyTableScrollingComponent) viewport!: BizyTableScrollingComponent;
+  @ContentChild(BizyTableScrollingDirective) virtualFor!: BizyTableScrollingDirective;
+  @ContentChildren(BizyTableRowComponent) rows!: QueryList<BizyTableRowComponent>;
+  @ContentChildren(BizyTableHeaderComponent) headers!: QueryList<BizyTableHeaderComponent>;
+  @ContentChildren(BizyTableFooterComponent) footers!: QueryList<BizyTableFooterComponent>;
+  @Input() resizeRef: ElementRef | null = null;
 
-  #selectableMutationObserver: MutationObserver;
-  #rowScrollingMutationObserver: MutationObserver;
-  #afterContentInitObserver: MutationObserver;
-  #resizeObserver: ResizeObserver;
+  #selectableMutationObserver!: MutationObserver;
+  #rowScrollingMutationObserver!: MutationObserver;
+  #afterContentInitObserver!: MutationObserver;
+  #resizeObserver!: ResizeObserver;
   notifier$ = new Subject<void>();
   #subscription = new Subscription();
   marginRight: number = 0;

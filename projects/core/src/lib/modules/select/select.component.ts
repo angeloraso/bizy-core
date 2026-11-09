@@ -17,9 +17,9 @@ export class BizySelectComponent implements AfterViewInit {
   readonly #elementRef = inject(ElementRef);
   readonly #ref = inject(ChangeDetectorRef);
   #viewContainerRef = inject(ViewContainerRef);
-  @ViewChild('templatePortalContent') templatePortalContent: TemplateRef<unknown>;
-  @ContentChildren(BizySelectOptionComponent) options: QueryList<BizySelectOptionComponent>;
-  @ViewChild('bizyInput') bizyInput: BizyInputComponent;
+  @ViewChild('templatePortalContent') templatePortalContent!: TemplateRef<unknown>;
+  @ContentChildren(BizySelectOptionComponent) options!: QueryList<BizySelectOptionComponent>;
+  @ViewChild('bizyInput') bizyInput!: BizyInputComponent;
   @Input() id: string = `bizy-select-${Math.random()}`;
   @Input() disabled: boolean = false;
   @Input() readonly: boolean = false;
@@ -31,7 +31,7 @@ export class BizySelectComponent implements AfterViewInit {
   @Output() onOpen = new EventEmitter<boolean>();
 
   _optionValue: string = '';
-  optionPortal: Portal<any>;
+  optionPortal!: Portal<any>;
   templatePortal: TemplatePortal<any> | null = null;
 
   #subscription = new Subscription();
@@ -99,7 +99,7 @@ export class BizySelectComponent implements AfterViewInit {
   }
 
   close = (event?: PointerEvent & {target: {id: string}}, select?: BizyInputComponent) => {
-    if (select && event && event.target && event.target === select.bizyInputWrapper.nativeElement) {
+    if (select && event && event.target && event.target === select.bizyInputWrapper?.nativeElement) {
       return;
     }
 

@@ -11,7 +11,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, inject, I
 export class BizyRadioComponent {
   readonly #elementRef = inject(ElementRef);
   @Input() id: string = `bizy-radio-${Math.random()}`;
-  @Input() name: string;
+  @Input() name: string = '';
   @Input() selected: boolean = false;
   @Input() disabled: boolean = false;
   @Output() selectedChange = new EventEmitter<boolean>();

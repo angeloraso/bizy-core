@@ -160,15 +160,19 @@ export class BizyDatePickerComponent implements OnDestroy {
 
     const overlayHost = this.#getOverlayHost();
 
-    this.#instance = flatpickr(this.bizyDatePicker!.bizyInputWrapper.nativeElement, {
+    const inputWrapper = this.bizyDatePicker?.bizyInputWrapper?.nativeElement as HTMLElement | undefined;
+    if (!inputWrapper) {
+      return;
+    }
+    this.#instance = flatpickr(inputWrapper, {
       locale: Spanish,
       mode: this.mode,
       dateFormat: this.dateFormat,
       enableTime: this.enableTime,
       enableSeconds: this.enableSeconds,
       plugins,
-      minDate: this.minDate,
-      maxDate: this.maxDate,
+      minDate: this.minDate ?? undefined,
+      maxDate: this.maxDate ?? undefined,
       noCalendar: this.noCalendar,
       disableMobile: true,
       ...(overlayHost ? {

@@ -1,3 +1,4 @@
+import type { ECharts } from 'echarts';
 import { getClosestCssVariable } from '../../utils/css';
 import {
   AfterContentInit,
@@ -68,12 +69,12 @@ export class BizyBarLineChartComponent implements AfterContentInit {
   @Output() onDownload = new EventEmitter<void>();
   @Output() onSelect = new EventEmitter<string>();
 
-  @ContentChildren(BizyBarChartComponent) barCharts: QueryList<BizyBarChartComponent> | null = null;
-  @ContentChildren(BizyLineChartComponent) lineCharts: QueryList<BizyLineChartComponent> | null = null;
+  @ContentChildren(BizyBarChartComponent) barCharts: QueryList<BizyBarChartComponent> = new QueryList();
+  @ContentChildren(BizyLineChartComponent) lineCharts: QueryList<BizyLineChartComponent> = new QueryList();
   
 
   #echarts: any = null;
-  #echartsContainer: echarts.ECharts | null = null
+  #echartsContainer: ECharts | null = null
 
   #resizeObserver: ResizeObserver | null = null;
   #resizeSubscription = new Subscription();
@@ -118,7 +119,7 @@ export class BizyBarLineChartComponent implements AfterContentInit {
         }))
       });
 
-      this.#barChartsSubscription.add(this.barCharts.changes.subscribe(_barCharts => {
+      this.#barChartsSubscription.add(this.barCharts.changes.subscribe((_barCharts: QueryList<BizyBarChartComponent>) => {
         this.#barChartChangesSubscription.unsubscribe();
         this.#barChartChangesSubscription = new Subscription();
         this.#render.next();
@@ -130,7 +131,7 @@ export class BizyBarLineChartComponent implements AfterContentInit {
         });
       }));
 
-      this.#lineChartsSubscription.add(this.lineCharts.changes.subscribe(_lineCharts => {
+      this.#lineChartsSubscription.add(this.lineCharts.changes.subscribe((_lineCharts: QueryList<BizyLineChartComponent>) => {
         this.#lineChartChangesSubscription.unsubscribe();
         this.#lineChartChangesSubscription = new Subscription();
         this.#render.next();
@@ -192,7 +193,7 @@ export class BizyBarLineChartComponent implements AfterContentInit {
         const show = typeof lineYAxis.show === 'undefined' ? true : lineYAxis.show;
 
         if (show && yAxisType === BIZY_BAR_LINE_CHART_AXIS_TYPE.DEPENDENT && !_line.name) {
-          _line.name = lineYAxis.name;
+          _line.name = lineYAxis.name ?? null;
         }
 
         const position = lineYAxis.position === BIZY_BAR_LINE_CHART_AXIS_POSITION.RIGHT || lineYAxis.position === BIZY_BAR_LINE_CHART_AXIS_POSITION.LEFT ? lineYAxis.position : BIZY_BAR_LINE_CHART_AXIS_POSITION.LEFT;
@@ -252,7 +253,7 @@ export class BizyBarLineChartComponent implements AfterContentInit {
         const show = typeof lineXAxis.show === 'undefined' ? true : lineXAxis.show;
 
         if (show && xAxisType === BIZY_BAR_LINE_CHART_AXIS_TYPE.DEPENDENT && !_line.name) {
-          _line.name = lineYAxis.name;
+          _line.name = lineYAxis.name ?? null;
         }
 
         const position = lineXAxis.position === BIZY_BAR_LINE_CHART_AXIS_POSITION.TOP || lineXAxis.position === BIZY_BAR_LINE_CHART_AXIS_POSITION.BOTTOM ? lineXAxis.position : BIZY_BAR_LINE_CHART_AXIS_POSITION.BOTTOM;
@@ -316,7 +317,7 @@ export class BizyBarLineChartComponent implements AfterContentInit {
             axisIndex = index;
           }
         } else {
-          this.#chartNames.push(_line.name);
+          this.#chartNames.push(_line.name ?? '');
         }
       }
 
@@ -336,7 +337,7 @@ export class BizyBarLineChartComponent implements AfterContentInit {
         data: _line.values.map(_v => xAxisType === BIZY_BAR_LINE_CHART_AXIS_TYPE.INDEPENDENT ? Number(_v.y) : Number(_v.x))
       });
 
-      legends.add(_line.name);
+      legends.add(_line.name ?? '');
     });
 
     this.barCharts.forEach((_bar, _i) => {
@@ -352,7 +353,7 @@ export class BizyBarLineChartComponent implements AfterContentInit {
         const show = typeof barYAxis.show === 'undefined' ? true : barYAxis.show;
 
         if (show && yAxisType === BIZY_BAR_LINE_CHART_AXIS_TYPE.DEPENDENT && !_bar.name) {
-          _bar.name = barYAxis.name;
+          _bar.name = barYAxis.name ?? null;
         }
 
         const position = barYAxis.position === BIZY_BAR_LINE_CHART_AXIS_POSITION.RIGHT || barYAxis.position === BIZY_BAR_LINE_CHART_AXIS_POSITION.LEFT ? barYAxis.position : BIZY_BAR_LINE_CHART_AXIS_POSITION.LEFT;
@@ -413,7 +414,7 @@ export class BizyBarLineChartComponent implements AfterContentInit {
         const show = typeof barXAxis.show === 'undefined' ? true : barXAxis.show;
 
         if (show && xAxisType === BIZY_BAR_LINE_CHART_AXIS_TYPE.DEPENDENT && !_bar.name) {
-          _bar.name = barYAxis.name;
+          _bar.name = barYAxis.name ?? null;
         }
 
         const position = barXAxis.position === BIZY_BAR_LINE_CHART_AXIS_POSITION.TOP || barXAxis.position === BIZY_BAR_LINE_CHART_AXIS_POSITION.BOTTOM ? barXAxis.position : BIZY_BAR_LINE_CHART_AXIS_POSITION.BOTTOM;
@@ -489,7 +490,7 @@ export class BizyBarLineChartComponent implements AfterContentInit {
               axisIndex = index;
             }
           } else {
-            this.#chartNames.push(_bar.name);
+            this.#chartNames.push(_bar.name ?? '');
           }
         }
       }
@@ -544,7 +545,7 @@ export class BizyBarLineChartComponent implements AfterContentInit {
         });
       }
 
-      legends.add(_bar.name);
+      legends.add(_bar.name ?? '');
     });
 
     const chartElement = this.#elementRef.nativeElement;
@@ -603,7 +604,7 @@ export class BizyBarLineChartComponent implements AfterContentInit {
                   left: this.#gridLeft,
                   right: this.#gridRight
                 },
-                option: this.#echartsContainer.getOption()
+                option: this.#echartsContainer?.getOption()
               }
             });
             this.onDownload.emit();
@@ -631,7 +632,7 @@ export class BizyBarLineChartComponent implements AfterContentInit {
       series
     };
 
-    this.#echartsContainer = this.#echarts.init(this.#chartContainer);
+    this.#echartsContainer = this.#echarts.init(this.#chartContainer) as ECharts;
     this.#echartsContainer.setOption(option);
     this.#echartsContainer.on('click', params => {
         this.onSelect.emit(params.name)
@@ -664,7 +665,7 @@ export class BizyBarLineChartComponent implements AfterContentInit {
       return;
     }
 
-    this.#echartsContainer.clear();
+    this.#echartsContainer?.clear();
     this.#renderer.removeChild(this.#elementRef.nativeElement, this.#chartContainer);
     this.#chartContainer = null;
     this.#ref.detectChanges();
@@ -683,7 +684,7 @@ export class BizyBarLineChartComponent implements AfterContentInit {
     }
 
     if (this.#echartsContainer) {
-      this.#echartsContainer.clear();
+      this.#echartsContainer?.clear();
     }
   }
 }

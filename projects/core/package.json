@@ -1,6 +1,6 @@
 {
   "name": "@bizy/core",
-  "version": "22.0.0",
+  "version": "21.0.0",
   "peerDependencies": {
     "@angular/cdk": "^22.0.0",
     "@angular/common": "^22.2.5",
@@ -28,7 +28,6 @@
     "lottie-web": "5.13.0",
     "ngx-device-detector": "12.0.0",
     "rxjs": "^7.4.0",
-    "tslib": "^2.0.0",
     "validator": "13.15.35",
     "zone.js": "^0.16.0"
   },

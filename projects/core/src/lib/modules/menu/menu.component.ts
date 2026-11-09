@@ -26,7 +26,7 @@ export class BizyMenuComponent {
   @Input() opened: boolean = false;
   @Output() onSelect = new EventEmitter<PointerEvent>();
 
-  _menuWidth: number;
+  _menuWidth: number = 0;
 
   #subscription = new Subscription();
 

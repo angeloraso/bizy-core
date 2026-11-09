@@ -14,7 +14,7 @@ export class BizySidebarOptionComponent {
   readonly #elementRef = inject(ElementRef);
   readonly #ref = inject(ChangeDetectorRef);
 
-  @ContentChildren(BizySidebarOptionComponent) options: QueryList<BizySidebarOptionComponent>;
+  @ContentChildren(BizySidebarOptionComponent) options!: QueryList<BizySidebarOptionComponent>;
   @Input() id: string = `bizy-sidebar-option-${Math.random()}`;
   @Input() disabled: boolean = false;
   @Input() selectable: boolean = true;

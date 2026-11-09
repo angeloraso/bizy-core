@@ -14,7 +14,7 @@ export class BizyTableRowComponent {
   readonly #elementRef = inject(ElementRef);
   readonly #ref = inject(ChangeDetectorRef);
 
-  @ContentChildren(BizyTableColumnComponent) columns: QueryList<BizyTableColumnComponent>;
+  @ContentChildren(BizyTableColumnComponent) columns!: QueryList<BizyTableColumnComponent>;
   @Input() id: string = `bizy-table-row-${Math.random()}`;
   @Input() customClass: string = '';
   @Input() disabled: boolean = false;

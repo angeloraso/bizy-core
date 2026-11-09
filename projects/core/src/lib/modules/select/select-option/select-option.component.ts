@@ -13,7 +13,7 @@ import { BizySelectSelectedOptionComponent } from '../select-selected-option/sel
 export class BizySelectOptionComponent {
   readonly #elementRef = inject(ElementRef);
   readonly #ref = inject(ChangeDetectorRef);
-  @ContentChild(BizySelectSelectedOptionComponent) private selectedOption: BizySelectSelectedOptionComponent;
+  @ContentChild(BizySelectSelectedOptionComponent) private selectedOption!: BizySelectSelectedOptionComponent;
 
   @Input() id: string = `bizy-select-option-${Math.random()}`;
   @Input() disabled: boolean = false;

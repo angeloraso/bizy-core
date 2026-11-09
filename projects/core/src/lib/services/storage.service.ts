@@ -5,8 +5,11 @@ import { Injectable } from '@angular/core';
 })
 export class BizyStorageService {
 
-  get<T>(key: string): T {
+  get<T>(key: string): T | null {
     const item = localStorage.getItem(key);
+    if (item === null) {
+      return null;
+    }
     try {
       return JSON.parse(item) as T;
     } catch (e) {

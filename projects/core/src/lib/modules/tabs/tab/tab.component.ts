@@ -15,7 +15,7 @@ export class BizyTabComponent {
   @Input() disabled: boolean = false;
   @Input() selected: boolean = false;
   @Input() linePosition: 'bottom' | 'top' = 'bottom';
-  @Input() customClass: string;
+  @Input() customClass: string = '';
   @Output() selectedChange = new EventEmitter<boolean>();
   @Output() onSelect = new EventEmitter<PointerEvent>();
 

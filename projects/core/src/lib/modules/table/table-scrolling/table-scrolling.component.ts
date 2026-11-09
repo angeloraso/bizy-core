@@ -35,13 +35,13 @@ export class BizyTableScrollingComponent implements OnDestroy {
   readonly #ref = inject(ChangeDetectorRef);
 
   @ViewChild(CdkVirtualScrollViewport) viewport!: CdkVirtualScrollViewport;
-  @ViewChild('tableScrollingContent') content: TemplateRef<object>;
+  @ViewChild('tableScrollingContent') content!: TemplateRef<object>;
 
-  #view: ViewContainerRef;
-  items$: Observable<Array<unknown>>;
-  itemTemplate: TemplateRef<BizyTableRowComponent>;
+  #view!: ViewContainerRef;
+  items$!: Observable<Array<unknown>>;
+  itemTemplate!: TemplateRef<BizyTableRowComponent>;
 
-  itemSize: number;
+  itemSize: number = 0;
   
   #subscription = new Subscription();
   #scrollTop: number = 0;

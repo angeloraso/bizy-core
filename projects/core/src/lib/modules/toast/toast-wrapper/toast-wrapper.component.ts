@@ -18,7 +18,7 @@ export class BizyToastWrapperComponent {
   type: TOAST = TOAST.INFO;
   title: string = '';
   msg: string = '';
-  id: string;
+  id: string = '';
 
   constructor() {
     if (!this.#data) {

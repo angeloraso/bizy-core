@@ -1,7 +1,7 @@
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { BizyTranslatePipe } from './translate.pipe';
 import { BizyTranslateService } from './translate.service';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService, RootTranslateServiceConfig } from '@ngx-translate/core';
 
 @NgModule({
   imports: [BizyTranslatePipe],
@@ -10,5 +10,10 @@ import { TranslateModule } from '@ngx-translate/core';
 })
 
 export class BizyTranslateModule {
-  static forRoot = TranslateModule.forRoot; 
+  static forRoot(config?: RootTranslateServiceConfig): ModuleWithProviders<BizyTranslateModule> {
+    return {
+      ngModule: BizyTranslateModule,
+      providers: provideTranslateService(config)
+    };
+  }
 }

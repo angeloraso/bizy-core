@@ -13,7 +13,7 @@ export class BizyTableFooterComponent {
   readonly #elementRef = inject(ElementRef);
   readonly #ref = inject(ChangeDetectorRef);
 
-  @ContentChildren(BizyTableColumnComponent) columns: QueryList<BizyTableColumnComponent>;
+  @ContentChildren(BizyTableColumnComponent) columns!: QueryList<BizyTableColumnComponent>;
   @Input() id: string = `bizy-table-footer-${Math.random()}`;
   @Input() customClass: string = '';
 

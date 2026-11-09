@@ -23,7 +23,7 @@ export class BizyFilterComponent {
   readonly #document = inject(DOCUMENT);
   readonly #ref = inject(ChangeDetectorRef);
   @ViewChild(CdkConnectedOverlay) overlay!: CdkConnectedOverlay;
-  @ContentChildren(BizyFilterSectionComponent, { descendants: true }) private sections: QueryList<BizyFilterSectionComponent>;
+  @ContentChildren(BizyFilterSectionComponent, { descendants: true }) private sections!: QueryList<BizyFilterSectionComponent>;
   @Input() id: string = `bizy-filter-${Math.random()}`;
   @Input() disabled: boolean = false;
   @Input() customClass: string = '';
@@ -31,7 +31,7 @@ export class BizyFilterComponent {
   @Output() onOpen = new EventEmitter<PointerEvent>();
   @Output() onChange = new EventEmitter<boolean>();
 
-  _filterWidth: number;
+  _filterWidth: number = 0;
 
   _activated: boolean = false;
 
