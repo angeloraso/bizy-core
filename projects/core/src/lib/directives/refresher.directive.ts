@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 
 @Directive({
-  selector: '[bizy-refresher]'
+  selector: '[bizyRefresher]'
 })
 export class BizyRefresherDirective implements OnChanges {
   /** Minimum downward distance in CSS pixels, measured when the finger is lifted. */
