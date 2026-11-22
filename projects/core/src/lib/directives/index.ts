@@ -9,5 +9,5 @@ export { BizyLongPressDirective } from "./long-press.directive";
 export { BizyOnlyNumbersDirective } from "./only-numbers.directive";
 export { BizyOnlyPhoneDigitsDirective } from "./only-phone-digits.directive";
 export { BizyTextEllipsisDirective } from './text-ellipsis.directive';
-export { BizyTooltipDirective } from './tooltip.directive';
+export { BizyTooltipDirective, BIZY_TOOLTIP_PLACEMENT } from './tooltip.directive';
 export { BizyAutoFocusDirective } from './auto-focus.directive';
