@@ -54,7 +54,7 @@
     border-bottom-left-radius: var(--bizy-menu-border-bottom-left-radius, var(--bizy-menu-border-radius, 0.5rem));
     background-color: var(--bizy-menu-background-color);
     min-width: var(--bizy-menu-min-width);
-    min-height: var(--anura-menu-min-height);
+    min-height: var(--bizy-menu-min-height);
     max-width: var(--bizy-menu-max-width);
     max-height: var(--bizy-menu-max-height);
     overflow-y: auto;

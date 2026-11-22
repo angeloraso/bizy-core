@@ -11,26 +11,30 @@ enum COLOR {
 interface ILogData {
   fileName: string;
   functionName: string;
-  param?: unknown
+  param?: unknown;
+  group?: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class BizyLogService {
-  #lastLogTimestamp: number = 0;
+  #lastLogTimestamps = new Map<string, number>();
 
-  #log(log: string, color: COLOR, param: unknown): void {
-    const difference = this.#lastLogTimestamp ? Date.now() - this.#lastLogTimestamp : 0;
-    this.#lastLogTimestamp = Date.now();
+  #log(log: string, color: COLOR, param: unknown, group: string = 'default'): void {
+    const now = Date.now();
+    const lastLogTimestamp = this.#lastLogTimestamps.get(group);
+    const difference = lastLogTimestamp === undefined ? 0 : now - lastLogTimestamp;
+    this.#lastLogTimestamps.set(group, now);
 
     const timestampStyles = 'color: #EE5DFF';
     const logStyles = `color: ${color}; font-size: 12px;`;
     const date = new Date();
+    const groupLabel = group === 'default' ? '' : `[${group}] `;
     if (param) {
-      console.log(`%c${date.toLocaleString()}: %c${log} %c(+${difference}ms)`, timestampStyles, logStyles, timestampStyles, param);
+      console.log(`%c${date.toLocaleString()}: %c${groupLabel}${log} %c(+${difference}ms)`, timestampStyles, logStyles, timestampStyles, param);
     } else {
-      console.log(`%c${date.toLocaleString()}: %c${log} %c(+${difference}ms)`, timestampStyles, logStyles, timestampStyles);
+      console.log(`%c${date.toLocaleString()}: %c${groupLabel}${log} %c(+${difference}ms)`, timestampStyles, logStyles, timestampStyles);
     }
   }
 
@@ -73,29 +77,9 @@ export class BizyLogService {
       this.#template({ ...data, param: data.param, title: 'Error', color: COLOR.ERROR });
     }
   }
-  /** DEPRECATED */
-  templateDebug(data: ILogData): void {
-    this.#template({ ...data, title: 'Debug', color: COLOR.DEFAULT });
-  }
-  /** DEPRECATED */
-  templateSucc(data: ILogData): void {
-    this.#template({ ...data, title: 'Success', color: COLOR.SUCCESS });
-  }
-  /** DEPRECATED */
-  templateInfo(data: ILogData): void {
-    this.#template({ ...data, title: 'Info', color: COLOR.INFO });
-  }
-  /** DEPRECATED */
-  templateWarn(data: ILogData): void {
-    this.#template({ ...data, title: 'Warning', color: COLOR.WARNING });
-  }
-  /** DEPRECATED */
-  templateError(data: ILogData): void {
-    this.#template({ ...data, title: 'Error', color: COLOR.ERROR });
-  }
 
-  #template(data: { fileName: string; functionName: string; title: string, color: COLOR; param?: unknown }): void {
+  #template(data: ILogData & { title: string; color: COLOR }): void {
     const log = `(${data.title}) ${data.fileName} - ${data.functionName}`;
-    this.#log(log, data.color, data.param);
+    this.#log(log, data.color, data.param, data.group);
   }
 }
