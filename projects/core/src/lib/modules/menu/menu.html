@@ -33,7 +33,8 @@
   [cdkConnectedOverlayPush]="true"
   [cdkConnectedOverlayFlexibleDimensions]="true"
   [cdkConnectedOverlayViewportMargin]="8"
-  [cdkConnectedOverlayOpen]="opened">
+  [cdkConnectedOverlayOpen]="opened"
+  (attach)="syncOverlayCssVariables()">
 
   <span class="bizy-menu__options" [id]="bizyMenuOptionsId">
 

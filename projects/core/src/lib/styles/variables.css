@@ -254,6 +254,7 @@
     --bizy-menu-background-color: #fff;
     --bizy-menu-arrow-height: 0.9rem;
     --bizy-menu-min-width: fit-content;
+    --bizy-menu-min-height: 0;
     --bizy-menu-max-width: 90dvw;
     --bizy-menu-max-height: 90dvh;
     --bizy-menu-scroll-bar-color: var(--bizy-default-color);

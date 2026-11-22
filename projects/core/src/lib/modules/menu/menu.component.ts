@@ -1,6 +1,6 @@
-import { OverlayModule } from '@angular/cdk/overlay';
+import { CdkConnectedOverlay, OverlayModule } from '@angular/cdk/overlay';
 import { BizyMenuOptionComponent } from './menu-option/menu-option.component';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, ElementRef, EventEmitter, inject, Input, Output, QueryList } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, ElementRef, EventEmitter, inject, Input, Output, QueryList, ViewChild } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -13,9 +13,10 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BizyMenuComponent {
-  readonly #elementRef = inject(ElementRef);
+  readonly #elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
   readonly #ref = inject(ChangeDetectorRef);
 
+  @ViewChild(CdkConnectedOverlay) overlay!: CdkConnectedOverlay;
   @ContentChildren(BizyMenuOptionComponent) options!: QueryList<BizyMenuOptionComponent>;
   @Input() id: string = `bizy-menu-${Math.random()}`;
   @Input() disabled: boolean = false;
@@ -29,8 +30,33 @@ export class BizyMenuComponent {
   _menuWidth: number = 0;
 
   #subscription = new Subscription();
+  #overlayCssVariables: string[] = [];
 
   readonly bizyMenuOptionsId = 'bizyMenuOptionsId';
+
+  syncOverlayCssVariables() {
+    const panel = this.overlay.overlayRef?.overlayElement;
+    if (!panel) {
+      return;
+    }
+
+    for (const property of this.#overlayCssVariables) {
+      panel.style.removeProperty(property);
+    }
+
+    const styles = getComputedStyle(this.#elementRef.nativeElement);
+    this.#overlayCssVariables = [];
+
+    for (let index = 0; index < styles.length; index++) {
+      const property = styles.item(index);
+      if (property.startsWith('--')) {
+        panel.style.setProperty(property, styles.getPropertyValue(property));
+        this.#overlayCssVariables.push(property);
+      }
+    }
+
+    this.overlay.overlayRef?.updatePosition();
+  }
 
   _onSelect(event: any) {
     if (this.disabled) {
