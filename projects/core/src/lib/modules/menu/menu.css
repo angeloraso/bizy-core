@@ -7,22 +7,22 @@
 }
 
 .bizy-menu {
-    font-size: 1rem;
-    width: 100%;
-    border: none;
-    background-color: transparent;
+    font-size: var(--bizy-menu-font-size);
+    width: var(--bizy-menu-trigger-width);
+    border: var(--bizy-menu-trigger-border);
+    background-color: var(--bizy-menu-trigger-background-color);
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    column-gap: 0.5rem;
+    align-items: var(--bizy-menu-align-items);
+    justify-content: var(--bizy-menu-justify-content);
+    column-gap: var(--bizy-menu-column-gap);
     padding: var(--bizy-menu-padding);
     color: var(--bizy-menu-color);
-    cursor: pointer;
+    cursor: var(--bizy-menu-cursor);
 }
 
 .bizy-menu--disabled {
     pointer-events: none;
-    opacity: 0.5;
+    opacity: var(--bizy-menu-disabled-opacity);
     cursor: not-allowed !important;
 }
 
@@ -39,10 +39,10 @@
 }
 
 .bizy-menu__content {
-    font-size: 1rem;
+    font-size: var(--bizy-menu-content-font-size);
     display: flex;
-    align-items: center;
-    column-gap: 0.3rem;
+    align-items: var(--bizy-menu-content-align-items);
+    column-gap: var(--bizy-menu-content-column-gap);
     pointer-events: none;
 }
 
@@ -63,16 +63,16 @@
     display: flex;
     flex-direction: column;
     position: relative;
-    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--bizy-menu-box-shadow);
 }
 
 .bizy-menu__options::-webkit-scrollbar {
-    width: 0.5rem;
-    height: 0.5rem;
+    width: var(--bizy-menu-scroll-bar-width);
+    height: var(--bizy-menu-scroll-bar-height);
 }
 
 .bizy-menu__options::-webkit-scrollbar-thumb {
-    border-radius: 1rem;
+    border-radius: var(--bizy-menu-scroll-bar-thumb-border-radius);
     background-color: var(--bizy-menu-scroll-bar-color);
 }
 
@@ -81,7 +81,7 @@
 }
 
 .bizy-menu__options::-webkit-scrollbar-button {
-    height: 1rem;
+    height: var(--bizy-menu-scroll-bar-button-height);
 }
 
 .bizy-menu__options__header {
@@ -90,8 +90,8 @@
     top: 0;
     display: flex;
     flex-direction: column;
-    row-gap: 0.3rem;
-    background-color: #fff;
+    row-gap: var(--bizy-menu-header-row-gap);
+    background-color: var(--bizy-menu-header-background-color);
 }
 
 ::ng-deep .bizy-menu__options__header {

@@ -250,13 +250,33 @@
     --bizy-menu-title-text-decoration: none;
 
     --bizy-menu-padding: 0;
+    --bizy-menu-font-size: 1rem;
+    --bizy-menu-trigger-width: 100%;
+    --bizy-menu-trigger-border: none;
+    --bizy-menu-trigger-background-color: transparent;
+    --bizy-menu-align-items: center;
+    --bizy-menu-justify-content: space-between;
+    --bizy-menu-column-gap: 0.5rem;
+    --bizy-menu-cursor: pointer;
+    --bizy-menu-disabled-opacity: 0.5;
+    --bizy-menu-content-font-size: 1rem;
+    --bizy-menu-content-align-items: center;
+    --bizy-menu-content-column-gap: 0.3rem;
     --bizy-menu-color: #fff;
     --bizy-menu-background-color: #fff;
+    --bizy-menu-border-radius: 0.5rem;
+    --bizy-menu-box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+    --bizy-menu-header-row-gap: 0.3rem;
+    --bizy-menu-header-background-color: #fff;
     --bizy-menu-arrow-height: 0.9rem;
     --bizy-menu-min-width: fit-content;
     --bizy-menu-min-height: 0;
     --bizy-menu-max-width: 90dvw;
     --bizy-menu-max-height: 90dvh;
+    --bizy-menu-scroll-bar-width: 0.5rem;
+    --bizy-menu-scroll-bar-height: 0.5rem;
+    --bizy-menu-scroll-bar-thumb-border-radius: 1rem;
+    --bizy-menu-scroll-bar-button-height: 1rem;
     --bizy-menu-scroll-bar-color: var(--bizy-default-color);
     --bizy-menu-scroll-bar-hover-color: #999;
 
